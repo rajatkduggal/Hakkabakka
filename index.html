@@ -270,7 +270,7 @@
         </div>
         <div class="cart-btn-group">
             <a href="#" class="checkout-btn" onclick="sendOrder()"><i class="fa-brands fa-whatsapp"></i> Send Order</a>
-            <a href="#" class="pay-btn" onclick="openQRModal()"><i class="fa-solid fa-qrcode"></i> Quick UPI Pay</a>
+            <a href="#" class="pay-btn" onclick="handleSmartPayment()"><i class="fa-solid fa-qrcode"></i> Quick UPI Pay</a>
         </div>
     </div>
 
@@ -305,13 +305,28 @@
             orderedItems.push(`${name} (₹${price})`);
             alert(`${name} added to your tray!`);
         }
-        function openQRModal() {
+        
+        // SMART LOGIC: Mobile par direct intent, desktop par QR Modal popup
+        function handleSmartPayment() {
             if(totalBill === 0) { alert("Aapka card empty hai! Pehle menu se item add karein."); return; }
-            document.getElementById('qrModal').style.display = 'flex';
+            
+            const upiId = "7888854492@icici";
+            const merchantName = "HAKKABAKKA";
+            const upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${totalBill}&cu=INR&tn=${encodeURIComponent('Hakka Bakka Cafe Order')}`;
+            
+            // Mobile users ke liye direct app selector open karega
+            if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                window.location.href = upiUrl;
+            } else {
+                // Desktop users ke liye backup mein QR code popup open karega
+                document.getElementById('qrModal').style.display = 'flex';
+            }
         }
+
         function closeQRModal() {
             document.getElementById('qrModal').style.display = 'none';
         }
+        
         function sendOrder() {
             if(totalBill === 0) { alert("Aapka order tray khali hai!"); return; }
             const selection = document.getElementById('table-number').value;
