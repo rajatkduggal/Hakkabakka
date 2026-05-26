@@ -1,1 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hakka Bakka Cafe | Jalandhar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --logo-green: #2B5B28;
+            --logo-red: #D20000;
+            --logo-orange: #FF7B00;
+            --bg-dark: #0A0F0D;
+            --card-bg: #131A16;
+            --text-light: #F3F4F6;
+            --text-muted: #9CA3AF;
+        }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-light); overflow-x: hidden; padding-bottom: 110px; }
+
+        /* --- GLOWING TOP ANNOUNCEMENT BAR --- */
+        .top-announce {
+            background: linear-gradient(90deg, #132015, #0A0F0D, #132015);
+            color: var(--logo-orange); text-align: center; padding: 12px; font-weight: 700; font-size: 0.9rem;
+            border-bottom: 2px solid var(--logo-green); letter-spacing: 0.5px;
+            animation: pulse-glow 2s infinite ease-in-out;
+        }
+        @keyframes pulse-glow {
+            0% { text-shadow: 0 0 5px var(--logo-orange); }
+            50% { text-shadow: 0 0 15px var(--logo-orange), 0 0 20px var(--logo-red); }
+            100% { text-shadow: 0 0 5px var(--logo-orange); }
+        }
+
+        /* --- HEADER LOGO AREA --- */
+        .header {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 15px 5%; background: rgba(10, 15, 13, 0.95); backdrop-filter: blur(12px);
+            position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05);
+            gap: 8px;
+        }
+        .header .logo { width: 100%; max-width: 240px; height: auto; object-fit: contain; }
+        .header .owner-badge { background: rgba(210, 0, 0, 0.1); color: var(--logo-red); border: 1px solid var(--logo-red); padding: 4px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.5px; }
+
+        /* --- HERO INTRO --- */
+        .hero {
+            padding: 50px 5% 35px; text-align: center;
+            background: radial-gradient(circle at center, rgba(43, 91, 40, 0.15), transparent 70%);
+        }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 800; margin-bottom: 10px; color: #fff; line-height: 1.2; }
+        .hero h1 span { color: var(--logo-orange); }
+        .hero p { color: var(--text-muted); max-width: 500px; margin: 10px auto 20px; font-size: 0.95rem; font-style: italic; }
+        .location-badge { width: max-content; margin: 0 auto; display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.04); padding: 6px 14px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.08); font-size: 0.85rem; font-weight: 600; }
+        .location-badge i { color: var(--logo-red); }
+
+        /* --- INTERNAL TABLE SELECTOR --- */
+        .table-selector-box {
+            background: var(--card-bg); margin: 25px 5% 10px; padding: 22px; border-radius: 18px;
+            border: 1px dashed var(--logo-green); text-align: center;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.4);
+        }
+        .table-selector-box h3 { font-size: 1.05rem; margin-bottom: 12px; color: var(--logo-orange); font-weight: 600; }
+        .table-select {
+            width: 100%; max-width: 290px; padding: 12px; border-radius: 8px; background: #1A241F;
+            border: 1px solid rgba(255,255,255,0.1); color: white; font-size: 0.95rem; font-weight: 600; text-align: center; outline: none;
+        }
+
+        /* --- INTERACTIVE MENU CARDS --- */
+        .section-title { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin: 40px 5% 20px; color: #fff; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .section-title::before { content: ''; display: inline-block; width: 6px; height: 25px; background: var(--logo-red); border-radius: 3px; }
+        
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; padding: 0 5% 30px; }
+        
+        .menu-card {
+            background: var(--card-bg); border-radius: 18px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.02); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .menu-card:hover { transform: translateY(-5px); border-color: var(--logo-green); box-shadow: 0 12px 25px rgba(43, 91, 40, 0.2); }
+        .menu-card img { width: 100%; height: 180px; object-fit: cover; transition: 0.3s; }
+        .menu-card:hover img { transform: scale(1.03); }
+        
+        .card-body { padding: 20px; }
+        .card-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .food-tag { font-size: 0.7rem; font-weight: 800; padding: 3px 9px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .food-tag.veg { background: rgba(34, 197, 94, 0.12); color: #22c55e; border: 1px solid #22c55e; }
+        .food-tag.nonveg { background: rgba(239, 68, 68, 0.12); color: #ef4444; border: 1px solid #ef4444; }
+        
+        .food-price { font-size: 1.25rem; font-weight: 700; color: var(--logo-orange); }
+        .menu-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 6px; color: #fff; }
+        .menu-card p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 18px; line-height: 1.4; }
+        
+        .add-to-cart-btn {
+            width: 100%; background: linear-gradient(135deg, var(--logo-green), #387034);
+            color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: 700;
+            font-size: 0.9rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 4px 10px rgba(43, 91, 40, 0.2);
+        }
+        .add-to-cart-btn:active { transform: scale(0.97); }
+
+        /* --- PROFILE INFO --- */
+        .about-cafe { background: var(--card-bg); margin: 30px 5%; padding: 30px; border-radius: 18px; border-left: 4px solid var(--logo-orange); box-shadow: 0 4px 25px rgba(0,0,0,0.2); }
+        .about-cafe h3 { font-family: 'Playfair Display', serif; color: var(--logo-orange); margin-bottom: 8px; font-size: 1.4rem; }
+        .about-cafe p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
+
+        /* --- FLOATING APP-STYLE CAPSULE CART --- */
+        .cart-bar {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: #131A16; color: white; padding: 14px 26px; border-radius: 40px;
+            z-index: 1000; display: flex; align-items: center; justify-content: space-between;
+            width: 90%; max-width: 440px; box-shadow: 0 12px 35px rgba(0,0,0,0.8);
+            border: 1px solid var(--logo-orange);
+        }
+        .cart-bar span { font-weight: 700; font-size: 1.05rem; letter-spacing: 0.5px; }
+        .checkout-btn {
+            background: linear-gradient(135deg, var(--logo-orange), #FF9100); color: #000; text-decoration: none; padding: 8px 24px;
+            border-radius: 25px; font-weight: 800; font-size: 0.85rem; box-shadow: 0 4px 12px rgba(255, 123, 0, 0.3);
+            transition: 0.2s; display: flex; align-items: center; gap: 6px;
+        }
+        .checkout-btn:active { transform: scale(0.95); }
+
+        footer { background: #050806; color: var(--text-muted); text-align: center; padding: 22px; font-size: 0.8rem; border-top: 1px solid rgba(255,255,255,0.01); }
+    </style>
+</head>
+<body>
+
+    <div class="top-announce">
+        <i class="fa-solid fa-pizza-slice"></i> GRAND OPENING ON 16th JUNE 2026! GET READY JALANDHAR <i class="fa-solid fa-hot-dog"></i>
+    </div>
+
+    <header class="header">
+        <img src="logo.jpg" alt="Hakka Bakka Logo" class="logo">
+        <div class="owner-badge">Run by Chirag Duggal</div>
+    </header>
+
+    <section class="hero">
+        <h1>Enjoy Meal & <br><span>Deal Together!</span></h1>
+        <p>Experience the ultimate fusion of Premium Coffee, Handcrafted Pizzas, and Sizzling Platters.</p>
+        <div class="location-badge">
+            <i class="fa-solid fa-location-dot"></i> Urban Estate, Phase-2, Jalandhar
+        </div>
+    </section>
+
+    <div class="table-selector-box">
+        <h3><i class="fa-solid fa-chair"></i> Sitting inside the Cafe?</h3>
+        <select class="table-select" id="table-number">
+            <option value="Takeaway / Online Delivery">Online Delivery / Takeaway</option>
+            <option value="Table No. 1">Table No. 1</option>
+            <option value="Table No. 2">Table No. 2</option>
+            <option value="Table No. 3">Table No. 3</option>
+            <option value="Table No. 4">Table No. 4</option>
+            <option value="Table No. 5">Table No. 5</option>
+            <option value="Table No. 6">Table No. 6</option>
+        </select>
+    </div>
+
+    <section>
+        <h2 class="section-title">Signature Pizzas</h2>
+        <div class="menu-grid">
+            <div class="menu-card">
+                <img src="pizza.png" alt="Double Cheese Burst Pizza">
+                <div class="card-body">
+                    <div class="card-meta">
+                        <span class="food-tag veg">Veg</span>
+                        <span class="food-price">₹249</span>
+                    </div>
+                    <h3>Double Cheese Burst Pizza</h3>
+                    <p>Loaded with 100% pure mozzarella cheese, fresh basil, and signature house sauce.</p>
+                    <button class="add-to-cart-btn" onclick="addItem('Double Cheese Pizza', 249)"><i class="fa-solid fa-plus"></i> Add to Order</button>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Gourmet Non-Veg Specials</h2>
+        <div class="menu-grid">
+            <div class="menu-card">
+                <img src="nonveg.png" alt="Crispy Hakka Chicken Wings">
+                <div class="card-body">
+                    <div class="card-meta">
+                        <span class="food-tag nonveg">Non-Veg</span>
+                        <span class="food-price">₹299</span>
+                    </div>
+                    <h3>Crispy Hakka Chicken Wings</h3>
+                    <p>Tossed in a fiery hot house blend spice mix, served crisp with premium mint dip.</p>
+                    <button class="add-to-cart-btn" onclick="addItem('Crispy Chicken Wings', 299)"><i class="fa-solid fa-plus"></i> Add to Order</button>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Artisanal Coffee & Drinks</h2>
+        <div class="menu-grid">
+            <div class="menu-card">
+                <img src="coffee.png" alt="Roasted Hazelnut Cold Coffee">
+                <div class="card-body">
+                    <div class="card-meta">
+                        <span class="food-tag veg">Veg</span>
+                        <span class="food-price">₹149</span>
+                    </div>
+                    <h3>Roasted Hazelnut Cold Coffee</h3>
+                    <p>Creamy, rich slow-brewed espresso shot blended perfectly with premium hazelnut glaze.</p>
+                    <button class="add-to-cart-btn" onclick="addItem('Hazelnut Cold Coffee', 149)"><i class="fa-solid fa-plus"></i> Add to Order</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-cafe">
+        <h3>Our Story</h3>
+        <p>Hakka Bakka Jalandhar ka sabse trending premium hangout spot banne ja raha hai. Chirag Duggal ki leadership ke sath, hum laaye hain behtareen ambience aur lajawab taste jo har meal ko ek deal bana dega!</p>
+    </section>
+
+    <div class="cart-bar">
+        <span>Total: ₹<span id="cart-total">0</span></span>
+        <a href="#" class="checkout-btn" onclick="sendOrder()"><i class="fa-brands fa-whatsapp"></i> Order Now</a>
+    </div>
+
+    <footer>© 2026 Hakka Bakka Cafe | Enjoy Meal & Deal Together</footer>
+
+    <script>
+        let totalBill = 0; let orderedItems = [];
+        function addItem(name, price) {
+            totalBill += price;
+            document.getElementById('cart-total').innerText = totalBill;
+            orderedItems.push(`${name} (₹${price})`);
+            alert(`${name} added to your tray!`);
+        }
+        function sendOrder() {
+            if(totalBill === 0) { alert("Aapka order tray khali hai!"); return; }
+            const tableNum = document.getElementById('table-number').value;
+            let message = `*🔥 NEW ORDER - HAKKA BAKKA CAFE *🔥\n\n`;
+            message += `*Sitting/Delivery Info:* ${tableNum}\n`;
+            message += `-------------------------\n`;
+            message += `*Items Ordered:*\n` + orderedItems.join('\n') + `\n`;
+            message += `-------------------------\n`;
+            message += `*Grand Total Bill: ₹${totalBill}*\n\n`;
+            message += `Please confirm my order! 🙌`;
+            
+            window.open(`https://wa.me/919713545556?text=${encodeURIComponent(message)}`, '_blank');
+        }
+    </script>
+</body>
+</html>
