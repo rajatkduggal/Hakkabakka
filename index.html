@@ -1,1250 +1,523 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hakka Bakka Cafe | Premium Digital Menu</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <style>
-        :root {
-            --olive: #556B2F;
-            --gold: #D4AF37;
-            --bg: #0a0a0a;
-            --card: #161616;
-            --text: #e0e0e0;
-            --white: #ffffff;
-            --alert: #ff4500;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        body {
-            font-family: 'Outfit', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding-bottom: 140px;
-        }
+<title>Hakka Bakka Cafe | Premium Digital Menu</title>
 
-        header {
-            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), url('logo.jpg');
-            background-size: cover;
-            background-position: center;
-            backdrop-filter: blur(10px);
-            padding: 3rem 1rem;
-            text-align: center;
-            border-bottom: 3px solid var(--olive);
-        }
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-        header h1 {
-            margin: 0;
-            color: var(--gold);
-            font-size: 3rem;
-            font-weight: 800;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
-        }
+<style>
 
-        header p {
-            margin: 5px 0 0;
-            color: #aaa;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-        }
+:root{
+    --gold:#d4af37;
+    --olive:#556b2f;
+    --bg:#080808;
+    --card:#151515;
+    --text:#f3f3f3;
+}
 
-        .order-type-container {
-            max-width: 600px;
-            margin: 30px auto;
-            background: var(--card);
-            border: 1px solid var(--olive);
-            border-radius: 15px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-        .order-type-container h3 {
-            margin-top: 0;
-            color: var(--gold);
-            text-transform: uppercase;
-        }
+html{
+    scroll-behavior:smooth;
+}
 
-        .radio-group {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
+body{
+    font-family:'Outfit',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    overflow-x:hidden;
+    padding-bottom:120px;
+}
 
-        .radio-group label {
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+/* HERO */
 
-        .radio-group input[type="radio"] {
-            accent-color: var(--gold);
-            transform: scale(1.2);
-        }
+.hero{
+    position:relative;
+    min-height:60vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-        .input-field, .select-field {
-            background: #222;
-            border: 1px solid #444;
-            color: white;
-            padding: 12px 20px;
-            font-size: 1.1rem;
-            border-radius: 8px;
-            width: 85%;
-            max-width: 320px;
-            text-align: center;
-            font-family: 'Outfit', sans-serif;
-            outline: none;
-            transition: 0.3s;
-            margin-top: 10px;
-        }
+    background:
+    linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.88)),
+    url('logo.jpg');
 
-        .input-field:focus, .select-field:focus {
-            border-color: var(--gold);
-            box-shadow: 0 0 10px rgba(212,175,55,0.3);
-        }
+    background-size:cover;
+    background-position:center;
 
-        .location-warning {
-            color: var(--alert);
-            font-size: 0.95rem;
-            margin-top: 15px;
-            font-weight: 600;
-            display: none;
-        }
+    overflow:hidden;
+}
 
-        .menu-section {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
+.hero::before{
+    content:'';
+    position:absolute;
+    width:500px;
+    height:500px;
+    background:radial-gradient(circle,rgba(212,175,55,.12),transparent 70%);
+    top:-180px;
+    right:-120px;
+}
 
-        .category-title {
-            border-left: 5px solid var(--gold);
-            padding-left: 15px;
-            color: var(--white);
-            font-size: 2rem;
-            margin-top: 50px;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+.hero-content{
+    position:relative;
+    z-index:2;
+    text-align:center;
+    padding:20px;
+    max-width:900px;
+}
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 35px;
-        }
+.hero-badge{
+    display:inline-block;
+    padding:10px 20px;
+    border-radius:50px;
+    background:rgba(212,175,55,.1);
+    border:1px solid rgba(212,175,55,.25);
+    color:var(--gold);
+    margin-bottom:25px;
+    font-size:.95rem;
+    font-weight:600;
+}
 
-        .card {
-            background: var(--card);
-            border-radius: 18px;
-            overflow: hidden;
-            border: 1px solid #252525;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+.hero h1{
+    font-size:clamp(3rem,8vw,5.5rem);
+    color:var(--gold);
+    letter-spacing:4px;
+    font-weight:800;
+}
 
-        .card:hover {
-            border-color: var(--gold);
-            transform: translateY(-10px);
-            box-shadow: 0 10px 25px rgba(85,107,47,0.2);
-        }
+.hero p{
+    margin-top:20px;
+    color:#ddd;
+    font-size:1.1rem;
+    line-height:1.7;
+}
 
-        .card img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-        }
+.hero-buttons{
+    margin-top:35px;
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
 
-        .content {
-            padding: 25px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+.hero-btn{
+    padding:15px 30px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:700;
+    transition:.35s ease;
+}
 
-        .content h3 {
-            margin: 0 0 10px 0;
-            font-size: 1.5rem;
-            color: var(--white);
-        }
+.primary-btn{
+    background:linear-gradient(135deg,var(--gold),#b89224);
+    color:black;
+}
 
-        .variant-selector {
-            margin: 15px 0;
-        }
+.secondary-btn{
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.08);
+    color:white;
+}
 
-        .variant-select {
-            width: 100%;
-            background: #222;
-            color: var(--white);
-            border: 1px solid var(--olive);
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-family: 'Outfit', sans-serif;
-            outline: none;
-            cursor: pointer;
-        }
+/* ORDER BOX */
 
-        .card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
-        }
+.order-box{
+    width:min(700px,92%);
+    margin:40px auto;
+    background:var(--card);
+    border:1px solid rgba(212,175,55,.2);
+    border-radius:24px;
+    padding:30px;
+}
 
-        .price {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--gold);
-        }
+.order-box h2{
+    text-align:center;
+    color:var(--gold);
+    margin-bottom:25px;
+}
 
-        .add-btn {
-            background: var(--olive);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: 0.3s;
-        }
+.radio-group{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
 
-        .add-btn:hover {
-            background: var(--gold);
-            color: black;
-        }
+.radio-group label{
+    font-weight:600;
+}
 
-        .bottom-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(22, 22, 22, 0.95);
-            backdrop-filter: blur(15px);
-            border-top: 2px solid var(--gold);
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            z-index: 1000;
-            border-radius: 20px 20px 0 0;
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.7);
-        }
+.select-field{
+    width:100%;
+    margin-top:25px;
+    background:#1d1d1d;
+    color:white;
+    border:1px solid #333;
+    border-radius:12px;
+    padding:14px;
+    font-size:1rem;
+}
 
-        .total-info h4 {
-            margin: 0;
-            color: #aaa;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-        }
+/* CATEGORY */
 
-        .total-info p {
-            margin: 3px 0 0;
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--gold);
-        }
+.menu-section{
+    width:min(1300px,92%);
+    margin:auto;
+}
 
-        .packaging-note {
-            font-size: 0.8rem;
-            color: var(--alert);
-            margin: 0;
-            font-weight: 600;
-        }
+.category-title{
+    position:relative;
+    margin:50px 0 35px;
+    padding-left:18px;
+    font-size:2rem;
+}
 
-        .pay-btn {
-            background: linear-gradient(135deg, var(--gold), #b89224);
-            color: black;
-            border: none;
-            padding: 15px 35px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            border-radius: 10px;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.3s;
-        }
+.category-title::before{
+    content:'';
+    position:absolute;
+    left:0;
+    top:0;
+    width:5px;
+    height:100%;
+    background:linear-gradient(var(--gold),var(--olive));
+    border-radius:20px;
+}
 
-        .pay-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(214,175,55,0.4);
-        }
+/* GRID */
 
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:28px;
+}
 
-        .modal-content {
-            background: var(--card);
-            border: 2px solid var(--gold);
-            padding: 30px 40px;
-            border-radius: 20px;
-            text-align: center;
-            max-width: 450px;
-            width: 90%;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-        }
+/* CARD */
 
-        .modal-content h2 {
-            color: var(--gold);
-            margin-top: 0;
-        }
+.card{
+    position:relative;
+    background:var(--card);
+    border-radius:22px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.05);
+    transition:.35s ease;
+}
 
-        .unified-upi-container {
-            margin: 20px 0;
-        }
+.card:hover{
+    transform:translateY(-8px);
+    border-color:rgba(212,175,55,.3);
+    box-shadow:0 12px 35px rgba(212,175,55,.12);
+}
 
-        .unified-pay-btn {
-            background: linear-gradient(135deg, #b89224, var(--gold));
-            color: black;
-            border: none;
-            padding: 18px 25px;
-            font-size: 1.15rem;
-            font-weight: 800;
-            border-radius: 12px;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            transition: 0.3s;
-            width: 100%;
-            box-shadow: 0 4px 15px rgba(212,175,55,0.3);
-        }
+.card img{
+    width:100%;
+    height:240px;
+    object-fit:cover;
+    transition:transform .5s ease;
+}
 
-        .unified-pay-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(212,175,55,0.5);
-        }
+.card:hover img{
+    transform:scale(1.05);
+}
 
-        /* Generated Dynamic QR Code Container Stylings Context */
-        #dynamicQrContainer {
-            background: white;
-            padding: 12px;
-            border-radius: 12px;
-            display: inline-block;
-            margin: 15px auto;
-            border: 3px solid var(--gold);
-        }
+.content{
+    padding:22px;
+}
 
-        .close-btn {
-            background: transparent;
-            color: #888;
-            border: none;
-            cursor: pointer;
-            margin-top: 20px;
-            font-size: 1rem;
-            text-decoration: underline;
-            font-family: 'Outfit', sans-serif;
-        }
+.content h3{
+    font-size:1.45rem;
+    margin-bottom:16px;
+}
 
-        .footer {
-            text-align: center;
-            padding: 60px 20px;
-            background: #050505;
-            border-top: 1px solid #222;
-            margin-top: 80px;
-        }
+.variant-select{
+    width:100%;
+    background:#1e1e1e;
+    color:white;
+    border:1px solid #333;
+    border-radius:10px;
+    padding:12px;
+    font-size:1rem;
+}
 
-        .footer h3 {
-            color: var(--gold);
-            margin-bottom: 12px;
-            font-size: 1.6rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+.card-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:22px;
+}
 
-        .footer .address-block {
-            color: #ffffff !important;
-            font-weight: 600;
-            font-size: 1.15rem;
-            max-width: 650px;
-            margin: 10px auto 25px auto;
-            line-height: 1.6;
-            background: rgba(85, 107, 47, 0.15);
-            padding: 15px;
-            border: 1px solid var(--olive);
-            border-radius: 10px;
-            letter-spacing: 0.5px;
-        }
+.price{
+    color:var(--gold);
+    font-size:1.7rem;
+    font-weight:800;
+}
 
-        .whatsapp-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: #25D366;
-            color: white;
-            text-decoration: none;
-            padding: 12px 35px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            transition: 0.3s;
-            box-shadow: 0 5px 15px rgba(37,211,102,0.3);
-            font-family: 'Outfit', sans-serif;
-        }
+.add-btn{
+    background:var(--olive);
+    color:white;
+    border:none;
+    border-radius:12px;
+    padding:12px 20px;
+    font-weight:700;
+    cursor:pointer;
+}
 
-        .whatsapp-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(37,211,102,0.5);
-        }
-    </style>
+/* BOTTOM BAR */
+
+.bottom-bar{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    z-index:1000;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:18px 20px;
+
+    background:rgba(10,10,10,.92);
+    backdrop-filter:blur(15px);
+    border-top:1px solid rgba(212,175,55,.25);
+}
+
+.total-box span{
+    font-size:.85rem;
+    color:#aaa;
+}
+
+.total-box h2{
+    color:var(--gold);
+    margin-top:4px;
+}
+
+.pay-btn{
+    background:linear-gradient(135deg,var(--gold),#b89224);
+    color:black;
+    border:none;
+    border-radius:14px;
+    padding:16px 26px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+/* FOOTER */
+
+.footer{
+    margin-top:70px;
+    padding:60px 20px;
+    text-align:center;
+    border-top:1px solid rgba(255,255,255,.06);
+}
+
+.footer h2{
+    color:var(--gold);
+    margin-bottom:14px;
+}
+
+.footer p{
+    color:#bbb;
+    line-height:1.8;
+}
+
+.whatsapp-btn{
+    display:inline-block;
+    margin-top:22px;
+    padding:14px 28px;
+    background:#25D366;
+    color:white;
+    text-decoration:none;
+    border-radius:50px;
+    font-weight:700;
+}
+
+@media(max-width:768px){
+
+    .hero{
+        min-height:50vh;
+    }
+
+    .hero h1{
+        font-size:3rem;
+        letter-spacing:2px;
+    }
+
+    .hero-buttons{
+        flex-direction:column;
+        align-items:center;
+    }
+
+    .hero-btn{
+        width:90%;
+        text-align:center;
+    }
+
+    .category-title{
+        font-size:1.6rem;
+    }
+
+}
+
+</style>
 </head>
+
 <body>
 
-<header>
-    <h1>Hakka Bakka Cafe</h1>
-    <p>Premium Fast Food, Tandoor & Chaat Experience</p>
-</header>
+<section class="hero">
 
-<div class="order-type-container">
-    <h3>Select Serving Mode</h3>
-    <div class="radio-group">
-        <label>
-            <input type="radio" name="orderType" value="Table" checked onclick="switchSpotMode('Table')"> Table Order
-        </label>
-        <label>
-            <input type="radio" name="orderType" value="Car" onclick="switchSpotMode('Car')"> Car Order
-        </label>
-        <label>
-            <input type="radio" name="orderType" value="Packing" onclick="switchSpotMode('Packing')"> Take Away / Packing
-        </label>
-    </div>
-    
-    <div id="spotFieldContainer">
-        <select id="tableSelect" class="select-field">
-            <option value="" disabled selected>Choose Table Number</option>
-            <option value="Table 1">Table 1</option>
-            <option value="Table 2">Table 2</option>
-            <option value="Table 3">Table 3</option>
-            <option value="Table 4">Table 4</option>
-            <option value="Table 5">Table 5</option>
-            <option value="Table 6">Table 6</option>
-            <option value="Table 7">Table 7</option>
-            <option value="Table 8">Table 8</option>
-            <option value="Table 9">Table 9</option>
-            <option value="Table 10">Table 10</option>
-        </select>
-        
-        <input type="text" id="carInput" class="input-field" placeholder="Enter Car Number (e.g. PB08-XXXX)" style="display:none;">
-        
-        <div id="packingInputs" style="display:none;">
-            <input type="text" id="customerName" class="input-field" placeholder="Enter Your Name" style="margin-bottom:10px;"><br>
-            <input type="tel" id="customerPhone" class="input-field" placeholder="Enter Mobile Number">
+    <div class="hero-content">
+
+        <div class="hero-badge">
+            ✨ Premium Fast Food & Cafe Experience
         </div>
+
+        <h1>HAKKA BAKKA CAFE</h1>
+
+        <p>
+            Premium Fast Food, Tandoor, Chaat & Luxury Cafe Experience
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="#menuStart" class="hero-btn primary-btn">
+                Explore Menu
+            </a>
+
+            <a href="https://wa.me/917796631555" class="hero-btn secondary-btn">
+                WhatsApp Order
+            </a>
+
+        </div>
+
     </div>
-    <div id="carWarning" class="location-warning">⚠️ Notice: Car Serve Only Near to Restaurant Premises.</div>
+
+</section>
+
+<div class="order-box">
+
+    <h2>Select Serving Mode</h2>
+
+    <div class="radio-group">
+        <label><input type="radio" checked> Table Order</label>
+        <label><input type="radio"> Car Order</label>
+        <label><input type="radio"> Packing</label>
+    </div>
+
+    <select class="select-field">
+        <option>Choose Table Number</option>
+        <option>Table 1</option>
+        <option>Table 2</option>
+        <option>Table 3</option>
+    </select>
+
 </div>
 
-<div class="menu-section">
-    
-    <div class="category-title">Starters & Artisanal Pizza</div>
+<div class="menu-section" id="menuStart">
+
+    <div class="category-title">
+        Starters & Artisanal Pizza
+    </div>
+
     <div class="grid">
+
         <div class="card">
-            <img src="pizza.png" alt="Gourmet Pizza Burst">
+
+            <img src="pizza.png">
+
             <div class="content">
+
                 <h3>Gourmet Pizza Burst</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="220" data-name="Pizza (Small)">Small - ₹220</option>
-                        <option value="340" data-name="Pizza (Medium)">Medium - ₹340</option>
-                        <option value="460" data-name="Pizza (Large)">Large - ₹460</option>
-                    </select>
-                </div>
+
+                <select class="variant-select">
+                    <option>Small - ₹220</option>
+                    <option>Medium - ₹340</option>
+                    <option>Large - ₹460</option>
+                </select>
+
                 <div class="card-footer">
-                    <span class="price">₹220</span>
-                    <button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button>
+
+                    <div class="price">
+                        ₹220
+                    </div>
+
+                    <button class="add-btn">
+                        Add To Order
+                    </button>
+
                 </div>
+
             </div>
+
         </div>
 
         <div class="card">
-            <img src="cheeschilli.png" alt="Cheese Chilli">
+
+            <img src="cheeschilli.png">
+
             <div class="content">
+
                 <h3>Cheese Chilli (Paneer)</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="180" data-name="Cheese Chilli (Half)">Half Portion - ₹180</option>
-                        <option value="290" data-name="Cheese Chilli (Full)">Full Portion - ₹290</option>
-                    </select>
-                </div>
+
+                <select class="variant-select">
+                    <option>Half Portion - ₹180</option>
+                    <option>Full Portion - ₹290</option>
+                </select>
+
                 <div class="card-footer">
-                    <span class="price">₹180</span>
-                    <button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button>
+
+                    <div class="price">
+                        ₹180
+                    </div>
+
+                    <button class="add-btn">
+                        Add To Order
+                    </button>
+
                 </div>
+
             </div>
+
         </div>
 
-        <div class="card">
-            <img src="hnychlyptato.png" alt="Honey Chilli Potato">
-            <div class="content">
-                <h3>Honey Chilli Potato</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="140" data-name="Honey Chilli Potato">Standard Portion - ₹140</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹140</span>
-                    <button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="nudels.png" alt="Hakka Noodles">
-            <div class="content">
-                <h3>Hakka Noodles Special</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="120" data-name="Hakka Noodles (Half)">Half Portion - ₹120</option>
-                        <option value="200" data-name="Hakka Noodles (Full)">Full Portion - ₹200</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹120</span>
-                    <button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="momos.png" alt="Momos Special">
-            <div class="content">
-                <h3>Momos Special</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="100" data-name="Steam Momos">Steam Momos - ₹100</option>
-                        <option value="130" data-name="Fried Momos">Fried Momos - ₹130</option>
-                        <option value="160" data-name="Tandoori Momos">Tandoori Momos - ₹160</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹100</span>
-                    <button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="fries.png" alt="French Fries">
-            <div class="content">
-                <h3>French Fries</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="90" data-name="Salted Fries">Classic Salted - ₹90</option>
-                        <option value="110" data-name="Peri-Peri Fries">Peri-Peri Dust - ₹110</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹90</span>
-                    <button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="springroll.png" alt="Spring Rolls Special">
-            <div class="content">
-                <h3>Spring Rolls Special</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="120" data-name="Veg Spring Roll">Veg Portion - ₹120</option>
-                        <option value="150" data-name="Paneer Spring Roll">Paneer Portion - ₹150</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹120</span>
-                    <button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="pasta.png" alt="Pasta">
-            <div class="content">
-                <h3>Creamy Pasta Mix</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="160" data-name="White Sauce Pasta">Creamy White Sauce - ₹160</option>
-                        <option value="150" data-name="Red Sauce Pasta">Tangy Red Sauce - ₹150</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹160</span>
-                    <button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="waffle.png" alt="Waffles">
-            <div class="content">
-                <h3>Loaded Waffles (Wofal)</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="130" data-name="Chocolate Waffle">Rich Chocolate - ₹130</option>
-                        <option value="150" data-name="Oreo IceCream Waffle">Oreo Ice Cream Scoop - ₹150</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹130</span>
-                    <button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="category-title">Tandoor & Non-Veg Special</div>
-    <div class="grid">
-        <div class="card">
-            <img src="tandoorichicken.png" alt="Tandoori Chicken">
-            <div class="content">
-                <h3>Tandoori Chicken</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="240" data-name="Tandoori Chkn (Qtr)">Quarter - ₹240</option>
-                        <option value="420" data-name="Tandoori Chkn (Half)">Half - ₹420</option>
-                        <option value="780" data-name="Tandoori Chkn (Full)">Full - ₹780</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹240</span>
-                    <button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="roganjosh.png" alt="Mutton Rogan Josh">
-            <div class="content">
-                <h3>Mutton Rogan Josh</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="350" data-name="Rogan Josh (Qtr)">Quarter - ₹350</option>
-                        <option value="620" data-name="Rogan Josh (Half)">Half - ₹620</option>
-                        <option value="1100" data-name="Rogan Josh (Full)">Full - ₹1100</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹350</span>
-                    <button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="tandoorickntikka.png" alt="Chicken Tikka Platter">
-            <div class="content">
-                <h3>Chicken Tikka Platter</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="220" data-name="Spicy Chicken Tikka">Spicy Red Tikka - ₹220</option>
-                        <option value="250" data-name="Malai Chicken Tikka">Creamy Malai Tikka - ₹250</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹220</span>
-                    <button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="kabab.png" alt="Seekh Kabab Platter">
-            <div class="content">
-                <h3>Seekh Kababs Platter</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="190" data-name="Chicken Seekh Kebab">Chicken Seekh - ₹190</option>
-                        <option value="260" data-name="Mutton Seekh Kebab">Mutton Seekh - ₹260</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹190</span>
-                    <button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="tandoorimutton.png" alt="Tandoori Mutton Chops">
-            <div class="content">
-                <h3>Tandoori Mutton Chops</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="380" data-name="Mutton Chops (Half)">Half Portion - ₹380</option>
-                        <option value="690" data-name="Mutton Chops (Full)">Full Portion - ₹690</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹380</span>
-                    <button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="muttoncurry.png" alt="Desi Mutton Curry">
-            <div class="content">
-                <h3>Desi Mutton Curry</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="320" data-name="Mutton Curry (Qtr)">Quarter - ₹320</option>
-                        <option value="580" data-name="Mutton Curry (Half)">Half - ₹580</option>
-                        <option value="1000" data-name="Mutton Curry (Full)">Full - ₹1000</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹320</span>
-                    <button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="category-title">Chaat Corner & South Indian</div>
-    <div class="grid">
-        <div class="card">
-            <img src="panipuri.png" alt="Crisp Golgappe">
-            <div class="content">
-                <h3>Crisp Golgappe</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="50" data-name="Golgappe (6 Pcs)">6 Pieces Tray - ₹50</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹50</span>
-                    <button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="bhallachat.png" alt="Loaded Papdi Bhalla Chat">
-            <div class="content">
-                <h3>Loaded Papdi Bhalla Chaat</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="80" data-name="Papdi Chaat">Dahi Papdi Platter - ₹80</option>
-                        <option value="90" data-name="Bhalla Chaat">Dahi Bhalla Platter - ₹90</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹80</span>
-                    <button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="tikkichat.png" alt="Tikki Chaat">
-            <div class="content">
-                <h3>Kurkuri Tikki Chaat</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="70" data-name="Tikki Chaat (1 Pc)">1 Pc Setup - ₹70</option>
-                        <option value="110" data-name="Tikki Chaat (2 Pcs)">2 Pcs Double Dhamaka - ₹110</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹70</span>
-                    <button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="dosa.png" alt="Dosa">
-            <div class="content">
-                <h3>Crispy Masala Dosa</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="110" data-name="Plain Dosa">Plain Dosa - ₹110</option>
-                        <option value="140" data-name="Masala Dosa">Aloo Masala Dosa - ₹140</option>
-                        <option value="170" data-name="Paneer Dosa">Paneer Stuff Dosa - ₹170</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹110</span>
-                    <button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="idli.png" alt="Idli">
-            <div class="content">
-                <h3>Steaming Soft Idlis</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="60" data-name="Idli Sambar (2 Pcs)">2 Pieces Tray - ₹60</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹60</span>
-                    <button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="bhallachat.png" alt="Poha">
-            <div class="content">
-                <h3>Fresh Indori Poha</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="50" data-name="Indori Poha">Standard Plate - ₹50</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹50</span>
-                    <button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="category-title">Drinks & Beverages</div>
-    <div class="grid">
-        <div class="card">
-            <img src="kuladtea.png" alt="Kulhad Chai">
-            <div class="content">
-                <h3>Desi Kulhad Tea</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="30" data-name="Kulhad Chai">Regular Clay Cup - ₹30</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹30</span>
-                    <button class="add-btn" onclick="addToCart(this, 'drink')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="kuladcofee.png" alt="Kulhad Coffee">
-            <div class="content">
-                <h3>Hot Kulhad Coffee</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="50" data-name="Kulhad Coffee">Frothy Hot Coffee - ₹50</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹50</span>
-                    <button class="add-btn" onclick="addToCart(this, 'drink')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="coffee.png" alt="Classic Coffee">
-            <div class="content">
-                <h3>Classic Coffee</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="60" data-name="Espresso Coffee">Espresso Roast - ₹60</option>
-                        <option value="80" data-name="Cafe Latte">Creamy Latte - ₹80</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹60</span>
-                    <button class="add-btn" onclick="addToCart(this, 'drink')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="couplecoffee.png" alt="Couple Coffee">
-            <div class="content">
-                <h3>His & Her Couple Coffee</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="140" data-name="Couple Coffee Combo">Romantic Joint Combo - ₹140</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹140</span>
-                    <button class="add-btn" onclick="addToCart(this, 'drink')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="sweetlassi.png" alt="Sweet Lassi">
-            <div class="content">
-                <h3>Shahi Kulhad Punjabi Lassi</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="70" data-name="Sweet Lassi">Heavy Malai Sweet - ₹70</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹70</span>
-                    <button class="add-btn" onclick="addToCart(this, 'drink')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="chach.png" alt="Chach">
-            <div class="content">
-                <h3>Kulhad Punjabi Salty Chach</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="40" data-name="Salty Chach">Jeera Masala Buttermilk - ₹40</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹40</span>
-                    <button class="add-btn" onclick="addToCart(this, 'drink')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="mojitoo.png" alt="Mojitos">
-            <div class="content">
-                <h3>Refreshing Mojitos Mix</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="90" data-name="Mint Mojito">Classic Mint Lemon - ₹90</option>
-                        <option value="110" data-name="Watermelon Mojito">Watermelon Chill - ₹110</option>
-                        <option value="110" data-name="GreenApple Mojito">Green Apple Tangy - ₹110</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹90</span>
-                    <button class="add-btn" onclick="addToCart(this, 'drink')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="coffeeshake.png" alt="Thick Shakes">
-            <div class="content">
-                <h3>Gourmet Shakes & Cold Coffee</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="100" data-name="Cold Coffee Shake">Thick Cold Coffee - ₹100</option>
-                        <option value="120" data-name="Oreo Milkshake">Oreo Thick Shake - ₹120</option>
-                        <option value="130" data-name="Chocolate Shake">Rich Chocolate Crunch - ₹130</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹100</span>
-                    <button class="add-btn" onclick="addToCart(this, 'drink')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="cold_drink.png" alt="Cold Drink">
-            <div class="content">
-                <h3>Cold Drink</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="40" data-name="Cold Drink (Can)">Chilled Can - ₹40</option>
-                        <option value="20" data-name="Cold Drink (Small)">Small Bottle - ₹20</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹40</span>
-                    <button class="add-btn" onclick="addToCart(this, 'drink')">Add To Order</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="water.png" alt="Mineral Water">
-            <div class="content">
-                <h3>Packaged Drinking Water</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="20" data-name="Water Bottle">Regular Mineral Water - ₹20</option>
-                    </select>
-                </div>
-                <div class="card-footer">
-                    <span class="price">₹20</span>
-                    <button class="add-btn" onclick="addToCart(this, 'drink')">Add To Order</button>
-                </div>
-            </div>
-        </div>
     </div>
 
 </div>
 
 <div class="bottom-bar">
-    <div class="total-info">
-        <h4>Selected Total Bill</h4>
-        <p id="totalPriceDisplay">₹0</p>
-        <p id="packagingBarNote" class="packaging-note" style="display:none;">(+ ₹0 Packaging Charges Added)</p>
+
+    <div class="total-box">
+        <span>Selected Total Bill</span>
+        <h2>₹0</h2>
     </div>
-    <button class="pay-btn" onclick="openCheckoutModal()">Place Order & Pay</button>
-</div>
 
-<div id="paymentModal" class="modal">
-    <div class="modal-content">
-        <h2>Complete Secure Payment</h2>
-        <p style="font-size:1.1rem; color:#ccc; margin-bottom:5px;">Food Amount: <span id="modalFoodAmount">₹0</span></p>
-        <p id="modalPackagingRow" style="font-size:1rem; color:var(--alert); margin:0 0 10px 0; display:none;">Packing Charges (₹20/eatable): <span>₹0</span></p>
-        <p style="font-size:1.3rem; color:white; font-weight:700; border-top:1px dashed #444; padding-top:10px; margin-bottom:15px;">Total Payable: <strong id="modalAmount" style="color:var(--gold);">₹0</strong></p>
-        <p id="spotConfirmation" style="font-style: italic; color: #aaa; margin-top:5px; margin-bottom:15px;"></p>
-        
-        <div class="unified-upi-container">
-            <button class="unified-pay-btn" onclick="executeOrderAndPayment()">Send Order & Pay via UPI</button>
-        </div>
+    <button class="pay-btn">
+        PLACE ORDER & PAY
+    </button>
 
-        <div>
-            <p style="font-size:0.95rem; color:#aaa; margin-bottom:10px; font-weight: 600;">Or Scan This Order Custom QR Code</p>
-            <div id="dynamicQrContainer"></div>
-        </div>
-
-        <button class="close-btn" onclick="closeCheckoutModal()">Cancel & Modify Order</button>
-    </div>
 </div>
 
 <footer class="footer">
-    <h3>Hakka Bakka Cafe</h3>
-    <div class="address-block">
-        📍 SHOP No 1, Nr CANAL Road, Opp Maqsudan Byepass, G T Road, Jalandhar
-    </div>
-    <a href="https://wa.me/917888854492?text=Hello%20Hakka%20Bakka%20Cafe%21%20I%20want%20to%20confirm%20my%20digital%20menu%20order." class="whatsapp-btn" target="_blank">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right:5px;"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.713-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.413 9.863-9.847.001-2.633-1.03-5.107-2.905-6.98C16.495 1.893 14.023 1.86 11.39 1.86c-5.438 0-9.863 4.412-9.866 9.846-.001 1.665.453 3.291 1.314 4.715L1.706 21.83l5.534-1.451zM17.85 14.56c-.33-.164-1.953-.964-2.253-1.074-.3-.11-.518-.165-.735.165-.218.33-.842 1.073-1.032 1.292-.19.218-.379.245-.71.081a10.073 10.073 0 0 1-2.628-1.622 11.107 11.107 0 0 1-1.817-2.261c-.19-.33-.019-.507.147-.672.148-.147.33-.384.495-.577.165-.192.22-.33.33-.55.11-.22.055-.412-.028-.577-.082-.164-.734-1.77-.1006-2.42-.263-.635-.52-.55-.734-.56-.218-.01-.467-.01-.717-.01-.25 0-.657.094-.954.421-.3.33-1.14 1.114-1.14 2.719 0 1.604 1.168 3.153 1.329 3.37.162.219 2.298 3.51 5.566 4.922.778.336 1.385.537 1.859.688.782.248 1.493.213 2.057.129.628-.094 1.954-.8 2.227-1.57.271-.77.271-1.43.19-1.567-.083-.137-.303-.219-.633-.384z"/></svg>
-        <span>Chat with Us</span>
+
+    <h2>Hakka Bakka Cafe</h2>
+
+    <p>
+        SHOP No 1, Nr CANAL Road,
+        Opp Maqsudan Byepass,
+        G T Road, Jalandhar
+    </p>
+
+    <a href="https://wa.me/917796631555" class="whatsapp-btn">
+        Chat On WhatsApp
     </a>
-    <p style="margin-top: 25px; color: #444; font-size:0.85rem;">© 2026 Hakka Bakka Cafe. All Rights Reserved.</p>
+
 </footer>
-
-<script>
-    let foodTotal = 0;
-    let selectedItemsList = [];
-    let orderMode = 'Table';
-    let qrEngineInstance = null;
-
-    function switchSpotMode(mode) {
-        orderMode = mode;
-        let tableSelect = document.getElementById('tableSelect');
-        let carInput = document.getElementById('carInput');
-        let packingInputs = document.getElementById('packingInputs');
-        let carWarning = document.getElementById('carWarning');
-
-        if(mode === 'Table') {
-            tableSelect.style.display = 'inline-block';
-            carInput.style.display = 'none';
-            packingInputs.style.display = 'none';
-            carWarning.style.display = 'none';
-            tableSelect.selectedIndex = 0;
-        } else if(mode === 'Car') {
-            tableSelect.style.display = 'none';
-            carInput.style.display = 'inline-block';
-            packingInputs.style.display = 'none';
-            carWarning.style.display = 'block';
-            carInput.value = "";
-        } else {
-            tableSelect.style.display = 'none';
-            carInput.style.display = 'none';
-            packingInputs.style.display = 'block';
-            document.getElementById('customerName').value = "";
-            document.getElementById('customerPhone').value = "";
-            carWarning.style.display = 'none';
-        }
-        recalculateGrandTotal();
-    }
-
-    function updatePrice(selectElement) {
-        let price = selectElement.value;
-        let cardFooter = selectElement.closest('.content').querySelector('.price');
-        cardFooter.innerText = "₹" + price;
-    }
-
-    function addToCart(buttonElement, type) {
-        let cardContent = buttonElement.closest('.content');
-        let selectElement = cardContent.querySelector('.variant-select');
-        let price = parseInt(selectElement.value);
-        let selectedOption = selectElement.options[selectElement.selectedIndex];
-        let itemName = selectedOption.getAttribute('data-name') || cardContent.querySelector('h3').innerText;
-
-        foodTotal += price;
-        selectedItemsList.push({ name: itemName, price: price, type: type });
-
-        recalculateGrandTotal();
-        
-        buttonElement.innerText = "✓ Added";
-        buttonElement.style.background = "#2e8b57";
-        setTimeout(() => {
-            buttonElement.innerText = "Add To Order";
-            buttonElement.style.background = "var(--olive)";
-        }, 1000);
-    }
-
-    function recalculateGrandTotal() {
-        let packagingCost = 0;
-        if (orderMode === 'Car' || orderMode === 'Packing') {
-            selectedItemsList.forEach(item => {
-                if(item.type === 'food') packagingCost += 20;
-            });
-        }
-
-        if (packagingCost > 0) {
-            document.getElementById('packagingBarNote').innerText = `(+ ₹${packagingCost} Packaging Charges Added)`;
-            document.getElementById('packagingBarNote').style.display = 'block';
-        } else {
-            document.getElementById('packagingBarNote').style.display = 'none';
-        }
-
-        let grandTotal = foodTotal + packagingCost;
-        document.getElementById('totalPriceDisplay').innerText = "₹" + grandTotal;
-    }
-
-    function openCheckoutModal() {
-        let spotValue = "";
-        
-        if (orderMode === 'Table') {
-            spotValue = document.getElementById('tableSelect').value;
-            if(!spotValue) {
-                alert("Please select your Table Number from the dropdown, Bhai!");
-                document.getElementById('tableSelect').focus();
-                return;
-            }
-        } else if (orderMode === 'Car') {
-            spotValue = document.getElementById('carInput').value.trim();
-            if(!spotValue) {
-                alert("Please enter your Car Number details for delivery, Bhai!");
-                document.getElementById('carInput').focus();
-                return;
-            }
-        } else {
-            let name = document.getElementById('customerName').value.trim();
-            let phone = document.getElementById('customerPhone').value.trim();
-            if(!name || !phone) {
-                alert("Please enter both Name and Mobile Number for Packing Order, Bhai!");
-                return;
-            }
-            spotValue = `${name} (${phone})`;
-        }
-
-        if(foodTotal === 0) {
-            alert("Your cart is empty! Add some delicious food items first.");
-            return;
-        }
-
-        let packagingCost = 0;
-        if (orderMode === 'Car' || orderMode === 'Packing') {
-            selectedItemsList.forEach(item => {
-                if(item.type === 'food') packagingCost += 20;
-            });
-        }
-        let grandTotal = foodTotal + packagingCost;
-
-        document.getElementById('modalFoodAmount').innerText = "₹" + foodTotal;
-        
-        let packagingRow = document.getElementById('modalPackagingRow');
-        if(packagingCost > 0) {
-            packagingRow.querySelector('span').innerText = "₹" + packagingCost;
-            packagingRow.style.display = 'block';
-        } else {
-            packagingRow.style.display = 'none';
-        }
-
-        document.getElementById('modalAmount').innerText = "₹" + grandTotal;
-        document.getElementById('spotConfirmation').innerText = `Serving Mode: ${orderMode} Order - ${spotValue}`;
-        
-        // DYNAMIC QUANTITY LIVE GENERATION STRINGS ENGINE Context SETUP
-        let upiId = "7888854492@icici"; 
-        let merchantName = "Hakka Bakka Cafe";
-        let note = `${orderMode} ${spotValue} Food Order`;
-        let upiPayloadUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${grandTotal}&cu=INR&tn=${encodeURIComponent(note)}`;
-        
-        // Clean old canvas and generate fresh QR Code
-        document.getElementById('dynamicQrContainer').innerHTML = "";
-        qrEngineInstance = new QRCode(document.getElementById('dynamicQrContainer'), {
-            text: upiPayloadUrl,
-            width: 170,
-            height: 170,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
-        });
-
-        document.getElementById('paymentModal').style.display = 'flex';
-    }
-
-    function closeCheckoutModal() {
-        document.getElementById('paymentModal').style.display = 'none';
-    }
-
-    function executeOrderAndPayment() {
-        let spotValue = "";
-        if (orderMode === 'Table') spotValue = document.getElementById('tableSelect').value;
-        else if (orderMode === 'Car') spotValue = document.getElementById('carInput').value.trim();
-        else spotValue = document.getElementById('customerName').value.trim();
-
-        let packagingCost = 0;
-        if (orderMode === 'Car' || orderMode === 'Packing') {
-            selectedItemsList.forEach(item => {
-                if(item.type === 'food') packagingCost += 20;
-            });
-        }
-        let finalBillAmount = foodTotal + packagingCost;
-
-        // 1. Build WhatsApp Text String Structure Content
-        let whatsappText = `*--- NEW ONLINE ORDER RECIEVED ---*\n\n`;
-        whatsappText += `*Serving Type:* ${orderMode} Order\n`;
-        whatsappText += `*Spot Details:* ${spotValue}\n\n`;
-        whatsappText += `*--- SELECTED ITEMS LIST ---*\n`;
-        
-        selectedItemsList.forEach((item, index) => {
-            whatsappText += `${index + 1}. ${item.name} - ₹${item.price}\n`;
-        });
-        
-        if(packagingCost > 0) {
-            whatsappText += `\n*Packaging Charges:* ₹${packagingCost}`;
-        }
-        whatsappText += `\n*Grand Total Bill:* ₹${finalBillAmount}\n\n`;
-        whatsappText += `_Sent via Hakka Bakka Digital Menu Card App_`;
-
-        // 2. Open WhatsApp Native Chat Gateway Node
-        let targetCafeWhatsapp = "917888854492"; // Your Target Active Gateway Number
-        let whatsappApiUrl = `https://wa.me/${targetCafeWhatsapp}?text=${encodeURIComponent(whatsappText)}`;
-        
-        // Trigger step sequence redirection chain
-        alert("Bhai, Pehle order summary WhatsApp par send hogi, uske baad instant payment screen khulegi!");
-        window.open(whatsappApiUrl, '_blank');
-
-        // 3. Trigger Core Universal UPI Payment Link
-        setTimeout(() => {
-            let upiId = "7888854492@icici"; 
-            let merchantName = "Hakka Bakka Cafe";
-            let note = encodeURIComponent(`${orderMode} ${spotValue} Order`);
-            let upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${finalBillAmount}&cu=INR&tn=${note}`;
-            window.location.href = upiUrl;
-        }, 1500);
-    }
-</script>
 
 </body>
 </html>
