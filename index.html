@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hakka Bakka Cafe | Premium Digital Menu</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         :root {
             --olive: #556B2F;
@@ -298,7 +299,7 @@
         .modal-content {
             background: var(--card);
             border: 2px solid var(--gold);
-            padding: 40px;
+            padding: 30px 40px;
             border-radius: 20px;
             text-align: center;
             max-width: 450px;
@@ -312,7 +313,7 @@
         }
 
         .unified-upi-container {
-            margin: 25px 0;
+            margin: 20px 0;
         }
 
         .unified-pay-btn {
@@ -336,12 +337,22 @@
             box-shadow: 0 6px 20px rgba(212,175,55,0.5);
         }
 
+        /* Generated Dynamic QR Code Container Stylings Context */
+        #dynamicQrContainer {
+            background: white;
+            padding: 12px;
+            border-radius: 12px;
+            display: inline-block;
+            margin: 15px auto;
+            border: 3px solid var(--gold);
+        }
+
         .close-btn {
             background: transparent;
             color: #888;
             border: none;
             cursor: pointer;
-            margin-top: 25px;
+            margin-top: 20px;
             font-size: 1rem;
             text-decoration: underline;
             font-family: 'Outfit', sans-serif;
@@ -363,13 +374,17 @@
             letter-spacing: 1px;
         }
 
-        .footer p {
-            color: var(--white) !important;
+        .footer .address-block {
+            color: #ffffff !important;
             font-weight: 600;
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 5px auto 25px auto;
+            font-size: 1.15rem;
+            max-width: 650px;
+            margin: 10px auto 25px auto;
             line-height: 1.6;
+            background: rgba(85, 107, 47, 0.15);
+            padding: 15px;
+            border: 1px solid var(--olive);
+            border-radius: 10px;
             letter-spacing: 0.5px;
         }
 
@@ -443,7 +458,6 @@
 
 <div class="menu-section">
     
-    <!-- CATEGORY 1: FAST FOOD & STARTERS -->
     <div class="category-title">Starters & Artisanal Pizza</div>
     <div class="grid">
         <div class="card">
@@ -601,7 +615,6 @@
         </div>
     </div>
 
-    <!-- CATEGORY 2: TANDOOR & NON-VEG MAIN COURSE -->
     <div class="category-title">Tandoor & Non-Veg Special</div>
     <div class="grid">
         <div class="card">
@@ -710,7 +723,6 @@
         </div>
     </div>
 
-    <!-- CATEGORY 3: DESI CHAAT CORNER & SOUTH INDIAN -->
     <div class="category-title">Chaat Corner & South Indian</div>
     <div class="grid">
         <div class="card">
@@ -814,11 +826,10 @@
         </div>
     </div>
 
-    <!-- CATEGORY 4: REFRESHMENTS & DRINKS -->
     <div class="category-title">Drinks & Beverages</div>
     <div class="grid">
         <div class="card">
-            <img src="kuladtea.png" alt="Desi Kulhad Tea">
+            <img src="kuladtea.png" alt="Kulhad Chai">
             <div class="content">
                 <h3>Desi Kulhad Tea</h3>
                 <div class="variant-selector">
@@ -986,7 +997,6 @@
 
 </div>
 
-<!-- Sticky Checkout Billing Bar -->
 <div class="bottom-bar">
     <div class="total-info">
         <h4>Selected Total Bill</h4>
@@ -996,34 +1006,33 @@
     <button class="pay-btn" onclick="openCheckoutModal()">Place Order & Pay</button>
 </div>
 
-<!-- Unified Professional UPI Engine Terminal Overlay Modal -->
 <div id="paymentModal" class="modal">
     <div class="modal-content">
         <h2>Complete Secure Payment</h2>
         <p style="font-size:1.1rem; color:#ccc; margin-bottom:5px;">Food Amount: <span id="modalFoodAmount">₹0</span></p>
         <p id="modalPackagingRow" style="font-size:1rem; color:var(--alert); margin:0 0 10px 0; display:none;">Packing Charges (₹20/eatable): <span>₹0</span></p>
-        <p style="font-size:1.3rem; color:white; font-weight:700; border-top:1px dashed #444; padding-top:10px;">Total Payable: <strong id="modalAmount" style="color:var(--gold);">₹0</strong></p>
-        <p id="spotConfirmation" style="font-style: italic; color: #aaa; margin-top:5px;"></p>
+        <p style="font-size:1.3rem; color:white; font-weight:700; border-top:1px dashed #444; padding-top:10px; margin-bottom:15px;">Total Payable: <strong id="modalAmount" style="color:var(--gold);">₹0</strong></p>
+        <p id="spotConfirmation" style="font-style: italic; color: #aaa; margin-top:5px; margin-bottom:15px;"></p>
         
-        <!-- Unified Corporate Intent Standard Activation Terminal Nodes -->
         <div class="unified-upi-container">
-            <button class="unified-pay-btn" onclick="triggerUnifiedUPI()">Payment Through UPI Only</button>
+            <button class="unified-pay-btn" onclick="executeOrderAndPayment()">Send Order & Pay via UPI</button>
         </div>
 
         <div>
-            <p style="font-size:0.95rem; color:#aaa; margin-bottom:10px; font-weight: 600;">Or Scan Counter Digital QR Below</p>
-            <img src="4619QR.png" alt="Counter QR Code" style="width:170px; border:3px solid var(--gold); border-radius:12px; margin-top:5px; background: white; padding: 5px;">
+            <p style="font-size:0.95rem; color:#aaa; margin-bottom:10px; font-weight: 600;">Or Scan This Order Custom QR Code</p>
+            <div id="dynamicQrContainer"></div>
         </div>
 
         <button class="close-btn" onclick="closeCheckoutModal()">Cancel & Modify Order</button>
     </div>
 </div>
 
-<!-- Static Non-Caching Corporate Footer Configuration -->
 <footer class="footer">
     <h3>Hakka Bakka Cafe</h3>
-    <p>📍 Model Town, Near Geeta Mandir, Jalandhar, Punjab</p>
-    <a href="https://wa.me/917796631555?text=Hello%20Hakka%20Bakka%20Cafe%21%20I%20want%20to%20confirm%20my%20digital%20menu%20order." class="whatsapp-btn" target="_blank">
+    <div class="address-block">
+        📍 SHOP No 1, Nr CANAL Road, Opp Maqsudan Byepass, G T Road, Jalandhar
+    </div>
+    <a href="https://wa.me/917888854492?text=Hello%20Hakka%20Bakka%20Cafe%21%20I%20want%20to%20confirm%20my%20digital%20menu%20order." class="whatsapp-btn" target="_blank">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right:5px;"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.713-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.413 9.863-9.847.001-2.633-1.03-5.107-2.905-6.98C16.495 1.893 14.023 1.86 11.39 1.86c-5.438 0-9.863 4.412-9.866 9.846-.001 1.665.453 3.291 1.314 4.715L1.706 21.83l5.534-1.451zM17.85 14.56c-.33-.164-1.953-.964-2.253-1.074-.3-.11-.518-.165-.735.165-.218.33-.842 1.073-1.032 1.292-.19.218-.379.245-.71.081a10.073 10.073 0 0 1-2.628-1.622 11.107 11.107 0 0 1-1.817-2.261c-.19-.33-.019-.507.147-.672.148-.147.33-.384.495-.577.165-.192.22-.33.33-.55.11-.22.055-.412-.028-.577-.082-.164-.734-1.77-.1006-2.42-.263-.635-.52-.55-.734-.56-.218-.01-.467-.01-.717-.01-.25 0-.657.094-.954.421-.3.33-1.14 1.114-1.14 2.719 0 1.604 1.168 3.153 1.329 3.37.162.219 2.298 3.51 5.566 4.922.778.336 1.385.537 1.859.688.782.248 1.493.213 2.057.129.628-.094 1.954-.8 2.227-1.57.271-.77.271-1.43.19-1.567-.083-.137-.303-.219-.633-.384z"/></svg>
         <span>Chat with Us</span>
     </a>
@@ -1034,6 +1043,7 @@
     let foodTotal = 0;
     let selectedItemsList = [];
     let orderMode = 'Table';
+    let qrEngineInstance = null;
 
     function switchSpotMode(mode) {
         orderMode = mode;
@@ -1093,12 +1103,9 @@
 
     function recalculateGrandTotal() {
         let packagingCost = 0;
-        
         if (orderMode === 'Car' || orderMode === 'Packing') {
             selectedItemsList.forEach(item => {
-                if(item.type === 'food') {
-                    packagingCost += 20;
-                }
+                if(item.type === 'food') packagingCost += 20;
             });
         }
 
@@ -1115,8 +1122,7 @@
 
     function openCheckoutModal() {
         let spotValue = "";
-        let totalItemsCount = selectedItemsList.length;
-
+        
         if (orderMode === 'Table') {
             spotValue = document.getElementById('tableSelect').value;
             if(!spotValue) {
@@ -1166,6 +1172,24 @@
 
         document.getElementById('modalAmount').innerText = "₹" + grandTotal;
         document.getElementById('spotConfirmation').innerText = `Serving Mode: ${orderMode} Order - ${spotValue}`;
+        
+        // DYNAMIC QUANTITY LIVE GENERATION STRINGS ENGINE Context SETUP
+        let upiId = "7888854492@icici"; 
+        let merchantName = "Hakka Bakka Cafe";
+        let note = `${orderMode} ${spotValue} Food Order`;
+        let upiPayloadUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${grandTotal}&cu=INR&tn=${encodeURIComponent(note)}`;
+        
+        // Clean old canvas and generate fresh QR Code
+        document.getElementById('dynamicQrContainer').innerHTML = "";
+        qrEngineInstance = new QRCode(document.getElementById('dynamicQrContainer'), {
+            text: upiPayloadUrl,
+            width: 170,
+            height: 170,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
         document.getElementById('paymentModal').style.display = 'flex';
     }
 
@@ -1173,7 +1197,7 @@
         document.getElementById('paymentModal').style.display = 'none';
     }
 
-    function triggerUnifiedUPI() {
+    function executeOrderAndPayment() {
         let spotValue = "";
         if (orderMode === 'Table') spotValue = document.getElementById('tableSelect').value;
         else if (orderMode === 'Car') spotValue = document.getElementById('carInput').value.trim();
@@ -1187,15 +1211,38 @@
         }
         let finalBillAmount = foodTotal + packagingCost;
 
-        // Custom Merchant Target Integration Core Variables Fix
-        let upiId = "7888854492@icici"; 
-        let merchantName = "Hakka Bakka Cafe";
-        let note = encodeURIComponent(`${orderMode} ${spotValue} Food Order`);
+        // 1. Build WhatsApp Text String Structure Content
+        let whatsappText = `*--- NEW ONLINE ORDER RECIEVED ---*\n\n`;
+        whatsappText += `*Serving Type:* ${orderMode} Order\n`;
+        whatsappText += `*Spot Details:* ${spotValue}\n\n`;
+        whatsappText += `*--- SELECTED ITEMS LIST ---*\n`;
         
-        // Native Protocol Universal Intent Link (Opens default UPI choice overlay panel)
-        let upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${finalBillAmount}&cu=INR&tn=${note}`;
+        selectedItemsList.forEach((item, index) => {
+            whatsappText += `${index + 1}. ${item.name} - ₹${item.price}\n`;
+        });
         
-        window.location.href = upiUrl;
+        if(packagingCost > 0) {
+            whatsappText += `\n*Packaging Charges:* ₹${packagingCost}`;
+        }
+        whatsappText += `\n*Grand Total Bill:* ₹${finalBillAmount}\n\n`;
+        whatsappText += `_Sent via Hakka Bakka Digital Menu Card App_`;
+
+        // 2. Open WhatsApp Native Chat Gateway Node
+        let targetCafeWhatsapp = "917888854492"; // Your Target Active Gateway Number
+        let whatsappApiUrl = `https://wa.me/${targetCafeWhatsapp}?text=${encodeURIComponent(whatsappText)}`;
+        
+        // Trigger step sequence redirection chain
+        alert("Bhai, Pehle order summary WhatsApp par send hogi, uske baad instant payment screen khulegi!");
+        window.open(whatsappApiUrl, '_blank');
+
+        // 3. Trigger Core Universal UPI Payment Link
+        setTimeout(() => {
+            let upiId = "7888854492@icici"; 
+            let merchantName = "Hakka Bakka Cafe";
+            let note = encodeURIComponent(`${orderMode} ${spotValue} Order`);
+            let upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${finalBillAmount}&cu=INR&tn=${note}`;
+            window.location.href = upiUrl;
+        }, 1500);
     }
 </script>
 
