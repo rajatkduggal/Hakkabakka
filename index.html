@@ -20,10 +20,9 @@
             background-color: var(--bg);
             color: var(--text);
             margin: 0;
-            padding-bottom: 100px;
+            padding-bottom: 120px;
         }
 
-        /* Premium Header */
         header {
             background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), url('logo.jpg');
             background-size: cover;
@@ -51,7 +50,6 @@
             letter-spacing: 1px;
         }
 
-        /* Order Type Selection Section */
         .order-type-container {
             max-width: 600px;
             margin: 30px auto;
@@ -110,7 +108,6 @@
             box-shadow: 0 0 10px rgba(212,175,55,0.3);
         }
 
-        /* Menu Container & Grid */
         .menu-section {
             max-width: 1200px;
             margin: 40px auto;
@@ -171,7 +168,6 @@
             color: var(--white);
         }
 
-        /* Variant Option Selector Design */
         .variant-selector {
             margin: 15px 0;
         }
@@ -187,10 +183,6 @@
             font-family: 'Outfit', sans-serif;
             outline: none;
             cursor: pointer;
-        }
-
-        .variant-select:focus {
-            border-color: var(--gold);
         }
 
         .card-footer {
@@ -223,7 +215,6 @@
             color: black;
         }
 
-        /* Sticky Bottom Bar System */
         .bottom-bar {
             position: fixed;
             bottom: 0;
@@ -276,7 +267,6 @@
             box-shadow: 0 5px 15px rgba(214,175,55,0.4);
         }
 
-        /* Checkout Modal Setup */
         .modal {
             display: none;
             position: fixed;
@@ -350,10 +340,9 @@
 
 <header>
     <h1>Hakka Bakka Cafe</h1>
-    <p>Premium Fast Food & Tandoor Experience</p>
+    <p>Premium Fast Food, Tandoor & Chaat Experience</p>
 </header>
 
-<!-- Dynamic System Structure Context: Table / Car Select Form -->
 <div class="order-type-container">
     <h3>Enter Your Spot Details</h3>
     <div class="radio-group">
@@ -369,10 +358,8 @@
 
 <div class="menu-section">
     
-    <!-- SECTION 1: FAST FOOD & PIZZA -->
     <div class="category-title">Starters & Artisanal Pizza</div>
     <div class="grid">
-        <!-- Item: Pizza Burst -->
         <div class="card">
             <img src="pizza.png" alt="Gourmet Pizza Burst">
             <div class="content">
@@ -391,7 +378,6 @@
             </div>
         </div>
 
-        <!-- Item: Cheese Chilli -->
         <div class="card">
             <img src="cheeschilli.png" alt="Cheese Chilli">
             <div class="content">
@@ -409,7 +395,6 @@
             </div>
         </div>
 
-        <!-- Item: Honey Chilli Potato -->
         <div class="card">
             <img src="hnychlyptato.png" alt="Honey Chilli Potato">
             <div class="content">
@@ -426,7 +411,6 @@
             </div>
         </div>
 
-        <!-- Item: Noodles -->
         <div class="card">
             <img src="nudels.png" alt="Hakka Noodles">
             <div class="content">
@@ -443,21 +427,105 @@
                 </div>
             </div>
         </div>
+
+        <div class="card">
+            <img src="chknmomo.png" alt="Chicken Momos">
+            <div class="content">
+                <h3>Momos Special</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="100" data-name="Steam Momos">Steam Momos - ₹100</option>
+                        <option value="130" data-name="Fried Momos">Fried Momos - ₹130</option>
+                        <option value="160" data-name="Tandoori Momos">Tandoori Momos - ₹160</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹100</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="fries.png" alt="French Fries">
+            <div class="content">
+                <h3>French Fries</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="90" data-name="Salted Fries">Classic Salted - ₹90</option>
+                        <option value="110" data-name="Peri-Peri Fries">Peri-Peri Dust - ₹110</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹90</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="springroll.png" alt="Spring Rolls">
+            <div class="content">
+                <h3>Spring Rolls Special</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="120" data-name="Veg Spring Roll">Veg Portion - ₹120</option>
+                        <option value="150" data-name="Paneer Spring Roll">Paneer Portion - ₹150</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹120</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="pasta.png" alt="Pasta">
+            <div class="content">
+                <h3>Creamy Pasta Mix</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="160" data-name="White Sauce Pasta">Creamy White Sauce - ₹160</option>
+                        <option value="150" data-name="Red Sauce Pasta">Tangy Red Sauce - ₹150</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹160</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="waffle.png" alt="Waffles">
+            <div class="content">
+                <h3>Loaded Waffles (Wofal)</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="130" data-name="Chocolate Waffle">Rich Chocolate - ₹130</option>
+                        <option value="150" data-name="Oreo IceCream Waffle">Oreo Ice Cream Scoop - ₹150</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹130</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- SECTION 2: TANDOOR & MUTTON -->
     <div class="category-title">Tandoor & Non-Veg Special</div>
     <div class="grid">
-        <!-- Item: Tandoori Chicken -->
         <div class="card">
             <img src="tandoorichicken.png" alt="Tandoori Chicken">
             <div class="content">
                 <h3>Tandoori Chicken</h3>
                 <div class="variant-selector">
                     <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="240" data-name="Tandoori Chicken (Quarter)">Quarter - ₹240</option>
-                        <option value="420" data-name="Tandoori Chicken (Half)">Half - ₹420</option>
-                        <option value="780" data-name="Tandoori Chicken (Full)">Full - ₹780</option>
+                        <option value="240" data-name="Tandoori Chkn (Qtr)">Quarter - ₹240</option>
+                        <option value="420" data-name="Tandoori Chkn (Half)">Half - ₹420</option>
+                        <option value="780" data-name="Tandoori Chkn (Full)">Full - ₹780</option>
                     </select>
                 </div>
                 <div class="card-footer">
@@ -467,14 +535,13 @@
             </div>
         </div>
 
-        <!-- Item: Mutton Rogan Josh -->
         <div class="card">
             <img src="roganjosh.png" alt="Mutton Rogan Josh">
             <div class="content">
                 <h3>Mutton Rogan Josh</h3>
                 <div class="variant-selector">
                     <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="350" data-name="Rogan Josh (Quarter)">Quarter - ₹350</option>
+                        <option value="350" data-name="Rogan Josh (Qtr)">Quarter - ₹350</option>
                         <option value="620" data-name="Rogan Josh (Half)">Half - ₹620</option>
                         <option value="1100" data-name="Rogan Josh (Full)">Full - ₹1100</option>
                     </select>
@@ -485,11 +552,335 @@
                 </div>
             </div>
         </div>
+
+        <div class="card">
+            <img src="tandoorickntikka.png" alt="Chicken Tikka">
+            <div class="content">
+                <h3>Chicken Tikka Platter</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="220" data-name="Spicy Chicken Tikka">Spicy Red Tikka - ₹220</option>
+                        <option value="250" data-name="Malai Chicken Tikka">Creamy Malai Tikka - ₹250</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹220</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="kabab.png" alt="Seekh Kabab">
+            <div class="content">
+                <h3>Seekh Kababs Platter</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="190" data-name="Chicken Seekh Kebab">Chicken Seekh - ₹190</option>
+                        <option value="260" data-name="Mutton Seekh Kebab">Mutton Seekh - ₹260</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹190</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="tandoorimutton.png" alt="Tandoori Mutton Chops">
+            <div class="content">
+                <h3>Tandoori Mutton Chops</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="380" data-name="Mutton Chops (Half)">Half Portion - ₹380</option>
+                        <option value="690" data-name="Mutton Chops (Full)">Full Portion - ₹690</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹380</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="muttoncurry.png" alt="Desi Mutton Curry">
+            <div class="content">
+                <h3>Desi Mutton Curry</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="320" data-name="Mutton Curry (Qtr)">Quarter - ₹320</option>
+                        <option value="580" data-name="Mutton Curry (Half)">Half - ₹580</option>
+                        <option value="1000" data-name="Mutton Curry (Full)">Full - ₹1000</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹320</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="category-title">Chaat Corner & South Indian</div>
+    <div class="grid">
+        <div class="card">
+            <img src="panipuri.png" alt="Golgappe">
+            <div class="content">
+                <h3>Crisp Golgappe</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="50" data-name="Golgappe (6 Pcs)">6 Pieces Tray - ₹50</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹50</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="bhallachat.png" alt="Papdi Chaat">
+            <div class="content">
+                <h3>Loaded Papdi Bhalla Chaat</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="80" data-name="Papdi Chaat">Dahi Papdi Platter - ₹80</option>
+                        <option value="90" data-name="Bhalla Chaat">Dahi Bhalla Platter - ₹90</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹80</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="tikkichat.png" alt="Tikki Chaat">
+            <div class="content">
+                <h3>Kurkuri Tikki Chaat</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="70" data-name="Tikki Chaat (1 Pc)">1 Pc Setup - ₹70</option>
+                        <option value="110" data-name="Tikki Chaat (2 Pcs)">2 Pcs Double Dhamaka - ₹110</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹70</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="dosa.png" alt="Dosa">
+            <div class="content">
+                <h3>Crispy Masala Dosa</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="110" data-name="Plain Dosa">Plain Dosa - ₹110</option>
+                        <option value="140" data-name="Masala Dosa">Aloo Masala Dosa - ₹140</option>
+                        <option value="170" data-name="Paneer Dosa">Paneer Stuff Dosa - ₹170</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹110</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="idli.png" alt="Idli">
+            <div class="content">
+                <h3>Steaming Soft Idlis</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="60" data-name="Idli Sambar (2 Pcs)">2 Pieces Tray - ₹60</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹60</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="index.html" alt="Poha" onerror="this.src='bhallachat.png';">
+            <div class="content">
+                <h3>Fresh Indori Poha</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="50" data-name="Indori Poha">Standard Plate - ₹50</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹50</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="category-title">Drinks & Beverages</div>
+    <div class="grid">
+        <div class="card">
+            <img src="kuladtea.png" alt="Kulhad Chai">
+            <div class="content">
+                <h3>Desi Kulhad Tea</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="30" data-name="Kulhad Chai">Regular Clay Cup - ₹30</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹30</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="kuladcofee.png" alt="Kulhad Coffee">
+            <div class="content">
+                <h3>Hot Kulhad Coffee</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="50" data-name="Kulhad Coffee">Frothy Hot Coffee - ₹50</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹50</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="coffee.png" alt="Classic Coffee">
+            <div class="content">
+                <h3>Classic Coffee</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="60" data-name="Espresso Coffee">Espresso Roast - ₹60</option>
+                        <option value="80" data-name="Cafe Latte">Creamy Latte - ₹80</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹60</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="couplecoffee.png" alt="Couple Coffee">
+            <div class="content">
+                <h3>His & Her Couple Coffee</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="140" data-name="Couple Coffee Combo">Romantic Joint Combo - ₹140</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹140</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="sweetlassi.png" alt="Sweet Lassi">
+            <div class="content">
+                <h3>Shahi Kulhad Punjabi Lassi</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="70" data-name="Sweet Lassi">Heavy Malai Sweet - ₹70</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹70</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="chach.png" alt="Chach">
+            <div class="content">
+                <h3>Kulhad Punjabi Salty Chach</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="40" data-name="Salty Chach">Jeera Masala Buttermilk - ₹40</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹40</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="mojitoo.png" alt="Mojitos">
+            <div class="content">
+                <h3>Refreshing Mojitos Mix</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="90" data-name="Mint Mojito">Classic Mint Lemon - ₹90</option>
+                        <option value="110" data-name="Watermelon Mojito">Watermelon Chill - ₹110</option>
+                        <option value="110" data-name="GreenApple Mojito">Green Apple Tangy - ₹110</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹90</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="coffeeshake.png" alt="Thick Shakes">
+            <div class="content">
+                <h3>Gourmet Shakes & Cold Coffee</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="100" data-name="Cold Coffee Shake">Thick Cold Coffee - ₹100</option>
+                        <option value="120" data-name="Oreo Milkshake">Oreo Thick Shake - ₹120</option>
+                        <option value="130" data-name="Chocolate Shake">Rich Chocolate Crunch - ₹130</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹100</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="waterbottle.png" alt="Mineral Water" onerror="this.src='cold_drink.png';">
+            <div class="content">
+                <h3>Packaged Mineral Water</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="20" data-name="Local Brand Water">Regular Brands - ₹20</option>
+                        <option value="40" data-name="Premium Vedica Water">Premium Vedic Water - ₹40</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹20</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>
 
-<!-- Sticky Checkout Billing Bar -->
 <div class="bottom-bar">
     <div class="total-info">
         <h4>Selected Total Items Bill</h4>
@@ -498,14 +889,12 @@
     <button class="pay-btn" onclick="openCheckoutModal()">Place Order & Pay</button>
 </div>
 
-<!-- UPI Payment Routing Engine Gateway Modal Overlay -->
 <div id="paymentModal" class="modal">
     <div class="modal-content">
         <h2>Complete Secure Payment</h2>
         <p style="font-size:1.1rem; color:#ccc;">Total Amount: <strong id="modalAmount" style="color:var(--gold);">₹0</strong></p>
         <p id="spotConfirmation" style="font-style: italic; color: #aaa;"></p>
         
-        <!-- Classic UPI Integration Nodes -->
         <div class="upi-apps">
             <button class="upi-btn" onclick="triggerUPI('GPay')">
                 <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
@@ -557,7 +946,6 @@
 
         document.getElementById('totalPriceDisplay').innerText = "₹" + currentTotal;
         
-        // Quick feedback effect
         buttonElement.innerText = "✓ Added";
         buttonElement.style.background = "#2e8b57";
         setTimeout(() => {
@@ -594,8 +982,7 @@
         let spotValue = document.getElementById('spotInput').value.trim();
         let orderType = document.querySelector('input[name="orderType"]:checked').value;
         
-        // Deep link structured parameters configuration
-        let upiId = "merchant@upi"; // Yahan aap apna actual Cafe UPI ID merge kar sakte hain
+        let upiId = "merchant@upi"; 
         let merchantName = "Hakka Bakka Cafe";
         let note = encodeURIComponent(orderType + " " + spotValue + " Food Order");
         
