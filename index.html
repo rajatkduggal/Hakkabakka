@@ -311,36 +311,29 @@
             margin-top: 0;
         }
 
-        .upi-apps {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+        .unified-upi-container {
             margin: 25px 0;
         }
 
-        .upi-btn {
-            background: #222;
-            border: 1px solid #444;
-            padding: 15px;
+        .unified-pay-btn {
+            background: linear-gradient(135deg, #b89224, var(--gold));
+            color: black;
+            border: none;
+            padding: 18px 25px;
+            font-size: 1.15rem;
+            font-weight: 800;
             border-radius: 12px;
             cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
             transition: 0.3s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: white;
-            font-weight: 600;
-            flex: 1;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(212,175,55,0.3);
         }
 
-        .upi-btn:hover {
-            border-color: var(--gold);
-            background: #2a2a2a;
-        }
-
-        .upi-btn span {
-            margin-top: 8px;
-            font-size: 0.9rem;
+        .unified-pay-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212,175,55,0.5);
         }
 
         .close-btn {
@@ -348,9 +341,10 @@
             color: #888;
             border: none;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 25px;
             font-size: 1rem;
             text-decoration: underline;
+            font-family: 'Outfit', sans-serif;
         }
 
         .footer {
@@ -363,15 +357,20 @@
 
         .footer h3 {
             color: var(--gold);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             font-size: 1.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .footer p {
-            color: #aaa;
-            max-width: 500px;
+            color: var(--white) !important;
+            font-weight: 600;
+            font-size: 1.1rem;
+            max-width: 600px;
             margin: 5px auto 25px auto;
             line-height: 1.6;
+            letter-spacing: 0.5px;
         }
 
         .whatsapp-btn {
@@ -381,12 +380,13 @@
             background: #25D366;
             color: white;
             text-decoration: none;
-            padding: 12px 30px;
+            padding: 12px 35px;
             border-radius: 30px;
             font-weight: 700;
             font-size: 1.1rem;
             transition: 0.3s;
             box-shadow: 0 5px 15px rgba(37,211,102,0.3);
+            font-family: 'Outfit', sans-serif;
         }
 
         .whatsapp-btn:hover {
@@ -515,7 +515,7 @@
         </div>
 
         <div class="card">
-            <img src="momos.png" alt="Chicken Momos">
+            <img src="momos.png" alt="Momos Special">
             <div class="content">
                 <h3>Momos Special</h3>
                 <div class="variant-selector">
@@ -550,7 +550,7 @@
         </div>
 
         <div class="card">
-            <img src="springroll.png" alt="Spring Rolls">
+            <img src="springroll.png" alt="Spring Rolls Special">
             <div class="content">
                 <h3>Spring Rolls Special</h3>
                 <div class="variant-selector">
@@ -641,7 +641,7 @@
         </div>
 
         <div class="card">
-            <img src="tandoorickntikka.png" alt="Chicken Tikka">
+            <img src="tandoorickntikka.png" alt="Chicken Tikka Platter">
             <div class="content">
                 <h3>Chicken Tikka Platter</h3>
                 <div class="variant-selector">
@@ -658,7 +658,7 @@
         </div>
 
         <div class="card">
-            <img src="kabab.png" alt="Seekh Kabab">
+            <img src="kabab.png" alt="Seekh Kabab Platter">
             <div class="content">
                 <h3>Seekh Kababs Platter</h3>
                 <div class="variant-selector">
@@ -675,7 +675,7 @@
         </div>
 
         <div class="card">
-            <img src="tandoimutton.png" alt="Tandoori Mutton Chops" onerror="this.src='tandoorimutton.png';">
+            <img src="tandoorimutton.png" alt="Tandoori Mutton Chops">
             <div class="content">
                 <h3>Tandoori Mutton Chops</h3>
                 <div class="variant-selector">
@@ -714,7 +714,7 @@
     <div class="category-title">Chaat Corner & South Indian</div>
     <div class="grid">
         <div class="card">
-            <img src="panipuri.png" alt="Golgappe">
+            <img src="panipuri.png" alt="Crisp Golgappe">
             <div class="content">
                 <h3>Crisp Golgappe</h3>
                 <div class="variant-selector">
@@ -730,7 +730,7 @@
         </div>
 
         <div class="card">
-            <img src="bhallachat.png" alt="Papdi Chaat">
+            <img src="bhallachat.png" alt="Loaded Papdi Bhalla Chat">
             <div class="content">
                 <h3>Loaded Papdi Bhalla Chaat</h3>
                 <div class="variant-selector">
@@ -814,11 +814,11 @@
         </div>
     </div>
 
-    <!-- CATEGORY 4: REFRESHMENTS & DRINKS (No Packaging Fee Block) -->
+    <!-- CATEGORY 4: REFRESHMENTS & DRINKS -->
     <div class="category-title">Drinks & Beverages</div>
     <div class="grid">
         <div class="card">
-            <img src="kuladtea.png" alt="Kulhad Chai">
+            <img src="kuladtea.png" alt="Desi Kulhad Tea">
             <div class="content">
                 <h3>Desi Kulhad Tea</h3>
                 <div class="variant-selector">
@@ -996,7 +996,7 @@
     <button class="pay-btn" onclick="openCheckoutModal()">Place Order & Pay</button>
 </div>
 
-<!-- UPI Payment Router Overlay Modal -->
+<!-- Unified Professional UPI Engine Terminal Overlay Modal -->
 <div id="paymentModal" class="modal">
     <div class="modal-content">
         <h2>Complete Secure Payment</h2>
@@ -1005,36 +1005,27 @@
         <p style="font-size:1.3rem; color:white; font-weight:700; border-top:1px dashed #444; padding-top:10px;">Total Payable: <strong id="modalAmount" style="color:var(--gold);">₹0</strong></p>
         <p id="spotConfirmation" style="font-style: italic; color: #aaa; margin-top:5px;"></p>
         
-        <div class="upi-apps">
-            <button class="upi-btn" onclick="triggerUPI('GPay')">
-                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                <span>Google Pay</span>
-            </button>
-            <button class="upi-btn" onclick="triggerUPI('PhonePe')">
-                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 10l4 4m0-4l-4 4"/></svg>
-                <span>PhonePe</span>
-            </button>
-            <button class="upi-btn" onclick="triggerUPI('Paytm')">
-                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                <span>Paytm UPI</span>
-            </button>
+        <!-- Unified Corporate Intent Standard Activation Terminal Nodes -->
+        <div class="unified-upi-container">
+            <button class="unified-pay-btn" onclick="triggerUnifiedUPI()">Payment Through UPI Only</button>
         </div>
 
         <div>
-            <p style="font-size:0.9rem; color:#aaa; margin-bottom:10px;">Or Scan Standard Counter QR Code Below</p>
-            <img src="4619QR.png" alt="Counter QR Code" style="width:160px; border:3px solid var(--gold); border-radius:12px; margin-top:5px; background: white; padding: 5px;">
+            <p style="font-size:0.95rem; color:#aaa; margin-bottom:10px; font-weight: 600;">Or Scan Counter Digital QR Below</p>
+            <img src="4619QR.png" alt="Counter QR Code" style="width:170px; border:3px solid var(--gold); border-radius:12px; margin-top:5px; background: white; padding: 5px;">
         </div>
 
         <button class="close-btn" onclick="closeCheckoutModal()">Cancel & Modify Order</button>
     </div>
 </div>
 
+<!-- Static Non-Caching Corporate Footer Configuration -->
 <footer class="footer">
     <h3>Hakka Bakka Cafe</h3>
     <p>📍 Model Town, Near Geeta Mandir, Jalandhar, Punjab</p>
-    <a href="https://wa.me/917796631555?text=Hello%20Hakka%20Bakka%20Cafe%21%20I%20want%20to%20inquire%20about%20my%20order." class="whatsapp-btn" target="_blank">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block; vertical-align:middle;"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.713-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.413 9.863-9.847.001-2.633-1.03-5.107-2.905-6.98C16.495 1.893 14.023 1.86 11.39 1.86c-5.438 0-9.863 4.412-9.866 9.846-.001 1.665.453 3.291 1.314 4.715L1.706 21.83l5.534-1.451zM17.85 14.56c-.33-.164-1.953-.964-2.253-1.074-.3-.11-.518-.165-.735.165-.218.33-.842 1.073-1.032 1.292-.19.218-.379.245-.71.081a10.073 10.073 0 0 1-2.628-1.622 11.107 11.107 0 0 1-1.817-2.261c-.19-.33-.019-.507.147-.672.148-.147.33-.384.495-.577.165-.192.22-.33.33-.55.11-.22.055-.412-.028-.577-.082-.164-.734-1.77-.1006-2.42-.263-.635-.52-.55-.734-.56-.218-.01-.467-.01-.717-.01-.25 0-.657.094-.954.421-.3.33-1.14 1.114-1.14 2.719 0 1.604 1.168 3.153 1.329 3.37.162.219 2.298 3.51 5.566 4.922.778.336 1.385.537 1.859.688.782.248 1.493.213 2.057.129.628-.094 1.954-.8 2.227-1.57.271-.77.271-1.43.19-1.567-.083-.137-.303-.219-.633-.384z"/></svg>
-        <span>Chat on WhatsApp (+91 7796631555)</span>
+    <a href="https://wa.me/917796631555?text=Hello%20Hakka%20Bakka%20Cafe%21%20I%20want%20to%20confirm%20my%20digital%20menu%20order." class="whatsapp-btn" target="_blank">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right:5px;"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.713-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.413 9.863-9.847.001-2.633-1.03-5.107-2.905-6.98C16.495 1.893 14.023 1.86 11.39 1.86c-5.438 0-9.863 4.412-9.866 9.846-.001 1.665.453 3.291 1.314 4.715L1.706 21.83l5.534-1.451zM17.85 14.56c-.33-.164-1.953-.964-2.253-1.074-.3-.11-.518-.165-.735.165-.218.33-.842 1.073-1.032 1.292-.19.218-.379.245-.71.081a10.073 10.073 0 0 1-2.628-1.622 11.107 11.107 0 0 1-1.817-2.261c-.19-.33-.019-.507.147-.672.148-.147.33-.384.495-.577.165-.192.22-.33.33-.55.11-.22.055-.412-.028-.577-.082-.164-.734-1.77-.1006-2.42-.263-.635-.52-.55-.734-.56-.218-.01-.467-.01-.717-.01-.25 0-.657.094-.954.421-.3.33-1.14 1.114-1.14 2.719 0 1.604 1.168 3.153 1.329 3.37.162.219 2.298 3.51 5.566 4.922.778.336 1.385.537 1.859.688.782.248 1.493.213 2.057.129.628-.094 1.954-.8 2.227-1.57.271-.77.271-1.43.19-1.567-.083-.137-.303-.219-.633-.384z"/></svg>
+        <span>Chat with Us</span>
     </a>
     <p style="margin-top: 25px; color: #444; font-size:0.85rem;">© 2026 Hakka Bakka Cafe. All Rights Reserved.</p>
 </footer>
@@ -1088,7 +1079,6 @@
         let itemName = selectedOption.getAttribute('data-name') || cardContent.querySelector('h3').innerText;
 
         foodTotal += price;
-        // Tracking item type ('food' or 'drink')
         selectedItemsList.push({ name: itemName, price: price, type: type });
 
         recalculateGrandTotal();
@@ -1104,7 +1094,6 @@
     function recalculateGrandTotal() {
         let packagingCost = 0;
         
-        // Loop through array and only charge for 'food' types
         if (orderMode === 'Car' || orderMode === 'Packing') {
             selectedItemsList.forEach(item => {
                 if(item.type === 'food') {
@@ -1126,7 +1115,8 @@
 
     function openCheckoutModal() {
         let spotValue = "";
-        
+        let totalItemsCount = selectedItemsList.length;
+
         if (orderMode === 'Table') {
             spotValue = document.getElementById('tableSelect').value;
             if(!spotValue) {
@@ -1183,7 +1173,7 @@
         document.getElementById('paymentModal').style.display = 'none';
     }
 
-    function triggerUPI(app) {
+    function triggerUnifiedUPI() {
         let spotValue = "";
         if (orderMode === 'Table') spotValue = document.getElementById('tableSelect').value;
         else if (orderMode === 'Car') spotValue = document.getElementById('carInput').value.trim();
@@ -1197,13 +1187,14 @@
         }
         let finalBillAmount = foodTotal + packagingCost;
 
-        let upiId = "merchant@upi"; 
+        // Custom Merchant Target Integration Core Variables Fix
+        let upiId = "7888854492@icici"; 
         let merchantName = "Hakka Bakka Cafe";
         let note = encodeURIComponent(`${orderMode} ${spotValue} Food Order`);
         
+        // Native Protocol Universal Intent Link (Opens default UPI choice overlay panel)
         let upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${finalBillAmount}&cu=INR&tn=${note}`;
         
-        console.log(`Routing through ${app} API Gateway: ` + upiUrl);
         window.location.href = upiUrl;
     }
 </script>
