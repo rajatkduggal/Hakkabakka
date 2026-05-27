@@ -418,7 +418,6 @@
     </div>
     
     <div id="spotFieldContainer">
-        <!-- Dropdown Box for Table -->
         <select id="tableSelect" class="select-field">
             <option value="" disabled selected>Choose Table Number</option>
             <option value="Table 1">Table 1</option>
@@ -433,7 +432,6 @@
             <option value="Table 10">Table 10</option>
         </select>
         
-        <!-- Input fields for Car & Packing options -->
         <input type="text" id="carInput" class="input-field" placeholder="Enter Car Number (e.g. PB08-XXXX)" style="display:none;">
         
         <div id="packingInputs" style="display:none;">
@@ -1025,7 +1023,7 @@
 
         <div>
             <p style="font-size:0.9rem; color:#aaa; margin-bottom:10px;">Or Scan Standard Counter QR Code Below</p>
-            <img src="qr4619.png" alt="Counter QR Code" style="width:160px; border:3px solid var(--gold); border-radius:12px; margin-top:5px; background: white; padding: 5px;">
+            <img src="4619QR.png" alt="Counter QR Code" style="width:160px; border:3px solid var(--gold); border-radius:12px; margin-top:5px; background: white; padding: 5px;">
         </div>
 
         <button class="close-btn" onclick="closeCheckoutModal()">Cancel & Modify Order</button>
@@ -1107,7 +1105,6 @@
         let totalItemsCount = selectedItemsList.length;
         let packagingCost = 0;
         
-        // Packaging rule applied to both Car and Packing modes per individual item
         if ((orderMode === 'Car' || orderMode === 'Packing') && totalItemsCount > 0) {
             packagingCost = totalItemsCount * 20;
             document.getElementById('packagingBarNote').innerText = `(+ ₹${packagingCost} Packaging Charges Added)`;
