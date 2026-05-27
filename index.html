@@ -11,1377 +11,316 @@
         :root {
             --primary-bg: #0a0a0a;
             --secondary-bg: #111111;
-            --card-bg: #1a1a1a;
+            --card-bg: #161616;
             --accent-gold: #c9a96e;
             --accent-gold-light: #e0c088;
             --text-primary: #ffffff;
             --text-secondary: #b0b0b0;
             --text-muted: #666666;
-            --border-color: #2a2a2a;
+            --border-color: #222222;
             --font-heading: 'Playfair Display', serif;
             --font-body: 'Inter', sans-serif;
-            --section-padding: 100px;
             --container-width: 1200px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
             font-family: var(--font-body);
             background-color: var(--primary-bg);
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
+            padding-bottom: 120px; /* Space for the bottom order bar */
         }
 
-        .container {
-            max-width: var(--container-width);
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+        .container { max-width: var(--container-width); margin: 0 auto; padding: 0 20px; }
 
         /* Navigation */
         .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px);
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border-color);
-            transition: all 0.3s ease;
         }
-
-        .nav-container {
-            max-width: var(--container-width);
-            margin: 0 auto;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-family: var(--font-heading);
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--accent-gold);
-            text-decoration: none;
-            letter-spacing: 2px;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 35px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent-gold);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--accent-gold);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .nav-cta {
-            background: var(--accent-gold);
-            color: var(--primary-bg) !important;
-            padding: 10px 25px;
-            border-radius: 2px;
-            font-weight: 600 !important;
-        }
-
-        .nav-cta:hover {
-            background: var(--accent-gold-light);
-            color: var(--primary-bg) !important;
-        }
-
-        .nav-cta::after {
-            display: none !important;
-        }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            gap: 5px;
-        }
-
-        .hamburger span {
-            width: 25px;
-            height: 2px;
-            background: var(--text-primary);
-            transition: all 0.3s ease;
-        }
+        .nav-container { max-width: var(--container-width); margin: 0 auto; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: var(--font-heading); font-size: 28px; font-weight: 700; color: var(--accent-gold); text-decoration: none; letter-spacing: 2px; text-transform: uppercase; }
+        .nav-links { display: flex; list-style: none; gap: 35px; align-items: center; }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--accent-gold); }
+        .nav-cta { background: var(--accent-gold); color: var(--primary-bg) !important; padding: 10px 25px; border-radius: 2px; font-weight: 600 !important; }
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+        .hamburger span { width: 25px; height: 2px; background: var(--text-primary); }
 
         /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 120px 20px 60px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(ellipse at center, rgba(201, 169, 110, 0.1) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .hero-content {
-            max-width: var(--container-width);
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-        }
-
-        .hero-image-frame {
-            position: relative;
-            padding: 20px;
-        }
-
-        .arch-border {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border: 3px solid var(--accent-gold);
-            border-radius: 200px 200px 0 0;
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
-        .hero-img {
-            width: 100%;
-            height: 600px;
-            object-fit: cover;
-            border-radius: 180px 180px 0 0;
-            filter: brightness(0.9);
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-        }
-
-        .hero-text {
-            padding-left: 20px;
-        }
-
-        .hero-title {
-            font-family: var(--font-heading);
-            font-size: 64px;
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            color: var(--text-primary);
-        }
-
-        .hero-subtitle {
-            font-size: 18px;
-            color: var(--text-secondary);
-            margin-bottom: 40px;
-            max-width: 400px;
-            line-height: 1.8;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 20px;
-        }
-
-        .btn-primary {
-            display: inline-block;
-            padding: 15px 40px;
-            background: var(--accent-gold);
-            color: var(--primary-bg);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border: 2px solid var(--accent-gold);
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background: transparent;
-            color: var(--accent-gold);
-        }
-
-        .btn-secondary {
-            display: inline-block;
-            padding: 15px 40px;
-            background: transparent;
-            color: var(--text-primary);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border: 2px solid var(--text-primary);
-            transition: all 0.3s ease;
-        }
-
-        .btn-secondary:hover {
-            background: var(--text-primary);
-            color: var(--primary-bg);
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            color: var(--text-muted);
-            font-size: 12px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
-            40% { transform: translateX(-50%) translateY(-10px); }
-            60% { transform: translateX(-50%) translateY(-5px); }
-        }
-
-        /* Hours Strip */
-        .hours-strip {
-            background: var(--secondary-bg);
-            padding: 30px 0;
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .hours-content {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .hours-content i {
-            font-size: 24px;
-            color: var(--accent-gold);
-        }
-
-        .hours-text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .hours-label {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--accent-gold);
-            font-weight: 600;
-        }
-
-        .hours-time {
-            font-size: 16px;
-            color: var(--text-secondary);
-        }
-
-        /* Story Section */
-        .story-section {
-            padding: var(--section-padding) 0;
-            background: var(--primary-bg);
-        }
-
-        .story-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: center;
-        }
-
-        .story-image-wrapper {
-            position: relative;
-        }
-
-        .story-image-frame {
-            position: relative;
-            padding: 15px;
-        }
-
-        .story-image-frame::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 20px;
-            bottom: 20px;
-            border: 2px solid var(--accent-gold);
-            opacity: 0.4;
-            z-index: 1;
-        }
-
-        .story-image-frame img {
-            width: 100%;
-            height: 500px;
-            object-fit: cover;
-            position: relative;
-            z-index: 2;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-        }
-
-        .story-content {
-            padding-right: 20px;
-        }
-
-        .section-title {
-            font-family: var(--font-heading);
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 30px;
-            color: var(--text-primary);
-        }
-
-        .story-text {
-            font-size: 16px;
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin-bottom: 30px;
-        }
-
-        .story-quote {
-            font-family: var(--font-heading);
-            font-size: 20px;
-            font-style: italic;
-            color: var(--accent-gold);
-            line-height: 1.6;
-            padding-left: 20px;
-            border-left: 3px solid var(--accent-gold);
-            margin-bottom: 20px;
-        }
-
-        .quote-author {
-            font-size: 14px;
-            color: var(--text-muted);
-            font-style: normal;
-        }
-
-        /* Features Section */
-        .features-section {
-            padding: var(--section-padding) 0;
-            background: var(--secondary-bg);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 40px;
-        }
-
-        .feature-card {
-            text-align: center;
-            padding: 40px 20px;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-        }
-
-        .feature-card:hover {
-            border-color: var(--accent-gold);
-            transform: translateY(-5px);
-        }
-
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 25px;
-            color: var(--accent-gold);
-        }
-
-        .line-icon {
-            width: 100%;
-            height: 100%;
-        }
-
-        .feature-card h3 {
-            font-family: var(--font-heading);
-            font-size: 20px;
-            margin-bottom: 15px;
-            color: var(--text-primary);
-        }
-
-        .feature-card p {
-            font-size: 14px;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        /* Chef Section */
-        .chef-section {
-            padding: var(--section-padding) 0;
-            background: var(--primary-bg);
-        }
-
-        .chef-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-label {
-            display: block;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: var(--accent-gold);
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
-        .chef-name {
-            font-family: var(--font-heading);
-            font-size: 42px;
-            font-weight: 700;
-        }
-
-        .chef-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: center;
-        }
-
-        .chef-image-wrapper {
-            position: relative;
-        }
-
-        .chef-image-wrapper::before {
-            content: '';
-            position: absolute;
-            top: -20px;
-            left: -20px;
-            right: 20px;
-            bottom: 20px;
-            border: 2px solid var(--accent-gold);
-            opacity: 0.3;
-        }
-
-        .chef-img {
-            width: 100%;
-            height: 600px;
-            object-fit: cover;
-            position: relative;
-            z-index: 2;
-            filter: brightness(0.9);
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-        }
-
-        .chef-bio {
-            padding: 20px;
-        }
-
-        .chef-bio p {
-            font-size: 16px;
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin-bottom: 30px;
-        }
-
-        .chef-signature {
-            margin-top: 30px;
-            font-family: var(--font-heading);
-            font-size: 32px;
-            color: var(--accent-gold);
-            opacity: 0.7;
-            font-style: italic;
-        }
-
-        /* Gallery Section */
-        .gallery-section {
-            padding: var(--section-padding) 0;
-            background: var(--secondary-bg);
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .gallery-intro {
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto 60px;
-            color: var(--text-secondary);
-            font-size: 16px;
-            line-height: 1.8;
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(2, 300px);
-            gap: 15px;
-        }
-
-        .gallery-item {
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-        }
-
-        .gallery-item.large {
-            grid-column: span 2;
-            grid-row: span 2;
-        }
-
-        .gallery-item.wide {
-            grid-column: span 2;
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease, filter 0.5s ease;
-        }
-
-        .gallery-item:hover img {
-            transform: scale(1.1);
-            filter: brightness(0.6);
-        }
-
-        .gallery-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 30px;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            transform: translateY(100%);
-            transition: transform 0.4s ease;
-        }
-
-        .gallery-item:hover .gallery-overlay {
-            transform: translateY(0);
-        }
-
-        .gallery-overlay span {
-            font-family: var(--font-heading);
-            font-size: 20px;
-            color: var(--accent-gold);
-        }
-
-        /* Blog Section */
-        .blog-section {
-            padding: var(--section-padding) 0;
-            background: var(--primary-bg);
-        }
-
-        .blog-intro {
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto 60px;
-            color: var(--text-secondary);
-        }
-
-        .blog-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-        }
-
-        .blog-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .blog-card:hover {
-            border-color: var(--accent-gold);
-            transform: translateY(-5px);
-        }
-
-        .blog-image {
-            height: 250px;
-            overflow: hidden;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-        }
-
-        .blog-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .blog-card:hover .blog-image img {
-            transform: scale(1.1);
-        }
-
-        .blog-content {
-            padding: 30px;
-        }
-
-        .blog-date {
-            font-size: 12px;
-            color: var(--accent-gold);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-        }
-
-        .blog-content h3 {
-            font-family: var(--font-heading);
-            font-size: 22px;
-            margin: 15px 0;
-            color: var(--text-primary);
-            line-height: 1.4;
-        }
-
-        .read-more {
-            color: var(--accent-gold);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            transition: gap 0.3s ease;
-        }
-
-        .read-more:hover {
-            gap: 15px;
-        }
-
-        /* CTA Section */
-        .cta-section {
-            padding: 100px 0;
-            background: linear-gradient(rgba(10,10,10,0.9), rgba(10,10,10,0.9)), url('assets/cta-bg.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            text-align: center;
-        }
-
-        .cta-content h2 {
-            font-family: var(--font-heading);
-            font-size: 42px;
-            margin-bottom: 20px;
-        }
-
-        .cta-content p {
-            color: var(--text-secondary);
-            margin-bottom: 40px;
-            font-size: 18px;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        /* Footer */
-        .footer {
-            background: #050505;
-            padding: 80px 0 30px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1.5fr 1fr;
-            gap: 60px;
-            margin-bottom: 60px;
-        }
-
-        .footer-logo {
-            font-family: var(--font-heading);
-            font-size: 28px;
-            color: var(--accent-gold);
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        .footer-brand p {
-            color: var(--text-secondary);
-            font-size: 14px;
-            line-height: 1.8;
-            margin-bottom: 25px;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 20px;
-        }
-
-        .social-links a {
-            width: 40px;
-            height: 40px;
-            border: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .social-links a:hover {
-            border-color: var(--accent-gold);
-            color: var(--accent-gold);
-            background: rgba(201, 169, 110, 0.1);
-        }
-
-        .footer-links h4,
-        .footer-contact h4,
-        .footer-hours h4 {
-            font-family: var(--font-heading);
-            font-size: 18px;
-            margin-bottom: 25px;
-            color: var(--text-primary);
-        }
-
-        .footer-links ul {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-
-        .footer-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--accent-gold);
-        }
-
-        .footer-contact p,
-        .footer-hours p {
-            color: var(--text-secondary);
-            font-size: 14px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .footer-contact i {
-            color: var(--accent-gold);
-            width: 16px;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid var(--border-color);
-            padding-top: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .footer-bottom p {
-            color: var(--text-muted);
-            font-size: 13px;
-        }
-
-        .footer-legal {
-            display: flex;
-            gap: 30px;
-        }
-
-        .footer-legal a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 13px;
-            transition: color 0.3s ease;
-        }
-
-        .footer-legal a:hover {
-            color: var(--accent-gold);
-        }
-
-        /* Fade-in Animation */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--primary-bg);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--accent-gold);
-            border-radius: 4px;
-        }
-
-        /* Responsive */
+        .hero { min-height: 95vh; display: flex; align-items: center; justify-content: center; padding: 120px 20px 60px; position: relative; }
+        .hero-content { max-width: var(--container-width); width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .hero-image-frame { position: relative; padding: 20px; overflow: hidden; }
+        .arch-border { position: absolute; top: 0; left: 0; right: 0; bottom: 0; border: 3px solid var(--accent-gold); border-radius: 200px 200px 0 0; opacity: 0.4; }
+        .hero-img { width: 100%; height: 550px; object-fit: cover; border-radius: 180px 180px 0 0; filter: brightness(0.85); }
+        .hero-text { padding-left: 20px; }
+        .order-badge { background: rgba(201, 169, 110, 0.1); border: 1px solid var(--accent-gold); color: var(--accent-gold); display: inline-block; padding: 6px 15px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
+        .hero-title { font-family: var(--font-heading); font-size: 60px; font-weight: 700; line-height: 1.1; margin-bottom: 20px; }
+        .hero-subtitle { font-size: 16px; color: var(--text-secondary); margin-bottom: 35px; max-width: 450px; }
+
+        /* Order Selector & Menu Styling */
+        .menu-section { padding: 80px 0; background: var(--secondary-bg); border-top: 1px solid var(--border-color); }
+        .section-label { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 3px; color: var(--accent-gold); margin-bottom: 10px; font-weight: 600; text-align: center; }
+        .section-title { font-family: var(--font-heading); font-size: 42px; font-weight: 700; text-align: center; margin-bottom: 40px; }
+        
+        .setup-box { max-width: 500px; margin: 0 auto 50px; background: var(--card-bg); border: 1px solid var(--border-color); padding: 30px; border-radius: 4px; text-align: center; }
+        .setup-box h3 { font-family: var(--font-heading); font-size: 20px; margin-bottom: 15px; color: var(--accent-gold); }
+        .select-input { width: 100%; padding: 12px; background: var(--primary-bg); border: 1px solid var(--border-color); color: var(--text-primary); font-size: 15px; border-radius: 2px; outline: none; transition: border-color 0.3s; }
+        .select-input:focus { border-color: var(--accent-gold); }
+
+        /* Menu Grid */
+        .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .menu-card { background: var(--card-bg); border: 1px solid var(--border-color); overflow: hidden; transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: space-between; }
+        .menu-card:hover { border-color: var(--accent-gold); transform: translateY(-5px); }
+        .menu-img-container { height: 230px; overflow: hidden; background: #222; }
+        .menu-img-container img { width: 100%; height: 100%; object-fit: cover; }
+        .menu-info { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .menu-meta h3 { font-family: var(--font-heading); font-size: 22px; margin-bottom: 8px; }
+        .menu-meta p { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; }
+        .menu-checkout { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+        .price { font-size: 18px; font-weight: 700; color: var(--accent-gold); }
+        .btn-add { background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold); padding: 8px 20px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; }
+        .btn-add:hover { background: var(--accent-gold); color: var(--primary-bg); }
+
+        /* Fixed Bottom Checkout Engine Layout */
+        .bottom-checkout-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #070707; border-top: 2px solid var(--accent-gold); z-index: 9999; padding: 20px 0; box-shadow: 0 -10px 30px rgba(0,0,0,0.5); }
+        .checkout-flex { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+        .bill-summary { display: flex; flex-direction: column; }
+        .bill-summary .active-order { font-size: 12px; text-transform: uppercase; color: var(--accent-gold); font-weight: 600; letter-spacing: 1px; }
+        .bill-summary .total-amt { font-size: 26px; font-weight: 800; font-family: var(--font-heading); color: var(--text-primary); }
+        .checkout-actions { display: flex; gap: 15px; align-items: center; }
+        
+        .btn-gpay { background: #ffffff; color: #000000; border: none; padding: 14px 25px; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; transition: 0.3s; border-radius: 2px; text-decoration: none;}
+        .btn-gpay:hover { background: #e5e5e5; }
+        .btn-whatsapp { background: #25D366; color: #ffffff; border: none; padding: 14px 30px; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; transition: 0.3s; border-radius: 2px; text-decoration: none; }
+        .btn-whatsapp:hover { background: #20ba5a; }
+
+        /* Footer Frame */
+        .footer { background: #050505; padding: 60px 0 30px; border-top: 1px solid var(--border-color); text-align: center; }
+        .footer h2 { font-family: var(--font-heading); color: var(--accent-gold); font-size: 32px; margin-bottom: 15px; }
+        .footer p { color: var(--text-secondary); font-size: 14px; max-width: 500px; margin: 0 auto 25px; }
+        .footer-details { display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; flex-wrap: wrap; }
+        .footer-details span { font-size: 14px; color: var(--text-secondary); display: inline-flex; align-items: center; gap: 10px; }
+        .footer-details i { color: var(--accent-gold); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; font-size: 12px; color: var(--text-muted); }
+
+        /* Responsive Elements */
         @media (max-width: 1024px) {
-            .hero-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-            .hero-text {
-                padding-left: 0;
-                order: -1;
-            }
-            .hero-title {
-                font-size: 48px;
-            }
-            .hero-subtitle {
-                margin: 0 auto 40px;
-            }
-            .hero-buttons {
-                justify-content: center;
-            }
-            .hero-img {
-                height: 400px;
-            }
-            .story-grid,
-            .chef-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-            .features-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .gallery-grid {
-                grid-template-columns: repeat(2, 1fr);
-                grid-template-rows: auto;
-            }
-            .gallery-item.large,
-            .gallery-item.wide {
-                grid-column: span 1;
-                grid-row: span 1;
-            }
-            .blog-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .footer-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .hero-content { grid-template-columns: 1fr; text-align: center; }
+            .hero-text { padding-left: 0; order: -1; }
+            .hero-img { height: 400px; border-radius: 0; }
+            .menu-grid { grid-template-columns: repeat(2, 1fr); }
+            .checkout-flex { flex-direction: column; text-align: center; gap: 15px; }
         }
-
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            .hamburger {
-                display: flex;
-            }
-            .hero-title {
-                font-size: 36px;
-            }
-            .section-title {
-                font-size: 32px;
-            }
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-            .gallery-grid {
-                grid-template-columns: 1fr;
-            }
-            .blog-grid {
-                grid-template-columns: 1fr;
-            }
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            .footer-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-            .footer-bottom {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
-            }
-        }
-
-        .nav-links.active {
-            display: flex;
-            flex-direction: column;
-            position: absolute;
-            top: 80px;
-            left: 0;
-            right: 0;
-            background: var(--primary-bg);
-            padding: 40px;
-            gap: 25px;
-            border-bottom: 1px solid var(--border-color);
+            .menu-grid { grid-template-columns: 1fr; }
+            .checkout-actions { flex-direction: column; width: 100%; }
+            .btn-gpay, .btn-whatsapp { width: 100%; justify-content: center; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Navigation -->
+    <!-- Premium Navbar Frame -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="/" class="logo">Hakkabakka</a>
+            <a href="#" class="logo">Hakkabakka</a>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
-                <li><a href="#story">Our Story</a></li>
-                <li><a href="#menu">Menu</a></li>
-                <li><a href="#chef">Chef</a></li>
-                <li><a href="#gallery">Gallery</a></li>
-                <li><a href="#blog">Blog</a></li>
+                <li><a href="#menu">Menu Panel</a></li>
                 <li><a href="#contact">Contact</a></li>
-                <!-- PRESERVE: Your existing order link -->
-                <li><a href="/order" class="nav-cta">Order Now</a></li>
+                <li><a href="#menu" class="nav-cta">Order Counter</a></li>
             </ul>
-            <div class="hamburger" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Main Hero Setup -->
     <section id="home" class="hero">
         <div class="hero-content">
             <div class="hero-image-frame">
                 <div class="arch-border"></div>
-                <img src="assets/hero-interior.jpg" alt="Hakkabakka Interior" class="hero-img" onerror="this.style.background='linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%)'">
+                <!-- Default premium placeholder array dynamic background loading -->
+                <div class="hero-img" style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=1000&auto=format&fit=cover'); background-size: cover; background-position: center;"></div>
             </div>
             <div class="hero-text">
+                <div class="order-badge">Live Invoice Engine Active</div>
                 <h1 class="hero-title">Where Flavor<br>Meets Soul</h1>
-                <p class="hero-subtitle">An eclectic cafe experience where art, music, and great food come together</p>
+                <p class="hero-subtitle">Experience Jalandhar's finest upcoming elite hangout spot. Indulge in an exquisite, handcrafted fusion of artisanal items crafted for food lovers.</p>
                 <div class="hero-buttons">
-                    <!-- PRESERVE: Your existing order URL -->
-                    <a href="/order" class="btn-primary">Order Online</a>
-                    <a href="/reservation" class="btn-secondary">Book a Table</a>
+                    <a href="#menu" class="btn-primary">Explore Menu</a>
+                    <a href="tel:+917796631555" class="btn-secondary">Call Lounge</a>
                 </div>
             </div>
         </div>
-        <div class="scroll-indicator">
-            <span>Scroll to explore</span>
-            <i class="fas fa-chevron-down"></i>
-        </div>
     </section>
 
-    <!-- Open Hours Strip -->
-    <section class="hours-strip">
+    <!-- Advanced Order Selector & Menu Grid Container -->
+    <section id="menu" class="menu-section">
         <div class="container">
-            <div class="hours-content">
-                <i class="far fa-clock"></i>
-                <div class="hours-text">
-                    <span class="hours-label">Open Hours</span>
-                    <span class="hours-time">Everyday from 11:00 AM - 1:00 AM</span>
+            <span class="section-label">CHOOSE CONFECTIONS</span>
+            <h2 class="section-title">The Culinary Lounge Menu</h2>
+
+            <!-- Spots Selector Block Logic -->
+            <div class="setup-box">
+                <h3><i class="fas fa-map-marker-alt"></i> Select Your Serving Spot</h3>
+                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 15px;">Choose where you want us to serve your hot food</p>
+                <select id="servingSpot" class="select-input">
+                    <option value="Online Delivery / Takeaway">Online Delivery / Takeaway</option>
+                    <option value="Car Dining Experience 🚘">Car Dining Experience (Served in Vehicle) 🚘</option>
+                    <option value="Table Lounge Zone ☕">Table Lounge Zone (Inside Ambiance)</option>
+                </select>
+            </div>
+
+            <!-- Optimized Item Menu Blocks -->
+            <div class="menu-grid">
+                <!-- Product Card 1 -->
+                <div class="menu-card">
+                    <div class="menu-img-container">
+                        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=600&auto=format&fit=cover" alt="Cheese Pizza">
+                    </div>
+                    <div class="menu-info">
+                        <div class="menu-meta">
+                            <h3>Double Cheese Burst</h3>
+                            <p>Artisanal hand-stretched crust loaded heavily with 100% premium stringy mozzarella cheese and house sauce.</p>
+                        </div>
+                        <div class="menu-checkout">
+                            <span class="price">₹249</span>
+                            <button class="btn-add" onclick="registerProduct('Double Cheese Burst Pizza', 249)">Add to Bill</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 2 -->
+                <div class="menu-card">
+                    <div class="menu-img-container">
+                        <img src="https://images.unsplash.com/photo-1567620832903-9fc6debc209f?q=80&w=600&auto=format&fit=cover" alt="Chicken Wings">
+                    </div>
+                    <div class="menu-info">
+                        <div class="menu-meta">
+                            <h3>Crispy Chicken Wings</h3>
+                            <p>Prime tender chicken wings flash-fried to golden perfection, tossed heavily in our signature fiery house spice blend.</p>
+                        </div>
+                        <div class="menu-checkout">
+                            <span class="price">₹299</span>
+                            <button class="btn-add" onclick="registerProduct('Crispy Chicken Wings', 299)">Add to Bill</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 3 -->
+                <div class="menu-card">
+                    <div class="menu-img-container">
+                        <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?q=80&w=600&auto=format&fit=cover" alt="Cold Coffee">
+                    </div>
+                    <div class="menu-info">
+                        <div class="menu-meta">
+                            <h3>Hazelnut Cold Coffee</h3>
+                            <p>A sophisticated high-bodied espresso shot cold-blended smoothly with thick sweet cream and layered premium toasted hazelnut.</p>
+                        </div>
+                        <div class="menu-checkout">
+                            <span class="price">₹180</span>
+                            <button class="btn-add" onclick="registerProduct('Hazelnut Cold Coffee', 180)">Add to Bill</button>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
     </section>
 
-    <!-- Our Story Section -->
-    <section id="story" class="story-section">
+    <!-- Ultra Premium Fixed Checkout Footer System Engine -->
+    <div class="bottom-checkout-bar">
         <div class="container">
-            <div class="story-grid">
-                <div class="story-image-wrapper">
-                    <div class="story-image-frame">
-                        <img src="assets/story-interior.jpg" alt="Hakkabakka Story" onerror="this.style.display='none'">
-                    </div>
+            <div class="checkout-flex">
+                <div class="bill-summary">
+                    <span class="active-order" id="displayOrderID">Order ID: Fetching...</span>
+                    <span class="total-amt" id="displayTotalBill">Grand Total: ₹0</span>
                 </div>
-                <div class="story-content">
-                    <h2 class="section-title">The Story</h2>
-                    <p class="story-text">
-                        Established with passion, Hakkabakka is an eclectic cafe adorned with vibrant artwork, 
-                        rustic charm, and an atmosphere that feels like home. Our diverse events schedule 
-                        includes Live Music Nights, Acoustic Sessions, and themed evenings that keep the 
-                        energy alive for our guests.
-                    </p>
-                    <blockquote class="story-quote">
-                        "Hakkabakka is the perfect blend of entertainment and cuisine, with live performances, 
-                        a diverse menu, and an ambiance that stays with you long after you leave."
-                    </blockquote>
-                    <cite class="quote-author">— Founder, Hakkabakka</cite>
+                <div class="checkout-actions">
+                    <!-- Advanced Instant App Deep-Linking UPI Trigger -->
+                    <a href="#" class="btn-gpay" onclick="triggerGPay()"><i class="fab fa-google-pay" style="font-size: 24px;"></i> Pay ₹50 Token</a>
+                    <!-- Safe Professional WhatsApp Multi-Item Invoice Forwarder -->
+                    <a href="#" class="btn-whatsapp" onclick="dispatchWhatsAppInvoice()"><i class="fab fa-whatsapp"></i> Send Order Details</a>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Features Section -->
-    <section class="features-section">
-        <div class="container">
-            <div class="features-grid">
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 100 100" class="line-icon">
-                            <path d="M20,80 Q20,20 50,20 Q80,20 80,80 L70,80 L70,50 L30,50 L30,80 Z" fill="none" stroke="currentColor" stroke-width="2"/>
-                            <circle cx="35" cy="35" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
-                            <circle cx="65" cy="35" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                    </div>
-                    <h3>Multi-Cuisine</h3>
-                    <p>One bite and experience a delightful burst of flavours from around the world.</p>
-                </div>
-                
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 100 100" class="line-icon">
-                            <path d="M30,30 L70,30 L60,70 L40,70 Z" fill="none" stroke="currentColor" stroke-width="2"/>
-                            <line x1="50" y1="30" x2="50" y2="15" stroke="currentColor" stroke-width="2"/>
-                            <circle cx="50" cy="10" r="5" fill="currentColor"/>
-                            <path d="M25,40 Q15,50 25,60" fill="none" stroke="currentColor" stroke-width="2"/>
-                            <circle cx="20" cy="50" r="3" fill="currentColor"/>
-                        </svg>
-                    </div>
-                    <h3>Delectable Concoctions</h3>
-                    <p>Explore flavourful cocktails and beverages crafted to perfection.</p>
-                </div>
-                
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 100 100" class="line-icon">
-                            <rect x="20" y="40" width="60" height="30" rx="5" fill="none" stroke="currentColor" stroke-width="2"/>
-                            <path d="M25,40 L25,30 Q25,20 35,20 L65,20 Q75,20 75,30 L75,40" fill="none" stroke="currentColor" stroke-width="2"/>
-                            <path d="M35,55 L45,55 L45,65 L35,65 Z" fill="none" stroke="currentColor" stroke-width="2"/>
-                            <path d="M55,55 L65,55 L65,65 L55,65 Z" fill="none" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                    </div>
-                    <h3>Rustic Ambience</h3>
-                    <p>Explore our timeless decor with a modern touch and warm lighting.</p>
-                </div>
-                
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 100 100" class="line-icon">
-                            <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="2"/>
-                            <line x1="50" y1="20" x2="50" y2="10" stroke="currentColor" stroke-width="2"/>
-                            <path d="M35,25 L30,15 M65,25 L70,15 M25,35 L15,30 M75,35 L85,30" stroke="currentColor" stroke-width="2"/>
-                            <circle cx="50" cy="50" r="15" fill="none" stroke="currentColor" stroke-width="2"/>
-                            <circle cx="50" cy="50" r="5" fill="currentColor"/>
-                        </svg>
-                    </div>
-                    <h3>Surreal Vibes</h3>
-                    <p>With eclectic decor, Hakkabakka is all about unforgettable vibes.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Chef Section -->
-    <section id="chef" class="chef-section">
-        <div class="container">
-            <div class="chef-header">
-                <span class="section-label">OUR CHEF</span>
-                <h2 class="chef-name">Chef Name</h2>
-            </div>
-            <div class="chef-grid">
-                <div class="chef-image-wrapper">
-                    <img src="assets/chef-portrait.jpg" alt="Head Chef" class="chef-img" onerror="this.style.display='none'">
-                </div>
-                <div class="chef-bio">
-                    <p>
-                        Meet our Head Chef, a culinary artist bringing years of rich experience from top 
-                        hospitality kitchens. From mastering traditional techniques to innovating modern 
-                        flavors, every dish served at Hakkabakka is crafted to perfection — promising 
-                        an unforgettable experience that will tantalize your taste buds.
-                    </p>
-                    <div class="chef-signature">Chef Name</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Gallery Section -->
-    <section id="gallery" class="gallery-section">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-label">GALLERY</span>
-                <h2 class="section-title">What We Offer</h2>
-            </div>
-            <p class="gallery-intro">
-                Hakkabakka isn't just about dining! It's an unforgettable experience through global flavours, 
-                served with modern flair amidst rustic décor.
-            </p>
-            
-            <div class="gallery-grid">
-                <div class="gallery-item large fade-in">
-                    <img src="assets/gallery-1.jpg" alt="Interior" onerror="this.style.display='none'">
-                    <div class="gallery-overlay">
-                        <span>Unconventional Interiors</span>
-                    </div>
-                </div>
-                <div class="gallery-item fade-in">
-                    <img src="assets/gallery-2.jpg" alt="Food" onerror="this.style.display='none'">
-                    <div class="gallery-overlay">
-                        <span>Gourmet Dishes</span>
-                    </div>
-                </div>
-                <div class="gallery-item fade-in">
-                    <img src="assets/gallery-3.jpg" alt="Drinks" onerror="this.style.display='none'">
-                    <div class="gallery-overlay">
-                        <span>Signature Cocktails</span>
-                    </div>
-                </div>
-                <div class="gallery-item fade-in">
-                    <img src="assets/gallery-4.jpg" alt="Events" onerror="this.style.display='none'">
-                    <div class="gallery-overlay">
-                        <span>Live Events</span>
-                    </div>
-                </div>
-                <div class="gallery-item wide fade-in">
-                    <img src="assets/gallery-5.jpg" alt="Ambience" onerror="this.style.display='none'">
-                    <div class="gallery-overlay">
-                        <span>Rustic Vibes</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Blog Section -->
-    <section id="blog" class="blog-section">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-label">BLOG</span>
-                <h2 class="section-title">Discover the World of Hakkabakka</h2>
-            </div>
-            <p class="blog-intro">
-                Our blog is your ultimate guide to all things Hakkabakka, featuring famous dishes, 
-                chef specials, and the secrets that make us great!
-            </p>
-            
-            <div class="blog-grid">
-                <article class="blog-card fade-in">
-                    <div class="blog-image">
-                        <img src="assets/blog-1.jpg" alt="Blog Post" onerror="this.style.display='none'">
-                    </div>
-                    <div class="blog-content">
-                        <span class="blog-date">Dec 15, 2024</span>
-                        <h3>The Art of Plating: Behind Our Signature Dishes</h3>
-                        <a href="/blog/post-1" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </article>
-                
-                <article class="blog-card fade-in">
-                    <div class="blog-image">
-                        <img src="assets/blog-2.jpg" alt="Blog Post" onerror="this.style.display='none'">
-                    </div>
-                    <div class="blog-content">
-                        <span class="blog-date">Dec 10, 2024</span>
-                        <h3>Cocktail Chemistry: Mixology at Hakkabakka</h3>
-                        <a href="/blog/post-2" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </article>
-                
-                <article class="blog-card fade-in">
-                    <div class="blog-image">
-                        <img src="assets/blog-3.jpg" alt="Blog Post" onerror="this.style.display='none'">
-                    </div>
-                    <div class="blog-content">
-                        <span class="blog-date">Dec 5, 2024</span>
-                        <h3>Weekend Live Music: What to Expect</h3>
-                        <a href="/blog/post-3" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </article>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2>Ready to Experience Hakkabakka?</h2>
-                <p>Order your favorites online or book a table for an unforgettable evening.</p>
-                <div class="cta-buttons">
-                    <!-- PRESERVE: Your existing order URL -->
-                    <a href="/order" class="btn-primary">Order Online</a>
-                    <a href="/reservation" class="btn-secondary">Reserve Table</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
+    <!-- Core Business Footprint Section -->
     <footer id="contact" class="footer">
         <div class="container">
-            <div class="footer-grid">
-                <div class="footer-brand">
-                    <span class="footer-logo">Hakkabakka</span>
-                    <p>Where art, music, and great food come together to create a unique experience.</p>
-                    <div class="social-links">
-                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                    </div>
-                </div>
-                
-                <div class="footer-links">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#story">Our Story</a></li>
-                        <li><a href="#menu">Menu</a></li>
-                        <li><a href="#gallery">Gallery</a></li>
-                        <!-- PRESERVE: Your existing order link -->
-                        <li><a href="/order">Order Online</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-contact">
-                    <h4>Contact Us</h4>
-                    <p><i class="fas fa-map-marker-alt"></i> 123 Cafe Street, City Name</p>
-                    <p><i class="fas fa-phone"></i> +91 98765 43210</p>
-                    <p><i class="fas fa-envelope"></i> hello@hakkabakka.in</p>
-                </div>
-                
-                <div class="footer-hours">
-                    <h4>Opening Hours</h4>
-                    <p>Mon - Sun: 11:00 AM - 1:00 AM</p>
-                    <p>Happy Hours: 4:00 PM - 8:00 PM</p>
-                </div>
+            <h2>Hakkabakka</h2>
+            <p>Where premium art, high-energy vibes, and elite culinary craft collide seamlessly.</p>
+            <div class="footer-details">
+                <span><i class="fas fa-map-marker-alt"></i> Jalandhar, Punjab</span>
+                <span><i class="fas fa-phone"></i> +91 77966-31555</span>
+                <span><i class="far fa-clock"></i> 11:00 AM - 1:00 AM Daily</span>
             </div>
-            
             <div class="footer-bottom">
-                <p>&copy; 2024 Hakkabakka. All rights reserved.</p>
-                <div class="footer-legal">
-                    <a href="/privacy">Privacy Policy</a>
-                    <a href="/terms">Terms of Service</a>
-                </div>
+                <p>&copy; 2026 Hakkabakka Cafe & Lounge. Infrastructure Upgraded Safely.</p>
             </div>
         </div>
     </footer>
 
+    <!-- Advanced Checkout System Scripts Base Logic Loop -->
     <script>
-        // Mobile Menu Toggle
-        function toggleMenu() {
-            const navLinks = document.querySelector('.nav-links');
-            navLinks.classList.toggle('active');
-            
-            const spans = document.querySelectorAll('.hamburger span');
-            if (navLinks.classList.contains('active')) {
-                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
-            } else {
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
-            }
+        let currentBill = 0;
+        let bucketList = [];
+        let systemOrderID = "";
+
+        // Auto-Generate Order Number Matrix Sequence upon screen load
+        window.onload = function() {
+            let uniqueSequence = Math.floor(1000 + Math.random() * 9000);
+            systemOrderID = "#HB-" + uniqueSequence;
+            document.getElementById("displayOrderID").innerText = "Order ID: " + systemOrderID;
+        };
+
+        // Add Multi-items directly into array loop
+        function registerProduct(itemName, itemPrice) {
+            currentBill += itemPrice;
+            bucketList.push(itemName + " (₹" + itemPrice + ")");
+            document.getElementById("displayTotalBill").innerText = "Grand Total: ₹" + currentBill;
+            alert("🔥 Added: " + itemName + " to your active lounge ticket!");
         }
 
-        // Navbar Scroll Effect
-        const navbar = document.querySelector('.navbar');
-        let lastScroll = 0;
-        
-        window.addEventListener('scroll', function() {
-            const currentScroll = window.pageYOffset;
-            
-            if (currentScroll > 100) {
-                navbar.style.background = 'rgba(10, 10, 10, 0.98)';
-                navbar.style.boxShadow = '0 2px 20px rgba(0,0,0,0.3)';
-            } else {
-                navbar.style.background = 'rgba(10, 10, 10, 0.95)';
-                navbar.style.boxShadow = 'none';
+        // Direct Deep Link Integration to GPay App for Indian Merchant ecosystem
+        function triggerGPay() {
+            if(currentBill === 0) {
+                alert("Please add at least one delicious item before making a token payment, Bhai!");
+                return;
             }
-            
-            lastScroll = currentScroll;
-        });
+            // Standardizing token validation request
+            let upiLink = "upi://pay?pa=7796631555@okbizaxis&pn=HakkaBakka%20Cafe&am=50&cu=INR&tn=Token%20For%20Order%20" + encodeURIComponent(systemOrderID);
+            window.location.href = upiLink;
+        }
 
-        // Intersection Observer for Fade-in Animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-        
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Smooth Scroll for Anchor Links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                    // Close mobile menu if open
-                    document.querySelector('.nav-links').classList.remove('active');
-                }
-            });
-        });
-
-        // Parallax Effect for Hero Image
-        window.addEventListener('scroll', function() {
-            const scrolled = window.pageYOffset;
-            const heroImg = document.querySelector('.hero-img');
-            if (heroImg && scrolled < window.innerHeight) {
-                heroImg.style.transform = `translateY(${scrolled * 0.3}px)`;
+        // Generate Clean, Structured Multi-Item WhatsApp Message Text
+        function dispatchWhatsAppInvoice() {
+            if(bucketList.length === 0) {
+                alert("Lounge Basket is empty! Add an item to compile invoice details.");
+                return;
             }
-        });
+
+            let servingArea = document.getElementById("servingSpot").value;
+            
+            // Compiling Clean Text with emojis for kitchen operators
+            let textMessage = "*🔥 NEW PAID ORDER - HAKKA BAKKA *🔥\n\n" +
+                              "🆔 *Order ID:* " + systemOrderID + "\n" +
+                              "📍 *Serving Spot:* " + servingArea + "\n" +
+                              "------------------------------\n" +
+                              " *Items Ordered:*\n" + bucketList.join("\n") + "\n" +
+                              "------------------------------\n" +
+                              "💰 *Grand Total Bill:* ₹" + currentBill + "\n" +
+                              "📦 *Payment Status:* Done via UPI (₹50 Advance Token Sent) \n\n" +
+                              "Thank you for ordering with Hakka Bakka! Please process the kitchen order! 🙌";
+
+            let finalUrl = "https://wa.me/917796631555?text=" + encodeURIComponent(textMessage);
+            window.open(finalUrl, '_blank');
+        }
     </script>
 
 </body>
