@@ -429,7 +429,7 @@
         </div>
 
         <div class="card">
-            <img src="chknmomo.png" alt="Chicken Momos">
+            <img src="momos.png" alt="Chicken Momos">
             <div class="content">
                 <h3>Momos Special</h3>
                 <div class="variant-selector">
@@ -710,7 +710,7 @@
         </div>
 
         <div class="card">
-            <img src="index.html" alt="Poha" onerror="this.src='bhallachat.png';">
+            <img src="bhallachat.png" alt="Poha">
             <div class="content">
                 <h3>Fresh Indori Poha</h3>
                 <div class="variant-selector">
@@ -862,13 +862,29 @@
         </div>
 
         <div class="card">
-            <img src="waterbottle.png" alt="Mineral Water" onerror="this.src='cold_drink.png';">
+            <img src="cold_drink.png" alt="Cold Drink">
             <div class="content">
-                <h3>Packaged Mineral Water</h3>
+                <h3>Cold Drink</h3>
                 <div class="variant-selector">
                     <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="20" data-name="Local Brand Water">Regular Brands - ₹20</option>
-                        <option value="40" data-name="Premium Vedica Water">Premium Vedic Water - ₹40</option>
+                        <option value="40" data-name="Cold Drink (Can)">Chilled Can - ₹40</option>
+                        <option value="20" data-name="Cold Drink (Small)">Small Bottle - ₹20</option>
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <span class="price">₹40</span>
+                    <button class="add-btn" onclick="addToCart(this)">Add To Order</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="water.png" alt="Mineral Water">
+            <div class="content">
+                <h3>Packaged Drinking Water</h3>
+                <div class="variant-selector">
+                    <select class="variant-select" onchange="updatePrice(this)">
+                        <option value="20" data-name="Water Bottle">Regular Mineral Water - ₹20</option>
                     </select>
                 </div>
                 <div class="card-footer">
