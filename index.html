@@ -975,6 +975,7 @@
 
 </div>
 
+<!-- Sticky Checkout Billing Bar -->
 <div class="bottom-bar">
     <div class="total-info">
         <h4>Selected Total Bill</h4>
@@ -984,11 +985,12 @@
     <button class="pay-btn" onclick="openCheckoutModal()">Place Order & Pay</button>
 </div>
 
+<!-- UPI Payment Router Overlay Modal -->
 <div id="paymentModal" class="modal">
     <div class="modal-content">
         <h2>Complete Secure Payment</h2>
         <p style="font-size:1.1rem; color:#ccc; margin-bottom:5px;">Food Amount: <span id="modalFoodAmount">₹0</span></p>
-        <p id="modalPackagingRow" style="font-size:1rem; color:var(--alert); margin:0 0 10px 0; display:none;">Car Pack Charges: <span>₹0</span></p>
+        <p id="modalPackagingRow" style="font-size:1rem; color:var(--alert); margin:0 0 10px 0; display:none;">Car Pack Charges (₹20/item): <span>₹0</span></p>
         <p style="font-size:1.3rem; color:white; font-weight:700; border-top:1px dashed #444; padding-top:10px;">Total Payable: <strong id="modalAmount" style="color:var(--gold);">₹0</strong></p>
         <p id="spotConfirmation" style="font-style: italic; color: #aaa; margin-top:5px;"></p>
         
@@ -1081,6 +1083,7 @@
         let totalItemsCount = selectedItemsList.length;
         let packagingCost = 0;
         
+        // Multiplied per individual item correctly
         if (orderMode === 'Car' && totalItemsCount > 0) {
             packagingCost = totalItemsCount * 20;
             document.getElementById('packagingBarNote').innerText = `(+ ₹${packagingCost} Packaging Charges Added)`;
