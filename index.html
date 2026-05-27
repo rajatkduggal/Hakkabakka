@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Hakka Bakka Cafe | Premium Digital Menu</title>
+<title>Hakka Bakka Cafe | Premium Menu</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -46,23 +47,22 @@ body{
     justify-content:center;
 
     background:
-    linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.88)),
+    linear-gradient(rgba(0,0,0,.78),rgba(0,0,0,.88)),
     url('logo.jpg');
 
     background-size:cover;
     background-position:center;
-
     overflow:hidden;
 }
 
 .hero::before{
     content:'';
     position:absolute;
-    width:500px;
-    height:500px;
+    width:550px;
+    height:550px;
     background:radial-gradient(circle,rgba(212,175,55,.12),transparent 70%);
-    top:-180px;
-    right:-120px;
+    top:-200px;
+    right:-100px;
 }
 
 .hero-content{
@@ -75,7 +75,7 @@ body{
 
 .hero-badge{
     display:inline-block;
-    padding:10px 20px;
+    padding:10px 22px;
     border-radius:50px;
     background:rgba(212,175,55,.1);
     border:1px solid rgba(212,175,55,.25);
@@ -90,13 +90,14 @@ body{
     color:var(--gold);
     letter-spacing:4px;
     font-weight:800;
+    line-height:1;
 }
 
 .hero p{
     margin-top:20px;
     color:#ddd;
     font-size:1.1rem;
-    line-height:1.7;
+    line-height:1.8;
 }
 
 .hero-buttons{
@@ -109,7 +110,7 @@ body{
 
 .hero-btn{
     padding:15px 30px;
-    border-radius:12px;
+    border-radius:14px;
     text-decoration:none;
     font-weight:700;
     transition:.35s ease;
@@ -124,6 +125,11 @@ body{
     background:rgba(255,255,255,.08);
     border:1px solid rgba(255,255,255,.08);
     color:white;
+}
+
+.primary-btn:hover,
+.secondary-btn:hover{
+    transform:translateY(-4px);
 }
 
 /* ORDER BOX */
@@ -165,7 +171,7 @@ body{
     font-size:1rem;
 }
 
-/* CATEGORY */
+/* MENU */
 
 .menu-section{
     width:min(1300px,92%);
@@ -174,7 +180,7 @@ body{
 
 .category-title{
     position:relative;
-    margin:50px 0 35px;
+    margin:55px 0 35px;
     padding-left:18px;
     font-size:2rem;
 }
@@ -201,9 +207,8 @@ body{
 /* CARD */
 
 .card{
-    position:relative;
     background:var(--card);
-    border-radius:22px;
+    border-radius:24px;
     overflow:hidden;
     border:1px solid rgba(255,255,255,.05);
     transition:.35s ease;
@@ -211,7 +216,7 @@ body{
 
 .card:hover{
     transform:translateY(-8px);
-    border-color:rgba(212,175,55,.3);
+    border-color:rgba(212,175,55,.35);
     box-shadow:0 12px 35px rgba(212,175,55,.12);
 }
 
@@ -266,6 +271,12 @@ body{
     padding:12px 20px;
     font-weight:700;
     cursor:pointer;
+    transition:.3s;
+}
+
+.add-btn:hover{
+    background:var(--gold);
+    color:black;
 }
 
 /* BOTTOM BAR */
@@ -311,7 +322,7 @@ body{
 /* FOOTER */
 
 .footer{
-    margin-top:70px;
+    margin-top:80px;
     padding:60px 20px;
     text-align:center;
     border-top:1px solid rgba(255,255,255,.06);
@@ -319,7 +330,7 @@ body{
 
 .footer h2{
     color:var(--gold);
-    margin-bottom:14px;
+    margin-bottom:15px;
 }
 
 .footer p{
@@ -330,7 +341,7 @@ body{
 .whatsapp-btn{
     display:inline-block;
     margin-top:22px;
-    padding:14px 28px;
+    padding:14px 30px;
     background:#25D366;
     color:white;
     text-decoration:none;
@@ -378,7 +389,9 @@ body{
             ✨ Premium Fast Food & Cafe Experience
         </div>
 
-        <h1>HAKKA BAKKA CAFE</h1>
+        <h1>
+            HAKKA BAKKA CAFE
+        </h1>
 
         <p>
             Premium Fast Food, Tandoor, Chaat & Luxury Cafe Experience
@@ -415,6 +428,7 @@ body{
         <option>Table 1</option>
         <option>Table 2</option>
         <option>Table 3</option>
+        <option>Table 4</option>
     </select>
 
 </div>
@@ -474,6 +488,34 @@ body{
 
                     <div class="price">
                         ₹180
+                    </div>
+
+                    <button class="add-btn">
+                        Add To Order
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <img src="hnychlyptato.png">
+
+            <div class="content">
+
+                <h3>Honey Chilli Potato</h3>
+
+                <select class="variant-select">
+                    <option>Standard Portion - ₹140</option>
+                </select>
+
+                <div class="card-footer">
+
+                    <div class="price">
+                        ₹140
                     </div>
 
                     <button class="add-btn">
