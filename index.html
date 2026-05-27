@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,22 +72,23 @@
         .radio-group {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 20px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .radio-group label {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .radio-group input[type="radio"] {
             accent-color: var(--gold);
-            transform: scale(1.3);
+            transform: scale(1.2);
         }
 
         .input-field, .select-field {
@@ -102,6 +104,7 @@
             font-family: 'Outfit', sans-serif;
             outline: none;
             transition: 0.3s;
+            margin-top: 10px;
         }
 
         .input-field:focus, .select-field:focus {
@@ -409,9 +412,13 @@
         <label>
             <input type="radio" name="orderType" value="Car" onclick="switchSpotMode('Car')"> Car Order
         </label>
+        <label>
+            <input type="radio" name="orderType" value="Packing" onclick="switchSpotMode('Packing')"> Take Away / Packing
+        </label>
     </div>
     
     <div id="spotFieldContainer">
+        <!-- Dropdown Box for Table -->
         <select id="tableSelect" class="select-field">
             <option value="" disabled selected>Choose Table Number</option>
             <option value="Table 1">Table 1</option>
@@ -425,7 +432,14 @@
             <option value="Table 9">Table 9</option>
             <option value="Table 10">Table 10</option>
         </select>
+        
+        <!-- Input fields for Car & Packing options -->
         <input type="text" id="carInput" class="input-field" placeholder="Enter Car Number (e.g. PB08-XXXX)" style="display:none;">
+        
+        <div id="packingInputs" style="display:none;">
+            <input type="text" id="customerName" class="input-field" placeholder="Enter Your Name" style="margin-bottom:10px;"><br>
+            <input type="tel" id="customerPhone" class="input-field" placeholder="Enter Mobile Number">
+        </div>
     </div>
     <div id="carWarning" class="location-warning">⚠️ Notice: Car Serve Only Near to Restaurant Premises.</div>
 </div>
@@ -990,7 +1004,7 @@
     <div class="modal-content">
         <h2>Complete Secure Payment</h2>
         <p style="font-size:1.1rem; color:#ccc; margin-bottom:5px;">Food Amount: <span id="modalFoodAmount">₹0</span></p>
-        <p id="modalPackagingRow" style="font-size:1rem; color:var(--alert); margin:0 0 10px 0; display:none;">Car Pack Charges (₹20/item): <span>₹0</span></p>
+        <p id="modalPackagingRow" style="font-size:1rem; color:var(--alert); margin:0 0 10px 0; display:none;">Packing Charges (₹20/item): <span>₹0</span></p>
         <p style="font-size:1.3rem; color:white; font-weight:700; border-top:1px dashed #444; padding-top:10px;">Total Payable: <strong id="modalAmount" style="color:var(--gold);">₹0</strong></p>
         <p id="spotConfirmation" style="font-style: italic; color: #aaa; margin-top:5px;"></p>
         
@@ -1037,18 +1051,28 @@
         orderMode = mode;
         let tableSelect = document.getElementById('tableSelect');
         let carInput = document.getElementById('carInput');
+        let packingInputs = document.getElementById('packingInputs');
         let carWarning = document.getElementById('carWarning');
 
         if(mode === 'Table') {
             tableSelect.style.display = 'inline-block';
             carInput.style.display = 'none';
+            packingInputs.style.display = 'none';
             carWarning.style.display = 'none';
             tableSelect.selectedIndex = 0;
-        } else {
+        } else if(mode === 'Car') {
             tableSelect.style.display = 'none';
             carInput.style.display = 'inline-block';
+            packingInputs.style.display = 'none';
             carWarning.style.display = 'block';
             carInput.value = "";
+        } else {
+            tableSelect.style.display = 'none';
+            carInput.style.display = 'none';
+            packingInputs.style.display = 'block';
+            document.getElementById('customerName').value = "";
+            document.getElementById('customerPhone').value = "";
+            carWarning.style.display = 'none';
         }
         recalculateGrandTotal();
     }
@@ -1083,8 +1107,8 @@
         let totalItemsCount = selectedItemsList.length;
         let packagingCost = 0;
         
-        // Multiplied per individual item correctly
-        if (orderMode === 'Car' && totalItemsCount > 0) {
+        // Packaging rule applied to both Car and Packing modes per individual item
+        if ((orderMode === 'Car' || orderMode === 'Packing') && totalItemsCount > 0) {
             packagingCost = totalItemsCount * 20;
             document.getElementById('packagingBarNote').innerText = `(+ ₹${packagingCost} Packaging Charges Added)`;
             document.getElementById('packagingBarNote').style.display = 'block';
@@ -1107,13 +1131,21 @@
                 document.getElementById('tableSelect').focus();
                 return;
             }
-        } else {
+        } else if (orderMode === 'Car') {
             spotValue = document.getElementById('carInput').value.trim();
             if(!spotValue) {
                 alert("Please enter your Car Number details for delivery, Bhai!");
                 document.getElementById('carInput').focus();
                 return;
             }
+        } else {
+            let name = document.getElementById('customerName').value.trim();
+            let phone = document.getElementById('customerPhone').value.trim();
+            if(!name || !phone) {
+                alert("Please enter both Name and Mobile Number for Packing Order, Bhai!");
+                return;
+            }
+            spotValue = `${name} (${phone})`;
         }
 
         if(foodTotal === 0) {
@@ -1121,7 +1153,7 @@
             return;
         }
 
-        let packagingCost = (orderMode === 'Car') ? (totalItemsCount * 20) : 0;
+        let packagingCost = (orderMode === 'Car' || orderMode === 'Packing') ? (totalItemsCount * 20) : 0;
         let grandTotal = foodTotal + packagingCost;
 
         document.getElementById('modalFoodAmount').innerText = "₹" + foodTotal;
@@ -1135,7 +1167,7 @@
         }
 
         document.getElementById('modalAmount').innerText = "₹" + grandTotal;
-        document.getElementById('spotConfirmation').innerText = `Serving Mode: ${orderMode} Order (${spotValue})`;
+        document.getElementById('spotConfirmation').innerText = `Serving Mode: ${orderMode} Order - ${spotValue}`;
         document.getElementById('paymentModal').style.display = 'flex';
     }
 
@@ -1144,9 +1176,13 @@
     }
 
     function triggerUPI(app) {
-        let spotValue = (orderMode === 'Table') ? document.getElementById('tableSelect').value : document.getElementById('carInput').value.trim();
+        let spotValue = "";
+        if (orderMode === 'Table') spotValue = document.getElementById('tableSelect').value;
+        else if (orderMode === 'Car') spotValue = document.getElementById('carInput').value.trim();
+        else spotValue = document.getElementById('customerName').value.trim();
+
         let totalItemsCount = selectedItemsList.length;
-        let packagingCost = (orderMode === 'Car') ? (totalItemsCount * 20) : 0;
+        let packagingCost = (orderMode === 'Car' || orderMode === 'Packing') ? (totalItemsCount * 20) : 0;
         let finalBillAmount = foodTotal + packagingCost;
 
         let upiId = "merchant@upi"; 
