@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Hakka Bakka Cafe | Premium Fast Food & Cafe</title>
 
-<meta name="theme-color" content="#f0b44c">
+<meta name="description" content="Hakka Bakka Cafe Jalandhar Premium Fast Food & Cafe Experience">
+<meta name="theme-color" content="#D4AF37">
 
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="logo.jpg">
@@ -18,29 +17,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
-
-/* ===============================
-THEME
-=============================== */
-
 :root{
-
---primary:#c96b2c;
---secondary:#8b3f16;
---gold:#f0b44c;
-
---bg:#0f0b08;
---card:#1a1410;
-
---text:#f5f0ea;
---white:#ffffff;
-
+--gold:#D4AF37;
+--olive:#556B2F;
+--bg:#0b0b0b;
+--card:#161616;
+--text:#f0f0f0;
 }
-
-
-/* ===============================
-GLOBAL
-=============================== */
 
 *{
 margin:0;
@@ -49,603 +32,271 @@ box-sizing:border-box;
 }
 
 body{
-
 font-family:'Outfit',sans-serif;
-
 background:var(--bg);
-
 color:var(--text);
-
-overflow-x:hidden;
-
 padding-bottom:120px;
-
+overflow-x:hidden;
 }
 
-
-/* ===============================
-HERO
-=============================== */
-
 .hero{
-
 min-height:75vh;
-
 display:flex;
 align-items:center;
 justify-content:center;
-
 text-align:center;
-
 padding:40px 20px;
-
 background:
-linear-gradient(rgba(0,0,0,.78),rgba(0,0,0,.92)),
-url('logo.jpg');
-
-background-size:cover;
-background-position:center;
-
+linear-gradient(rgba(0,0,0,.82),rgba(0,0,0,.9)),
+url('logo.jpg') center/cover;
 }
 
 .hero h1{
-
 font-size:clamp(3rem,9vw,6rem);
-
-font-weight:800;
-
-letter-spacing:4px;
-
 color:var(--gold);
-
+letter-spacing:4px;
 }
 
 .hero p{
-
 margin-top:20px;
-
 font-size:1.1rem;
-
 line-height:1.8;
-
 max-width:700px;
-
 margin-inline:auto;
-
 }
 
 .hero-btn{
-
 display:inline-block;
-
 margin-top:30px;
-
-padding:16px 32px;
-
-border-radius:14px;
-
-background:
-linear-gradient(
-135deg,
-var(--primary),
-var(--gold)
-);
-
+background:linear-gradient(135deg,var(--gold),#b89224);
 color:black;
-
+padding:16px 32px;
+border-radius:14px;
 font-weight:800;
-
 text-decoration:none;
-
 }
-
-
-/* ===============================
-CONTAINER
-=============================== */
 
 .container{
-
 width:min(1200px,92%);
-
 margin:auto;
-
 }
 
-
-/* ===============================
-ORDER BOX
-=============================== */
-
 .order-box{
-
 background:var(--card);
-
 padding:25px;
-
 border-radius:20px;
-
 margin-top:-50px;
-
 position:relative;
-
 z-index:10;
-
-border:1px solid rgba(240,180,76,.18);
-
+border:1px solid rgba(212,175,55,.2);
 }
 
 .order-box h2{
-
 text-align:center;
-
 margin-bottom:20px;
-
 }
 
-
-/* ===============================
-RADIO
-=============================== */
-
 .radio-group{
-
 display:flex;
-
 justify-content:center;
-
 gap:15px;
-
 flex-wrap:wrap;
-
 }
 
 .radio-group label{
-
-background:#211711;
-
+background:#222;
 padding:12px 18px;
-
 border-radius:12px;
-
 cursor:pointer;
-
 }
 
-
-/* ===============================
-INPUTS
-=============================== */
-
-input,
-select{
-
+input,select{
 width:100%;
-
 padding:14px;
-
 border-radius:12px;
-
-border:1px solid #2f2118;
-
-background:#211711;
-
+border:1px solid #333;
+background:#222;
 color:white;
-
 margin-top:15px;
-
 font-family:inherit;
-
-outline:none;
-
 }
-
-.hidden{
-
-display:none;
-
-}
-
-
-/* ===============================
-WARNING
-=============================== */
-
-.warning{
-
-color:#ff7474;
-
-margin-top:10px;
-
-font-size:.95rem;
-
-font-weight:600;
-
-}
-
-
-/* ===============================
-TITLE
-=============================== */
 
 .section-title{
-
 margin:60px 0 25px;
-
 padding-left:15px;
-
 border-left:5px solid var(--gold);
-
 font-size:2rem;
-
 }
-
-
-/* ===============================
-GRID
-=============================== */
 
 .grid{
-
 display:grid;
-
-grid-template-columns:
-repeat(auto-fit,minmax(300px,1fr));
-
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
 gap:25px;
-
 }
 
-
-/* ===============================
-CARD
-=============================== */
-
 .card{
-
 background:var(--card);
-
 border-radius:20px;
-
 overflow:hidden;
-
-border:1px solid #2c1d14;
-
-transition:.35s;
-
+border:1px solid #222;
+transition:.3s;
 }
 
 .card:hover{
-
-transform:translateY(-8px);
-
+transform:translateY(-6px);
 border-color:var(--gold);
-
 }
 
 .card img{
-
 width:100%;
-
 height:230px;
-
 object-fit:cover;
-
 }
 
 .card-content{
-
 padding:20px;
-
 }
 
 .card h3{
-
 margin-bottom:15px;
-
 font-size:1.4rem;
-
 }
 
-
-/* ===============================
-PRICE ROW
-=============================== */
-
 .price-row{
-
 display:flex;
-
 justify-content:space-between;
-
 align-items:center;
-
 margin-top:15px;
-
 }
 
 .price{
-
-font-size:1.5rem;
-
+font-size:1.4rem;
 font-weight:800;
-
 color:var(--gold);
-
 }
 
-
-/* ===============================
-QTY
-=============================== */
-
 .qty-box{
-
 display:flex;
-
 align-items:center;
-
 gap:10px;
-
 }
 
 .qty-btn{
-
-width:42px;
-height:42px;
-
+width:40px;
+height:40px;
 border:none;
-
-border-radius:12px;
-
-background:var(--primary);
-
+border-radius:10px;
+background:var(--olive);
 color:white;
-
 font-size:1.2rem;
-
-font-weight:800;
-
+font-weight:700;
 cursor:pointer;
-
 }
 
 .qty{
-
 font-size:1.2rem;
-
 font-weight:700;
-
 min-width:20px;
-
 text-align:center;
-
 }
 
-
-/* ===============================
-BOTTOM BAR
-=============================== */
-
 .bottom-bar{
-
 position:fixed;
-
 bottom:0;
 left:0;
 right:0;
-
-background:rgba(15,11,8,.95);
-
+background:rgba(10,10,10,.95);
 padding:18px;
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
 border-top:2px solid var(--gold);
-
+display:flex;
+justify-content:space-between;
+align-items:center;
 z-index:999;
-
-backdrop-filter:blur(14px);
-
+backdrop-filter:blur(12px);
 }
 
 .total-price{
-
 font-size:2rem;
-
 font-weight:800;
-
 color:var(--gold);
-
 }
-
-
-/* ===============================
-PAY BTN
-=============================== */
 
 .pay-btn{
-
-background:
-linear-gradient(
-135deg,
-var(--primary),
-var(--gold)
-);
-
-color:black;
-
+background:linear-gradient(135deg,var(--gold),#b89224);
 border:none;
-
 padding:15px 28px;
-
 font-weight:800;
-
-font-size:1rem;
-
-border-radius:14px;
-
+border-radius:12px;
 cursor:pointer;
-
 }
 
-
-/* ===============================
-FOOTER
-=============================== */
-
 .footer{
-
 margin-top:70px;
-
 padding:60px 20px;
-
 text-align:center;
-
-background:#090604;
-
+background:#050505;
 }
 
 .address{
-
 margin:20px auto;
-
-padding:16px;
-
+padding:15px;
 max-width:700px;
-
-background:rgba(201,107,44,.08);
-
+background:rgba(85,107,47,.12);
+border:1px solid rgba(212,175,55,.2);
 border-radius:12px;
-
 line-height:1.8;
-
 }
 
 .whatsapp-btn{
-
 display:inline-block;
-
 margin-top:15px;
-
 background:#25D366;
-
 color:white;
-
-padding:14px 30px;
-
+padding:14px 28px;
 border-radius:30px;
-
 text-decoration:none;
-
 font-weight:700;
-
 }
 
-
-/* ===============================
-MOBILE
-=============================== */
+.hidden{
+display:none;
+}
 
 @media(max-width:768px){
-
 .bottom-bar{
-
 flex-direction:column;
-
 gap:15px;
-
 }
 
 .pay-btn{
-
 width:100%;
-
 }
-
-.hero h1{
-
-font-size:3rem;
-
-letter-spacing:2px;
-
 }
-
-}
-
 </style>
-
 </head>
-
 <body>
 
-
-<!-- ===============================
-HERO
-=============================== -->
-
 <section class="hero">
-
 <div>
-
 <h1>HAKKA BAKKA CAFE</h1>
-
-<p>
-Premium Fast Food, Tandoor,
-Kulhad Tea & Cafe Experience
-</p>
-
-<a href="#menu" class="hero-btn">
-Explore Menu
-</a>
-
+<p>Premium Fast Food, Tandoor, Chaat, Kulhad Tea & Gourmet Cafe Experience</p>
+<a href="#menu" class="hero-btn">Explore Menu</a>
 </div>
-
 </section>
-
-
 
 <div class="container">
 
-
-<!-- ===============================
-ORDER BOX
-=============================== -->
-
 <div class="order-box">
-
 <h2>Select Serving Mode</h2>
 
 <div class="radio-group">
-
-<label>
-<input type="radio" name="orderType" value="Table" checked>
-Table
-</label>
-
-<label>
-<input type="radio" name="orderType" value="Car">
-Car
-</label>
-
-<label>
-<input type="radio" name="orderType" value="Packing">
-Takeaway
-</label>
-
+<label><input type="radio" name="orderType" value="Table" checked> Table Order</label>
+<label><input type="radio" name="orderType" value="Car"> Car Order</label>
+<label><input type="radio" name="orderType" value="Packing"> Takeaway</label>
 </div>
 
-
 <select id="tableSelect">
-
-<option value="">
-Choose Table Number
-</option>
-
+<option value="">Choose Table Number</option>
 <option>Table 1</option>
 <option>Table 2</option>
 <option>Table 3</option>
@@ -656,132 +307,56 @@ Choose Table Number
 <option>Table 8</option>
 <option>Table 9</option>
 <option>Table 10</option>
-
 </select>
 
-
-<div id="carSection" class="hidden">
-
-<input
-type="text"
-id="carInput"
-placeholder="Enter Car Number"
+<input type="text" id="carInput" class="hidden" placeholder="Enter Car Number"
 maxlength="10"
-style="text-transform:uppercase;"
->
-
-<p class="warning">
-⚠️ Serve Only Cafe Parking Premises
-</p>
-
-</div>
-
+style="text-transform:uppercase;">
 
 <div id="packingFields" class="hidden">
-
-<input
-type="text"
-id="customerName"
-placeholder="Enter Your Name"
->
-
-<input
-type="tel"
-id="customerPhone"
-placeholder="Enter Mobile Number"
->
-
+<input type="text" id="customerName" placeholder="Enter Your Name">
+<input type="tel" id="customerPhone" placeholder="Enter Mobile Number">
+</div>
 </div>
 
-</div>
-
-
-
-<!-- ===============================
-MENU
-=============================== -->
-
-<h2 class="section-title" id="menu">
-Popular Menu
-</h2>
+<h2 class="section-title" id="menu">Popular Menu</h2>
 
 <div class="grid" id="menuGrid"></div>
 
 </div>
 
-
-
-<!-- ===============================
-BOTTOM BAR
-=============================== -->
-
 <div class="bottom-bar">
-
 <div>
-
 <div>Total Bill</div>
-
-<div class="total-price" id="totalPrice">
-₹0
-</div>
-
+<div class="total-price" id="totalPrice">₹0</div>
 </div>
 
 <button class="pay-btn" onclick="executeOrderAndPayment()">
-
 Place Order & Pay
-
 </button>
-
 </div>
 
-
-
-<!-- ===============================
-FOOTER
-=============================== -->
-
 <footer class="footer">
-
 <h2>Hakka Bakka Cafe</h2>
 
 <div class="address">
-
-📍 SHOP No 1,
-Nr CANAL Road,
-Opp Maqsudan Byepass,
-G T Road,
-Jalandhar
-
+📍 SHOP No 1, Nr CANAL Road, Opp Maqsudan Byepass, G T Road, Jalandhar
 </div>
 
-<a
-href="https://wa.me/917796631555"
-target="_blank"
-class="whatsapp-btn"
->
-
+<a href="https://wa.me/917796631555" target="_blank" class="whatsapp-btn">
 Chat With Us
-
 </a>
 
 <p style="margin-top:20px;color:#666;">
-
 © 2026 Hakka Bakka Cafe
-
 </p>
-
 </footer>
-
-
 
 <script>
 
-/* ===============================
-MENU ITEMS
-=============================== */
-
 const menuItems = [
+
+// STARTERS
 
 {
 name:'Gourmet Pizza',
@@ -794,7 +369,7 @@ variants:[
 },
 
 {
-name:'Cheese Chilli',
+name:'Cheese Chilli Paneer',
 image:'cheeschilli.png',
 variants:[
 {label:'Half',price:180},
@@ -839,6 +414,148 @@ variants:[
 },
 
 {
+name:'Spring Roll',
+image:'springroll.png',
+variants:[
+{label:'Veg',price:120},
+{label:'Paneer',price:150}
+]
+},
+
+{
+name:'Creamy Pasta',
+image:'pasta.png',
+variants:[
+{label:'White Sauce',price:160},
+{label:'Red Sauce',price:150}
+]
+},
+
+{
+name:'Loaded Waffle',
+image:'waffle.png',
+variants:[
+{label:'Chocolate',price:130},
+{label:'Oreo',price:150}
+]
+},
+
+// TANDOOR
+
+{
+name:'Tandoori Chicken',
+image:'tandoorichicken.png',
+variants:[
+{label:'Quarter',price:240},
+{label:'Half',price:420},
+{label:'Full',price:780}
+]
+},
+
+{
+name:'Mutton Rogan Josh',
+image:'roganjosh.png',
+variants:[
+{label:'Quarter',price:350},
+{label:'Half',price:620},
+{label:'Full',price:1100}
+]
+},
+
+{
+name:'Chicken Tikka',
+image:'tandoorickntikka.png',
+variants:[
+{label:'Spicy',price:220},
+{label:'Malai',price:250}
+]
+},
+
+{
+name:'Seekh Kabab',
+image:'kabab.png',
+variants:[
+{label:'Chicken',price:190},
+{label:'Mutton',price:260}
+]
+},
+
+{
+name:'Tandoori Mutton Chops',
+image:'tandoorimutton.png',
+variants:[
+{label:'Half',price:380},
+{label:'Full',price:690}
+]
+},
+
+{
+name:'Desi Mutton Curry',
+image:'muttoncurpng',
+variants:[
+{label:'Quarter',price:320},
+{label:'Half',price:580},
+{label:'Full',price:1000}
+]
+},
+
+// CHAAT & SOUTH INDIAN
+
+{
+name:'Crisp Golgappe',
+image:'panipuri.png',
+variants:[
+{label:'6 Pcs',price:50}
+]
+},
+
+{
+name:'Papdi Bhalla Chaat',
+image:'bhallachat.png',
+variants:[
+{label:'Papdi',price:80},
+{label:'Bhalla',price:90}
+]
+},
+
+{
+name:'Tikki Chaat',
+image:'tikkichat.png',
+variants:[
+{label:'1 Pc',price:70},
+{label:'2 Pc',price:110}
+]
+},
+
+{
+name:'Masala Dosa',
+image:'dosa.png',
+variants:[
+{label:'Plain',price:110},
+{label:'Masala',price:140},
+{label:'Paneer',price:170}
+]
+},
+
+{
+name:'Idli Sambar',
+image:'idli.png',
+variants:[
+{label:'2 Pc',price:60}
+]
+},
+
+{
+name:'Indori Poha',
+image:'bhallachat.png',
+variants:[
+{label:'Regular',price:50}
+]
+},
+
+// DRINKS
+
+{
 name:'Kulhad Tea',
 image:'kuladtea.png',
 variants:[
@@ -855,10 +572,64 @@ variants:[
 },
 
 {
+name:'Classic Coffee',
+image:'coffee.png',
+variants:[
+{label:'Espresso',price:60},
+{label:'Latte',price:80}
+]
+},
+
+{
+name:'Couple Coffee',
+image:'couplecoffee.png',
+variants:[
+{label:'Combo',price:140}
+]
+},
+
+{
+name:'Punjabi Lassi',
+image:'sweetlassi.png',
+variants:[
+{label:'Sweet',price:70}
+]
+},
+
+{
+name:'Punjabi Chach',
+image:'chach.png',
+variants:[
+{label:'Salty',price:40}
+]
+},
+
+{
+name:'Mojito',
+image:'mojitoo.png',
+variants:[
+{label:'Mint',price:90},
+{label:'Watermelon',price:110},
+{label:'Green Apple',price:110}
+]
+},
+
+{
 name:'Cold Coffee Shake',
 image:'coffeeshake.png',
 variants:[
-{label:'Classic',price:100}
+{label:'Cold Coffee',price:100},
+{label:'Oreo',price:120},
+{label:'Chocolate',price:130}
+]
+},
+
+{
+name:'Cold Drink',
+image:'cold_drink.png',
+variants:[
+{label:'Can',price:40},
+{label:'Small Bottle',price:20}
 ]
 },
 
@@ -872,180 +643,93 @@ variants:[
 
 ];
 
-
-/* ===============================
-GLOBAL
-=============================== */
-
-const menuGrid =
-document.getElementById('menuGrid');
-
-const totalPrice =
-document.getElementById('totalPrice');
+const menuGrid = document.getElementById('menuGrid');
+const totalPrice = document.getElementById('totalPrice');
 
 let cart = [];
-
 let total = 0;
-
-
-/* ===============================
-RENDER MENU
-=============================== */
 
 function renderMenu(){
 
-menuItems.forEach((item)=>{
+menuItems.forEach((item,index)=>{
 
-const card =
-document.createElement('div');
-
+const card = document.createElement('div');
 card.className='card';
 
-const options =
-item.variants.map(v=>
+const options = item.variants.map(v=>`
+<option value="${v.price}">${v.label} - ₹${v.price}</option>
+`).join('');
 
-`
-<option value="${v.price}">
-${v.label} - ₹${v.price}
-</option>
-`
-
-).join('');
-
-card.innerHTML=
-
-`
-<img src="${item.image}" alt="${item.name}">
+card.innerHTML=`
+<img src="${item.image}" loading="lazy" alt="${item.name}">
 
 <div class="card-content">
-
 <h3>${item.name}</h3>
 
 <select class="variant-select">
-
 ${options}
-
 </select>
 
 <div class="price-row">
-
-<div class="price">
-₹${item.variants[0].price}
-</div>
+<div class="price">₹${item.variants[0].price}</div>
 
 <div class="qty-box">
-
-<button class="qty-btn minus">
--
-</button>
-
-<div class="qty">
-0
+<button class="qty-btn minus">-</button>
+<div class="qty">0</div>
+<button class="qty-btn plus">+</button>
 </div>
-
-<button class="qty-btn plus">
-+
-</button>
-
 </div>
-
-</div>
-
 </div>
 `;
 
-const select =
-card.querySelector('.variant-select');
-
-const price =
-card.querySelector('.price');
-
-const qty =
-card.querySelector('.qty');
-
-const plus =
-card.querySelector('.plus');
-
-const minus =
-card.querySelector('.minus');
+const select = card.querySelector('.variant-select');
+const price = card.querySelector('.price');
+const qty = card.querySelector('.qty');
+const plus = card.querySelector('.plus');
+const minus = card.querySelector('.minus');
 
 let quantity = 0;
 
-
-/* ===============================
-CHANGE PRICE
-=============================== */
-
 select.addEventListener('change',()=>{
-
-price.innerText =
-'₹'+select.value;
-
+price.innerText='₹'+select.value;
 });
-
-
-/* ===============================
-PLUS
-=============================== */
 
 plus.addEventListener('click',()=>{
 
 quantity++;
+qty.innerText=quantity;
 
-qty.innerText = quantity;
-
-const selectedPrice =
-Number(select.value);
-
-const selectedText =
-select.options[
-select.selectedIndex
-].text;
+const selectedPrice = Number(select.value);
+const selectedText = select.options[select.selectedIndex].text;
 
 cart.push({
-
 name:item.name,
 variant:selectedText,
 price:selectedPrice
-
 });
 
 total += selectedPrice;
-
 updateTotal();
 
 });
-
-
-/* ===============================
-MINUS
-=============================== */
 
 minus.addEventListener('click',()=>{
 
 if(quantity<=0)return;
 
 quantity--;
+qty.innerText=quantity;
 
-qty.innerText = quantity;
-
-const selectedPrice =
-Number(select.value);
+const selectedPrice = Number(select.value);
 
 total -= selectedPrice;
 
-if(total<0){
-
-total=0;
-
-}
+if(total<0)total=0;
 
 cart.pop();
-
 updateTotal();
 
 });
-
 
 menuGrid.appendChild(card);
 
@@ -1053,42 +737,18 @@ menuGrid.appendChild(card);
 
 }
 
-renderMenu();
-
-
-/* ===============================
-TOTAL
-=============================== */
-
 function updateTotal(){
 
-totalPrice.innerText =
-'₹'+total;
+totalPrice.innerText='₹'+total;
 
 }
 
+renderMenu();
 
-/* ===============================
-ORDER MODE
-=============================== */
-
-const orderInputs =
-document.querySelectorAll(
-'input[name="orderType"]'
-);
-
-const tableSelect =
-document.getElementById('tableSelect');
-
-const carSection =
-document.getElementById('carSection');
-
-const carInput =
-document.getElementById('carInput');
-
-const packingFields =
-document.getElementById('packingFields');
-
+const orderInputs = document.querySelectorAll('input[name="orderType"]');
+const tableSelect = document.getElementById('tableSelect');
+const carInput = document.getElementById('carInput');
+const packingFields = document.getElementById('packingFields');
 
 orderInputs.forEach(input=>{
 
@@ -1097,9 +757,7 @@ input.addEventListener('change',()=>{
 if(input.value==='Table'){
 
 tableSelect.classList.remove('hidden');
-
-carSection.classList.add('hidden');
-
+carInput.classList.add('hidden');
 packingFields.classList.add('hidden');
 
 }
@@ -1107,9 +765,7 @@ packingFields.classList.add('hidden');
 if(input.value==='Car'){
 
 tableSelect.classList.add('hidden');
-
-carSection.classList.remove('hidden');
-
+carInput.classList.remove('hidden');
 packingFields.classList.add('hidden');
 
 }
@@ -1117,9 +773,7 @@ packingFields.classList.add('hidden');
 if(input.value==='Packing'){
 
 tableSelect.classList.add('hidden');
-
-carSection.classList.add('hidden');
-
+carInput.classList.add('hidden');
 packingFields.classList.remove('hidden');
 
 }
@@ -1128,247 +782,134 @@ packingFields.classList.remove('hidden');
 
 });
 
-
-/* ===============================
-CAR NUMBER
-=============================== */
-
 carInput.addEventListener('input',()=>{
 
-carInput.value =
-
-carInput.value
+carInput.value = carInput.value
 .toUpperCase()
 .replace(/[^A-Z0-9]/g,'')
 .slice(0,10);
 
 });
 
-
-/* ===============================
-PAYMENT
-=============================== */
-
 function executeOrderAndPayment(){
 
 if(cart.length===0){
-
 alert('Please add items first');
-
 return;
-
 }
 
-const orderMode =
-
-document.querySelector(
-'input[name="orderType"]:checked'
-).value;
+const orderMode = document.querySelector('input[name="orderType"]:checked').value;
 
 let details='';
-
-
-/* ===============================
-DETAILS
-=============================== */
 
 if(orderMode==='Table'){
 
 if(!tableSelect.value){
-
 alert('Please select table number');
-
 return;
-
 }
 
-details='Inside Cafe';
+details=tableSelect.value;
 
 }
 
 if(orderMode==='Car'){
 
 if(!carInput.value.trim()){
-
 alert('Please enter car number');
-
 return;
-
 }
 
-details=
-carInput.value
-.trim()
-.toUpperCase();
+details=carInput.value.trim().toUpperCase();
 
 }
 
 if(orderMode==='Packing'){
 
-const name =
-document.getElementById(
-'customerName'
-).value.trim();
-
-const phone =
-document.getElementById(
-'customerPhone'
-).value.trim();
+const name = document.getElementById('customerName').value.trim();
+const phone = document.getElementById('customerPhone').value.trim();
 
 if(!name || !phone){
-
-alert(
-'Please enter name and mobile number'
-);
-
+alert('Please enter name and mobile number');
 return;
+}
+
+details=`${name} (${phone})`;
 
 }
 
-details=
-`${name} (${phone})`;
+const paymentRef = 'HB' + Date.now().toString().slice(-6);
 
-}
+let whatsappText = 
+`✨ *WELCOME TO HAKKA BAKKA CAFE* ✨
 
+🙏 Thank you for your order.
 
-/* ===============================
-ORDER NUMBER
-=============================== */
+━━━━━━━━━━━━━━━
 
-const orderNumber =
-'HB' +
-Date.now()
-.toString()
-.slice(-6);
+📌 *ORDER DETAILS*
 
+🧾 Payment Ref:
+${paymentRef}
 
-/* ===============================
-PACKING CHARGES
-=============================== */
+🍽️ Order Type:
+${orderMode}
 
-let packingCharges = 0;
+📍 Serving Details:
+${details}
 
-if(orderMode==='Car' ||
-orderMode==='Packing'){
+━━━━━━━━━━━━━━━
 
-cart.forEach(item=>{
+🛒 *ITEMS ORDERED*
 
-if(
-
-item.name.includes('Pizza') ||
-item.name.includes('Cheese') ||
-item.name.includes('Honey') ||
-item.name.includes('Noodles') ||
-item.name.includes('Momos') ||
-item.name.includes('Fries')
-
-){
-
-packingCharges += 15;
-
-}
-
-});
-
-}
-
-const finalTotal =
-total + packingCharges;
-
-
-/* ===============================
-ITEMS LIST
-=============================== */
-
-let cartItems='';
+`;
 
 cart.forEach((item,index)=>{
 
-cartItems +=
-
+whatsappText += 
 `${index+1}. ${item.name}
-₹${item.price}
+   ${item.variant}
+   ₹${item.price}
 
 `;
 
 });
 
+whatsappText += 
+`━━━━━━━━━━━━━━━
 
-/* ===============================
-WHATSAPP
-=============================== */
+💰 *TOTAL BILL*
+₹${total}
 
-let whatsappText =
+✅ Payment Mode:
+UPI Payment
 
-`✨ *HAKKA BAKKA*
+⏳ Please wait while your delicious order is being prepared.
 
-🧾 ${orderNumber}
-🍽️ ${orderMode}
-📍 ${details}
+❤️ Thank you for choosing
+*Hakka Bakka Cafe*
 
-🛒 ${cartItems}
-
-💰 Food ₹${total}
-📦 Pack ₹${packingCharges}
-
-💵 *₹${finalTotal}*
-
-✅ UPI Paid
-
-❤️ Thank You`;
+📍 Jalandhar
+`;
 
 window.open(
-
 `https://wa.me/917796631555?text=${encodeURIComponent(whatsappText)}`,
-
 '_blank'
-
 );
-
-
-/* ===============================
-PAYMENT NOTE
-=============================== */
 
 let shortCode='TO';
 
-if(orderMode==='Car'){
+if(orderMode==='Car') shortCode='CO';
+if(orderMode==='Packing') shortCode='TA';
 
-shortCode='CO';
+const paymentNote=`HakkaBakka ${shortCode}`;
 
-}
+const upiId='7888854492@icici';
+const merchant='Hakka Bakka Cafe';
 
-if(orderMode==='Packing'){
+const upiLink=`upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchant)}&am=${total}&cu=INR&tn=${encodeURIComponent(paymentNote)}`;
 
-shortCode='TA';
-
-}
-
-const paymentNote =
-`HakkaBakka ${shortCode}`;
-
-
-/* ===============================
-UPI
-=============================== */
-
-const upiId=
-'7888854492@icici';
-
-const merchant=
-'Hakka Bakka Cafe';
-
-const upiLink=
-
-`upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchant)}&am=${finalTotal}&cu=INR&tn=${encodeURIComponent(paymentNote)}`;
-
-
-/* ===============================
-QR MODAL
-=============================== */
-
-const modal =
-document.createElement('div');
+const modal = document.createElement('div');
 
 modal.style.position='fixed';
 modal.style.inset='0';
@@ -1378,82 +919,21 @@ modal.style.justifyContent='center';
 modal.style.alignItems='center';
 modal.style.zIndex='99999';
 
-modal.innerHTML=
+modal.innerHTML=`
+<div style="background:#161616;padding:30px;border-radius:20px;width:92%;max-width:420px;text-align:center;border:2px solid #D4AF37;">
 
-`
-<div style="
-background:#161616;
-padding:30px;
-border-radius:20px;
-width:92%;
-max-width:420px;
-text-align:center;
-border:2px solid #D4AF37;
-">
+<h2 style="color:#D4AF37;margin-bottom:20px;">Scan & Pay</h2>
 
-<h2 style="
-color:#D4AF37;
-margin-bottom:20px;
-">
+<h1 style="font-size:3rem;margin-bottom:20px;">₹${total}</h1>
 
-Scan & Pay
+<div id="qrCode" style="background:white;padding:15px;border-radius:15px;display:inline-block;"></div>
 
-</h2>
-
-<h1 style="
-font-size:3rem;
-margin-bottom:20px;
-color:white;
-">
-
-₹${finalTotal}
-
-</h1>
-
-<div id="qrCode"
-style="
-background:white;
-padding:15px;
-border-radius:15px;
-display:inline-block;
-"></div>
-
-<button
-id="openApps"
-
-style="
-width:100%;
-margin-top:20px;
-padding:16px;
-border:none;
-border-radius:12px;
-background:
-linear-gradient(
-135deg,
-#c96b2c,
-#f0b44c
-);
-font-weight:800;
-cursor:pointer;
-">
-
+<button id="openApps" style="width:100%;margin-top:20px;padding:16px;border:none;border-radius:12px;background:linear-gradient(135deg,#D4AF37,#b89224);font-weight:800;cursor:pointer;">
 Open Any UPI App
-
 </button>
 
-<button
-id="closeModal"
-
-style="
-margin-top:18px;
-background:none;
-border:none;
-color:#999;
-cursor:pointer;
-">
-
+<button id="closeModal" style="margin-top:18px;background:none;border:none;color:#999;cursor:pointer;">
 Cancel
-
 </button>
 
 </div>
@@ -1461,72 +941,34 @@ Cancel
 
 document.body.appendChild(modal);
 
-
-/* ===============================
-GENERATE QR
-=============================== */
-
-new QRCode(
-
-document.getElementById('qrCode'),
-
-{
-
+new QRCode(document.getElementById('qrCode'),{
 text:upiLink,
 width:220,
 height:220
+});
 
+
+document.getElementById('openApps').addEventListener('click',()=>{
+
+if(/Android/i.test(navigator.userAgent)){
+location.href = upiLink;
+}else{
+alert('Please scan QR using any UPI app');
 }
-
-);
-
-
-/* ===============================
-OPEN UPI
-=============================== */
-
-document
-.getElementById('openApps')
-
-.addEventListener('click',()=>{
-
-window.open(
-upiLink,
-'_self'
-);
 
 });
 
 
-/* ===============================
-CLOSE
-=============================== */
-
-document
-.getElementById('closeModal')
-
-.addEventListener('click',()=>{
-
+document.getElementById('closeModal').addEventListener('click',()=>{
 modal.remove();
-
 });
 
 }
-
-
-/* ===============================
-SERVICE WORKER
-=============================== */
 
 if('serviceWorker' in navigator){
-
 window.addEventListener('load',()=>{
-
-navigator.serviceWorker
-.register('./sw.js');
-
+navigator.serviceWorker.register('./sw.js');
 });
-
 }
 
 </script>
