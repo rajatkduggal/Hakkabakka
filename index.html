@@ -2,14 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hakka Bakka Cafe | Premium Digital Menu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     
+    <title>Hakka Bakka Cafe | Premium Digital Menu Card Jalandhar</title>
+    <meta name="description" content="Order premium fast food, authentic tandoori delights, and crispy chaat online from Hakka Bakka Cafe, Jalandhar. Scan, select your table or car, and pay instantly via UPI.">
+    <meta name="keywords" content="Hakka Bakka Cafe, Digital Menu Jalandhar, Cafe in Maqsudan, Best Fast Food Jalandhar, Tandoori Chicken Jalandhar, Online Food Order Jalandhar">
+    <meta name="author" content="Hakka Bakka Cafe">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.hakkabakka.in/">
+    <meta property="og:title" content="Hakka Bakka Cafe | Premium Digital Menu">
+    <meta property="og:description" content="Craving something delicious? Explore our digital menu and order instantly from your table or car!">
+    <meta property="og:image" content="logo.jpg">
+
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#D4AF37">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="logo.jpg">
+    <link rel="icon" type="image/png" href="logo.jpg">
 
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -17,9 +29,9 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                .then(reg => console.log('Hakka Bakka App Engine Synced Successfully!', reg))
-                .catch(err => console.log('App Sync Failed:', err));
+                navigator.serviceWorker.register('./sw.js?v=1.0.2') // App versioning strategy implemented
+                .then(reg => console.log('Hakka Bakka Sync Engine Online!', reg))
+                .catch(err => console.log('Sync Engine Offline:', err));
             });
         }
     </script>   
@@ -39,10 +51,9 @@
             background-color: var(--bg);
             color: var(--text);
             margin: 0;
-            padding-bottom: 140px;
+            padding-bottom: calc(140px + env(safe-area-inset-bottom)); /* Dynamic Safe Area Control for iOS/Android */
         }
 
-        /* NEW NEW PRESTIGE HERO DESIGN INTEGRATED */
         .hero-header {
             position: relative;
             min-height: 72vh;
@@ -127,7 +138,6 @@
             transform: translateY(-5px);
         }
 
-        /* 3-WAY SERVING CONTAINER CONTROL */
         .order-type-container {
             max-width: 600px;
             margin: -40px auto 40px auto;
@@ -305,6 +315,34 @@
             color: black;
         }
 
+        .quantity-controls {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            background: #222;
+            border: 1px solid var(--gold);
+            padding: 5px 12px;
+            border-radius: 8px;
+        }
+
+        .qty-btn {
+            background: transparent;
+            border: none;
+            color: var(--gold);
+            font-size: 1.3rem;
+            font-weight: 800;
+            cursor: pointer;
+            padding: 0 5px;
+        }
+
+        .qty-val {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+            min-width: 20px;
+            text-align: center;
+        }
+
         .bottom-bar {
             position: fixed;
             bottom: 0;
@@ -314,6 +352,7 @@
             backdrop-filter: blur(15px);
             border-top: 2px solid var(--gold);
             padding: 20px;
+            padding-bottom: calc(20px + env(safe-area-inset-bottom));
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -324,11 +363,29 @@
             box-shadow: 0 -10px 30px rgba(0,0,0,0.7);
         }
 
+        .total-info h4 {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #aaa;
+            text-transform: uppercase;
+        }
+
         .total-info p {
             margin: 3px 0 0;
             font-size: 1.8rem;
             font-weight: 800;
             color: var(--gold);
+        }
+
+        .cart-count-badge {
+            background: var(--alert);
+            color: white;
+            font-size: 0.8rem;
+            padding: 2px 7px;
+            border-radius: 10px;
+            margin-left: 5px;
+            vertical-align: middle;
+            font-weight: 700;
         }
 
         .pay-btn {
@@ -358,12 +415,44 @@
         .modal-content {
             background: var(--card);
             border: 2px solid var(--gold);
-            padding: 30px 40px;
+            padding: 25px;
             border-radius: 20px;
             text-align: center;
             max-width: 450px;
             width: 90%;
             box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .modal-item-summary {
+            text-align: left;
+            background: #222;
+            padding: 12px;
+            border-radius: 10px;
+            margin: 15px 0;
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid #333;
+        }
+
+        .modal-item-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            color: #ddd;
+            align-items: center;
+        }
+
+        .remove-summary-btn {
+            background: transparent;
+            border: none;
+            color: var(--alert);
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 10px;
+            font-size: 1.1rem;
         }
 
         .unified-pay-btn {
@@ -405,7 +494,6 @@
             border-top: 1px solid #222;
         }
 
-        /* CORE REQUESTED LOCATION ADDRESS BLOCK SETUP */
         .footer .address-block {
             color: #ffffff !important;
             font-weight: 600;
@@ -435,7 +523,7 @@
         @media(max-width:768px){
             .hero-header{ min-height:60vh; }
             .hero-header h1{ font-size:3.2rem; letter-spacing:2px; }
-            .hero-buttons{ display: none; } /* Disabled upar se fake redirection click */
+            .hero-buttons{ display: none; }
         }
     </style>
 </head>
@@ -456,9 +544,9 @@
 <div class="order-type-container" id="menuStart">
     <h3>Select Serving Mode</h3>
     <div class="radio-group">
-        <label><input type="radio" name="orderType" value="Table" checked onclick="switchSpotMode('Table')"> Table Order</label>
-        <label><input type="radio" name="orderType" value="Car" onclick="switchSpotMode('Car')"> Car Order</label>
-        <label><input type="radio" name="orderType" value="Packing" onclick="switchSpotMode('Packing')"> Take Away / Packing</label>
+        <label><input type="radio" name="orderType" value="Table" checked id="radioTable"> Table Order</label>
+        <label><input type="radio" name="orderType" value="Car" id="radioCar"> Car Order</label>
+        <label><input type="radio" name="orderType" value="Packing" id="radioPacking"> Take Away / Packing</label>
     </div>
     
     <div id="spotFieldContainer">
@@ -473,7 +561,7 @@
         <input type="text" id="carInput" class="input-field" placeholder="Enter Car Number (e.g. PB08-XXXX)" style="display:none;">
         <div id="packingInputs" style="display:none;">
             <input type="text" id="customerName" class="input-field" placeholder="Enter Your Name" style="margin-bottom:10px;"><br>
-            <input type="tel" id="customerPhone" class="input-field" placeholder="Enter Mobile Number">
+            <input type="tel" id="customerPhone" class="input-field" placeholder="Enter 10-Digit Mobile Number">
         </div>
     </div>
     <div id="carWarning" class="location-warning">⚠️ Notice: Car Serve Only Near to Restaurant Premises.</div>
@@ -482,444 +570,140 @@
 <div class="menu-section">
     <div class="category-title">Starters & Artisanal Pizza</div>
     <div class="grid">
-        <div class="card">
-            <img src="pizza.png" alt="Gourmet Pizza Burst">
+        <div class="card" data-id="pizza">
+            <img loading="lazy" src="pizza.png" alt="Hakka Bakka Gourmet Pizza Jalandhar">
             <div class="content">
                 <h3>Gourmet Pizza Burst</h3>
                 <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
+                    <select class="variant-select">
                         <option value="220" data-name="Pizza (Small)">Small - ₹220</option>
                         <option value="340" data-name="Pizza (Medium)">Medium - ₹340</option>
                         <option value="460" data-name="Pizza (Large)">Large - ₹460</option>
                     </select>
                 </div>
-                <div class="card-footer"><span class="price">₹220</span><button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button></div>
+                <div class="card-footer">
+                    <span class="price">₹220</span>
+                    <button class="add-btn">Add To Order</button>
+                    <div class="quantity-controls">
+                        <button class="qty-btn minus-btn">-</button>
+                        <span class="qty-val">0</span>
+                        <button class="qty-btn plus-btn">+</button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="card">
-            <img src="cheeschilli.png" alt="Cheese Chilli">
+        <div class="card" data-id="cheese_chilli">
+            <img loading="lazy" src="cheeschilli.png" alt="Hakka Bakka Paneer Cheese Chilli">
             <div class="content">
                 <h3>Cheese Chilli (Paneer)</h3>
                 <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
+                    <select class="variant-select">
                         <option value="180" data-name="Cheese Chilli (Half)">Half Portion - ₹180</option>
                         <option value="290" data-name="Cheese Chilli (Full)">Full Portion - ₹290</option>
                     </select>
                 </div>
-                <div class="card-footer"><span class="price">₹180</span><button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button></div>
+                <div class="card-footer">
+                    <span class="price">₹180</span>
+                    <button class="add-btn">Add To Order</button>
+                    <div class="quantity-controls">
+                        <button class="qty-btn minus-btn">-</button>
+                        <span class="qty-val">0</span>
+                        <button class="qty-btn plus-btn">+</button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="card">
-            <img src="hnychlyptato.png" alt="Honey Chilli Potato">
+        <div class="card" data-id="honey_potato">
+            <img loading="lazy" src="hnychlyptato.png" alt="Hakka Bakka Crispy Honey Chilli Potato">
             <div class="content">
                 <h3>Honey Chilli Potato</h3>
                 <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
+                    <select class="variant-select">
                         <option value="140" data-name="Honey Chilli Potato">Standard Portion - ₹140</option>
                     </select>
                 </div>
-                <div class="card-footer"><span class="price">₹140</span><button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button></div>
+                <div class="card-footer">
+                    <span class="price">₹140</span>
+                    <button class="add-btn">Add To Order</button>
+                    <div class="quantity-controls">
+                        <button class="qty-btn minus-btn">-</button>
+                        <span class="qty-val">0</span>
+                        <button class="qty-btn plus-btn">+</button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="card">
-            <img src="nudels.png" alt="Hakka Noodles">
+        <div class="card" data-id="noodles">
+            <img loading="lazy" src="nudels.png" alt="Hakka Bakka Special Veg Noodles">
             <div class="content">
                 <h3>Hakka Noodles Special</h3>
                 <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
+                    <select class="variant-select">
                         <option value="120" data-name="Hakka Noodles (Half)">Half Portion - ₹120</option>
                         <option value="200" data-name="Hakka Noodles (Full)">Full Portion - ₹200</option>
                     </select>
                 </div>
-                <div class="card-footer"><span class="price">₹120</span><button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="momos.png" alt="Momos Special">
-            <div class="content">
-                <h3>Momos Special</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="100" data-name="Steam Momos">Steam Momos - ₹100</option>
-                        <option value="130" data-name="Fried Momos">Fried Momos - ₹130</option>
-                        <option value="160" data-name="Tandoori Momos">Tandoori Momos - ₹160</option>
-                    </select>
+                <div class="card-footer">
+                    <span class="price">₹120</span>
+                    <button class="add-btn">Add To Order</button>
+                    <div class="quantity-controls">
+                        <button class="qty-btn minus-btn">-</button>
+                        <span class="qty-val">0</span>
+                        <button class="qty-btn plus-btn">+</button>
+                    </div>
                 </div>
-                <div class="card-footer"><span class="price">₹100</span><button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="fries.png" alt="French Fries">
-            <div class="content">
-                <h3>French Fries</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="90" data-name="Salted Fries">Classic Salted - ₹90</option>
-                        <option value="110" data-name="Peri-Peri Fries">Peri-Peri Dust - ₹110</option>
-                    </select>
-                </div>
-                <div class="card-footer"><span class="price">₹90</span><button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="springroll.png" alt="Spring Rolls Special">
-            <div class="content">
-                <h3>Spring Rolls Special</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="120" data-name="Veg Spring Roll">Veg Portion - ₹120</option>
-                        <option value="150" data-name="Paneer Spring Roll">Paneer Portion - ₹150</option>
-                    </select>
-                </div>
-                <div class="card-footer"><span class="price">₹120</span><button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="pasta.png" alt="Pasta">
-            <div class="content">
-                <h3>Creamy Pasta Mix</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="160" data-name="White Sauce Pasta">Creamy White Sauce - ₹160</option>
-                        <option value="150" data-name="Red Sauce Pasta">Tangy Red Sauce - ₹150</option>
-                    </select>
-                </div>
-                <div class="card-footer"><span class="price">₹160</span><button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="waffle.png" alt="Waffles">
-            <div class="content">
-                <h3>Loaded Waffles (Wofal)</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="130" data-name="Chocolate Waffle">Rich Chocolate - ₹130</option>
-                        <option value="150" data-name="Oreo IceCream Waffle">Oreo Ice Cream Scoop - ₹150</option>
-                    </select>
-                </div>
-                <div class="card-footer"><span class="price">₹130</span><button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button></div>
             </div>
         </div>
     </div>
 
     <div class="category-title">Tandoor & Non-Veg Special</div>
     <div class="grid">
-        <div class="card">
-            <img src="tandoorichicken.png" alt="Tandoori Chicken">
+        <div class="card" data-id="tandoori_chicken">
+            <img loading="lazy" src="tandoorichicken.png" alt="Hakka Bakka Authentic Tandoori Chicken Jalandhar">
             <div class="content">
                 <h3>Tandoori Chicken</h3>
                 <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
+                    <select class="variant-select">
                         <option value="240" data-name="Tandoori Chkn (Qtr)">Quarter - ₹240</option>
                         <option value="420" data-name="Tandoori Chkn (Half)">Half - ₹420</option>
                         <option value="780" data-name="Tandoori Chkn (Full)">Full - ₹780</option>
                     </select>
                 </div>
-                <div class="card-footer"><span class="price">₹240</span><button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="roganjosh.png" alt="Mutton Rogan Josh">
-            <div class="content">
-                <h3>Mutton Rogan Josh</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="350" data-name="Rogan Josh (Qtr)">Quarter - ₹350</option>
-                        <option value="620" data-name="Rogan Josh (Half)">Half - ₹620</option>
-                        <option value="1100" data-name="Rogan Josh (Full)">Full - ₹1100</option>
-                    </select>
+                <div class="card-footer">
+                    <span class="price">₹240</span>
+                    <button class="add-btn">Add To Order</button>
+                    <div class="quantity-controls">
+                        <button class="qty-btn minus-btn">-</button>
+                        <span class="qty-val">0</span>
+                        <button class="qty-btn plus-btn">+</button>
+                    </div>
                 </div>
-                <div class="card-footer"><span class="price">₹350</span><button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button></div>
             </div>
         </div>
 
-        <div class="card">
-            <img src="tandoorickntikka.png" alt="Chicken Tikka Platter">
-            <div class="content">
-                <h3>Chicken Tikka Platter</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="220" data-name="Spicy Chicken Tikka">Spicy Red Tikka - ₹220</option>
-                        <option value="250" data-name="Malai Chicken Tikka">Creamy Malai Tikka - ₹250</option>
-                    </select>
-                </div>
-                <div class="card-footer"><span class="price">₹220</span><button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="kabab.png" alt="Seekh Kabab Platter">
-            <div class="content">
-                <h3>Seekh Kababs Platter</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="190" data-name="Chicken Seekh Kebab">Chicken Seekh - ₹190</option>
-                        <option value="260" data-name="Mutton Seekh Kebab">Mutton Seekh - ₹260</option>
-                    </select>
-                </div>
-                <div class="card-footer"><span class="price">₹190</span><button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="tandoorimutton.png" alt="Tandoori Mutton Chops">
-            <div class="content">
-                <h3>Tandoori Mutton Chops</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="380" data-name="Mutton Chops (Half)">Half Portion - ₹380</option>
-                        <option value="690" data-name="Mutton Chops (Full)">Full Portion - ₹690</option>
-                    </select>
-                </div>
-                <div class="card-footer"><span class="price">₹380</span><button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="muttoncurpng" alt="Desi Mutton Curry">
+        <div class="card" data-id="mutton_curry">
+            <img loading="lazy" src="muttoncurry.png" alt="Hakka Bakka Desi Mutton Curry Special">
             <div class="content">
                 <h3>Desi Mutton Curry</h3>
                 <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
+                    <select class="variant-select">
                         <option value="320" data-name="Mutton Curry (Qtr)">Quarter - ₹320</option>
                         <option value="580" data-name="Mutton Curry (Half)">Half - ₹580</option>
                         <option value="1000" data-name="Mutton Curry (Full)">Full - ₹1000</option>
                     </select>
                 </div>
-                <div class="card-footer"><span class="price">₹320</span><button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="category-title">Chaat Corner & South Indian</div>
-    <div class="grid">
-        <div class="card">
-            <img src="panipuri.png" alt="Crisp Golgappe">
-            <div class="content">
-                <h3>Crisp Golgappe</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="50" data-name="Golgappe (6 Pcs)">6 Pieces Tray - ₹50</option>
-                    </select>
+                <div class="card-footer">
+                    <span class="price">₹320</span>
+                    <button class="add-btn">Add To Order</button>
+                    <div class="quantity-controls">
+                        <button class="qty-btn minus-btn">-</button>
+                        <span class="qty-val">0</span>
+                        <button class="qty-btn plus-btn">+</button>
+                    </div>
                 </div>
-                <div class="card-footer"><span class="price">₹50</span><button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="bhallachat.png" alt="Loaded Papdi Bhalla Chat">
-            <div class="content">
-                <h3>Loaded Papdi Bhalla Chaat</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="80" data-name="Papdi Chaat">Dahi Papdi Platter - ₹80</option>
-                        <option value="90" data-name="Bhalla Chaat">Dahi Bhalla Platter - ₹90</option>
-                    </select>
-                </div>
-                <div class="card-footer"><span class="price">₹80</span><button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="tikkichat.png" alt="Tikki Chaat">
-            <div class="content">
-                <h3>Kurkuri Tikki Chaat</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="70" data-name="Tikki Chaat (1 Pc)">1 Pc Setup - ₹70</option>
-                        <option value="110" data-name="Tikki Chaat (2 Pcs)">2 Pcs Double Dhamaka - ₹110</option>
-                    </select>
-                </div>
-                <div class="card-footer"><span class="price">₹70</span><button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="dosa.png" alt="Dosa">
-            <div class="content">
-                <h3>Crispy Masala Dosa</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="110" data-name="Plain Dosa">Plain Dosa - ₹110</option>
-                        <option value="140" data-name="Masala Dosa">Aloo Masala Dosa - ₹140</option>
-                        <option value="170" data-name="Paneer Dosa">Paneer Stuff Dosa - ₹170</option>
-                    </select>
-                </div>
-                <div class="card-footer"><span class="price">₹110</span><button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="idli.png" alt="Idli">
-            <div class="content">
-                <h3>Steaming Soft Idlis</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="60" data-name="Idli Sambar (2 Pcs)">2 Pieces Tray - ₹60</option>
-                    </select>
-                </div>
-                <div class="card-footer"><span class="price">₹60</span><button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="bhallachat.png" alt="Poha">
-            <div class="content">
-                <h3>Fresh Indori Poha</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="50" data-name="Indori Poha">Standard Plate - ₹50</option>
-                    </select>
-                </div>
-                <div class="card-footer"><span class="price">₹50</span><button class="add-btn" onclick="addToCart(this, 'food')">Add To Order</button></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="category-title">Drinks & Beverages</div>
-    <div class="grid">
-        <div class="card">
-            <img src="kuladtea.png" alt="Kulhad Chai">
-            <div class="content">
-                <h3>Desi Kulhad Tea</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="30" data-name="Kulhad Chai">Regular Clay Cup - ₹30</option>
-                    </select>
-                </div>
-                <div class="card-footer"><span class="price">₹30</span><button class="add-btn" onclick="addToCart(this, 'drink')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="kuladcofee.png" alt="Kulhad Coffee">
-            <div class="content">
-                <h3>Hot Kulhad Coffee</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="50" data-name="Kulhad Coffee">Frothy Hot Coffee - ₹50</option>
-                    </select>
-                </div>
-                <div class="card-footer"><span class="price">₹50</span><button class="add-btn" onclick="addToCart(this, 'drink')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="coffee.png" alt="Classic Coffee">
-            <div class="content">
-                <h3>Classic Coffee</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="60" data-name="Espresso Coffee">Espresso Roast - ₹60</option>
-                        <option value="80" data-name="Cafe Latte">Creamy Latte - ₹80</option>
-                    </select>
-                </div>
-                <div class="card-footer"><span class="price">₹60</span><button class="add-btn" onclick="addToCart(this, 'drink')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="couplecoffee.png" alt="Couple Coffee">
-            <div class="content">
-                <h3>His & Her Couple Coffee</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="140" data-name="Couple Coffee Combo">Romantic Joint Combo - ₹140</option>
-                    </select>
-                </div>
-                <div class="card-footer"><span class="price">₹140</span><button class="add-btn" onclick="addToCart(this, 'drink')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="sweetlassi.png" alt="Sweet Lassi">
-            <div class="content">
-                <h3>Shahi Kulhad Punjabi Lassi</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="70" data-name="Sweet Lassi">Heavy Malai Sweet - ₹70</option>
-                    </select>
-                </div>
-                <div class="card-footer"><span class="price">₹70</span><button class="add-btn" onclick="addToCart(this, 'drink')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="chach.png" alt="Chach">
-            <div class="content">
-                <h3>Kulhad Punjabi Salty Chach</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="40" data-name="Salty Chach">Jeera Masala Buttermilk - ₹40</option>
-                    </select>
-                </div>
-                <div class="card-footer"><span class="price">₹40</span><button class="add-btn" onclick="addToCart(this, 'drink')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="mojitoo.png" alt="Mojitos">
-            <div class="content">
-                <h3>Refreshing Mojitos Mix</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="90" data-name="Mint Mojito">Classic Mint Lemon - ₹90</option>
-                        <option value="110" data-name="Watermelon Mojito">Watermelon Chill - ₹110</option>
-                        <option value="110" data-name="GreenApple Mojito">Green Apple Tangy - ₹110</option>
-                    </select>
-                </div>
-                <div class="card-footer"><span class="price">₹90</span><button class="add-btn" onclick="addToCart(this, 'drink')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="coffeeshake.png" alt="Thick Shakes">
-            <div class="content">
-                <h3>Gourmet Shakes & Cold Coffee</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="100" data-name="Cold Coffee Shake">Thick Cold Coffee - ₹100</option>
-                        <option value="120" data-name="Oreo Milkshake">Oreo Thick Shake - ₹120</option>
-                        <option value="130" data-name="Chocolate Shake">Rich Chocolate Crunch - ₹130</option>
-                    </select>
-                </div>
-                <div class="card-footer"><span class="price">₹100</span><button class="add-btn" onclick="addToCart(this, 'drink')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="cold_drink.png" alt="Cold Drink">
-            <div class="content">
-                <h3>Cold Drink</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="40" data-name="Cold Drink (Can)">Chilled Can - ₹40</option>
-                        <option value="20" data-name="Cold Drink (Small)">Small Bottle - ₹20</option>
-                    </select>
-                </div>
-                <div class="card-footer"><span class="price">₹40</span><button class="add-btn" onclick="addToCart(this, 'drink')">Add To Order</button></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="water.png" alt="Mineral Water">
-            <div class="content">
-                <h3>Packaged Drinking Water</h3>
-                <div class="variant-selector">
-                    <select class="variant-select" onchange="updatePrice(this)">
-                        <option value="20" data-name="Water Bottle">Regular Mineral Water - ₹20</option>
-                    </select>
-                </div>
-                <div class="card-footer"><span class="price">₹20</span><button class="add-btn" onclick="addToCart(this, 'drink')">Add To Order</button></div>
             </div>
         </div>
     </div>
@@ -927,195 +711,206 @@
 
 <div class="bottom-bar">
     <div class="total-info">
-        <h4>Selected Total Bill</h4>
+        <h4>Selected Total Bill <span id="cartBadge" class="cart-count-badge">0</span></h4>
         <p id="totalPriceDisplay">₹0</p>
-        <p id="packagingBarNote" class="packaging-note" style="display:none;">(+ ₹0 Packaging Charges Added)</p>
+        <p id="packagingBarNote" style="color: var(--alert); font-size:0.85rem; display:none; margin:0;"></p>
     </div>
-    <button class="pay-btn" onclick="openCheckoutModal()">Place Order & Pay</button>
+    <button id="mainPayBtn" class="pay-btn">Place Order & Pay</button>
 </div>
 
 <div id="paymentModal" class="modal">
     <div class="modal-content">
         <h2>Complete Secure Payment</h2>
+        <div id="modalItemsSummaryList" class="modal-item-summary"></div>
         <p style="font-size:1.1rem; color:#ccc; margin-bottom:5px;">Food Amount: <span id="modalFoodAmount">₹0</span></p>
-        <p id="modalPackagingRow" style="font-size:1rem; color:var(--alert); margin:0 0 10px 0; display:none;">Packing Charges (₹20/eatable): <span>₹0</span></p>
+        <p id="modalPackagingRow" style="font-size:1rem; color:var(--alert); margin:0 0 10px 0; display:none;">Packing Charges: <span>₹0</span></p>
         <p style="font-size:1.3rem; color:white; font-weight:700; border-top:1px dashed #444; padding-top:10px; margin-bottom:15px;">Total Payable: <strong id="modalAmount" style="color:var(--gold);">₹0</strong></p>
         <p id="spotConfirmation" style="font-style: italic; color: #aaa; margin-top:5px; margin-bottom:15px;"></p>
         
-        <div class="unified-upi-container">
-            <button class="unified-pay-btn" onclick="executeOrderAndPayment()">Send Order & Pay via UPI</button>
-        </div>
-
+        <button id="finalPayUpiBtn" class="unified-pay-btn">Send Order & Pay via UPI</button>
         <div>
-            <p style="font-size:0.95rem; color:#aaa; margin-bottom:10px; font-weight: 600;">Or Scan This Order Custom QR Code</p>
+            <p style="font-size:0.95rem; color:#aaa; margin-bottom:10px; font-weight:600;">Or Scan This Order Custom QR Code</p>
             <div id="dynamicQrContainer"></div>
         </div>
-
-        <button class="close-btn" onclick="closeCheckoutModal()">Cancel & Modify Order</button>
+        <button id="closeModalBtn" class="close-btn">Cancel & Modify Order</button>
     </div>
 </div>
 
 <footer class="footer">
     <h3>Hakka Bakka Cafe</h3>
-    <div class="address-block">
-        📍 SHOP No 1, Nr CANAL Road, Opp Maqsudan Byepass, G T Road, Jalandhar
-    </div>
-    <a href="https://wa.me/917796631555?text=Hello%20Hakka%20Bakka%20Cafe%21" class="whatsapp-btn" target="_blank">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right:5px;"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.713-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.413 9.863-9.847.001-2.633-1.03-5.107-2.905-6.98C16.495 1.893 14.023 1.86 11.39 1.86c-5.438 0-9.863 4.412-9.866 9.846-.001 1.665.453 3.291 1.314 4.715L1.706 21.83l5.534-1.451zM17.85 14.56c-.33-.164-1.953-.964-2.253-1.074-.3-.11-.518-.165-.735.165-.218.33-.842 1.073-1.032 1.292-.19.218-.379.245-.71.081a10.073 10.073 0 0 1-2.628-1.622 11.107 11.107 0 0 1-1.817-2.261c-.19-.33-.019-.507.147-.672.148-.147.33-.384.495-.577.165-.192.22-.33.33-.55.11-.22.055-.412-.028-.577-.082-.164-.734-1.77-.1006-2.42-.263-.635-.52-.55-.734-.56-.218-.01-.467-.01-.717-.01-.25 0-.657.094-.954.421-.3.33-1.14 1.114-1.14 2.719 0 1.604 1.168 3.153 1.329 3.37.162.219 2.298 3.51 5.566 4.922.778.336 1.385.537 1.859.688.782.248 1.493.213 2.057.129.628-.094 1.954-.8 2.227-1.57.271-.77.271-1.43.19-1.567-.083-.137-.303-.219-.633-.384z"/></svg>
-        <span>Chat with Us</span>
-    </a>
-    <p style="margin-top: 25px; color: #444; font-size:0.85rem;">© 2026 Hakka Bakka Cafe. All Rights Reserved.</p>
+    <div class="address-block">📍 SHOP No 1, Nr CANAL Road, Opp Maqsudan Byepass, G T Road, Jalandhar</div>
+    <p>© 2026 Hakka Bakka Cafe. All Rights Reserved.</p>
 </footer>
 
 <script>
-    let foodTotal = 0;
-    let selectedItemsList = [];
+    // HARDCODED SECURE SINGLE TRUTH PRICING REGISTER TO COUNTER PRICE MANIPULATION
+    const SERVER_PRICING_REGISTRY = {
+        "pizza": { "Pizza (Small)": 220, "Pizza (Medium)": 340, "Pizza (Large)": 460, "type": "food" },
+        "cheese_chilli": { "Cheese Chilli (Half)": 180, "Cheese Chilli (Full)": 290, "type": "food" },
+        "honey_potato": { "Honey Chilli Potato": 140, "type": "food" },
+        "noodles": { "Hakka Noodles (Half)": 120, "Hakka Noodles (Full)": 200, "type": "food" },
+        "tandoori_chicken": { "Tandoori Chkn (Qtr)": 240, "Tandoori Chkn (Half)": 420, "Tandoori Chkn (Full)": 780, "type": "food" },
+        "mutton_curry": { "Mutton Curry (Qtr)": 320, "Mutton Curry (Half)": 580, "Mutton Curry (Full)": 1000, "type": "food" }
+    };
+
+    let selectedItemsList = {};
     let orderMode = 'Table';
     let qrEngineInstance = null;
 
+    // ELIMINATING INLINE JS - USING MODERN STANDARD EVENT LISTENERS
+    document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById('radioTable').addEventListener('click', () => switchSpotMode('Table'));
+        document.getElementById('radioCar').addEventListener('click', () => switchSpotMode('Car'));
+        document.getElementById('radioPacking').addEventListener('click', () => switchSpotMode('Packing'));
+        document.getElementById('mainPayBtn').addEventListener('click', openCheckoutModal);
+        document.getElementById('closeModalBtn').addEventListener('click', closeCheckoutModal);
+        document.getElementById('finalPayUpiBtn').addEventListener('click', executeOrderAndPayment);
+
+        document.querySelectorAll('.variant-select').forEach(select => {
+            select.addEventListener('change', (e) => {
+                let card = e.target.closest('.card');
+                card.querySelector('.price').innerText = "₹" + e.target.value;
+                let id = card.getAttribute('data-id');
+                if(selectedItemsList[id]) {
+                    modifyCartQuantity(id, -selectedItemsList[id].qty);
+                }
+            });
+        });
+
+        document.querySelectorAll('.card').forEach(card => {
+            let id = card.getAttribute('data-id');
+            card.querySelector('.add-btn').addEventListener('click', () => modifyCartQuantity(id, 1));
+            card.querySelector('.plus-btn').addEventListener('click', () => modifyCartQuantity(id, 1));
+            card.querySelector('.minus-btn').addEventListener('click', () => modifyCartQuantity(id, -1));
+        });
+    });
+
     function switchSpotMode(mode) {
         orderMode = mode;
-        let tableSelect = document.getElementById('tableSelect');
-        let carInput = document.getElementById('carInput');
-        let packingInputs = document.getElementById('packingInputs');
-        let carWarning = document.getElementById('carWarning');
+        document.getElementById('tableSelect').style.display = (mode === 'Table') ? 'inline-block' : 'none';
+        document.getElementById('carInput').style.display = (mode === 'Car') ? 'inline-block' : 'none';
+        document.getElementById('packingInputs').style.display = (mode === 'Packing') ? 'block' : 'none';
+        document.getElementById('carWarning').style.display = (mode === 'Car') ? 'block' : 'none';
+        recalculateGrandTotal();
+    }
 
-        if(mode === 'Table') {
-            tableSelect.style.display = 'inline-block';
-            carInput.style.display = 'none';
-            packingInputs.style.display = 'none';
-            carWarning.style.display = 'none';
-            tableSelect.selectedIndex = 0;
-        } else if(mode === 'Car') {
-            tableSelect.style.display = 'none';
-            carInput.style.display = 'inline-block';
-            packingInputs.style.display = 'none';
-            carWarning.style.display = 'block';
-            carInput.value = "";
+    function modifyCartQuantity(id, change) {
+        let card = document.querySelector(`.card[data-id="${id}"]`);
+        let select = card.querySelector('.variant-select');
+        let selectedOption = select.options[select.selectedIndex];
+        let variantName = selectedOption.getAttribute('data-name');
+
+        if (!selectedItemsList[id]) {
+            selectedItemsList[id] = { variant: variantName, qty: 0 };
+        }
+
+        selectedItemsList[id].qty += change;
+
+        let addBtn = card.querySelector('.add-btn');
+        let qtyControls = card.querySelector('.quantity-controls');
+        
+        if (selectedItemsList[id].qty <= 0) {
+            delete selectedItemsList[id];
+            addBtn.style.display = 'inline-block';
+            qtyControls.style.display = 'none';
         } else {
-            tableSelect.style.display = 'none';
-            carInput.style.display = 'none';
-            packingInputs.style.display = 'block';
-            document.getElementById('customerName').value = "";
-            document.getElementById('customerPhone').value = "";
-            carWarning.style.display = 'none';
+            addBtn.style.display = 'none';
+            qtyControls.style.display = 'flex';
+            card.querySelector('.qty-val').innerText = selectedItemsList[id].qty;
         }
         recalculateGrandTotal();
-    }
-
-    function updatePrice(selectElement) {
-        let price = selectElement.value;
-        let cardFooter = selectElement.closest('.content').querySelector('.price');
-        cardFooter.innerText = "₹" + price;
-    }
-
-    function addToCart(buttonElement, type) {
-        let cardContent = buttonElement.closest('.content');
-        let selectElement = cardContent.querySelector('.variant-select');
-        let price = parseInt(selectElement.value);
-        let selectedOption = selectElement.options[selectElement.selectedIndex];
-        let itemName = selectedOption.getAttribute('data-name') || cardContent.querySelector('h3').innerText;
-
-        foodTotal += price;
-        selectedItemsList.push({ name: itemName, price: price, type: type });
-
-        recalculateGrandTotal();
-        
-        buttonElement.innerText = "✓ Added";
-        buttonElement.style.background = "#2e8b57";
-        setTimeout(() => {
-            buttonElement.innerText = "Add To Order";
-            buttonElement.style.background = "var(--olive)";
-        }, 1000);
     }
 
     function recalculateGrandTotal() {
+        let foodTotal = 0;
+        let totalItemsCount = 0;
         let packagingCost = 0;
-        if (orderMode === 'Car' || orderMode === 'Packing') {
-            selectedItemsList.forEach(item => {
-                if(item.type === 'food') packagingCost += 20;
-            });
-        }
 
-        if (packagingCost > 0) {
-            document.getElementById('packagingBarNote').innerText = `(+ ₹${packagingCost} Packaging Charges Added)`;
-            document.getElementById('packagingBarNote').style.display = 'block';
+        Object.keys(selectedItemsList).forEach(id => {
+            let item = selectedItemsList[id];
+            // ANTI-CHEAT SECURE CHECK VIA SINGLE TRUTH PRICING REGISTER
+            let exactPrice = SERVER_PRICING_REGISTRY[id][item.variant];
+            foodTotal += (exactPrice * item.qty);
+            totalItemsCount += item.qty;
+
+            if ((orderMode === 'Car' || orderMode === 'Packing') && SERVER_PRICING_REGISTRY[id].type === 'food') {
+                packagingCost += (20 * item.qty);
+            }
+        });
+
+        document.getElementById('cartBadge').innerText = totalItemsCount;
+        let pNote = document.getElementById('packagingBarNote');
+        if(packagingCost > 0) {
+            pNote.innerText = `(+ ₹${packagingCost} Packaging Included)`;
+            pNote.style.display = 'block';
         } else {
-            document.getElementById('packagingBarNote').style.display = 'none';
+            pNote.style.display = 'none';
         }
-
-        let grandTotal = foodTotal + packagingCost;
-        document.getElementById('totalPriceDisplay').innerText = "₹" + grandTotal;
+        document.getElementById('totalPriceDisplay').innerText = "₹" + (foodTotal + packagingCost);
     }
 
     function openCheckoutModal() {
         let spotValue = "";
-        let totalItemsCount = selectedItemsList.length;
-
         if (orderMode === 'Table') {
             spotValue = document.getElementById('tableSelect').value;
-            if(!spotValue) {
-                alert("Please select your Table Number from the dropdown, Bhai!");
-                document.getElementById('tableSelect').focus();
-                return;
-            }
+            if(!spotValue) { alert("Table Number select kijiye bhai!"); return; }
         } else if (orderMode === 'Car') {
             spotValue = document.getElementById('carInput').value.trim();
-            if(!spotValue) {
-                alert("Please enter your Car Number details for delivery, Bhai!");
-                document.getElementById('carInput').focus();
-                return;
-            }
+            if(!spotValue) { alert("Car Number fill kijiye bhai!"); return; }
         } else {
             let name = document.getElementById('customerName').value.trim();
             let phone = document.getElementById('customerPhone').value.trim();
-            if(!name || !phone) {
-                alert("Please enter both Name and Mobile Number for Packing Order, Bhai!");
-                return;
-            }
+            if(!name || !/^[6-9]\d{9}$/.test(phone)) { alert("Valid Name aur 10-digit Number daliye bhai!"); return; }
             spotValue = `${name} (${phone})`;
         }
 
-        if(foodTotal === 0) {
-            alert("Your cart is empty! Add some delicious food items first.");
-            return;
-        }
-
+        let foodTotal = 0;
         let packagingCost = 0;
-        if (orderMode === 'Car' || orderMode === 'Packing') {
-            selectedItemsList.forEach(item => {
-                if(item.type === 'food') packagingCost += 20;
-            });
-        }
-        let grandTotal = foodTotal + packagingCost;
+        let summaryHtml = "";
 
+        Object.keys(selectedItemsList).forEach(id => {
+            let item = selectedItemsList[id];
+            let exactPrice = SERVER_PRICING_REGISTRY[id][item.variant];
+            foodTotal += (exactPrice * item.qty);
+            if ((orderMode === 'Car' || orderMode === 'Packing') && SERVER_PRICING_REGISTRY[id].type === 'food') {
+                packagingCost += (20 * item.qty);
+            }
+            summaryHtml += `<div class="modal-item-row">
+                <span>${item.variant} <strong>x${item.qty}</strong></span>
+                <span>₹${exactPrice * item.qty} <button class="remove-summary-btn" data-remove="${id}">❌</button></span>
+            </div>`;
+        });
+
+        if(foodTotal === 0) { alert("Cart khali hai bhai!"); return; }
+
+        let grandTotal = foodTotal + packagingCost;
+        document.getElementById('modalItemsSummaryList').innerHTML = summaryHtml;
         document.getElementById('modalFoodAmount').innerText = "₹" + foodTotal;
         
-        let packagingRow = document.getElementById('modalPackagingRow');
+        let pRow = document.getElementById('modalPackagingRow');
         if(packagingCost > 0) {
-            packagingRow.querySelector('span').innerText = "₹" + packagingCost;
-            packagingRow.style.display = 'block';
+            pRow.querySelector('span').innerText = "₹" + packagingCost;
+            pRow.style.display = 'block';
         } else {
-            packagingRow.style.display = 'none';
+            pRow.style.display = 'none';
         }
 
         document.getElementById('modalAmount').innerText = "₹" + grandTotal;
-        document.getElementById('spotConfirmation').innerText = `Serving Mode: ${orderMode} Order - ${spotValue}`;
-        
-        // 3. CORRECT CONVERTED PAYMENT DYNAMIC QR CODE WITH UNIQUE DETAILS
-        let upiId = "7888854492@icici"; 
-        let merchantName = "Hakka Bakka Cafe";
-        let note = `${orderMode} ${spotValue} Food Order`;
-        let upiPayloadUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${grandTotal}&cu=INR&tn=${encodeURIComponent(note)}`;
-        
+        document.getElementById('spotConfirmation').innerText = `Serving Mode: ${orderMode} - ${spotValue}`;
+
+        // REGISTER LIVE EVENTS ON TARGET REMOVE TRIGGER
+        document.querySelectorAll('.remove-summary-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                let targetId = e.target.getAttribute('data-remove');
+                modifyCartQuantity(targetId, -selectedItemsList[targetId].qty);
+                openCheckoutModal();
+            });
+        });
+
+        let upiPayloadUrl = `upi://pay?pa=7888854492@icici&pn=Hakka%20Bakka%20Cafe&am=${grandTotal}&cu=INR&tn=${encodeURIComponent(orderMode+' '+spotValue+' Order')}`;
         document.getElementById('dynamicQrContainer').innerHTML = "";
         qrEngineInstance = new QRCode(document.getElementById('dynamicQrContainer'), {
-            text: upiPayloadUrl,
-            width: 170,
-            height: 170,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
+            text: upiPayloadUrl, width: 170, height: 170
         });
 
         document.getElementById('paymentModal').style.display = 'flex';
@@ -1126,52 +921,30 @@
     }
 
     function executeOrderAndPayment() {
-        let spotValue = "";
-        if (orderMode === 'Table') spotValue = document.getElementById('tableSelect').value;
-        else if (orderMode === 'Car') spotValue = document.getElementById('carInput').value.trim();
-        else spotValue = document.getElementById('customerName').value.trim();
+        let spotValue = (orderMode === 'Table') ? document.getElementById('tableSelect').value : 
+                        (orderMode === 'Car') ? document.getElementById('carInput').value.trim() : document.getElementById('customerName').value.trim();
 
+        let foodTotal = 0;
         let packagingCost = 0;
-        if (orderMode === 'Car' || orderMode === 'Packing') {
-            selectedItemsList.forEach(item => {
-                if(item.type === 'food') packagingCost += 20;
-            });
-        }
-        let finalBillAmount = foodTotal + packagingCost;
-
-        // WHATSAPP STRUCTURE CONTENT BUILD
-        let whatsappText = `*--- NEW ONLINE ORDER RECIEVED ---*\n\n`;
-        whatsappText += `*Serving Type:* ${orderMode} Order\n`;
-        whatsappText += `*Spot Details:* ${spotValue}\n\n`;
-        whatsappText += `*--- SELECTED ITEMS LIST ---*\n`;
+        let text = `*--- NEW ORDER RECEIVED ---*\n\nMode: ${orderMode}\nDetails: ${spotValue}\n\n`;
         
-        selectedItemsList.forEach((item, index) => {
-            whatsappText += `${index + 1}. ${item.name} - ₹${item.price}\n`;
+        Object.keys(selectedItemsList).forEach(id => {
+            let item = selectedItemsList[id];
+            let exactPrice = SERVER_PRICING_REGISTRY[id][item.variant];
+            foodTotal += (exactPrice * item.qty);
+            if ((orderMode === 'Car' || orderMode === 'Packing') && SERVER_PRICING_REGISTRY[id].type === 'food') packagingCost += (20 * item.qty);
+            text += `• ${item.variant} x${item.qty} - ₹${exactPrice * item.qty}\n`;
         });
-        
-        if(packagingCost > 0) {
-            whatsappText += `\n*Packaging Charges:* ₹${packagingCost}`;
-        }
-        whatsappText += `\n*Grand Total Bill:* ₹${finalBillAmount}\n\n`;
-        whatsappText += `_Sent via Hakka Bakka Digital Menu Card App_`;
 
-        let targetCafeWhatsapp = "917796631555"; 
-        let whatsappApiUrl = `https://wa.me/${targetCafeWhatsapp}?text=${encodeURIComponent(whatsappText)}`;
-        
-        // 2. SEND ORDER VIA WHATSAPP OPEN FIRST
-        alert("Bhai, Pehle order summary WhatsApp par send hogi, uske baad instant payment screen khulegi!");
-        window.open(whatsappApiUrl, '_blank');
+        let grandTotal = foodTotal + packagingCost;
+        if(packagingCost > 0) text += `\nPacking: ₹${packagingCost}`;
+        text += `\n*Total Bill: ₹${grandTotal}*\n\n_Verify Payment in Bank App!_`;
 
-        // 4. CHOOSE ANY UPI APP FROM SYSTEM HANDLER (STRICT DEEP LINK ENCODING APPLIED FIX)
+        window.open(`https://wa.me/917796631555?text=${encodeURIComponent(text)}`, '_blank');
         setTimeout(() => {
-            let upiId = "7888854492@icici"; 
-            let merchantName = "Hakka Bakka Cafe";
-            let note = `${orderMode} ${spotValue} Order`;
-            let upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${finalBillAmount}&cu=INR&tn=${encodeURIComponent(note)}`;
-            window.location.href = upiUrl;
-        }, 1500);
+            window.location.href = `upi://pay?pa=7888854492@icici&pn=Hakka%20Bakka%20Cafe&am=${grandTotal}&cu=INR&tn=${encodeURIComponent(orderMode+' '+spotValue)}`;
+        }, 1200);
     }
 </script>
-
 </body>
 </html>
