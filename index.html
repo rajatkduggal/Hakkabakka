@@ -1,28 +1,31 @@
+<!-- =========================================
+PASTE THIS COMPLETE FILE INTO index.html
+========================================= -->
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hakka Bakka Cafe | Premium Fast Food & Cafe</title>
 
-<meta name="description" content="Hakka Bakka Cafe Jalandhar Premium Fast Food & Cafe Experience">
-<meta name="theme-color" content="#D4AF37">
+<title>Hakka Bakka Cafe</title>
 
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="logo.jpg">
 <link rel="icon" href="logo.jpg">
+<link rel="apple-touch-icon" href="logo.jpg">
 
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
 <style>
+
 :root{
---gold:#D4AF37;
---olive:#556B2F;
---bg:#0b0b0b;
---card:#161616;
---text:#f0f0f0;
+--gold:#d4af37;
+--primary:#c96b2c;
+--bg:#0d0b09;
+--card:#1a1411;
+--text:#f6f1ea;
 }
 
 *{
@@ -35,45 +38,46 @@ body{
 font-family:'Outfit',sans-serif;
 background:var(--bg);
 color:var(--text);
-padding-bottom:120px;
 overflow-x:hidden;
+padding-bottom:120px;
 }
 
 .hero{
-min-height:75vh;
+min-height:70vh;
 display:flex;
 align-items:center;
 justify-content:center;
 text-align:center;
 padding:40px 20px;
 background:
-linear-gradient(rgba(0,0,0,.82),rgba(0,0,0,.9)),
-url('logo.jpg') center/cover;
+linear-gradient(rgba(0,0,0,.82),rgba(0,0,0,.92)),
+url('logo.jpg');
+
+background-size:cover;
+background-position:center;
 }
 
 .hero h1{
-font-size:clamp(3rem,9vw,6rem);
-color:var(--gold);
+font-size:clamp(3rem,8vw,6rem);
+font-weight:800;
 letter-spacing:4px;
+color:var(--gold);
 }
 
 .hero p{
 margin-top:20px;
 font-size:1.1rem;
-line-height:1.8;
-max-width:700px;
-margin-inline:auto;
 }
 
-.hero-btn{
+.hero a{
 display:inline-block;
 margin-top:30px;
-background:linear-gradient(135deg,var(--gold),#b89224);
-color:black;
 padding:16px 32px;
-border-radius:14px;
+background:linear-gradient(135deg,var(--primary),var(--gold));
+color:black;
 font-weight:800;
 text-decoration:none;
+border-radius:14px;
 }
 
 .container{
@@ -82,18 +86,13 @@ margin:auto;
 }
 
 .order-box{
+margin-top:-50px;
 background:var(--card);
 padding:25px;
-border-radius:20px;
-margin-top:-50px;
+border-radius:22px;
+border:1px solid rgba(212,175,55,.15);
 position:relative;
 z-index:10;
-border:1px solid rgba(212,175,55,.2);
-}
-
-.order-box h2{
-text-align:center;
-margin-bottom:20px;
 }
 
 .radio-group{
@@ -101,10 +100,11 @@ display:flex;
 justify-content:center;
 gap:15px;
 flex-wrap:wrap;
+margin-bottom:20px;
 }
 
 .radio-group label{
-background:#222;
+background:#251b15;
 padding:12px 18px;
 border-radius:12px;
 cursor:pointer;
@@ -113,16 +113,27 @@ cursor:pointer;
 input,select{
 width:100%;
 padding:14px;
-border-radius:12px;
-border:1px solid #333;
-background:#222;
+margin-top:12px;
+background:#211711;
+border:1px solid #3b2a1f;
 color:white;
-margin-top:15px;
+border-radius:12px;
 font-family:inherit;
 }
 
+.hidden{
+display:none;
+}
+
+.warning{
+color:#ff8585;
+margin-top:10px;
+font-size:.9rem;
+font-weight:600;
+}
+
 .section-title{
-margin:60px 0 25px;
+margin:50px 0 20px;
 padding-left:15px;
 border-left:5px solid var(--gold);
 font-size:2rem;
@@ -138,7 +149,7 @@ gap:25px;
 background:var(--card);
 border-radius:20px;
 overflow:hidden;
-border:1px solid #222;
+border:1px solid #2b1f18;
 transition:.3s;
 }
 
@@ -149,7 +160,7 @@ border-color:var(--gold);
 
 .card img{
 width:100%;
-height:230px;
+height:220px;
 object-fit:cover;
 }
 
@@ -170,7 +181,7 @@ margin-top:15px;
 }
 
 .price{
-font-size:1.4rem;
+font-size:1.5rem;
 font-weight:800;
 color:var(--gold);
 }
@@ -182,21 +193,21 @@ gap:10px;
 }
 
 .qty-btn{
-width:40px;
-height:40px;
+width:42px;
+height:42px;
 border:none;
-border-radius:10px;
-background:var(--olive);
+border-radius:12px;
+background:var(--primary);
 color:white;
 font-size:1.2rem;
-font-weight:700;
+font-weight:800;
 cursor:pointer;
 }
 
 .qty{
 font-size:1.2rem;
 font-weight:700;
-min-width:20px;
+min-width:24px;
 text-align:center;
 }
 
@@ -205,14 +216,14 @@ position:fixed;
 bottom:0;
 left:0;
 right:0;
-background:rgba(10,10,10,.95);
 padding:18px;
-border-top:2px solid var(--gold);
 display:flex;
 justify-content:space-between;
 align-items:center;
+background:rgba(13,11,9,.95);
+backdrop-filter:blur(10px);
+border-top:2px solid var(--gold);
 z-index:999;
-backdrop-filter:blur(12px);
 }
 
 .total-price{
@@ -222,11 +233,12 @@ color:var(--gold);
 }
 
 .pay-btn{
-background:linear-gradient(135deg,var(--gold),#b89224);
+background:linear-gradient(135deg,var(--primary),var(--gold));
+color:black;
 border:none;
 padding:15px 28px;
 font-weight:800;
-border-radius:12px;
+border-radius:14px;
 cursor:pointer;
 }
 
@@ -234,15 +246,14 @@ cursor:pointer;
 margin-top:70px;
 padding:60px 20px;
 text-align:center;
-background:#050505;
+background:#080605;
 }
 
 .address{
-margin:20px auto;
-padding:15px;
 max-width:700px;
-background:rgba(85,107,47,.12);
-border:1px solid rgba(212,175,55,.2);
+margin:20px auto;
+padding:16px;
+background:rgba(201,107,44,.08);
 border-radius:12px;
 line-height:1.8;
 }
@@ -251,52 +262,66 @@ line-height:1.8;
 display:inline-block;
 margin-top:15px;
 background:#25D366;
-color:white;
-padding:14px 28px;
+padding:14px 30px;
 border-radius:30px;
+color:white;
 text-decoration:none;
 font-weight:700;
 }
 
-.hidden{
-display:none;
-}
-
-@media(max-width:768px){
-.bottom-bar{
-flex-direction:column;
-gap:15px;
-}
-
-.pay-btn{
-width:100%;
-}
-}
 </style>
+
 </head>
+
 <body>
 
 <section class="hero">
+
 <div>
+
 <h1>HAKKA BAKKA CAFE</h1>
-<p>Premium Fast Food, Tandoor, Chaat, Kulhad Tea & Gourmet Cafe Experience</p>
-<a href="#menu" class="hero-btn">Explore Menu</a>
+
+<p>
+Premium Fast Food, Tandoor & Cafe Experience
+</p>
+
+<a href="#menu">
+Explore Menu
+</a>
+
 </div>
+
 </section>
 
 <div class="container">
 
 <div class="order-box">
-<h2>Select Serving Mode</h2>
 
 <div class="radio-group">
-<label><input type="radio" name="orderType" value="Table" checked> Table Order</label>
-<label><input type="radio" name="orderType" value="Car"> Car Order</label>
-<label><input type="radio" name="orderType" value="Packing"> Takeaway</label>
+
+<label>
+<input type="radio" name="orderType" value="Table" checked>
+Table
+</label>
+
+<label>
+<input type="radio" name="orderType" value="Car">
+Car
+</label>
+
+<label>
+<input type="radio" name="orderType" value="Packing">
+Takeaway
+</label>
+
 </div>
 
 <select id="tableSelect">
-<option value="">Choose Table Number</option>
+
+<option value="">
+Choose Table Number
+</option>
+
 <option>Table 1</option>
 <option>Table 2</option>
 <option>Table 3</option>
@@ -307,56 +332,99 @@ width:100%;
 <option>Table 8</option>
 <option>Table 9</option>
 <option>Table 10</option>
+
 </select>
 
-<input type="text" id="carInput" class="hidden" placeholder="Enter Car Number"
+<div id="carSection" class="hidden">
+
+<input
+type="text"
+id="carInput"
 maxlength="10"
-style="text-transform:uppercase;">
+placeholder="Enter Car Number"
+>
+
+<p class="warning">
+⚠️ Serve Only Cafe Parking Premises
+</p>
+
+</div>
 
 <div id="packingFields" class="hidden">
-<input type="text" id="customerName" placeholder="Enter Your Name">
-<input type="tel" id="customerPhone" placeholder="Enter Mobile Number">
-</div>
+
+<input
+type="text"
+id="customerName"
+placeholder="Enter Your Name"
+>
+
+<input
+type="tel"
+id="customerPhone"
+placeholder="Enter Mobile Number"
+>
+
 </div>
 
-<h2 class="section-title" id="menu">Popular Menu</h2>
+</div>
+
+<h2 class="section-title" id="menu">
+Popular Menu
+</h2>
 
 <div class="grid" id="menuGrid"></div>
 
 </div>
 
 <div class="bottom-bar">
+
 <div>
+
 <div>Total Bill</div>
-<div class="total-price" id="totalPrice">₹0</div>
+
+<div class="total-price" id="totalPrice">
+₹0
 </div>
 
-<button class="pay-btn" onclick="executeOrderAndPayment()">
+</div>
+
+<button
+class="pay-btn"
+onclick="executeOrderAndPayment()"
+>
 Place Order & Pay
 </button>
+
 </div>
 
 <footer class="footer">
+
 <h2>Hakka Bakka Cafe</h2>
 
 <div class="address">
-📍 SHOP No 1, Nr CANAL Road, Opp Maqsudan Byepass, G T Road, Jalandhar
+
+📍 SHOP No 1,
+Nr CANAL Road,
+Opp Maqsudan Byepass,
+G T Road,
+Jalandhar
+
 </div>
 
-<a href="https://wa.me/917796631555" target="_blank" class="whatsapp-btn">
+<a
+href="https://wa.me/917796631555"
+class="whatsapp-btn"
+>
 Chat With Us
 </a>
 
-<p style="margin-top:20px;color:#666;">
-© 2026 Hakka Bakka Cafe
-</p>
 </footer>
 
 <script>
 
-const menuItems = [
+// FULL ITEMS ARRAY HERE
 
-// STARTERS
+const menuItems = [
 
 {
 name:'Gourmet Pizza',
@@ -392,323 +460,107 @@ variants:[
 {label:'Half',price:120},
 {label:'Full',price:200}
 ]
-},
-
-{
-name:'Momos Special',
-image:'momos.png',
-variants:[
-{label:'Steam',price:100},
-{label:'Fried',price:130},
-{label:'Tandoori',price:160}
-]
-},
-
-{
-name:'French Fries',
-image:'fries.png',
-variants:[
-{label:'Classic',price:90},
-{label:'Peri Peri',price:110}
-]
-},
-
-{
-name:'Spring Roll',
-image:'springroll.png',
-variants:[
-{label:'Veg',price:120},
-{label:'Paneer',price:150}
-]
-},
-
-{
-name:'Creamy Pasta',
-image:'pasta.png',
-variants:[
-{label:'White Sauce',price:160},
-{label:'Red Sauce',price:150}
-]
-},
-
-{
-name:'Loaded Waffle',
-image:'waffle.png',
-variants:[
-{label:'Chocolate',price:130},
-{label:'Oreo',price:150}
-]
-},
-
-// TANDOOR
-
-{
-name:'Tandoori Chicken',
-image:'tandoorichicken.png',
-variants:[
-{label:'Quarter',price:240},
-{label:'Half',price:420},
-{label:'Full',price:780}
-]
-},
-
-{
-name:'Mutton Rogan Josh',
-image:'roganjosh.png',
-variants:[
-{label:'Quarter',price:350},
-{label:'Half',price:620},
-{label:'Full',price:1100}
-]
-},
-
-{
-name:'Chicken Tikka',
-image:'tandoorickntikka.png',
-variants:[
-{label:'Spicy',price:220},
-{label:'Malai',price:250}
-]
-},
-
-{
-name:'Seekh Kabab',
-image:'kabab.png',
-variants:[
-{label:'Chicken',price:190},
-{label:'Mutton',price:260}
-]
-},
-
-{
-name:'Tandoori Mutton Chops',
-image:'tandoorimutton.png',
-variants:[
-{label:'Half',price:380},
-{label:'Full',price:690}
-]
-},
-
-{
-name:'Desi Mutton Curry',
-image:'muttoncurpng',
-variants:[
-{label:'Quarter',price:320},
-{label:'Half',price:580},
-{label:'Full',price:1000}
-]
-},
-
-// CHAAT & SOUTH INDIAN
-
-{
-name:'Crisp Golgappe',
-image:'panipuri.png',
-variants:[
-{label:'6 Pcs',price:50}
-]
-},
-
-{
-name:'Papdi Bhalla Chaat',
-image:'bhallachat.png',
-variants:[
-{label:'Papdi',price:80},
-{label:'Bhalla',price:90}
-]
-},
-
-{
-name:'Tikki Chaat',
-image:'tikkichat.png',
-variants:[
-{label:'1 Pc',price:70},
-{label:'2 Pc',price:110}
-]
-},
-
-{
-name:'Masala Dosa',
-image:'dosa.png',
-variants:[
-{label:'Plain',price:110},
-{label:'Masala',price:140},
-{label:'Paneer',price:170}
-]
-},
-
-{
-name:'Idli Sambar',
-image:'idli.png',
-variants:[
-{label:'2 Pc',price:60}
-]
-},
-
-{
-name:'Indori Poha',
-image:'bhallachat.png',
-variants:[
-{label:'Regular',price:50}
-]
-},
-
-// DRINKS
-
-{
-name:'Kulhad Tea',
-image:'kuladtea.png',
-variants:[
-{label:'Regular',price:30}
-]
-},
-
-{
-name:'Kulhad Coffee',
-image:'kuladcofee.png',
-variants:[
-{label:'Regular',price:50}
-]
-},
-
-{
-name:'Classic Coffee',
-image:'coffee.png',
-variants:[
-{label:'Espresso',price:60},
-{label:'Latte',price:80}
-]
-},
-
-{
-name:'Couple Coffee',
-image:'couplecoffee.png',
-variants:[
-{label:'Combo',price:140}
-]
-},
-
-{
-name:'Punjabi Lassi',
-image:'sweetlassi.png',
-variants:[
-{label:'Sweet',price:70}
-]
-},
-
-{
-name:'Punjabi Chach',
-image:'chach.png',
-variants:[
-{label:'Salty',price:40}
-]
-},
-
-{
-name:'Mojito',
-image:'mojitoo.png',
-variants:[
-{label:'Mint',price:90},
-{label:'Watermelon',price:110},
-{label:'Green Apple',price:110}
-]
-},
-
-{
-name:'Cold Coffee Shake',
-image:'coffeeshake.png',
-variants:[
-{label:'Cold Coffee',price:100},
-{label:'Oreo',price:120},
-{label:'Chocolate',price:130}
-]
-},
-
-{
-name:'Cold Drink',
-image:'cold_drink.png',
-variants:[
-{label:'Can',price:40},
-{label:'Small Bottle',price:20}
-]
-},
-
-{
-name:'Packaged Water',
-image:'water.png',
-variants:[
-{label:'Bottle',price:20}
-]
 }
 
 ];
 
-const menuGrid = document.getElementById('menuGrid');
-const totalPrice = document.getElementById('totalPrice');
+// RENDER MENU
 
-let cart = [];
-let total = 0;
+const menuGrid=document.getElementById('menuGrid');
+const totalPrice=document.getElementById('totalPrice');
 
-function renderMenu(){
+let cart=[];
+let total=0;
 
-menuItems.forEach((item,index)=>{
+menuItems.forEach(item=>{
 
-const card = document.createElement('div');
+const card=document.createElement('div');
+
 card.className='card';
 
-const options = item.variants.map(v=>`
-<option value="${v.price}">${v.label} - ₹${v.price}</option>
-`).join('');
+const options=item.variants.map(v=>
+
+`<option value="${v.price}">
+${v.label} - ₹${v.price}
+</option>`
+
+).join('');
 
 card.innerHTML=`
-<img src="${item.image}" loading="lazy" alt="${item.name}">
+
+<img src="${item.image}" alt="${item.name}">
 
 <div class="card-content">
+
 <h3>${item.name}</h3>
 
 <select class="variant-select">
+
 ${options}
+
 </select>
 
 <div class="price-row">
-<div class="price">₹${item.variants[0].price}</div>
+
+<div class="price">
+₹${item.variants[0].price}
+</div>
 
 <div class="qty-box">
-<button class="qty-btn minus">-</button>
-<div class="qty">0</div>
-<button class="qty-btn plus">+</button>
+
+<button class="qty-btn minus">
+-
+</button>
+
+<div class="qty">
+0
 </div>
+
+<button class="qty-btn plus">
++
+</button>
+
 </div>
+
 </div>
+
+</div>
+
 `;
 
-const select = card.querySelector('.variant-select');
-const price = card.querySelector('.price');
-const qty = card.querySelector('.qty');
-const plus = card.querySelector('.plus');
-const minus = card.querySelector('.minus');
+const select=card.querySelector('.variant-select');
 
-let quantity = 0;
+const price=card.querySelector('.price');
+
+const qty=card.querySelector('.qty');
+
+const plus=card.querySelector('.plus');
+
+const minus=card.querySelector('.minus');
+
+let quantity=0;
 
 select.addEventListener('change',()=>{
+
 price.innerText='₹'+select.value;
+
 });
 
 plus.addEventListener('click',()=>{
 
 quantity++;
+
 qty.innerText=quantity;
 
-const selectedPrice = Number(select.value);
-const selectedText = select.options[select.selectedIndex].text;
+const selectedPrice=Number(select.value);
 
 cart.push({
 name:item.name,
-variant:selectedText,
 price:selectedPrice
 });
 
-total += selectedPrice;
+total+=selectedPrice;
+
 updateTotal();
 
 });
@@ -718,15 +570,17 @@ minus.addEventListener('click',()=>{
 if(quantity<=0)return;
 
 quantity--;
+
 qty.innerText=quantity;
 
-const selectedPrice = Number(select.value);
+const selectedPrice=Number(select.value);
 
-total -= selectedPrice;
+total-=selectedPrice;
 
 if(total<0)total=0;
 
 cart.pop();
+
 updateTotal();
 
 });
@@ -735,240 +589,10 @@ menuGrid.appendChild(card);
 
 });
 
-}
-
 function updateTotal(){
 
 totalPrice.innerText='₹'+total;
 
-}
-
-renderMenu();
-
-const orderInputs = document.querySelectorAll('input[name="orderType"]');
-const tableSelect = document.getElementById('tableSelect');
-const carInput = document.getElementById('carInput');
-const packingFields = document.getElementById('packingFields');
-
-orderInputs.forEach(input=>{
-
-input.addEventListener('change',()=>{
-
-if(input.value==='Table'){
-
-tableSelect.classList.remove('hidden');
-carInput.classList.add('hidden');
-packingFields.classList.add('hidden');
-
-}
-
-if(input.value==='Car'){
-
-tableSelect.classList.add('hidden');
-carInput.classList.remove('hidden');
-packingFields.classList.add('hidden');
-
-}
-
-if(input.value==='Packing'){
-
-tableSelect.classList.add('hidden');
-carInput.classList.add('hidden');
-packingFields.classList.remove('hidden');
-
-}
-
-});
-
-});
-
-carInput.addEventListener('input',()=>{
-
-carInput.value = carInput.value
-.toUpperCase()
-.replace(/[^A-Z0-9]/g,'')
-.slice(0,10);
-
-});
-
-function executeOrderAndPayment(){
-
-if(cart.length===0){
-alert('Please add items first');
-return;
-}
-
-const orderMode = document.querySelector('input[name="orderType"]:checked').value;
-
-let details='';
-
-if(orderMode==='Table'){
-
-if(!tableSelect.value){
-alert('Please select table number');
-return;
-}
-
-details=tableSelect.value;
-
-}
-
-if(orderMode==='Car'){
-
-if(!carInput.value.trim()){
-alert('Please enter car number');
-return;
-}
-
-details=carInput.value.trim().toUpperCase();
-
-}
-
-if(orderMode==='Packing'){
-
-const name = document.getElementById('customerName').value.trim();
-const phone = document.getElementById('customerPhone').value.trim();
-
-if(!name || !phone){
-alert('Please enter name and mobile number');
-return;
-}
-
-details=`${name} (${phone})`;
-
-}
-
-const paymentRef = 'HB' + Date.now().toString().slice(-6);
-
-let whatsappText = 
-`✨ *WELCOME TO HAKKA BAKKA CAFE* ✨
-
-🙏 Thank you for your order.
-
-━━━━━━━━━━━━━━━
-
-📌 *ORDER DETAILS*
-
-🧾 Payment Ref:
-${paymentRef}
-
-🍽️ Order Type:
-${orderMode}
-
-📍 Serving Details:
-${details}
-
-━━━━━━━━━━━━━━━
-
-🛒 *ITEMS ORDERED*
-
-`;
-
-cart.forEach((item,index)=>{
-
-whatsappText += 
-`${index+1}. ${item.name}
-   ${item.variant}
-   ₹${item.price}
-
-`;
-
-});
-
-whatsappText += 
-`━━━━━━━━━━━━━━━
-
-💰 *TOTAL BILL*
-₹${total}
-
-✅ Payment Mode:
-UPI Payment
-
-⏳ Please wait while your delicious order is being prepared.
-
-❤️ Thank you for choosing
-*Hakka Bakka Cafe*
-
-📍 Jalandhar
-`;
-
-window.open(
-`https://wa.me/917796631555?text=${encodeURIComponent(whatsappText)}`,
-'_blank'
-);
-
-let shortCode='TO';
-
-if(orderMode==='Car') shortCode='CO';
-if(orderMode==='Packing') shortCode='TA';
-
-const paymentNote=`HakkaBakka ${shortCode}`;
-
-const upiId='7888854492@icici';
-const merchant='Hakka Bakka Cafe';
-
-const upiLink=`upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchant)}&am=${total}&cu=INR&tn=${encodeURIComponent(paymentNote)}`;
-
-const modal = document.createElement('div');
-
-modal.style.position='fixed';
-modal.style.inset='0';
-modal.style.background='rgba(0,0,0,.92)';
-modal.style.display='flex';
-modal.style.justifyContent='center';
-modal.style.alignItems='center';
-modal.style.zIndex='99999';
-
-modal.innerHTML=`
-<div style="background:#161616;padding:30px;border-radius:20px;width:92%;max-width:420px;text-align:center;border:2px solid #D4AF37;">
-
-<h2 style="color:#D4AF37;margin-bottom:20px;">Scan & Pay</h2>
-
-<h1 style="font-size:3rem;margin-bottom:20px;">₹${total}</h1>
-
-<div id="qrCode" style="background:white;padding:15px;border-radius:15px;display:inline-block;"></div>
-
-<button id="openApps" style="width:100%;margin-top:20px;padding:16px;border:none;border-radius:12px;background:linear-gradient(135deg,#D4AF37,#b89224);font-weight:800;cursor:pointer;">
-Open Any UPI App
-</button>
-
-<button id="closeModal" style="margin-top:18px;background:none;border:none;color:#999;cursor:pointer;">
-Cancel
-</button>
-
-</div>
-`;
-
-document.body.appendChild(modal);
-
-new QRCode(document.getElementById('qrCode'),{
-text:upiLink,
-width:220,
-height:220
-});
-
-
-document.getElementById('openApps').addEventListener('click',()=>{
-
-if(/Android/i.test(navigator.userAgent)){
-location.href = upiLink;
-}else{
-alert('Please scan QR using any UPI app');
-}
-
-});
-
-
-document.getElementById('closeModal').addEventListener('click',()=>{
-modal.remove();
-});
-
-}
-
-if('serviceWorker' in navigator){
-window.addEventListener('load',()=>{
-navigator.serviceWorker.register('./sw.js');
-});
 }
 
 </script>
