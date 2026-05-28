@@ -1102,7 +1102,7 @@
         document.getElementById('modalAmount').innerText = "₹" + grandTotal;
         document.getElementById('spotConfirmation').innerText = `Serving Mode: ${orderMode} Order - ${spotValue}`;
         
-        // 3. CORRECT CONVERTED PAYMENT DYNAMIC QR CODE WITH UNIQUE DETAILS
+        // 3. CORRECT CONVERTED PAYMENT DYNAMIC QR CODE WITH UNIQUE DETAILS (UPDATED STAGE)
         let upiId = "7888854492@icici"; 
         let merchantName = "Hakka Bakka Cafe";
         let note = `${orderMode} ${spotValue} Food Order`;
@@ -1115,7 +1115,7 @@
             height: 170,
             colorDark: "#000000",
             colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
+            correctLevel: QRCode.CorrectLevel.M
         });
 
         document.getElementById('paymentModal').style.display = 'flex';
@@ -1162,14 +1162,14 @@
         alert("Bhai, Pehle order summary WhatsApp par send hogi, uske baad instant payment screen khulegi!");
         window.open(whatsappApiUrl, '_blank');
 
-        // 4. CHOOSE ANY UPI APP FROM SYSTEM HANDLER (UPI Only Button Workflow)
+        // 4. CHOOSE ANY UPI APP FROM SYSTEM HANDLER WITH STRICT ENCODING (UPDATED STAGE)
         setTimeout(() => {
             let upiId = "7888854492@icici"; 
             let merchantName = "Hakka Bakka Cafe";
-            let note = encodeURIComponent(`${orderMode} ${spotValue} Order`);
-            let upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${finalBillAmount}&cu=INR&tn=${note}`;
+            let note = `${orderMode} ${spotValue} Order`;
+            let upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${finalBillAmount}&cu=INR&tn=${encodeURIComponent(note)}`;
             window.location.href = upiUrl;
-        }, 1500);
+        }, 2000);
     }
 </script>
 
