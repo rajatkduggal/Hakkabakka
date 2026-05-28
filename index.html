@@ -1,6 +1,4 @@
-<!-- =========================================
-PASTE THIS COMPLETE FILE INTO index.html
-========================================= -->
+<!-- REPLACE COMPLETE OLD index.html WITH THIS FILE -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -422,8 +420,6 @@ Chat With Us
 
 <script>
 
-// FULL ITEMS ARRAY HERE
-
 const menuItems = [
 
 {
@@ -460,142 +456,58 @@ variants:[
 {label:'Half',price:120},
 {label:'Full',price:200}
 ]
+},
+
+{
+name:'Momos Special',
+image:'momos.png',
+variants:[
+{label:'Steam',price:100},
+{label:'Fried',price:130},
+{label:'Tandoori',price:160}
+]
+},
+
+{
+name:'French Fries',
+image:'fries.png',
+variants:[
+{label:'Classic',price:90},
+{label:'Peri Peri',price:110}
+]
+},
+
+{
+name:'Spring Roll',
+image:'springroll.png',
+variants:[
+{label:'Veg',price:120},
+{label:'Paneer',price:150}
+]
+},
+
+{
+name:'Creamy Pasta',
+image:'pasta.png',
+variants:[
+{label:'White Sauce',price:160},
+{label:'Red Sauce',price:150}
+]
+},
+
+{
+name:'Loaded Waffle',
+image:'waffle.png',
+variants:[
+{label:'Chocolate',price:130},
+{label:'Oreo',price:150}
+]
 }
 
 ];
 
-// RENDER MENU
-
-const menuGrid=document.getElementById('menuGrid');
-const totalPrice=document.getElementById('totalPrice');
-
-let cart=[];
-let total=0;
-
-menuItems.forEach(item=>{
-
-const card=document.createElement('div');
-
-card.className='card';
-
-const options=item.variants.map(v=>
-
-`<option value="${v.price}">
-${v.label} - ₹${v.price}
-</option>`
-
-).join('');
-
-card.innerHTML=`
-
-<img src="${item.image}" alt="${item.name}">
-
-<div class="card-content">
-
-<h3>${item.name}</h3>
-
-<select class="variant-select">
-
-${options}
-
-</select>
-
-<div class="price-row">
-
-<div class="price">
-₹${item.variants[0].price}
-</div>
-
-<div class="qty-box">
-
-<button class="qty-btn minus">
--
-</button>
-
-<div class="qty">
-0
-</div>
-
-<button class="qty-btn plus">
-+
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-`;
-
-const select=card.querySelector('.variant-select');
-
-const price=card.querySelector('.price');
-
-const qty=card.querySelector('.qty');
-
-const plus=card.querySelector('.plus');
-
-const minus=card.querySelector('.minus');
-
-let quantity=0;
-
-select.addEventListener('change',()=>{
-
-price.innerText='₹'+select.value;
-
-});
-
-plus.addEventListener('click',()=>{
-
-quantity++;
-
-qty.innerText=quantity;
-
-const selectedPrice=Number(select.value);
-
-cart.push({
-name:item.name,
-price:selectedPrice
-});
-
-total+=selectedPrice;
-
-updateTotal();
-
-});
-
-minus.addEventListener('click',()=>{
-
-if(quantity<=0)return;
-
-quantity--;
-
-qty.innerText=quantity;
-
-const selectedPrice=Number(select.value);
-
-total-=selectedPrice;
-
-if(total<0)total=0;
-
-cart.pop();
-
-updateTotal();
-
-});
-
-menuGrid.appendChild(card);
-
-});
-
-function updateTotal(){
-
-totalPrice.innerText='₹'+total;
-
-}
-
 </script>
 
 </body>
+
 </html>
