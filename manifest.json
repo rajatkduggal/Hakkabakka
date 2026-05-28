@@ -1,26 +1,25 @@
 {
-  "nav_bar_version": "1",
-  "name": "Hakka Bakka",
+  "name": "Hakka Bakka Cafe",
   "short_name": "HakkaBakka",
   "description": "Premium Fast Food & Cafe Experience in Jalandhar",
-  "start_url": "index.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0a0a0a",
   "theme_color": "#D4AF37",
   "orientation": "portrait-primary",
+  "scope": "./",
   "icons": [
     {
-      "src": "logo.jpg",
+      "src": "./logo.jpg",
       "sizes": "192x192",
       "type": "image/jpeg",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "logo.jpg",
+      "src": "./logo.jpg",
       "sizes": "512x512",
       "type": "image/jpeg",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }
-
