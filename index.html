@@ -309,7 +309,9 @@ width:100%;
 <option>Table 10</option>
 </select>
 
-<input type="text" id="carInput" class="hidden" placeholder="Enter Car Number" style="text-transform:uppercase;">
+<input type="text" id="carInput" class="hidden" placeholder="Enter Car Number"
+maxlength="10"
+style="text-transform:uppercase;">
 
 <div id="packingFields" class="hidden">
 <input type="text" id="customerName" placeholder="Enter Your Name">
@@ -572,7 +574,12 @@ packingFields.classList.remove('hidden');
 });
 
 carInput.addEventListener('input',()=>{
-carInput.value = carInput.value.toUpperCase();
+
+carInput.value = carInput.value
+.toUpperCase()
+.replace(/[^A-Z0-9]/g,'')
+.slice(0,10);
+
 });
 
 function executeOrderAndPayment(){
@@ -622,18 +629,64 @@ details=`${name} (${phone})`;
 
 }
 
-let whatsappText='*--- NEW ONLINE ORDER ---*\n\n';
+const paymentRef = 'HB' + Date.now().toString().slice(-6);
 
-whatsappText += `*Order Type:* ${orderMode}\n`;
-whatsappText += `*Details:* ${details}\n\n`;
+let whatsappText = 
+`✨ *WELCOME TO HAKKA BAKKA CAFE* ✨
+
+🙏 Thank you for your order.
+
+━━━━━━━━━━━━━━━
+
+📌 *ORDER DETAILS*
+
+🧾 Payment Ref:
+${paymentRef}
+
+🍽️ Order Type:
+${orderMode}
+
+📍 Serving Details:
+${details}
+
+━━━━━━━━━━━━━━━
+
+🛒 *ITEMS ORDERED*
+
+`;
 
 cart.forEach((item,index)=>{
-whatsappText += `${index+1}. ${item.name} - ${item.variant}\n`;
+
+whatsappText += 
+`${index+1}. ${item.name}
+   ${item.variant}
+   ₹${item.price}
+
+`;
+
 });
 
-whatsappText += `\n*Total:* ₹${total}`;
+whatsappText += 
+`━━━━━━━━━━━━━━━
 
-window.open(`https://wa.me/917796631555?text=${encodeURIComponent(whatsappText)}`,'_blank');
+💰 *TOTAL BILL*
+₹${total}
+
+✅ Payment Mode:
+UPI Payment
+
+⏳ Please wait while your delicious order is being prepared.
+
+❤️ Thank you for choosing
+*Hakka Bakka Cafe*
+
+📍 Jalandhar
+`;
+
+window.open(
+`https://wa.me/917796631555?text=${encodeURIComponent(whatsappText)}`,
+'_blank'
+);
 
 let shortCode='TO';
 
