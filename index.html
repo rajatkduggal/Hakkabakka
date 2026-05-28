@@ -1,774 +1,715 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />  <title>Hakka Bakka Cafe | Premium Fast Food & Cafe in Jalandhar</title>
-  <meta name="description" content="Hakka Bakka Cafe Jalandhar - Premium Fast Food, Tandoor, Chaat, Kulhad Tea, Coffee & Online Ordering Experience." />
-  <meta name="keywords" content="Hakka Bakka Cafe, Jalandhar Cafe, Fast Food Jalandhar, Tandoor, Chaat, Kulhad Tea" />
-  <meta name="author" content="Hakka Bakka Cafe" />
-  <meta name="theme-color" content="#D4AF37" />
-  <meta name="robots" content="index, follow" />
-  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">  <meta property="og:title" content="Hakka Bakka Cafe" />
-  <meta property="og:description" content="Premium Fast Food, Tandoor & Chaat Experience in Jalandhar." />
-  <meta property="og:image" content="logo.jpg" />
-  <meta property="og:type" content="website" />  <link rel="canonical" href="https://www.hakkabakka.in" />
-  <link rel="manifest" href="./manifest.json" />
-  <link rel="icon" type="image/png" href="logo.jpg" />
-  <link rel="apple-touch-icon" href="logo.jpg" />  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>  <style>
-    :root {
-      --olive: #556B2F;
-      --gold: #D4AF37;
-      --bg: #0b0b0b;
-      --card: #161616;
-      --text: #f0f0f0;
-      --muted: #9f9f9f;
-      --danger: #ff4d4d;
-      --success: #2e8b57;
-      --radius: 18px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hakka Bakka Cafe | Premium Fast Food & Cafe</title>
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta name="description" content="Hakka Bakka Cafe Jalandhar Premium Fast Food & Cafe Experience">
+<meta name="theme-color" content="#D4AF37">
 
-    html {
-      scroll-behavior: smooth;
-    }
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="logo.jpg">
+<link rel="icon" href="logo.jpg">
 
-    body {
-      font-family: 'Outfit', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      overflow-x: hidden;
-      padding-bottom: 120px;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    img {
-      max-width: 100%;
-      display: block;
-    }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-    a {
-      text-decoration: none;
-    }
+<style>
+:root{
+--gold:#D4AF37;
+--olive:#556B2F;
+--bg:#0b0b0b;
+--card:#161616;
+--text:#f0f0f0;
+}
 
-    .hero {
-      position: relative;
-      min-height: 85vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      overflow: hidden;
-      background:
-        linear-gradient(rgba(0,0,0,.78), rgba(0,0,0,.92)),
-        url('logo.jpg') center/cover no-repeat;
-    }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at top right, rgba(212,175,55,.18), transparent 35%);
-    }
+body{
+font-family:'Outfit',sans-serif;
+background:var(--bg);
+color:var(--text);
+padding-bottom:120px;
+overflow-x:hidden;
+}
 
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      width: min(900px, 92%);
-    }
+.hero{
+min-height:75vh;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:40px 20px;
+background:
+linear-gradient(rgba(0,0,0,.82),rgba(0,0,0,.9)),
+url('logo.jpg') center/cover;
+}
 
-    .badge {
-      display: inline-block;
-      padding: 12px 24px;
-      border-radius: 999px;
-      background: rgba(212,175,55,.12);
-      border: 1px solid rgba(212,175,55,.35);
-      color: var(--gold);
-      font-weight: 700;
-      margin-bottom: 25px;
-      backdrop-filter: blur(10px);
-    }
+.hero h1{
+font-size:clamp(3rem,9vw,6rem);
+color:var(--gold);
+letter-spacing:4px;
+}
 
-    .hero h1 {
-      font-size: clamp(3rem, 9vw, 6rem);
-      color: var(--gold);
-      letter-spacing: 4px;
-      line-height: 1;
-      margin-bottom: 20px;
-    }
+.hero p{
+margin-top:20px;
+font-size:1.1rem;
+line-height:1.8;
+max-width:700px;
+margin-inline:auto;
+}
 
-    .hero p {
-      max-width: 650px;
-      margin: auto;
-      line-height: 1.8;
-      color: #e8e8e8;
-      font-size: 1.1rem;
-    }
+.hero-btn{
+display:inline-block;
+margin-top:30px;
+background:linear-gradient(135deg,var(--gold),#b89224);
+color:black;
+padding:16px 32px;
+border-radius:14px;
+font-weight:800;
+text-decoration:none;
+}
 
-    .hero-buttons {
-      margin-top: 35px;
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
+.container{
+width:min(1200px,92%);
+margin:auto;
+}
 
-    .btn {
-      border: none;
-      outline: none;
-      cursor: pointer;
-      border-radius: 14px;
-      font-weight: 700;
-      transition: .3s ease;
-      font-family: inherit;
-    }
+.order-box{
+background:var(--card);
+padding:25px;
+border-radius:20px;
+margin-top:-50px;
+position:relative;
+z-index:10;
+border:1px solid rgba(212,175,55,.2);
+}
 
-    .btn-primary {
-      background: linear-gradient(135deg, var(--gold), #b89224);
-      color: black;
-      padding: 16px 32px;
-      box-shadow: 0 10px 30px rgba(212,175,55,.25);
-    }
+.order-box h2{
+text-align:center;
+margin-bottom:20px;
+}
 
-    .btn-primary:hover {
-      transform: translateY(-4px);
-    }
+.radio-group{
+display:flex;
+justify-content:center;
+gap:15px;
+flex-wrap:wrap;
+}
 
-    .container {
-      width: min(1200px, 92%);
-      margin: auto;
-    }
+.radio-group label{
+background:#222;
+padding:12px 18px;
+border-radius:12px;
+cursor:pointer;
+}
 
-    .order-box {
-      margin-top: -60px;
-      position: relative;
-      z-index: 20;
-      background: var(--card);
-      border: 1px solid rgba(212,175,55,.15);
-      border-radius: var(--radius);
-      padding: 30px;
-      box-shadow: 0 25px 60px rgba(0,0,0,.45);
-    }
+input,select{
+width:100%;
+padding:14px;
+border-radius:12px;
+border:1px solid #333;
+background:#222;
+color:white;
+margin-top:15px;
+font-family:inherit;
+}
 
-    .section-title {
-      margin: 60px 0 25px;
-      font-size: 2rem;
-      border-left: 5px solid var(--gold);
-      padding-left: 15px;
-    }
+.section-title{
+margin:60px 0 25px;
+padding-left:15px;
+border-left:5px solid var(--gold);
+font-size:2rem;
+}
 
-    .radio-group {
-      display: flex;
-      gap: 18px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 20px;
-    }
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:25px;
+}
 
-    .radio-group label {
-      background: #202020;
-      padding: 12px 18px;
-      border-radius: 12px;
-      border: 1px solid #333;
-      cursor: pointer;
-      font-weight: 600;
-    }
+.card{
+background:var(--card);
+border-radius:20px;
+overflow:hidden;
+border:1px solid #222;
+transition:.3s;
+}
 
-    input, select {
-      width: 100%;
-      background: #222;
-      border: 1px solid #333;
-      color: white;
-      padding: 14px;
-      border-radius: 12px;
-      margin-top: 15px;
-      font-family: inherit;
-      outline: none;
-    }
+.card:hover{
+transform:translateY(-6px);
+border-color:var(--gold);
+}
 
-    input:focus,
-    select:focus {
-      border-color: var(--gold);
-    }
+.card img{
+width:100%;
+height:230px;
+object-fit:cover;
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 28px;
-    }
+.card-content{
+padding:20px;
+}
 
-    .card {
-      background: var(--card);
-      border-radius: var(--radius);
-      overflow: hidden;
-      border: 1px solid #252525;
-      transition: .35s ease;
-      display: flex;
-      flex-direction: column;
-    }
+.card h3{
+margin-bottom:15px;
+font-size:1.4rem;
+}
 
-    .card:hover {
-      transform: translateY(-8px);
-      border-color: var(--gold);
-      box-shadow: 0 20px 40px rgba(0,0,0,.35);
-    }
+.price-row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:15px;
+}
 
-    .card img {
-      width: 100%;
-      height: 240px;
-      object-fit: cover;
-    }
+.price{
+font-size:1.4rem;
+font-weight:800;
+color:var(--gold);
+}
 
-    .card-body {
-      padding: 22px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      flex: 1;
-    }
+.qty-box{
+display:flex;
+align-items:center;
+gap:10px;
+}
 
-    .card h3 {
-      font-size: 1.4rem;
-    }
+.qty-btn{
+width:40px;
+height:40px;
+border:none;
+border-radius:10px;
+background:var(--olive);
+color:white;
+font-size:1.2rem;
+font-weight:700;
+cursor:pointer;
+}
 
-    .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-    }
+.qty{
+font-size:1.2rem;
+font-weight:700;
+min-width:20px;
+text-align:center;
+}
 
-    .price {
-      font-size: 1.35rem;
-      color: var(--gold);
-      font-weight: 800;
-    }
+.bottom-bar{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:rgba(10,10,10,.95);
+padding:18px;
+border-top:2px solid var(--gold);
+display:flex;
+justify-content:space-between;
+align-items:center;
+z-index:999;
+backdrop-filter:blur(12px);
+}
 
-    .add-btn {
-      background: var(--olive);
-      color: white;
-      padding: 12px 18px;
-      border-radius: 12px;
-    }
+.total-price{
+font-size:2rem;
+font-weight:800;
+color:var(--gold);
+}
 
-    .add-btn:hover {
-      background: var(--gold);
-      color: black;
-    }
+.pay-btn{
+background:linear-gradient(135deg,var(--gold),#b89224);
+border:none;
+padding:15px 28px;
+font-weight:800;
+border-radius:12px;
+cursor:pointer;
+}
 
-    .bottom-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 999;
-      background: rgba(10,10,10,.96);
-      border-top: 1px solid rgba(212,175,55,.3);
-      backdrop-filter: blur(12px);
-      padding: 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      padding-bottom: calc(18px + env(safe-area-inset-bottom));
-    }
+.footer{
+margin-top:70px;
+padding:60px 20px;
+text-align:center;
+background:#050505;
+}
 
-    .cart-info h4 {
-      color: var(--muted);
-      font-size: .95rem;
-      margin-bottom: 4px;
-    }
+.address{
+margin:20px auto;
+padding:15px;
+max-width:700px;
+background:rgba(85,107,47,.12);
+border:1px solid rgba(212,175,55,.2);
+border-radius:12px;
+line-height:1.8;
+}
 
-    .cart-info p {
-      font-size: 1.7rem;
-      font-weight: 800;
-      color: var(--gold);
-    }
+.whatsapp-btn{
+display:inline-block;
+margin-top:15px;
+background:#25D366;
+color:white;
+padding:14px 28px;
+border-radius:30px;
+text-decoration:none;
+font-weight:700;
+}
 
-    .footer {
-      margin-top: 80px;
-      padding: 70px 20px;
-      background: #050505;
-      text-align: center;
-      border-top: 1px solid #1e1e1e;
-    }
+.hidden{
+display:none;
+}
 
-    .footer-address {
-      margin: 20px auto;
-      max-width: 700px;
-      padding: 18px;
-      border-radius: 14px;
-      border: 1px solid rgba(212,175,55,.15);
-      background: rgba(85,107,47,.12);
-      line-height: 1.8;
-      font-weight: 600;
-    }
+@media(max-width:768px){
+.bottom-bar{
+flex-direction:column;
+gap:15px;
+}
 
-    .whatsapp-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: #25D366;
-      color: white;
-      padding: 14px 28px;
-      border-radius: 999px;
-      font-weight: 700;
-      margin-top: 15px;
-    }
+.pay-btn{
+width:100%;
+}
+}
+</style>
+</head>
+<body>
 
-    .hidden {
-      display: none;
-    }
+<section class="hero">
+<div>
+<h1>HAKKA BAKKA CAFE</h1>
+<p>Premium Fast Food, Tandoor, Chaat, Kulhad Tea & Gourmet Cafe Experience</p>
+<a href="#menu" class="hero-btn">Explore Menu</a>
+</div>
+</section>
 
-    @media(max-width:768px) {
-      .hero {
-        min-height: 72vh;
-      }
+<div class="container">
 
-      .bottom-bar {
-        flex-direction: column;
-      }
+<div class="order-box">
+<h2>Select Serving Mode</h2>
 
-      .btn-primary {
-        width: 100%;
-      }
-    }
-  </style></head>
-<body><section class="hero">
-  <div class="hero-content">
-    <div class="badge">✨ Premium Fast Food & Cafe Experience</div>
-    <h1>HAKKA BAKKA CAFE</h1>
-    <p>
-      Premium Fast Food, Tandoor, Chaat, Kulhad Tea, Coffee & Gourmet Dining Experience in Jalandhar.
-    </p><div class="hero-buttons">
-  <a href="#menuSection" class="btn btn-primary">Explore Menu</a>
+<div class="radio-group">
+<label><input type="radio" name="orderType" value="Table" checked> Table Order</label>
+<label><input type="radio" name="orderType" value="Car"> Car Order</label>
+<label><input type="radio" name="orderType" value="Packing"> Takeaway</label>
 </div>
 
-  </div>
-</section><div class="container">
-  <section class="order-box">
-    <h2>Select Serving Mode</h2><div class="radio-group">
-  <label>
-    <input type="radio" name="orderType" value="Table" checked>
-    Table Order
-  </label>
+<select id="tableSelect">
+<option value="">Choose Table Number</option>
+<option>Table 1</option>
+<option>Table 2</option>
+<option>Table 3</option>
+<option>Table 4</option>
+<option>Table 5</option>
+<option>Table 6</option>
+<option>Table 7</option>
+<option>Table 8</option>
+<option>Table 9</option>
+<option>Table 10</option>
+</select>
 
-  <label>
-    <input type="radio" name="orderType" value="Car">
-    Car Order
-  </label>
+<input type="text" id="carInput" class="hidden" placeholder="Enter Car Number" style="text-transform:uppercase;">
 
-  <label>
-    <input type="radio" name="orderType" value="Packing">
-    Take Away
-  </label>
+<div id="packingFields" class="hidden">
+<input type="text" id="customerName" placeholder="Enter Your Name">
+<input type="tel" id="customerPhone" placeholder="Enter Mobile Number">
+</div>
 </div>
 
-<div id="dynamicFields">
-  <select id="tableSelect">
-    <option value="">Choose Table Number</option>
-    <option>Table 1</option>
-    <option>Table 2</option>
-    <option>Table 3</option>
-    <option>Table 4</option>
-    <option>Table 5</option>
-    <option>Table 6</option>
-    <option>Table 7</option>
-    <option>Table 8</option>
-    <option>Table 9</option>
-    <option>Table 10</option>
-  </select>
+<h2 class="section-title" id="menu">Popular Menu</h2>
 
-  <input type="text" id="carInput" class="hidden" placeholder="Enter Car Number">
+<div class="grid" id="menuGrid"></div>
 
-  <div id="packingFields" class="hidden">
-    <input type="text" id="customerName" placeholder="Enter Your Name">
-    <input type="tel" id="customerPhone" placeholder="Enter Mobile Number">
-  </div>
 </div>
 
-  </section>  <section id="menuSection">
-    <h2 class="section-title">Popular Menu</h2><div class="grid" id="menuGrid"></div>
+<div class="bottom-bar">
+<div>
+<div>Total Bill</div>
+<div class="total-price" id="totalPrice">₹0</div>
+</div>
 
-  </section>
-</div><div class="bottom-bar">
-  <div class="cart-info">
-    <h4>Total Bill</h4>
-    <p id="totalPrice">₹0</p>
-  </div>  <button class="btn btn-primary" id="checkoutBtn">
-    Place Order & Pay
-  </button>
-</div><footer class="footer">
-  <h2>Hakka Bakka Cafe</h2>  <div class="footer-address">
-    📍 SHOP No 1, Nr CANAL Road, Opp Maqsudan Byepass, G T Road, Jalandhar
-  </div><a href="https://wa.me/917796631555?text=Hello%20Hakka%20Bakka%20Cafe" target="_blank" class="whatsapp-btn"
+<button class="pay-btn" onclick="executeOrderAndPayment()">
+Place Order & Pay
+</button>
+</div>
 
-> 
+<footer class="footer">
+<h2>Hakka Bakka Cafe</h2>
 
+<div class="address">
+📍 SHOP No 1, Nr CANAL Road, Opp Maqsudan Byepass, G T Road, Jalandhar
+</div>
+
+<a href="https://wa.me/917796631555" target="_blank" class="whatsapp-btn">
 Chat With Us
+</a>
 
-  </a>  <p style="margin-top:25px;color:#777;font-size:.9rem;">
-    © 2026 Hakka Bakka Cafe. All Rights Reserved.
-  </p>
-</footer><script>
-  // SERVICE WORKER
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
-        .then(() => console.log('Service Worker Active'))
-        .catch(err => console.error(err));
-    });
-  }
+<p style="margin-top:20px;color:#666;">
+© 2026 Hakka Bakka Cafe
+</p>
+</footer>
 
-  // MENU DATA
-  const menuItems = [
-    {
-      name: 'Gourmet Pizza Burst',
-      image: 'pizza.png',
-      type: 'food',
-      variants: [
-        { label: 'Small', price: 220 },
-        { label: 'Medium', price: 340 },
-        { label: 'Large', price: 460 }
-      ]
-    },
-    {
-      name: 'Cheese Chilli Paneer',
-      image: 'cheeschilli.png',
-      type: 'food',
-      variants: [
-        { label: 'Half', price: 180 },
-        { label: 'Full', price: 290 }
-      ]
-    },
-    {
-      name: 'Honey Chilli Potato',
-      image: 'hnychlyptato.png',
-      type: 'food',
-      variants: [
-        { label: 'Regular', price: 140 }
-      ]
-    },
-    {
-      name: 'Hakka Noodles Special',
-      image: 'nudels.png',
-      type: 'food',
-      variants: [
-        { label: 'Half', price: 120 },
-        { label: 'Full', price: 200 }
-      ]
-    },
-    {
-      name: 'Momos Special',
-      image: 'momos.png',
-      type: 'food',
-      variants: [
-        { label: 'Steam', price: 100 },
-        { label: 'Fried', price: 130 },
-        { label: 'Tandoori', price: 160 }
-      ]
-    },
-    {
-      name: 'French Fries',
-      image: 'fries.png',
-      type: 'food',
-      variants: [
-        { label: 'Classic', price: 90 },
-        { label: 'Peri Peri', price: 110 }
-      ]
-    },
-    {
-      name: 'Creamy Pasta Mix',
-      image: 'pasta.png',
-      type: 'food',
-      variants: [
-        { label: 'White Sauce', price: 160 },
-        { label: 'Red Sauce', price: 150 }
-      ]
-    },
-    {
-      name: 'Tandoori Chicken',
-      image: 'tandoorichicken.png',
-      type: 'food',
-      variants: [
-        { label: 'Quarter', price: 240 },
-        { label: 'Half', price: 420 },
-        { label: 'Full', price: 780 }
-      ]
-    },
-    {
-      name: 'Mutton Rogan Josh',
-      image: 'roganjosh.png',
-      type: 'food',
-      variants: [
-        { label: 'Quarter', price: 350 },
-        { label: 'Half', price: 620 },
-        { label: 'Full', price: 1100 }
-      ]
-    },
-    {
-      name: 'Kulhad Tea',
-      image: 'kuladtea.png',
-      type: 'drink',
-      variants: [
-        { label: 'Regular', price: 30 }
-      ]
-    },
-    {
-      name: 'Kulhad Coffee',
-      image: 'kuladcofee.png',
-      type: 'drink',
-      variants: [
-        { label: 'Regular', price: 50 }
-      ]
-    },
-    {
-      name: 'Cold Coffee Shake',
-      image: 'coffeeshake.png',
-      type: 'drink',
-      variants: [
-        { label: 'Classic', price: 100 }
-      ]
-    },
-    {
-      name: 'Packaged Water',
-      image: 'water.png',
-      type: 'drink',
-      variants: [
-        { label: 'Bottle', price: 20 }
-      ]
-    }
-  ];
+<script>
 
-  const menuGrid = document.getElementById('menuGrid');
-  const totalPriceEl = document.getElementById('totalPrice');
+const menuItems = [
+{
+name:'Gourmet Pizza Burst',
+image:'pizza.png',
+variants:[
+{label:'Small',price:220},
+{label:'Medium',price:340},
+{label:'Large',price:460}
+]
+},
+{
+name:'Cheese Chilli Paneer',
+image:'cheeschilli.png',
+variants:[
+{label:'Half',price:180},
+{label:'Full',price:290}
+]
+},
+{
+name:'Honey Chilli Potato',
+image:'hnychlyptato.png',
+variants:[
+{label:'Regular',price:140}
+]
+},
+{
+name:'Hakka Noodles',
+image:'nudels.png',
+variants:[
+{label:'Half',price:120},
+{label:'Full',price:200}
+]
+},
+{
+name:'Momos Special',
+image:'momos.png',
+variants:[
+{label:'Steam',price:100},
+{label:'Fried',price:130},
+{label:'Tandoori',price:160}
+]
+},
+{
+name:'French Fries',
+image:'fries.png',
+variants:[
+{label:'Classic',price:90},
+{label:'Peri Peri',price:110}
+]
+},
+{
+name:'Kulhad Tea',
+image:'kuladtea.png',
+variants:[
+{label:'Regular',price:30}
+]
+},
+{
+name:'Kulhad Coffee',
+image:'kuladcofee.png',
+variants:[
+{label:'Regular',price:50}
+]
+},
+{
+name:'Cold Coffee Shake',
+image:'coffeeshake.png',
+variants:[
+{label:'Classic',price:100}
+]
+},
+{
+name:'Packaged Water',
+image:'water.png',
+variants:[
+{label:'Bottle',price:20}
+]
+}
+];
 
-  let cart = [];
-  let total = 0;
+const menuGrid = document.getElementById('menuGrid');
+const totalPrice = document.getElementById('totalPrice');
 
-  function renderMenu() {
-    menuGrid.innerHTML = '';
+let cart = [];
+let total = 0;
 
-    menuItems.forEach((item, index) => {
-      const variantOptions = item.variants.map(v => `
-        <option value="${v.price}">
-          ${v.label} - ₹${v.price}
-        </option>
-      `).join('');
+function renderMenu(){
 
-      const card = document.createElement('div');
-      card.className = 'card';
+menuItems.forEach((item,index)=>{
 
-      card.innerHTML = `
-        <img
-          src="${item.image}"
-          alt="${item.name} Hakka Bakka Cafe Jalandhar"
-          loading="lazy"
-        >
+const card = document.createElement('div');
+card.className='card';
 
-        <div class="card-body">
-          <h3>${item.name}</h3>
+const options = item.variants.map(v=>`
+<option value="${v.price}">${v.label} - ₹${v.price}</option>
+`).join('');
 
-          <select class="variantSelect">
-            ${variantOptions}
-          </select>
+card.innerHTML=`
+<img src="${item.image}" loading="lazy" alt="${item.name}">
 
-          <div class="card-footer">
-            <span class="price">₹${item.variants[0].price}</span>
+<div class="card-content">
+<h3>${item.name}</h3>
 
-            <div style="display:flex;gap:8px;align-items:center;">
-              <button class="btn add-btn minus-btn">-</button>
-              <span class="qty">0</span>
-              <button class="btn add-btn plus-btn">+</button>
-            </div>
-          </div>
-        </div>
-      `;
+<select class="variant-select">
+${options}
+</select>
 
-      const select = card.querySelector('.variantSelect');
-      const priceText = card.querySelector('.price');
-      const plusBtn = card.querySelector('.plus-btn');
-      const minusBtn = card.querySelector('.minus-btn');
-      const qtyText = card.querySelector('.qty');
+<div class="price-row">
+<div class="price">₹${item.variants[0].price}</div>
 
-      let qty = 0;
+<div class="qty-box">
+<button class="qty-btn minus">-</button>
+<div class="qty">0</div>
+<button class="qty-btn plus">+</button>
+</div>
+</div>
+</div>
+`;
 
-      select.addEventListener('change', () => {
-        priceText.innerText = `₹${select.value}`;
-      });
+const select = card.querySelector('.variant-select');
+const price = card.querySelector('.price');
+const qty = card.querySelector('.qty');
+const plus = card.querySelector('.plus');
+const minus = card.querySelector('.minus');
 
-      plusBtn.addEventListener('click', () => {
-        qty++;
-        qtyText.innerText = qty;
+let quantity = 0;
 
-        const selectedText = select.options[select.selectedIndex].text;
-        const selectedPrice = Number(select.value);
+select.addEventListener('change',()=>{
+price.innerText='₹'+select.value;
+});
 
-        cart.push({
-          item: item.name,
-          variant: selectedText,
-          price: selectedPrice,
-          type: item.type
-        });
+plus.addEventListener('click',()=>{
 
-        total += selectedPrice;
-        updateCart();
-      });
+quantity++;
+qty.innerText=quantity;
 
-      minusBtn.addEventListener('click', () => {
-        if(qty <= 0) return;
+const selectedPrice = Number(select.value);
+const selectedText = select.options[select.selectedIndex].text;
 
-        qty--;
-        qtyText.innerText = qty;
+cart.push({
+name:item.name,
+variant:selectedText,
+price:selectedPrice
+});
 
-        const selectedPrice = Number(select.value);
+total += selectedPrice;
+updateTotal();
 
-        total -= selectedPrice;
+});
 
-        if(total < 0) total = 0;
+minus.addEventListener('click',()=>{
 
-        cart.pop();
+if(quantity<=0)return;
 
-        updateCart();
-      });
+quantity--;
+qty.innerText=quantity;
 
-      menuGrid.appendChild(card);
-    });
-  }
+const selectedPrice = Number(select.value);
 
-  function updateCart() {
-    totalPriceEl.innerText = `₹${total}`;
-  }
+total -= selectedPrice;
 
-  renderMenu();
+if(total<0)total=0;
 
-  // ORDER MODE SWITCH
-  const orderTypeInputs = document.querySelectorAll('input[name="orderType"]');
-  const tableSelect = document.getElementById('tableSelect');
-  const carInput = document.getElementById('carInput');
-  const packingFields = document.getElementById('packingFields');
+cart.pop();
+updateTotal();
 
-  orderTypeInputs.forEach(input => {
-    input.addEventListener('change', () => {
-      if (input.value === 'Table') {
-        tableSelect.classList.remove('hidden');
-        carInput.classList.add('hidden');
-        packingFields.classList.add('hidden');
-      }
+});
 
-      if (input.value === 'Car') {
-        tableSelect.classList.add('hidden');
-        carInput.classList.remove('hidden');
-        packingFields.classList.add('hidden');
-      }
+menuGrid.appendChild(card);
 
-      if (input.value === 'Packing') {
-        tableSelect.classList.add('hidden');
-        carInput.classList.add('hidden');
-        packingFields.classList.remove('hidden');
-      }
-    });
-  });
+});
 
-  // CHECKOUT
-  document.getElementById('checkoutBtn').addEventListener('click', () => {
-    if (cart.length === 0) {
-      alert('Please add some items first.');
-      return;
-    }
+}
 
-    const activeMode = document.querySelector('input[name="orderType"]:checked').value;
+function updateTotal(){
 
-    let detail = '';
+totalPrice.innerText='₹'+total;
 
-    if (activeMode === 'Table') {
-      detail = tableSelect.value;
+}
 
-      if (!detail) {
-        alert('Please select table number.');
-        return;
-      }
-    }
+renderMenu();
 
-    if (activeMode === 'Car') {
-      detail = carInput.value.trim();
+const orderInputs = document.querySelectorAll('input[name="orderType"]');
+const tableSelect = document.getElementById('tableSelect');
+const carInput = document.getElementById('carInput');
+const packingFields = document.getElementById('packingFields');
 
-      if (!detail) {
-        alert('Please enter car number.');
-        return;
-      }
-    }
+orderInputs.forEach(input=>{
 
-    if (activeMode === 'Packing') {
-      const name = document.getElementById('customerName').value.trim();
-      const phone = document.getElementById('customerPhone').value.trim();
+input.addEventListener('change',()=>{
 
-      if (!name || !phone) {
-        alert('Please enter name and phone number.');
-        return;
-      }
+if(input.value==='Table'){
 
-      detail = `${name} - ${phone}`;
-    }
+tableSelect.classList.remove('hidden');
+carInput.classList.add('hidden');
+packingFields.classList.add('hidden');
 
-    let orderText = '*--- NEW ONLINE ORDER ---*\n\n';
+}
 
-    orderText += `*Order Type:* ${activeMode}\n`;
-    orderText += `*Details:* ${detail}\n\n`;
+if(input.value==='Car'){
 
-    cart.forEach((item, index) => {
-      orderText += `${index + 1}. ${item.variant}\n`;
-    });
+tableSelect.classList.add('hidden');
+carInput.classList.remove('hidden');
+packingFields.classList.add('hidden');
 
-    orderText += `\n*Total:* ₹${total}`;
+}
 
-    const whatsappURL = `https://wa.me/917796631555?text=${encodeURIComponent(orderText)}`;
+if(input.value==='Packing'){
 
-    window.open(whatsappURL, '_blank');
+tableSelect.classList.add('hidden');
+carInput.classList.add('hidden');
+packingFields.classList.remove('hidden');
 
-    const upiId = '7888854492@icici';
-    const merchant = 'Hakka Bakka Cafe';
+}
 
-    const upiLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchant)}&am=${total}&cu=INR&tn=${encodeURIComponent(activeMode + ' Order')}`;
+});
 
-    const qrModal = document.createElement('div');
-    qrModal.style.position = 'fixed';
-    qrModal.style.inset = '0';
-    qrModal.style.background = 'rgba(0,0,0,.9)';
-    qrModal.style.display = 'flex';
-    qrModal.style.justifyContent = 'center';
-    qrModal.style.alignItems = 'center';
-    qrModal.style.zIndex = '99999';
+});
 
-    qrModal.innerHTML = `
-      <div style="background:#161616;padding:30px;border-radius:20px;text-align:center;border:2px solid #D4AF37;max-width:400px;width:92%;">
-        <h2 style="margin-bottom:15px;color:#D4AF37;">Scan & Pay</h2>
-        <div id="dynamicQR" style="background:white;padding:15px;border-radius:12px;display:inline-block;"></div>
-        <p style="margin-top:20px;font-size:1.2rem;">Total: ₹${total}</p>
-        <button id="upiOpenBtn" class="btn btn-primary" style="margin-top:15px;width:100%;">Open UPI App</button>
-        <button id="closeQr" style="margin-top:15px;background:none;border:none;color:#999;cursor:pointer;">Close</button>
-      </div>
-    `;
+carInput.addEventListener('input',()=>{
+carInput.value = carInput.value.toUpperCase();
+});
 
-    document.body.appendChild(qrModal);
+function executeOrderAndPayment(){
 
-    new QRCode(document.getElementById('dynamicQR'), {
-      text: upiLink,
-      width: 200,
-      height: 200
-    });
+if(cart.length===0){
+alert('Please add items first');
+return;
+}
 
-    document.getElementById('upiOpenBtn').addEventListener('click', () => {
-      window.location.href = upiLink;
-    });
+const orderMode = document.querySelector('input[name="orderType"]:checked').value;
 
-    document.getElementById('closeQr').addEventListener('click', () => {
-      qrModal.remove();
-    });
-  });
-</script></body>
+let details='';
+
+if(orderMode==='Table'){
+
+if(!tableSelect.value){
+alert('Please select table number');
+return;
+}
+
+details=tableSelect.value;
+
+}
+
+if(orderMode==='Car'){
+
+if(!carInput.value.trim()){
+alert('Please enter car number');
+return;
+}
+
+details=carInput.value.trim().toUpperCase();
+
+}
+
+if(orderMode==='Packing'){
+
+const name = document.getElementById('customerName').value.trim();
+const phone = document.getElementById('customerPhone').value.trim();
+
+if(!name || !phone){
+alert('Please enter name and mobile number');
+return;
+}
+
+details=`${name} (${phone})`;
+
+}
+
+let whatsappText='*--- NEW ONLINE ORDER ---*\n\n';
+
+whatsappText += `*Order Type:* ${orderMode}\n`;
+whatsappText += `*Details:* ${details}\n\n`;
+
+cart.forEach((item,index)=>{
+whatsappText += `${index+1}. ${item.name} - ${item.variant}\n`;
+});
+
+whatsappText += `\n*Total:* ₹${total}`;
+
+window.open(`https://wa.me/917796631555?text=${encodeURIComponent(whatsappText)}`,'_blank');
+
+let shortCode='TO';
+
+if(orderMode==='Car') shortCode='CO';
+if(orderMode==='Packing') shortCode='TA';
+
+const paymentNote=`HakkaBakka ${shortCode}`;
+
+const upiId='7888854492@icici';
+const merchant='Hakka Bakka Cafe';
+
+const upiLink=`upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchant)}&am=${total}&cu=INR&tn=${encodeURIComponent(paymentNote)}`;
+
+const modal = document.createElement('div');
+
+modal.style.position='fixed';
+modal.style.inset='0';
+modal.style.background='rgba(0,0,0,.92)';
+modal.style.display='flex';
+modal.style.justifyContent='center';
+modal.style.alignItems='center';
+modal.style.zIndex='99999';
+
+modal.innerHTML=`
+<div style="background:#161616;padding:30px;border-radius:20px;width:92%;max-width:420px;text-align:center;border:2px solid #D4AF37;">
+
+<h2 style="color:#D4AF37;margin-bottom:20px;">Scan & Pay</h2>
+
+<h1 style="font-size:3rem;margin-bottom:20px;">₹${total}</h1>
+
+<div id="qrCode" style="background:white;padding:15px;border-radius:15px;display:inline-block;"></div>
+
+<button id="openApps" style="width:100%;margin-top:20px;padding:16px;border:none;border-radius:12px;background:linear-gradient(135deg,#D4AF37,#b89224);font-weight:800;cursor:pointer;">
+Open Any UPI App
+</button>
+
+<button id="closeModal" style="margin-top:18px;background:none;border:none;color:#999;cursor:pointer;">
+Cancel
+</button>
+
+</div>
+`;
+
+document.body.appendChild(modal);
+
+new QRCode(document.getElementById('qrCode'),{
+text:upiLink,
+width:220,
+height:220
+});
+
+
+document.getElementById('openApps').addEventListener('click',()=>{
+
+if(/Android/i.test(navigator.userAgent)){
+location.href = upiLink;
+}else{
+alert('Please scan QR using any UPI app');
+}
+
+});
+
+
+document.getElementById('closeModal').addEventListener('click',()=>{
+modal.remove();
+});
+
+}
+
+if('serviceWorker' in navigator){
+window.addEventListener('load',()=>{
+navigator.serviceWorker.register('./sw.js');
+});
+}
+
+</script>
+
+</body>
 </html>
