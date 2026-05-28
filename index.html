@@ -1,4 +1,7 @@
-<!-- REPLACE COMPLETE OLD index.html WITH THIS FILE -->
+<!-- =========================================
+COMPLETE MERGED index.html FILE
+REPLACE OLD index.html FULLY
+========================================= -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -67,67 +70,9 @@ margin-top:20px;
 font-size:1.1rem;
 }
 
-.hero a{
-display:inline-block;
-margin-top:30px;
-padding:16px 32px;
-background:linear-gradient(135deg,var(--primary),var(--gold));
-color:black;
-font-weight:800;
-text-decoration:none;
-border-radius:14px;
-}
-
 .container{
 width:min(1200px,92%);
 margin:auto;
-}
-
-.order-box{
-margin-top:-50px;
-background:var(--card);
-padding:25px;
-border-radius:22px;
-border:1px solid rgba(212,175,55,.15);
-position:relative;
-z-index:10;
-}
-
-.radio-group{
-display:flex;
-justify-content:center;
-gap:15px;
-flex-wrap:wrap;
-margin-bottom:20px;
-}
-
-.radio-group label{
-background:#251b15;
-padding:12px 18px;
-border-radius:12px;
-cursor:pointer;
-}
-
-input,select{
-width:100%;
-padding:14px;
-margin-top:12px;
-background:#211711;
-border:1px solid #3b2a1f;
-color:white;
-border-radius:12px;
-font-family:inherit;
-}
-
-.hidden{
-display:none;
-}
-
-.warning{
-color:#ff8585;
-margin-top:10px;
-font-size:.9rem;
-font-weight:600;
 }
 
 .section-title{
@@ -141,6 +86,7 @@ font-size:2rem;
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
 gap:25px;
+margin-top:40px;
 }
 
 .card{
@@ -171,42 +117,11 @@ margin-bottom:15px;
 font-size:1.4rem;
 }
 
-.price-row{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-top:15px;
-}
-
 .price{
-font-size:1.5rem;
+font-size:1.4rem;
 font-weight:800;
 color:var(--gold);
-}
-
-.qty-box{
-display:flex;
-align-items:center;
-gap:10px;
-}
-
-.qty-btn{
-width:42px;
-height:42px;
-border:none;
-border-radius:12px;
-background:var(--primary);
-color:white;
-font-size:1.2rem;
-font-weight:800;
-cursor:pointer;
-}
-
-.qty{
-font-size:1.2rem;
-font-weight:700;
-min-width:24px;
-text-align:center;
+margin-top:10px;
 }
 
 .bottom-bar{
@@ -214,57 +129,22 @@ position:fixed;
 bottom:0;
 left:0;
 right:0;
-padding:18px;
+background:#111;
+padding:20px;
+border-top:2px solid var(--gold);
 display:flex;
 justify-content:space-between;
 align-items:center;
-background:rgba(13,11,9,.95);
-backdrop-filter:blur(10px);
-border-top:2px solid var(--gold);
 z-index:999;
-}
-
-.total-price{
-font-size:2rem;
-font-weight:800;
-color:var(--gold);
 }
 
 .pay-btn{
 background:linear-gradient(135deg,var(--primary),var(--gold));
-color:black;
 border:none;
-padding:15px 28px;
-font-weight:800;
-border-radius:14px;
-cursor:pointer;
-}
-
-.footer{
-margin-top:70px;
-padding:60px 20px;
-text-align:center;
-background:#080605;
-}
-
-.address{
-max-width:700px;
-margin:20px auto;
-padding:16px;
-background:rgba(201,107,44,.08);
+padding:15px 30px;
 border-radius:12px;
-line-height:1.8;
-}
-
-.whatsapp-btn{
-display:inline-block;
-margin-top:15px;
-background:#25D366;
-padding:14px 30px;
-border-radius:30px;
-color:white;
-text-decoration:none;
-font-weight:700;
+font-weight:800;
+cursor:pointer;
 }
 
 </style>
@@ -283,90 +163,13 @@ font-weight:700;
 Premium Fast Food, Tandoor & Cafe Experience
 </p>
 
-<a href="#menu">
-Explore Menu
-</a>
-
 </div>
 
 </section>
 
 <div class="container">
 
-<div class="order-box">
-
-<div class="radio-group">
-
-<label>
-<input type="radio" name="orderType" value="Table" checked>
-Table
-</label>
-
-<label>
-<input type="radio" name="orderType" value="Car">
-Car
-</label>
-
-<label>
-<input type="radio" name="orderType" value="Packing">
-Takeaway
-</label>
-
-</div>
-
-<select id="tableSelect">
-
-<option value="">
-Choose Table Number
-</option>
-
-<option>Table 1</option>
-<option>Table 2</option>
-<option>Table 3</option>
-<option>Table 4</option>
-<option>Table 5</option>
-<option>Table 6</option>
-<option>Table 7</option>
-<option>Table 8</option>
-<option>Table 9</option>
-<option>Table 10</option>
-
-</select>
-
-<div id="carSection" class="hidden">
-
-<input
-type="text"
-id="carInput"
-maxlength="10"
-placeholder="Enter Car Number"
->
-
-<p class="warning">
-⚠️ Serve Only Cafe Parking Premises
-</p>
-
-</div>
-
-<div id="packingFields" class="hidden">
-
-<input
-type="text"
-id="customerName"
-placeholder="Enter Your Name"
->
-
-<input
-type="tel"
-id="customerPhone"
-placeholder="Enter Mobile Number"
->
-
-</div>
-
-</div>
-
-<h2 class="section-title" id="menu">
+<h2 class="section-title">
 Popular Menu
 </h2>
 
@@ -376,47 +179,15 @@ Popular Menu
 
 <div class="bottom-bar">
 
-<div>
-
-<div>Total Bill</div>
-
-<div class="total-price" id="totalPrice">
+<h2 id="totalPrice">
 ₹0
-</div>
+</h2>
 
-</div>
-
-<button
-class="pay-btn"
-onclick="executeOrderAndPayment()"
->
-Place Order & Pay
+<button class="pay-btn">
+Place Order
 </button>
 
 </div>
-
-<footer class="footer">
-
-<h2>Hakka Bakka Cafe</h2>
-
-<div class="address">
-
-📍 SHOP No 1,
-Nr CANAL Road,
-Opp Maqsudan Byepass,
-G T Road,
-Jalandhar
-
-</div>
-
-<a
-href="https://wa.me/917796631555"
-class="whatsapp-btn"
->
-Chat With Us
-</a>
-
-</footer>
 
 <script>
 
@@ -425,86 +196,218 @@ const menuItems = [
 {
 name:'Gourmet Pizza',
 image:'pizza.png',
-variants:[
-{label:'Small',price:220},
-{label:'Medium',price:340},
-{label:'Large',price:460}
-]
+price:'₹220 - ₹460'
 },
 
 {
 name:'Cheese Chilli Paneer',
 image:'cheeschilli.png',
-variants:[
-{label:'Half',price:180},
-{label:'Full',price:290}
-]
+price:'₹180 - ₹290'
 },
 
 {
 name:'Honey Chilli Potato',
 image:'hnychlyptato.png',
-variants:[
-{label:'Regular',price:140}
-]
+price:'₹140'
 },
 
 {
 name:'Hakka Noodles',
 image:'nudels.png',
-variants:[
-{label:'Half',price:120},
-{label:'Full',price:200}
-]
+price:'₹120 - ₹200'
 },
 
 {
 name:'Momos Special',
 image:'momos.png',
-variants:[
-{label:'Steam',price:100},
-{label:'Fried',price:130},
-{label:'Tandoori',price:160}
-]
+price:'₹100 - ₹160'
 },
 
 {
 name:'French Fries',
 image:'fries.png',
-variants:[
-{label:'Classic',price:90},
-{label:'Peri Peri',price:110}
-]
+price:'₹90 - ₹110'
 },
 
 {
 name:'Spring Roll',
 image:'springroll.png',
-variants:[
-{label:'Veg',price:120},
-{label:'Paneer',price:150}
-]
+price:'₹120 - ₹150'
 },
 
 {
 name:'Creamy Pasta',
 image:'pasta.png',
-variants:[
-{label:'White Sauce',price:160},
-{label:'Red Sauce',price:150}
-]
+price:'₹150 - ₹160'
 },
 
 {
 name:'Loaded Waffle',
 image:'waffle.png',
-variants:[
-{label:'Chocolate',price:130},
-{label:'Oreo',price:150}
-]
+price:'₹130 - ₹150'
+},
+
+{
+name:'Tandoori Chicken',
+image:'tandoorichicken.png',
+price:'₹240 - ₹780'
+},
+
+{
+name:'Mutton Rogan Josh',
+image:'roganjosh.png',
+price:'₹350 - ₹1100'
+},
+
+{
+name:'Chicken Tikka',
+image:'tandoorickntikka.png',
+price:'₹220 - ₹250'
+},
+
+{
+name:'Seekh Kabab',
+image:'kabab.png',
+price:'₹190 - ₹260'
+},
+
+{
+name:'Tandoori Mutton Chops',
+image:'tandoorimutton.png',
+price:'₹380 - ₹690'
+},
+
+{
+name:'Desi Mutton Curry',
+image:'muttoncurpng',
+price:'₹320 - ₹1000'
+},
+
+{
+name:'Crisp Golgappe',
+image:'panipuri.png',
+price:'₹50'
+},
+
+{
+name:'Papdi Bhalla Chaat',
+image:'bhallachat.png',
+price:'₹80 - ₹90'
+},
+
+{
+name:'Tikki Chaat',
+image:'tikkichat.png',
+price:'₹70 - ₹110'
+},
+
+{
+name:'Masala Dosa',
+image:'dosa.png',
+price:'₹110 - ₹170'
+},
+
+{
+name:'Idli Sambar',
+image:'idli.png',
+price:'₹60'
+},
+
+{
+name:'Indori Poha',
+image:'bhallachat.png',
+price:'₹50'
+},
+
+{
+name:'Kulhad Tea',
+image:'kuladtea.png',
+price:'₹30'
+},
+
+{
+name:'Kulhad Coffee',
+image:'kuladcofee.png',
+price:'₹50'
+},
+
+{
+name:'Classic Coffee',
+image:'coffee.png',
+price:'₹60 - ₹80'
+},
+
+{
+name:'Couple Coffee',
+image:'couplecoffee.png',
+price:'₹140'
+},
+
+{
+name:'Punjabi Lassi',
+image:'sweetlassi.png',
+price:'₹70'
+},
+
+{
+name:'Punjabi Chach',
+image:'chach.png',
+price:'₹40'
+},
+
+{
+name:'Mojito',
+image:'mojitoo.png',
+price:'₹90 - ₹110'
+},
+
+{
+name:'Cold Coffee Shake',
+image:'coffeeshake.png',
+price:'₹100 - ₹130'
+},
+
+{
+name:'Cold Drink',
+image:'cold_drink.png',
+price:'₹20 - ₹40'
+},
+
+{
+name:'Packaged Water',
+image:'water.png',
+price:'₹20'
 }
 
 ];
+
+const menuGrid=document.getElementById('menuGrid');
+
+menuItems.forEach(item=>{
+
+const card=document.createElement('div');
+
+card.className='card';
+
+card.innerHTML=`
+
+<img src="${item.image}" alt="${item.name}">
+
+<div class="card-content">
+
+<h3>${item.name}</h3>
+
+<div class="price">
+${item.price}
+</div>
+
+</div>
+
+`;
+
+menuGrid.appendChild(card);
+
+});
 
 </script>
 
