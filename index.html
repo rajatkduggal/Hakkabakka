@@ -454,6 +454,15 @@ Chat With Us
       ]
     },
     {
+      name: 'Hakka Noodles Special',
+      image: 'nudels.png',
+      type: 'food',
+      variants: [
+        { label: 'Half', price: 120 },
+        { label: 'Full', price: 200 }
+      ]
+    },
+    {
       name: 'Momos Special',
       image: 'momos.png',
       type: 'food',
@@ -461,6 +470,44 @@ Chat With Us
         { label: 'Steam', price: 100 },
         { label: 'Fried', price: 130 },
         { label: 'Tandoori', price: 160 }
+      ]
+    },
+    {
+      name: 'French Fries',
+      image: 'fries.png',
+      type: 'food',
+      variants: [
+        { label: 'Classic', price: 90 },
+        { label: 'Peri Peri', price: 110 }
+      ]
+    },
+    {
+      name: 'Creamy Pasta Mix',
+      image: 'pasta.png',
+      type: 'food',
+      variants: [
+        { label: 'White Sauce', price: 160 },
+        { label: 'Red Sauce', price: 150 }
+      ]
+    },
+    {
+      name: 'Tandoori Chicken',
+      image: 'tandoorichicken.png',
+      type: 'food',
+      variants: [
+        { label: 'Quarter', price: 240 },
+        { label: 'Half', price: 420 },
+        { label: 'Full', price: 780 }
+      ]
+    },
+    {
+      name: 'Mutton Rogan Josh',
+      image: 'roganjosh.png',
+      type: 'food',
+      variants: [
+        { label: 'Quarter', price: 350 },
+        { label: 'Half', price: 620 },
+        { label: 'Full', price: 1100 }
       ]
     },
     {
@@ -533,22 +580,31 @@ Chat With Us
           <div class="card-footer">
             <span class="price">₹${item.variants[0].price}</span>
 
-            <button class="btn add-btn">
-              Add To Cart
-            </button>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button class="btn add-btn minus-btn">-</button>
+              <span class="qty">0</span>
+              <button class="btn add-btn plus-btn">+</button>
+            </div>
           </div>
         </div>
       `;
 
       const select = card.querySelector('.variantSelect');
       const priceText = card.querySelector('.price');
-      const button = card.querySelector('.add-btn');
+      const plusBtn = card.querySelector('.plus-btn');
+      const minusBtn = card.querySelector('.minus-btn');
+      const qtyText = card.querySelector('.qty');
+
+      let qty = 0;
 
       select.addEventListener('change', () => {
         priceText.innerText = `₹${select.value}`;
       });
 
-      button.addEventListener('click', () => {
+      plusBtn.addEventListener('click', () => {
+        qty++;
+        qtyText.innerText = qty;
+
         const selectedText = select.options[select.selectedIndex].text;
         const selectedPrice = Number(select.value);
 
@@ -561,14 +617,23 @@ Chat With Us
 
         total += selectedPrice;
         updateCart();
+      });
 
-        button.innerText = '✓ Added';
-        button.style.background = '#2e8b57';
+      minusBtn.addEventListener('click', () => {
+        if(qty <= 0) return;
 
-        setTimeout(() => {
-          button.innerText = 'Add To Cart';
-          button.style.background = '';
-        }, 1000);
+        qty--;
+        qtyText.innerText = qty;
+
+        const selectedPrice = Number(select.value);
+
+        total -= selectedPrice;
+
+        if(total < 0) total = 0;
+
+        cart.pop();
+
+        updateCart();
       });
 
       menuGrid.appendChild(card);
@@ -670,9 +735,40 @@ Chat With Us
 
     const upiLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchant)}&am=${total}&cu=INR&tn=${encodeURIComponent(activeMode + ' Order')}`;
 
-    setTimeout(() => {
+    const qrModal = document.createElement('div');
+    qrModal.style.position = 'fixed';
+    qrModal.style.inset = '0';
+    qrModal.style.background = 'rgba(0,0,0,.9)';
+    qrModal.style.display = 'flex';
+    qrModal.style.justifyContent = 'center';
+    qrModal.style.alignItems = 'center';
+    qrModal.style.zIndex = '99999';
+
+    qrModal.innerHTML = `
+      <div style="background:#161616;padding:30px;border-radius:20px;text-align:center;border:2px solid #D4AF37;max-width:400px;width:92%;">
+        <h2 style="margin-bottom:15px;color:#D4AF37;">Scan & Pay</h2>
+        <div id="dynamicQR" style="background:white;padding:15px;border-radius:12px;display:inline-block;"></div>
+        <p style="margin-top:20px;font-size:1.2rem;">Total: ₹${total}</p>
+        <button id="upiOpenBtn" class="btn btn-primary" style="margin-top:15px;width:100%;">Open UPI App</button>
+        <button id="closeQr" style="margin-top:15px;background:none;border:none;color:#999;cursor:pointer;">Close</button>
+      </div>
+    `;
+
+    document.body.appendChild(qrModal);
+
+    new QRCode(document.getElementById('dynamicQR'), {
+      text: upiLink,
+      width: 200,
+      height: 200
+    });
+
+    document.getElementById('upiOpenBtn').addEventListener('click', () => {
       window.location.href = upiLink;
-    }, 1500);
+    });
+
+    document.getElementById('closeQr').addEventListener('click', () => {
+      qrModal.remove();
+    });
   });
 </script></body>
 </html>
