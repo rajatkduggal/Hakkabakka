@@ -1,1 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Hakka Bakka Punjabi Dhaba | Jalandhar</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+scroll-behavior:smooth;
+}
+
+body{
+background:#fff8f0;
+color:#222;
+}
+
+:root{
+--maroon:#7A1414;
+--gold:#D4AF37;
+--cream:#FFF8F0;
+}
+
+header{
+background:var(--maroon);
+position:sticky;
+top:0;
+z-index:999;
+box-shadow:0 2px 15px rgba(0,0,0,.2);
+}
+
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 30px;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+color:white;
+font-weight:800;
+font-size:24px;
+}
+
+.logo img{
+height:55px;
+border-radius:50%;
+}
+
+.nav-links{
+display:flex;
+gap:25px;
+}
+
+.nav-links a{
+color:white;
+text-decoration:none;
+font-weight:700;
+}
+
+.nav-links a:hover{
+color:var(--gold);
+}
+
+.hero{
+position:relative;
+}
+
+.hero img{
+width:100%;
+height:80vh;
+object-fit:cover;
+display:block;
+}
+
+.overlay{
+position:absolute;
+inset:0;
+background:rgba(0,0,0,.45);
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:20px;
+}
+
+.overlay h1{
+color:white;
+font-size:4rem;
+font-weight:800;
+}
+
+.overlay p{
+color:#fff;
+font-size:1.4rem;
+margin-top:10px;
+font-weight:600;
+}
+
+.btn-group{
+margin-top:25px;
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.btn{
+padding:14px 28px;
+border-radius:50px;
+text-decoration:none;
+font-weight:700;
+}
+
+.btn-gold{
+background:var(--gold);
+color:black;
+}
+
+.btn-white{
+background:white;
+color:black;
+}
+
+.section{
+padding:70px 20px;
+max-width:1200px;
+margin:auto;
+}
+
+.section-title{
+text-align:center;
+font-size:2.5rem;
+font-weight:800;
+color:var(--maroon);
+margin-bottom:40px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+}
+
+.card{
+background:white;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 5px 20px rgba(0,0,0,.1);
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.card img{
+width:100%;
+height:220px;
+object-fit:cover;
+}
+
+.card-content{
+padding:15px;
+}
+
+.card h3{
+font-size:22px;
+font-weight:800;
+color:var(--maroon);
+}
+
+.price{
+color:#444;
+font-weight:700;
+margin-top:8px;
+}
+
+.about{
+background:#fff;
+border-radius:20px;
+padding:30px;
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+line-height:1.8;
+font-size:18px;
+}
+
+footer{
+background:#111;
+color:white;
+padding:50px 20px;
+text-align:center;
+}
+
+footer h2{
+margin-bottom:15px;
+}
+
+.whatsapp{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+color:white;
+padding:15px 22px;
+border-radius:50px;
+text-decoration:none;
+font-weight:700;
+box-shadow:0 5px 20px rgba(0,0,0,.25);
+}
+
+@media(max-width:768px){
+
+.navbar{
+flex-direction:column;
+gap:10px;
+}
+
+.overlay h1{
+font-size:2.4rem;
+}
+
+.overlay p{
+font-size:1rem;
+}
+
+.nav-links{
+flex-wrap:wrap;
+justify-content:center;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="navbar">
+
+<div class="logo">
+<img src="logo.jpg" alt="Logo">
+<span>HAKKA BAKKA</span>
+</div>
+
+<div class="nav-links">
+<a href="index.html">Home</a>
+<a href="menu.html">Menu</a>
+<a href="gallery.html">Gallery</a>
+<a href="#contact">Contact</a>
+</div>
+
+</div>
+</header>
+
+<section class="hero">
+<img src="signboard.png" alt="Hakka Bakka">
+
+<div class="overlay">
+
+<h1>HAKKA BAKKA</h1>
+
+<p>Desi Swad • Modern Vibe</p>
+
+<div class="btn-group">
+
+<a class="btn btn-gold"
+href="https://wa.me/917796631555">
+💬 WhatsApp Order
+</a>
+
+<a class="btn btn-white"
+href="tel:7796631555">
+📞 Call Now
+</a>
+
+</div>
+
+</div>
+</section>
+<section class="section">
+
+<h2 class="section-title">🔥 Our Specials 🔥</h2>
+
+<div class="cards">
+
+<div class="card">
+<img src="rajganjosh.png" alt="Mutton Rogan Josh">
+<div class="card-content">
+<h3>Mutton Rogan Josh</h3>
+<p class="price">₹350 / ₹650</p>
+</div>
+</div>
+
+<div class="card">
+<img src="butterchicken.png" alt="Butter Chicken">
+<div class="card-content">
+<h3>Butter Chicken</h3>
+<p class="price">₹300 / ₹550</p>
+</div>
+</div>
+
+<div class="card">
+<img src="tariwalamutton.png" alt="Tari Wala Mutton">
+<div class="card-content">
+<h3>Tari Wala Mutton</h3>
+<p class="price">₹350 / ₹650</p>
+</div>
+</div>
+
+<div class="card">
+<img src="tandoorichiktika.png" alt="Chicken Tikka">
+<div class="card-content">
+<h3>Chicken Tikka</h3>
+<p class="price">Tandoori Special</p>
+</div>
+</div>
+
+<div class="card">
+<img src="splfishfrybasa.png" alt="Fish Fry Basa">
+<div class="card-content">
+<h3>Special Fish Fry Basa</h3>
+<p class="price">Chef Special</p>
+</div>
+</div>
+
+<div class="card">
+<img src="paneerbuttermasala.png" alt="Paneer Butter Masala">
+<div class="card-content">
+<h3>Paneer Butter Masala</h3>
+<p class="price">₹150 / ₹270</p>
+</div>
+</div>
+
+</div>
+
+</section>
+
+
+<section class="section">
+
+<h2 class="section-title">🙏 Tuhada Apna Hakka Bakka</h2>
+
+<div class="about">
+
+<p>
+Punjabi swaad, fresh ingredients te ghar varga taste.
+Hakka Bakka Punjabi Dhaba vich tuhanu milde ne
+authentic veg, non-veg, tandoori te fish dishes.
+Asi har order fresh tayar karde haan taaki
+tuhanu best quality te taste mile.
+</p>
+
+<br>
+
+<p>
+From Butter Chicken to Tari Wala Mutton,
+Paneer Butter Masala to Fish Fry Basa,
+every dish is prepared with love, flavour
+and true Punjabi hospitality.
+</p>
+
+</div>
+
+</section>
+
+
+<section class="section" id="contact">
+
+<h2 class="section-title">📍 Contact Us</h2>
+
+<div class="about">
+
+<h3>HAKKA BAKKA Punjabi Dhaba</h3>
+
+<br>
+
+<p>
+Shop No.1, Nr. Bhagat Singh Colony,<br>
+Opp. Maqsudan Bye Pass,<br>
+G.T. Road, Jalandhar,<br>
+Punjab 144008, India
+</p>
+
+<br>
+
+<p>
+📞 <strong>7796631555</strong>
+</p>
+
+<br>
+
+<p>
+💬 WhatsApp Orders Available
+</p>
+
+<br>
+
+<a
+class="btn btn-gold"
+href="https://wa.me/917796631555">
+Order on WhatsApp
+</a>
+
+</div>
+
+</section>
+
+
+<footer>
+
+<h2>HAKKA BAKKA Punjabi Dhaba</h2>
+
+<p>
+Desi Swad • Modern Vibe
+</p>
+
+<br>
+
+<p>
+📍 Jalandhar, Punjab
+</p>
+
+<p>
+📞 7796631555
+</p>
+
+<br>
+
+<p>
+© 2025 Hakka Bakka. All Rights Reserved.
+</p>
+
+</footer>
+
+<a
+class="whatsapp"
+href="https://wa.me/917796631555">
+💬 Order Now
+</a>
+
+</body>
+</html>
