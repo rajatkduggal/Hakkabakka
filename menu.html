@@ -1,10 +1,398 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Hakka Bakka Menu</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu | Hakka Bakka Punjabi Dhaba</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#fff8f0;
+}
+
+:root{
+--maroon:#7A1414;
+--gold:#D4AF37;
+}
+
+header{
+background:var(--maroon);
+padding:15px 25px;
+position:sticky;
+top:0;
+z-index:999;
+}
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+color:#fff;
+font-size:28px;
+font-weight:800;
+}
+
+nav a{
+color:#fff;
+text-decoration:none;
+margin-left:20px;
+font-weight:700;
+}
+
+.hero{
+background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
+url("signboard.png");
+background-size:cover;
+background-position:center;
+height:300px;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+text-align:center;
+color:white;
+}
+
+.hero h1{
+font-size:50px;
+font-weight:800;
+}
+
+.hero p{
+font-size:20px;
+}
+
+.section-title{
+text-align:center;
+font-size:40px;
+color:var(--maroon);
+font-weight:800;
+margin:50px 0 20px;
+}
+
+.menu-grid{
+max-width:1400px;
+margin:auto;
+padding:20px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:25px;
+}
+
+.card{
+background:white;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 5px 20px rgba(0,0,0,.1);
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.card img{
+width:100%;
+height:220px;
+object-fit:cover;
+}
+
+.card-content{
+padding:18px;
+}
+
+.card h3{
+color:var(--maroon);
+font-size:22px;
+font-weight:800;
+}
+
+.price{
+margin-top:8px;
+font-weight:700;
+font-size:18px;
+color:#333;
+}
+
+.whatsapp{
+position:fixed;
+right:20px;
+bottom:20px;
+background:#25D366;
+color:white;
+padding:15px 25px;
+border-radius:50px;
+text-decoration:none;
+font-weight:700;
+}
+
+.category{
+margin-top:50px;
+}
+
+footer{
+background:#111;
+color:white;
+text-align:center;
+padding:40px 20px;
+margin-top:60px;
+}
+
+</style>
 </head>
 <body>
-<h1>Hakka Bakka Menu</h1>
-<p>Menu page coming soon...</p>
+
+<header>
+<nav>
+<div class="logo">HAKKA BAKKA</div>
+
+<div>
+<a href="index.html">Home</a>
+<a href="menu.html">Menu</a>
+<a href="gallery.html">Gallery</a>
+</div>
+</nav>
+</header>
+
+<section class="hero">
+<h1>Our Menu</h1>
+<p>Punjabi Swad • Modern Vibe</p>
+</section>
+
+<h2 class="section-title">🍗 Non Veg Specials</h2>
+
+<div class="menu-grid">
+
+<div class="card">
+<img src="mutton rogan josh.jpg">
+<div class="card-content">
+<h3>Mutton Rogan Josh</h3>
+<div class="price">₹350 / ₹650</div>
+</div>
+</div>
+
+<div class="card">
+<img src="butter chicken.jpg">
+<div class="card-content">
+<h3>Butter Chicken</h3>
+<div class="price">₹300 / ₹550</div>
+</div>
+</div>
+
+<div class="card">
+<img src="tari wala mutton.jpg">
+<div class="card-content">
+<h3>Tari Wala Mutton</h3>
+<div class="price">₹350 / ₹650</div>
+</div>
+</div>
+
+<div class="card">
+<img src="chicken tikka.jpg">
+<div class="card-content">
+<h3>Chicken Tikka</h3>
+<div class="price">₹250 / ₹480</div>
+</div>
+</div>
+
+<div class="card">
+<img src="spl fish fry basa.jpg">
+<div class="card-content">
+<h3>Special Fish Fry Basa</h3>
+<div class="price">₹250</div>
+</div>
+</div>
+
+<div class="card">
+<img src="chicken curry.jpg">
+<div class="card-content">
+<h3>Chicken Curry</h3>
+<div class="price">₹350 / ₹550</div>
+</div>
+</div>
+
+<div class="card">
+<img src="kadai chicken.jpg">
+<div class="card-content">
+<h3>Kadai Chicken</h3>
+<div class="price">₹290 / ₹530</div>
+</div>
+</div>
+
+<div class="card">
+<img src="rara chicken.jpg">
+<div class="card-content">
+<h3>Rara Chicken</h3>
+<div class="price">₹350 / ₹600</div>
+</div>
+</div>
+
+</div>
+
+<h2 class="section-title">🥘 Veg Main Course</h2>
+
+<div class="menu-grid">
+
+<div class="card">
+<img src="paneer butter masala.jpg">
+<div class="card-content">
+<h3>Paneer Butter Masala</h3>
+<div class="price">₹150 / ₹270</div>
+</div>
+</div>
+
+<div class="card">
+<img src="shahi paneer.jpg">
+<div class="card-content">
+<h3>Shahi Paneer</h3>
+<div class="price">₹120 / ₹240</div>
+</div>
+</div>
+
+<div class="card">
+<img src="kadai paneer.jpg">
+<div class="card-content">
+<h3>Kadai Paneer</h3>
+<div class="price">₹120 / ₹240</div>
+</div>
+</div>
+
+<div class="card">
+<img src="dal makhani.jpg">
+<div class="card-content">
+<h3>Dal Makhani</h3>
+<div class="price">₹90 / ₹180</div>
+</div>
+</div>
+
+<div class="card">
+<img src="dal fry.jpg">
+<div class="card-content">
+<h3>Dal Fry</h3>
+<div class="price">₹80 / ₹150</div>
+</div>
+</div>
+
+<div class="card">
+<img src="mix veg.jpg">
+<div class="card-content">
+<h3>Mix Veg</h3>
+<div class="price">₹100 / ₹200</div>
+</div>
+</div>
+
+</div>
+
+<h2 class="section-title">🫓 Breads</h2>
+
+<div class="menu-grid">
+
+<div class="card">
+<img src="tandoori chapati.jpg">
+<div class="card-content">
+<h3>Tandoori Roti</h3>
+<div class="price">₹10</div>
+</div>
+</div>
+
+<div class="card">
+<img src="butter naan.jpg">
+<div class="card-content">
+<h3>Butter Naan</h3>
+<div class="price">₹50</div>
+</div>
+</div>
+
+<div class="card">
+<img src="garlic naan.jpg">
+<div class="card-content">
+<h3>Garlic Naan</h3>
+<div class="price">₹70</div>
+</div>
+</div>
+
+<div class="card">
+<img src="lachha paratha.jpg">
+<div class="card-content">
+<h3>Lachha Paratha</h3>
+<div class="price">₹50</div>
+</div>
+</div>
+
+</div>
+
+<h2 class="section-title">🍚 Rice</h2>
+
+<div class="menu-grid">
+
+<div class="card">
+<img src="plain rice.jpg">
+<div class="card-content">
+<h3>Plain Rice</h3>
+<div class="price">₹60 / ₹120</div>
+</div>
+</div>
+
+<div class="card">
+<img src="jeera rice.jpg">
+<div class="card-content">
+<h3>Jeera Rice</h3>
+<div class="price">₹70 / ₹150</div>
+</div>
+</div>
+
+<div class="card">
+<img src="chicken rice.jpg">
+<div class="card-content">
+<h3>Chicken Rice</h3>
+<div class="price">₹150 / ₹250</div>
+</div>
+</div>
+
+<div class="card">
+<img src="mutton rice.jpg">
+<div class="card-content">
+<h3>Mutton Rice</h3>
+<div class="price">₹200 / ₹300</div>
+</div>
+</div>
+
+</div>
+
+<footer>
+
+<h2>HAKKA BAKKA Punjabi Dhaba</h2>
+
+<p>
+Shop No.1, Nr. Bhagat Singh Colony,
+Opp. Maqsudan Bye Pass,
+G.T. Road, Jalandhar,
+Punjab 144008
+</p>
+
+<br>
+
+<p>📞 7796631555</p>
+
+</footer>
+
+<a class="whatsapp"
+href="https://wa.me/917796631555">
+💬 Order Now
+</a>
+
 </body>
 </html>
