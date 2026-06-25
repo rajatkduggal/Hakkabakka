@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hakka Bakka Menu</title>
+<title>Menu | Hakka Bakka Punjabi Dhaba</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 
@@ -16,12 +16,18 @@ box-sizing:border-box;
 font-family:'Poppins',sans-serif;
 }
 
+:root{
+--maroon:#7A1414;
+--gold:#D4AF37;
+--cream:#fff8f0;
+}
+
 body{
-background:#fff8f0;
+background:var(--cream);
 }
 
 header{
-background:#7A1414;
+background:var(--maroon);
 padding:15px 25px;
 position:sticky;
 top:0;
@@ -36,36 +42,46 @@ align-items:center;
 
 .logo{
 color:#fff;
-font-size:30px;
+font-size:28px;
 font-weight:800;
 }
 
 nav a{
-color:white;
+color:#fff;
 text-decoration:none;
 margin-left:20px;
 font-weight:700;
 }
 
 .hero{
-background:url("signboard.png");
+height:260px;
+background:
+linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),
+url("signboard.png");
 background-size:cover;
 background-position:center;
-height:300px;
 display:flex;
-align-items:center;
+flex-direction:column;
 justify-content:center;
-color:white;
-font-size:50px;
+align-items:center;
+text-align:center;
+color:#fff;
+}
+
+.hero h1{
+font-size:48px;
 font-weight:800;
-text-shadow:2px 2px 10px #000;
+}
+
+.hero p{
+font-size:18px;
 }
 
 .section-title{
 text-align:center;
-font-size:40px;
-margin:40px 0;
-color:#7A1414;
+font-size:36px;
+color:var(--maroon);
+margin:40px 0 20px;
 font-weight:800;
 }
 
@@ -74,12 +90,12 @@ max-width:1400px;
 margin:auto;
 padding:20px;
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:25px;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:20px;
 }
 
 .card{
-background:white;
+background:#fff;
 border-radius:15px;
 overflow:hidden;
 box-shadow:0 5px 20px rgba(0,0,0,.1);
@@ -96,13 +112,47 @@ padding:15px;
 }
 
 .card h3{
-color:#7A1414;
-font-size:22px;
+color:var(--maroon);
+margin-bottom:8px;
 }
 
 .price{
 font-weight:700;
-margin-top:8px;
+}
+
+.cart-btn{
+margin-top:12px;
+width:100%;
+background:var(--gold);
+border:none;
+padding:10px;
+border-radius:8px;
+font-weight:700;
+cursor:pointer;
+}
+
+.cart-panel{
+position:fixed;
+right:0;
+top:0;
+width:340px;
+height:100%;
+background:#fff;
+padding:20px;
+overflow:auto;
+box-shadow:-5px 0 20px rgba(0,0,0,.2);
+display:none;
+z-index:9999;
+}
+
+.cart-item{
+display:flex;
+justify-content:space-between;
+margin:10px 0;
+}
+
+.qty-btn{
+padding:3px 10px;
 }
 
 .whatsapp{
@@ -112,17 +162,26 @@ right:20px;
 background:#25D366;
 padding:15px 25px;
 border-radius:50px;
-color:white;
+color:#fff;
 text-decoration:none;
 font-weight:700;
 }
 
 footer{
 background:#111;
-color:white;
+color:#fff;
 text-align:center;
 padding:40px;
 margin-top:50px;
+}
+
+@media(max-width:768px){
+.hero h1{
+font-size:34px;
+}
+.cart-panel{
+width:100%;
+}
 }
 
 </style>
@@ -131,99 +190,198 @@ margin-top:50px;
 
 <header>
 <nav>
+
 <div class="logo">HAKKA BAKKA</div>
 
 <div>
 <a href="index.html">Home</a>
 <a href="menu.html">Menu</a>
 <a href="gallery.html">Gallery</a>
+<a href="#" onclick="toggleCart()">
+🛒 (<span id="cartCount">0</span>)
+</a>
 </div>
+
 </nav>
 </header>
 
-<div class="hero">
-OUR MENU
-</div>
+<section class="hero">
+<h1>Hakka Bakka Menu</h1>
+<p>Desi Swad • Modern Vibe</p>
+</section>
 
-<h2 class="section-title">🍗 Popular Dishes</h2>
+<h2 class="section-title">🔥 Popular Items</h2>
 
 <div class="menu-grid">
 
 <div class="card">
-<img src="images/butter chicken.jpg">
+<img src="images/butter chicken.jpg" alt="">
 <div class="card-content">
 <h3>Butter Chicken</h3>
 <div class="price">₹300 / ₹550</div>
+<button class="cart-btn"
+onclick="addToCart('Butter Chicken',300)">
+Add To Cart
+</button>
 </div>
 </div>
 
 <div class="card">
-<img src="images/tari wala mutton.jpg">
+<img src="images/tari wala mutton.jpg" alt="">
 <div class="card-content">
 <h3>Tari Wala Mutton</h3>
 <div class="price">₹350 / ₹650</div>
+<button class="cart-btn"
+onclick="addToCart('Tari Wala Mutton',350)">
+Add To Cart
+</button>
 </div>
 </div>
 
 <div class="card">
-<img src="images/chicken tikka.jpg">
-<div class="card-content">
-<h3>Chicken Tikka</h3>
-<div class="price">₹250 / ₹480</div>
-</div>
-</div>
-
-<div class="card">
-<img src="images/paneer butter masala.jpg">
+<img src="images/paneer butter masala.jpg" alt="">
 <div class="card-content">
 <h3>Paneer Butter Masala</h3>
 <div class="price">₹150 / ₹270</div>
+<button class="cart-btn"
+onclick="addToCart('Paneer Butter Masala',150)">
+Add To Cart
+</button>
 </div>
 </div>
 
 <div class="card">
-<img src="images/dal makhani.jpg">
+<img src="images/chicken tikka.jpg" alt="">
 <div class="card-content">
-<h3>Dal Makhani</h3>
-<div class="price">₹90 / ₹180</div>
+<h3>Chicken Tikka</h3>
+<div class="price">₹250 / ₹480</div>
+<button class="cart-btn"
+onclick="addToCart('Chicken Tikka',250)">
+Add To Cart
+</button>
 </div>
 </div>
 
-<div class="card">
-<img src="images/spl fish fry basa.jpg">
-<div class="card-content">
-<h3>Special Fish Fry Basa</h3>
-<div class="price">₹250</div>
-</div>
 </div>
 
-<div class="card">
-<img src="images/kadai chicken.jpg">
-<div class="card-content">
-<h3>Kadai Chicken</h3>
-<div class="price">₹290 / ₹530</div>
-</div>
-</div>
+<div class="cart-panel" id="cartPanel">
 
-<div class="card">
-<img src="images/rara chicken.jpg">
-<div class="card-content">
-<h3>Rara Chicken</h3>
-<div class="price">₹350 / ₹600</div>
-</div>
-</div>
+<h2>Your Order</h2>
+
+<div id="cartItems"></div>
+
+<hr><br>
+
+<h3>Total ₹ <span id="cartTotal">0</span></h3>
+
+<br>
+
+<button class="cart-btn"
+onclick="checkoutWhatsApp()">
+WhatsApp Order
+</button>
 
 </div>
 
 <footer>
 <h2>HAKKA BAKKA Punjabi Dhaba</h2>
-<p>Shop No.1, Nr. Bhagat Singh Colony, Opp. Maqsudan Bye Pass, GT Road, Jalandhar</p>
+<p>Jalandhar, Punjab</p>
 <p>📞 7796631555</p>
 </footer>
 
-<a class="whatsapp" href="https://wa.me/917796631555">
+<a class="whatsapp"
+href="https://wa.me/917796631555">
 💬 Order Now
 </a>
+
+<script>
+
+let cart=[];
+
+function toggleCart(){
+let p=document.getElementById('cartPanel');
+p.style.display=(p.style.display==='block')?'none':'block';
+}
+
+function addToCart(name,price){
+
+let item=cart.find(i=>i.name===name);
+
+if(item){
+item.qty++;
+}else{
+cart.push({name,price,qty:1});
+}
+
+renderCart();
+
+}
+
+function changeQty(index,val){
+
+cart[index].qty+=val;
+
+if(cart[index].qty<=0){
+cart.splice(index,1);
+}
+
+renderCart();
+
+}
+
+function renderCart(){
+
+let html='';
+let total=0;
+let count=0;
+
+cart.forEach((item,index)=>{
+
+total+=item.price*item.qty;
+count+=item.qty;
+
+html+=`
+<div class="cart-item">
+<div>
+<b>${item.name}</b><br>
+₹${item.price}
+</div>
+<div>
+<button class="qty-btn" onclick="changeQty(${index},-1)">-</button>
+${item.qty}
+<button class="qty-btn" onclick="changeQty(${index},1)">+</button>
+</div>
+</div>
+`;
+
+});
+
+document.getElementById('cartItems').innerHTML=html;
+document.getElementById('cartTotal').innerText=total;
+document.getElementById('cartCount').innerText=count;
+
+}
+
+function checkoutWhatsApp(){
+
+let text='*HAKKA BAKKA ORDER*%0A%0A';
+let total=0;
+
+cart.forEach(item=>{
+text+=item.name+' x'+item.qty+' = ₹'+(item.qty*item.price)+'%0A';
+total+=item.qty*item.price;
+});
+
+text+='%0A*Total:* ₹'+total;
+
+window.open(
+'https://wa.me/917796631555?text='+text,
+'_blank'
+);
+
+}
+
+</script>
 
 </body>
 </html>
