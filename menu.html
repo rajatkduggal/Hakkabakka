@@ -1,247 +1,104 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hakka Bakka Menu</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
-
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
-:root{
---maroon:#7A1414;
---gold:#D4AF37;
---cream:#fff8f0;
-}
-
-body{
-background:var(--cream);
-}
-
-header{
-background:var(--maroon);
-padding:15px 25px;
-position:sticky;
-top:0;
-z-index:999;
-}
-
-nav{
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.logo img{
-height:55px;
-border-radius:50%;
-}
-
-nav a{
-color:#fff;
-text-decoration:none;
-margin-left:20px;
-font-weight:700;
-}
-
-.hero{
-height:250px;
-background:
-linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
-url("signboard.png");
-background-size:cover;
-background-position:center;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-color:white;
-}
-
-.hero h1{
-font-size:48px;
-}
-
-.search-box{
-max-width:500px;
-margin:30px auto;
-padding:0 20px;
-}
-
-.search-box input{
-width:100%;
-padding:14px;
-border-radius:10px;
-border:1px solid #ccc;
-}
-
-.section-title{
-text-align:center;
-font-size:34px;
-color:var(--maroon);
-margin:30px 0;
-font-weight:800;
-}
-
-.menu-grid{
-max-width:1300px;
-margin:auto;
-padding:20px;
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-gap:20px;
-}
-
-.card{
-background:white;
-border-radius:15px;
-overflow:hidden;
-box-shadow:0 5px 20px rgba(0,0,0,.1);
-}
-
-.card img{
-width:100%;
-height:220px;
-object-fit:cover;
-}
-
-.card-content{
-padding:15px;
-}
-
-.card h3{
-color:var(--maroon);
-margin-bottom:10px;
-}
-
-.price{
-font-weight:700;
-margin-bottom:10px;
-}
-
-.size-buttons{
-display:flex;
-gap:10px;
-}
-
-.half-btn,.full-btn{
-flex:1;
-padding:10px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-font-weight:700;
-}
-
-.half-btn{
-background:var(--gold);
-}
-
-.full-btn{
-background:var(--maroon);
-color:white;
-}
-
-.cart-panel{
-position:fixed;
-right:0;
-top:0;
-width:350px;
-height:100%;
-background:white;
-padding:20px;
-overflow:auto;
-display:none;
-box-shadow:-5px 0 20px rgba(0,0,0,.2);
-z-index:9999;
-}
-
-.cart-item{
-display:flex;
-justify-content:space-between;
-margin:15px 0;
-}
-
-.cart-btn{
-width:100%;
-padding:12px;
-background:var(--gold);
-border:none;
-border-radius:10px;
-font-weight:700;
-cursor:pointer;
-margin-top:10px;
-}
-
-footer{
-background:#111;
-color:white;
-text-align:center;
-padding:40px;
-margin-top:50px;
-}
-
-.whatsapp-btn{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#25D366;
-color:white;
-padding:14px 20px;
-border-radius:50px;
-text-decoration:none;
-font-weight:700;
-box-shadow:0 8px 20px rgba(0,0,0,.2);
-z-index:999;
-}
-
-@media(max-width:768px){
-.hero h1{
-font-size:32px;
-}
-.cart-panel{
-width:100%;
-}
-}
-</style>
-</head>
-
-<body>
-
-<header>
-<nav>
-
-<div class="logo">
-<img src="logo.jpg">
-</div>
-
-<div>
-<a href="index.html">Home</a>
-<a href="#" onclick="toggleCart()">🛒 (<span id="cartCount">0</span>)</a>
-</div>
-
-</nav>
-</header>
-
-<section class="hero">
-<h1>Online Ordering Menu</h1>
-<p>Desi Swad • Modern Vibe</p>
-</section>
-
-<div class="search-box">
-<input type="text" id="searchBox" onkeyup="searchMenu()" placeholder="Search Food...">
-</div>
-
-<h2 class="section-title">🔥 Popular Items</h2>
-
 <div class="menu-grid">
+
+<!-- VEG -->
+
+<div class="card">
+<img src="images/dal fry.jpg">
+<div class="card-content">
+<h3>Dal Fry</h3>
+<div class="price">Half ₹80 | Full ₹150</div>
+<div class="size-buttons">
+<button class="half-btn" onclick="addToCart('Dal Fry Half',80)">Half</button>
+<button class="full-btn" onclick="addToCart('Dal Fry Full',150)">Full</button>
+</div>
+</div>
+</div>
+
+<div class="card">
+<img src="images/dal makhani.jpg">
+<div class="card-content">
+<h3>Dal Makhni</h3>
+<div class="price">Half ₹90 | Full ₹180</div>
+<div class="size-buttons">
+<button class="half-btn" onclick="addToCart('Dal Makhni Half',90)">Half</button>
+<button class="full-btn" onclick="addToCart('Dal Makhni Full',180)">Full</button>
+</div>
+</div>
+</div>
+
+<div class="card">
+<img src="images/chana masala.jpg">
+<div class="card-content">
+<h3>Chana Masala</h3>
+<div class="price">Half ₹80 | Full ₹150</div>
+<div class="size-buttons">
+<button class="half-btn" onclick="addToCart('Chana Masala Half',80)">Half</button>
+<button class="full-btn" onclick="addToCart('Chana Masala Full',150)">Full</button>
+</div>
+</div>
+</div>
+
+<div class="card">
+<img src="images/paneer butter masala.jpg">
+<div class="card-content">
+<h3>Paneer Butter Masala</h3>
+<div class="price">Half ₹150 | Full ₹270</div>
+<div class="size-buttons">
+<button class="half-btn" onclick="addToCart('Paneer Butter Masala Half',150)">Half</button>
+<button class="full-btn" onclick="addToCart('Paneer Butter Masala Full',270)">Full</button>
+</div>
+</div>
+</div>
+
+<div class="card">
+<img src="images/kadai paneer.jpg">
+<div class="card-content">
+<h3>Kadai Paneer</h3>
+<div class="price">Half ₹120 | Full ₹240</div>
+<div class="size-buttons">
+<button class="half-btn" onclick="addToCart('Kadai Paneer Half',120)">Half</button>
+<button class="full-btn" onclick="addToCart('Kadai Paneer Full',240)">Full</button>
+</div>
+</div>
+</div>
+
+<div class="card">
+<img src="images/shahi paneer.jpg">
+<div class="card-content">
+<h3>Shahi Paneer</h3>
+<div class="price">Half ₹120 | Full ₹240</div>
+<div class="size-buttons">
+<button class="half-btn" onclick="addToCart('Shahi Paneer Half',120)">Half</button>
+<button class="full-btn" onclick="addToCart('Shahi Paneer Full',240)">Full</button>
+</div>
+</div>
+</div>
+
+<div class="card">
+<img src="images/paneer bhurji.jpg">
+<div class="card-content">
+<h3>Paneer Bhurji</h3>
+<div class="price">Half ₹130 | Full ₹250</div>
+<div class="size-buttons">
+<button class="half-btn" onclick="addToCart('Paneer Bhurji Half',130)">Half</button>
+<button class="full-btn" onclick="addToCart('Paneer Bhurji Full',250)">Full</button>
+</div>
+</div>
+</div>
+
+<div class="card">
+<img src="images/mix veg.jpg">
+<div class="card-content">
+<h3>Mix Veg</h3>
+<div class="price">Half ₹100 | Full ₹200</div>
+<div class="size-buttons">
+<button class="half-btn" onclick="addToCart('Mix Veg Half',100)">Half</button>
+<button class="full-btn" onclick="addToCart('Mix Veg Full',200)">Full</button>
+</div>
+</div>
+</div>
+
+<!-- NON VEG -->
 
 <div class="card">
 <img src="images/butter chicken.jpg">
@@ -268,49 +125,103 @@ width:100%;
 </div>
 
 <div class="card">
-<img src="images/paneer butter masala.jpg">
+<img src="images/mutton rogan josh.jpg">
 <div class="card-content">
-<h3>Paneer Butter Masala</h3>
-<div class="price">Half ₹150 | Full ₹270</div>
+<h3>Mutton Rogan Josh</h3>
+<div class="price">Half ₹350 | Full ₹650</div>
 <div class="size-buttons">
-<button class="half-btn" onclick="addToCart('Paneer Butter Masala Half',150)">Half</button>
-<button class="full-btn" onclick="addToCart('Paneer Butter Masala Full',270)">Full</button>
+<button class="half-btn" onclick="addToCart('Mutton Rogan Josh Half',350)">Half</button>
+<button class="full-btn" onclick="addToCart('Mutton Rogan Josh Full',650)">Full</button>
 </div>
 </div>
 </div>
 
+<div class="card">
+<img src="images/chicken tikka.jpg">
+<div class="card-content">
+<h3>Chicken Tikka</h3>
+<div class="price">Half ₹250 | Full ₹480</div>
+<div class="size-buttons">
+<button class="half-btn" onclick="addToCart('Chicken Tikka Half',250)">Half</button>
+<button class="full-btn" onclick="addToCart('Chicken Tikka Full',480)">Full</button>
+</div>
+</div>
 </div>
 
-<div class="cart-panel" id="cartPanel">
+<!-- RICE -->
 
-<button onclick="toggleCart()" style="float:right;padding:8px 14px;border:none;background:#7A1414;color:white;border-radius:8px;">
-Close
-</button>
-
-<h2>Your Order</h2>
-
-<div id="cartItems"></div>
-
-<hr><br>
-
-<h3>Total ₹ <span id="cartTotal">0</span></h3>
-
-<button class="cart-btn" onclick="checkoutWhatsApp()">Place Order</button>
-<button class="cart-btn" onclick="clearCart()">Clear Cart</button>
-
+<div class="card">
+<img src="images/plain rice.jpg">
+<div class="card-content">
+<h3>Plain Rice</h3>
+<div class="price">Half ₹60 | Full ₹120</div>
+<div class="size-buttons">
+<button class="half-btn" onclick="addToCart('Plain Rice Half',60)">Half</button>
+<button class="full-btn" onclick="addToCart('Plain Rice Full',120)">Full</button>
+</div>
+</div>
 </div>
 
-<footer>
-<h2>HAKKA BAKKA Punjabi Dhaba</h2>
-<p>📍 Jalandhar, Punjab</p>
-<p>📞 7796631555</p>
-</footer>
+<div class="card">
+<img src="images/jeera rice.jpg">
+<div class="card-content">
+<h3>Jeera Rice</h3>
+<div class="price">Half ₹70 | Full ₹150</div>
+<div class="size-buttons">
+<button class="half-btn" onclick="addToCart('Jeera Rice Half',70)">Half</button>
+<button class="full-btn" onclick="addToCart('Jeera Rice Full',150)">Full</button>
+</div>
+</div>
+</div>
 
-<a href="https://wa.me/917796631555" class="whatsapp-btn">
-💬 Order Now
-</a>
+<div class="card">
+<img src="images/mix veg rice.jpg">
+<div class="card-content">
+<h3>Mix Veg Rice</h3>
+<div class="price">Half ₹90 | Full ₹190</div>
+<div class="size-buttons">
+<button class="half-btn" onclick="addToCart('Mix Veg Rice Half',90)">Half</button>
+<button class="full-btn" onclick="addToCart('Mix Veg Rice Full',190)">Full</button>
+</div>
+</div>
+</div>
 
-<script src="script.js"></script>
+<!-- BREADS -->
 
-</body>
-</html>
+<div class="card">
+<img src="images/tandoori roti.jpg">
+<div class="card-content">
+<h3>Tandoori Roti</h3>
+<div class="price">₹10</div>
+<button class="full-btn" onclick="addToCart('Tandoori Roti',10)">Add</button>
+</div>
+</div>
+
+<div class="card">
+<img src="images/butter naan.jpg">
+<div class="card-content">
+<h3>Butter Naan</h3>
+<div class="price">₹50</div>
+<button class="full-btn" onclick="addToCart('Butter Naan',50)">Add</button>
+</div>
+</div>
+
+<div class="card">
+<img src="images/garlic naan.jpg">
+<div class="card-content">
+<h3>Garlic Naan</h3>
+<div class="price">₹70</div>
+<button class="full-btn" onclick="addToCart('Garlic Naan',70)">Add</button>
+</div>
+</div>
+
+<div class="card">
+<img src="images/lachha paratha.jpg">
+<div class="card-content">
+<h3>Lachha Paratha</h3>
+<div class="price">₹50</div>
+<button class="full-btn" onclick="addToCart('Lachha Paratha',50)">Add</button>
+</div>
+</div>
+
+</div>
