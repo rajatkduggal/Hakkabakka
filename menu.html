@@ -8,7 +8,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-
 *{
 margin:0;
 padding:0;
@@ -40,10 +39,9 @@ justify-content:space-between;
 align-items:center;
 }
 
-.logo{
-color:#fff;
-font-size:28px;
-font-weight:800;
+.logo img{
+height:55px;
+border-radius:50%;
 }
 
 nav a{
@@ -190,6 +188,20 @@ padding:40px;
 margin-top:50px;
 }
 
+.whatsapp-btn{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+color:white;
+padding:14px 20px;
+border-radius:50px;
+text-decoration:none;
+font-weight:700;
+box-shadow:0 8px 20px rgba(0,0,0,.2);
+z-index:999;
+}
+
 @media(max-width:768px){
 .hero h1{
 font-size:32px;
@@ -198,19 +210,23 @@ font-size:32px;
 width:100%;
 }
 }
-
 </style>
 </head>
+
 <body>
 
 <header>
 <nav>
-<div class="logo">HAKKA BAKKA</div>
+
+<div class="logo">
+<img src="logo.jpg">
+</div>
 
 <div>
 <a href="index.html">Home</a>
 <a href="#" onclick="toggleCart()">🛒 (<span id="cartCount">0</span>)</a>
 </div>
+
 </nav>
 </header>
 
@@ -263,45 +279,14 @@ width:100%;
 </div>
 </div>
 
-<div class="card">
-<img src="images/shahi paneer.jpg">
-<div class="card-content">
-<h3>Shahi Paneer</h3>
-<div class="price">Half ₹120 | Full ₹240</div>
-<div class="size-buttons">
-<button class="half-btn" onclick="addToCart('Shahi Paneer Half',120)">Half</button>
-<button class="full-btn" onclick="addToCart('Shahi Paneer Full',240)">Full</button>
-</div>
-</div>
-</div>
-
-<div class="card">
-<img src="images/dal makhani.jpg">
-<div class="card-content">
-<h3>Dal Makhani</h3>
-<div class="price">Half ₹90 | Full ₹180</div>
-<div class="size-buttons">
-<button class="half-btn" onclick="addToCart('Dal Makhani Half',90)">Half</button>
-<button class="full-btn" onclick="addToCart('Dal Makhani Full',180)">Full</button>
-</div>
-</div>
-</div>
-
-<div class="card">
-<img src="images/jeera rice.jpg">
-<div class="card-content">
-<h3>Jeera Rice</h3>
-<div class="price">Half ₹70 | Full ₹150</div>
-<div class="size-buttons">
-<button class="half-btn" onclick="addToCart('Jeera Rice Half',70)">Half</button>
-<button class="full-btn" onclick="addToCart('Jeera Rice Full',150)">Full</button>
-</div>
-</div>
-</div>
-
 </div>
 
 <div class="cart-panel" id="cartPanel">
+
+<button onclick="toggleCart()" style="float:right;padding:8px 14px;border:none;background:#7A1414;color:white;border-radius:8px;">
+Close
+</button>
+
 <h2>Your Order</h2>
 
 <div id="cartItems"></div>
@@ -311,7 +296,6 @@ width:100%;
 <h3>Total ₹ <span id="cartTotal">0</span></h3>
 
 <button class="cart-btn" onclick="checkoutWhatsApp()">Place Order</button>
-
 <button class="cart-btn" onclick="clearCart()">Clear Cart</button>
 
 </div>
@@ -321,6 +305,10 @@ width:100%;
 <p>📍 Jalandhar, Punjab</p>
 <p>📞 7796631555</p>
 </footer>
+
+<a href="https://wa.me/917796631555" class="whatsapp-btn">
+💬 Order Now
+</a>
 
 <script src="script.js"></script>
 
