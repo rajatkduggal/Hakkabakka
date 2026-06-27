@@ -3,70 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hakka Bakka - Punjabi Dhaba</title>
-    <!-- PWA Manifest Link -->
+    <title>Hakka Bakka - Premium Digital Menu</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#7c2d12">
-    <!-- QRCode.js Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
-        body { background: #fdfbc4; color: #431407; padding-bottom: 60px; }
+        body { background: #fffbeb; color: #431407; padding-bottom: 60px; }
         
-        /* Header & Branding */
-        header { background: #7c2d12; color: #fef08a; padding: 15px; text-align: center; position: sticky; top: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; gap: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        header img { height: 50px; border-radius: 50%; border: 2px solid #fef08a; }
-        header h1 { font-size: 24px; font-weight: bold; }
+        header { background: #7c2d12; color: #fef08a; padding: 15px; text-align: center; position: sticky; top: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        header img { height: 45px; border-radius: 50%; border: 2px solid #fef08a; }
+        header h1 { font-size: 22px; font-weight: bold; }
         
-        /* Navigation Tabs */
         nav { display: flex; justify-content: space-around; background: #431407; padding: 12px 0; }
-        nav button { background: none; border: none; color: #fef08a; font-size: 16px; cursor: pointer; padding: 5px 15px; transition: all 0.3s; }
+        nav button { background: none; border: none; color: #fef08a; font-size: 15px; cursor: pointer; padding: 5px 15px; transition: all 0.3s; }
         nav button.active { border-bottom: 3px solid #eab308; color: #eab308; font-weight: bold; }
         
-        .section { display: none; padding: 15px; max-width: 600px; margin: auto; }
+        .section { display: none; padding: 12px; max-width: 600px; margin: auto; }
         .section.active { display: block; }
         
-        /* Home Screen Branding */
-        .banner-container { width: 100%; margin-bottom: 15px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.15); border: 3px solid #7c2d12; }
+        /* Banner Home */
+        .banner-container { width: 100%; margin-bottom: 12px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border: 2px solid #7c2d12; }
         .banner-container img { width: 100%; display: block; }
         
-        /* About Card */
         .about-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); line-height: 1.6; border-left: 5px solid #7c2d12; }
-        .about-card h2 { color: #7c2d12; margin-bottom: 10px; }
         
-        /* Menu Grid with Images */
-        .menu-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 15px; }
-        .menu-item { background: white; border-radius: 12px; overflow: hidden; display: flex; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #fde047; }
-        .menu-img { width: 110px; height: 110px; object-fit: cover; background: #eee; }
-        .menu-details { padding: 12px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .menu-details h3 { font-size: 16px; color: #431407; text-transform: capitalize; }
-        .menu-price-qty { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; }
-        .menu-price { color: #b45309; font-weight: bold; font-size: 16px; }
-        .menu-qty { font-size: 12px; color: #6b7280; background: #f3f4f6; padding: 2px 6px; border-radius: 4px; }
-        .add-btn { background: #15803d; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px; align-self: flex-end; }
+        /* 2-Column Premium Grid */
+        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 15px; }
+        .menu-item { background: white; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 4px 6px rgba(0,0,0,0.06); border: 1px solid #fef08a; position: relative; }
+        .menu-img { width: 100%; height: 120px; object-fit: cover; background: #f3f4f6; }
+        .menu-details { padding: 10px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .menu-details h3 { font-size: 14px; color: #431407; text-transform: capitalize; font-weight: 600; line-height: 1.3; height: 36px; overflow: hidden; }
+        
+        .portion-select { width: 100%; padding: 5px; margin: 8px 0; border: 1px solid #d97706; border-radius: 6px; font-size: 12px; background: #fffbeb; color: #431407; font-weight: 600; }
+        
+        .menu-price-row { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
+        .menu-price { color: #b45309; font-weight: bold; font-size: 15px; }
+        
+        .add-btn { background: #15803d; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 12px; }
         .add-btn:active { transform: scale(0.95); }
         
-        /* Cart Summary & Dropdowns */
-        .cart-summary { background: white; padding: 20px; border-radius: 12px; margin-top: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-top: 4px solid #7c2d12; }
+        /* Cart Summary & Form Controls */
+        .cart-summary { background: white; padding: 18px; border-radius: 12px; margin-top: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-top: 4px solid #7c2d12; }
         .cart-item-row { display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px dashed #e5e7eb; font-size: 14px; }
-        .form-group { margin-top: 15px; }
-        label { display: block; margin-bottom: 6px; font-weight: bold; font-size: 14px; color: #431407; }
-        select { width: 100%; padding: 10px; border: 2px solid #d97706; border-radius: 8px; font-size: 15px; background: #fff; color: #431407; }
+        .form-group { margin-top: 14px; }
+        .form-group.hidden { display: none; } /* Conditional Hiding */
         
-        .submit-btn { background: #b45309; color: white; border: none; width: 100%; padding: 14px; font-size: 18px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 20px; transition: background 0.2s; }
-        .submit-btn:hover { background: #7c2d12; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 13px; color: #431407; }
+        select { width: 100%; padding: 10px; border: 2px solid #d97706; border-radius: 8px; font-size: 14px; background: #fff; color: #431407; font-weight: 600; }
         
-        /* QR Modal Popup */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); justify-content: center; align-items: center; z-index: 2000; padding: 10px; }
-        .modal-content { background: white; padding: 20px; border-radius: 16px; text-align: center; max-width: 360px; width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        #qrcode { display: flex; justify-content: center; margin: 15px 0; padding: 10px; background: #f9fafb; border-radius: 8px; inline-size: max-content; margin-inline: auto; }
+        .submit-btn { background: #b45309; color: white; border: none; width: 100%; padding: 14px; font-size: 16px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        
+        /* Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); justify-content: center; align-items: center; z-index: 2000; padding: 15px; }
+        .modal-content { background: white; padding: 20px; border-radius: 16px; text-align: center; max-width: 355px; width: 100%; }
+        #qrcode { display: flex; justify-content: center; margin: 15px 0; padding: 8px; background: #f9fafb; border-radius: 8px; width: max-content; margin-inline: auto; }
         .modal-details { text-align: left; font-size: 14px; margin-bottom: 15px; background: #fef9c3; padding: 12px; border-radius: 8px; border: 1px solid #fef08a; color: #713f12; line-height: 1.5; }
     </style>
 </head>
 <body>
 
 <header>
-    <img src="logo.jpg" alt="Hakka Bakka Logo">
+    <img src="logo.jpg" alt="Logo">
     <h1>Hakka Bakka</h1>
 </header>
 
@@ -78,46 +76,44 @@
 
 <!-- 1. HOME SECTION -->
 <div id="home" class="section active">
-    <div class="banner-container">
-        <img src="signboard.png" alt="Hakka Bakka Main Banner">
-    </div>
-    <div class="banner-container">
-        <img src="logo.jpg" alt="Hakka Bakka Welcome Poster">
-    </div>
+    <div class="banner-container"><img src="signboard.png" alt="Banner"></div>
+    <div class="banner-container"><img src="logo.jpg" alt="Logo Banner"></div>
 </div>
 
 <!-- 2. ABOUT SECTION -->
 <div id="about" class="section">
     <div class="about-card">
         <h2>Hakka Bakka - Punjabi Dhaba</h2>
-        <p><b>Desi Swad, Modern Vibe!</b></p>
-        <p style="margin-top: 10px;">Hakka Bakka (Shop No.1, Nr. Canal Road, Opp. Maqsudan Byepass, G.T. Road, Jalandhar) में आपका स्वागत है। हम आपके लिए लेकर आए हैं शुद्ध और ऑथेंटिक पंजाबी स्वाद का बेजोड़ संगम। बेहतरीन मसालों और ताज़ा सामग्रियों से तैयार हमारी डिशेश आपके खाने के अनुभव को यादगार बना देंगी। अब आप हमारे डिजिटल पोर्टल के माध्यम से सीधे ऑनलाइन ऑर्डर प्लेस कर सकते हैं।</p>
+        <p style="color: #b45309; font-weight: bold; margin-bottom: 8px;">Desi Swad, Modern Vibe!</p>
+        <p style="font-size: 14px;">Shop No.1, Nr. Canal Road, Opp. Maqsudan Byepass, G.T. Road, Jalandhar में आपका स्वागत है। स्वाद और शुद्धता का असली संगम। हमारे ऐप के ज़रिए आप बिना किसी परेशानी के सीधे काउंटर या टेबल से ऑर्डर जनरेट कर सकते हैं।</p>
     </div>
 </div>
 
-<!-- 3. MENU SECTION -->
+<!-- 3. PREMIUM MENU SECTION -->
 <div id="menu" class="section">
-    <h2 style="color: #7c2d12; border-bottom: 2px solid #7c2d12; padding-bottom: 5px;">Our Delicious Menu</h2>
+    <h2 style="color: #7c2d12; font-size: 18px; border-bottom: 2px solid #7c2d12; padding-bottom: 5px;">Our Premium Menu</h2>
     <div class="menu-grid" id="menu-container"></div>
 
-    <!-- 5 & 6. CART & SITTING OPTIONS -->
+    <!-- CART SUMMARY & ENGINE -->
     <div class="cart-summary">
-        <h3 style="color: #7c2d12;">Your Cart Details</h3>
+        <h3 style="color: #7c2d12; font-size: 16px;">Your Cart Details</h3>
         <div id="cart-items" style="margin-top: 10px;"></div>
-        <p style="font-weight: bold; margin-top: 10px; text-align: right; font-size: 18px; color: #b45309;">Total: ₹<span id="cart-total">0</span></p>
+        <p style="font-weight: bold; margin-top: 10px; text-align: right; font-size: 16px; color: #b45309;">Total: ₹<span id="cart-total">0</span></p>
         
         <hr style="margin: 15px 0; border: 0; border-top: 1px dashed #b45309;">
         
+        <!-- 5. Order Type Choice -->
         <div class="form-group">
             <label>Select Order Type</label>
-            <select id="orderType">
+            <select id="orderType" onchange="toggleSittingOption()">
                 <option value="Dine">Dine</option>
                 <option value="Pickup">Pickup</option>
                 <option value="Delivery">Delivery</option>
             </select>
         </div>
 
-        <div class="form-group">
+        <!-- 6. Sitting Option Wrapper (Dynamically Controlled) -->
+        <div class="form-group" id="sittingGroup">
             <label>Select Sitting Option</label>
             <select id="sittingType">
                 <option value="Dine-In">Dine-In</option>
@@ -130,11 +126,11 @@
     </div>
 </div>
 
-<!-- 7. SUCCESS & QR CODE MODAL -->
+<!-- 7. MODAL POPUP FOR QR & TEXT -->
 <div id="qrModal" class="modal">
     <div class="modal-content">
-        <h3 style="color: #15803d;">🎉 Order Placed Successfully!</h3>
-        <p style="font-size: 13px; margin: 5px 0; color: #4b5563;">Scan QR code at counter or proceed to WhatsApp</p>
+        <h3 style="color: #15803d;">🎉 Order Done!</h3>
+        <p style="font-size: 12px; margin: 4px 0; color: #4b5563;">Scan QR code or click below to complete on WhatsApp</p>
         <div id="qrcode"></div>
         <div class="modal-details" id="modal-details"></div>
         <button class="submit-btn" style="background:#15803d; margin-top:0;" onclick="closeModalAndRedirect()">Send to WhatsApp</button>
@@ -142,57 +138,87 @@
 </div>
 
 <script>
-    // Real Business Phone from Banner Image
     const WHATSAPP_NUMBER = "917796631555"; 
 
-    // Dynamic Menu Items from your GitHub Image folder lists
+    // Robust Menu Data Mapping with exact pricing structure for Half/Full options
     const menuData = [
-        { name: "butter chicken", price: 340, qty: "Full", img: "images/butter chicken.jpg" },
-        { name: "dal makhani", price: 180, qty: "Full", img: "images/dal makhani.jpg" },
-        { name: "paneer tikka", price: 220, qty: "Full", img: "images/paneer_tikka.jpg" },
-        { name: "tandoori chicken", price: 320, qty: "Full", img: "images/tandoori chicken.jpg" },
-        { name: "mutton rogan josh", price: 380, qty: "Full", img: "images/mutton rogan josh.jpg" },
-        { name: "seekh kebab", price: 240, qty: "Full", img: "images/seekh kebab.jpg" },
-        { name: "butter naan", price: 40, qty: "1 Pc", img: "images/butter naan.jpg" },
-        { name: "spl fish fry basa", price: 280, qty: "Full", img: "images/spl fish fry basa.jpg" },
-        { name: "spring roll", price: 120, qty: "Full", img: "images/spring roll.jpg" },
-        { name: "tandoori chapati", price: 15, qty: "1 Pc", img: "images/tandoori chapati.jpg" },
-        { name: "tari wala chicken", price: 260, qty: "Full", img: "images/tari wala chicken.jpg" },
-        { name: "tari wala mutton", price: 360, qty: "Full", img: "images/tari wala mutton.jpg" },
-        { name: "tawa chicken", price: 280, qty: "Full", img: "images/tawa chicken.jpeg" },
-        { name: "thali", price: 160, qty: "1 Serv", img: "images/thali.jpg" },
-        { name: "veg manchurian", price: 160, qty: "Full", img: "images/veg menchurian.jpg" },
-        { name: "chilli chicken boneless", price: 300, qty: "Full", img: "images/chilli chicken boneless.jpg" },
-        { name: "dal fry", price: 140, qty: "Full", img: "images/dal fry.jpg" },
-        { name: "kadai paneer", price: 240, qty: "Full", img: "images/kadai paneer.jpg" },
-        { name: "shahi paneer", price: 240, qty: "Full", img: "images/shahi paneer.jpg" }
+        { name: "butter chicken", priceFull: 340, priceHalf: 190, img: "images/butter chicken.jpg" },
+        { name: "dal makhani", priceFull: 180, priceHalf: 100, img: "images/dal makhani.jpg" },
+        { name: "paneer tikka", priceFull: 220, priceHalf: 130, img: "images/paneer_tikka.jpg" },
+        { name: "tandoori chicken", priceFull: 320, priceHalf: 170, img: "images/tandoori chicken.jpg" },
+        { name: "mutton rogan josh", priceFull: 380, priceHalf: 210, img: "images/mutton rogan josh.jpg" },
+        { name: "seekh kebab", priceFull: 240, priceHalf: 130, img: "images/seekh kebab.jpg" },
+        { name: "butter naan", priceFull: 40, priceHalf: null, img: "images/butter naan.jpg" },
+        { name: "spl fish fry basa", priceFull: 280, priceHalf: 160, img: "images/spl fish fry basa.jpg" },
+        { name: "spring roll", priceFull: 120, priceHalf: 70, img: "images/spring roll.jpg" },
+        { name: "tandoori chapati", priceFull: 15, priceHalf: null, img: "images/tandoori chapati.jpg" },
+        { name: "tari wala chicken", priceFull: 260, priceHalf: 150, img: "images/tari wala chicken.jpg" },
+        { name: "tari wala mutton", priceFull: 360, priceHalf: 200, img: "images/tari wala mutton.jpg" },
+        { name: "tawa chicken", priceFull: 280, priceHalf: 160, img: "images/tawa chicken.jpeg" },
+        { name: "thali", priceFull: 160, priceHalf: null, img: "images/thali.jpg" },
+        { name: "veg manchurian", priceFull: 160, priceHalf: 90, img: "images/veg menchurian.jpg" },
+        { name: "chilli chicken boneless", priceFull: 300, priceHalf: 170, img: "images/chilli chicken boneless.jpg" },
+        { name: "dal fry", priceFull: 140, priceHalf: 80, img: "images/dal fry.jpg" },
+        { name: "kadai paneer", priceFull: 240, priceHalf: 140, img: "images/kadai paneer.jpg" },
+        { name: "shahi paneer", priceFull: 240, priceHalf: 140, img: "images/shahi paneer.jpg" }
     ];
 
     let cart = {};
 
+    // Render Menu with Dynamic Live Price Switching on Size Selection
     function renderMenu() {
         const container = document.getElementById('menu-container');
-        container.innerHTML = menuData.map((item, index) => `
-            <div class="menu-item">
-                <img class="menu-img" src="${item.img}" onerror="this.src='logo.jpg'" alt="${item.name}">
-                <div class="menu-details">
-                    <h3>${item.name}</h3>
-                    <div class="menu-price-qty">
-                        <span class="menu-price">₹${item.price}</span>
-                        <span class="menu-qty">${item.qty}</span>
+        container.innerHTML = menuData.map((item, index) => {
+            const showSelect = item.priceHalf !== null;
+            return `
+                <div class="menu-item">
+                    <img class="menu-img" src="${item.img}" onerror="this.src='logo.jpg'" alt="${item.name}">
+                    <div class="menu-details">
+                        <h3>${item.name}</h3>
+                        ${showSelect ? `
+                            <select class="portion-select" id="size-${index}" onchange="updateLivePrice(${index})">
+                                <option value="Full">Full</option>
+                                <option value="Half">Half</option>
+                            </select>
+                        ` : `<div style="height:31px; font-size:12px; color:#6b7280; padding-top:8px;">Standard Qty</div>`}
+                        <div class="menu-price-row">
+                            <span class="menu-price" id="price-view-${index}">₹${item.priceFull}</span>
+                            <button class="add-btn" onclick="addToCart(${index})">Add +</button>
+                        </div>
                     </div>
-                    <button class="add-btn" onclick="addToCart(${index})">Add +</button>
                 </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
+    }
+
+    function updateLivePrice(index) {
+        const sizeSelector = document.getElementById(`size-${index}`);
+        const priceView = document.getElementById(`price-view-${index}`);
+        if(sizeSelector && sizeSelector.value === "Half") {
+            priceView.innerText = "₹" + menuData[index].priceHalf;
+        } else {
+            priceView.innerText = "₹" + menuData[index].priceFull;
+        }
     }
 
     function addToCart(index) {
         const item = menuData[index];
-        if (cart[index]) {
-            cart[index].count++;
+        const sizeSelector = document.getElementById(`size-${index}`);
+        const selectedSize = sizeSelector ? sizeSelector.value : "Full";
+        const finalPrice = selectedSize === "Half" ? item.priceHalf : item.priceFull;
+        
+        // Cart Key creates separate rows for Half and Full versions of the same item
+        const cartKey = `${index}-${selectedSize}`;
+
+        if (cart[cartKey]) {
+            cart[cartKey].count++;
         } else {
-            cart[index] = { ...item, count: 1 };
+            cart[cartKey] = {
+                name: item.name,
+                size: selectedSize,
+                price: finalPrice,
+                count: 1
+            };
         }
         renderCart();
     }
@@ -206,16 +232,28 @@
             total += item.price * item.count;
             container.innerHTML += `
                 <div class="cart-item-row">
-                    <span><b style="text-transform:capitalize;">${item.name}</b> x ${item.count}</span>
+                    <span><b style="text-transform:capitalize;">${item.name}</b> (${item.size}) x ${item.count}</span>
                     <span>₹${item.price * item.count}</span>
                 </div>
             `;
         });
         
         if(Object.keys(cart).length === 0) {
-            container.innerHTML = '<p style="color:#999; font-size:14px;">Your cart is empty.</p>';
+            container.innerHTML = '<p style="color:#999; font-size:13px;">Your cart is empty.</p>';
         }
         document.getElementById('cart-total').innerText = total;
+    }
+
+    // INTERFACE LOGIC: Hiding/Showing Sitting Type Based on Order Choice
+    function toggleSittingOption() {
+        const orderType = document.getElementById('orderType').value;
+        const sittingGroup = document.getElementById('sittingGroup');
+        
+        if (orderType === "Pickup" || orderType === "Delivery") {
+            sittingGroup.classList.add('hidden'); // Shuts down sitting drop-down
+        } else {
+            sittingGroup.classList.remove('hidden'); // Opens only when Dine is active
+        }
     }
 
     function switchTab(tabId) {
@@ -227,31 +265,31 @@
 
     let whatsappUrlGlobal = "";
 
-    // 7 & 9. Process Order and Generate WhatsApp String / QR
     function processOrder() {
         const total = document.getElementById('cart-total').innerText;
         if(total === "0") {
-            alert("Please add at least one item to your cart!");
+            alert("Please select items to add to the cart first!");
             return;
         }
 
         const orderNo = "HB-" + Math.floor(1000 + Math.random() * 9000);
         const dateStr = new Date().toLocaleDateString();
         const orderType = document.getElementById('orderType').value;
-        const sittingType = document.getElementById('sittingType').value;
+        
+        // If sitting box is hidden, write N/A or skip
+        const sittingType = (orderType === "Pickup" || orderType === "Delivery") ? "N/A" : document.getElementById('sittingType').value;
 
         let itemText = "";
         Object.values(cart).forEach(item => {
-            itemText += `${item.name} (x${item.count}), `;
+            itemText += `${item.name} (${item.size} x${item.count}), `;
         });
         itemText = itemText.slice(0, -2);
 
-        // Required 9th Condition Exact Format
+        // Explicit 9th Rule compliance format output
         const message = `ORDER No. ${orderNo}\nDate. ${dateStr}\nOrder Type ${orderType}\nSitting Type ${sittingType}\nAmount ₹${total}\nItems: ${itemText}`;
         
         whatsappUrlGlobal = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
-        // Injecting Formatted Text into Modal View
         document.getElementById('modal-details').innerHTML = `
             <strong>ORDER No.</strong> ${orderNo}<br>
             <strong>Date.</strong> ${dateStr}<br>
@@ -260,7 +298,6 @@
             <strong>Amount</strong> ₹${total}
         `;
 
-        // Generate QR Code containing the text payload
         document.getElementById('qrcode').innerHTML = "";
         new QRCode(document.getElementById("qrcode"), {
             text: message,
@@ -268,46 +305,27 @@
             height: 140
         });
 
-        // Open Modal Popup
         document.getElementById('qrModal').style.display = 'flex';
     }
 
-    // 8. Handle redirect and trigger localized auto-reply confirmation
     function closeModalAndRedirect() {
         document.getElementById('qrModal').style.display = 'none';
         window.open(whatsappUrlGlobal, '_blank');
         
-        // Simulating immediate automatic alert trigger text back to customer screen
         setTimeout(() => {
             alert("Hakka Bakka Confirmation:\nYour Order Done.");
-        }, 1500);
+        }, 1200);
     }
 
-    // 4. Progressive Web App (PWA) Automation logic for Home Screen installation
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js')
-            .then(reg => console.log('PWA Service Worker Active'))
-            .catch(err => console.log('Service worker error', err));
+            navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
         });
     }
 
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        let deferredPrompt = e;
-        // Automatically trigger app download banner instantly when loaded on mobile
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-                console.log('User installed Hakka Bakka App');
-            }
-            deferredPrompt = null;
-        });
-    });
-
-    // Run Initial Setup
     renderMenu();
     renderCart();
+    toggleSittingOption(); // Initial check run
 </script>
 </body>
 </html>
