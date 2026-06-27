@@ -15,7 +15,7 @@
         header h1 { font-size: 24px; font-weight: bold; }
         header p { font-size: 13px; color: #fef08a; }
 
-        /* CRITICAL: Service & Customer Panel pushed to the absolute TOP */
+        /* Customer Box Fixed at the Top */
         .top-setup-panel { background: white; margin: 15px auto; max-width: 650px; width: 92%; padding: 15px; border-radius: 12px; border: 2px solid #7b1113; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .top-setup-panel h3 { font-size: 14px; color: #7b1113; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 4px; text-transform: uppercase; }
         .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
@@ -32,20 +32,19 @@
         /* Floating Live Side Cart */
         .floating-side-cart { position: fixed; bottom: 20px; right: 20px; background: #7b1113; color: #fdfbc4; padding: 12px 20px; border-radius: 30px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1001; cursor: pointer; display: flex; align-items: center; gap: 8px; border: 2px solid #eab308; font-size: 15px; }
 
-        /* Complete Menu Card Layout */
+        /* Menu Grid Layout */
         .cat-title { background: #7b1113; color: white; padding: 8px 12px; font-size: 16px; font-weight: bold; margin: 20px 0 10px 0; border-radius: 6px; text-transform: uppercase; }
         .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .card { background: white; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 3px 6px rgba(0,0,0,.05); border: 1px solid #fde047; }
         .card img { width: 100%; height: 110px; object-fit: cover; }
         .card-content { padding: 8px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; }
-        .card-content h4 { font-size: 13px; color: #431407; height: 32px; overflow: hidden; line-height: 1.2; }
+        .card-content h4 { font-size: 13px; color: #431407; height: 32px; overflow: hidden; line-height: 1.2; text-transform: capitalize; }
         
         .portion-select { width: 100%; padding: 6px; margin: 5px 0; border: 1px solid #7b1113; border-radius: 5px; font-size: 11px; background: #fffbeb; font-weight: bold; color: #7b1113; }
         .action-row { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
         .price-tag { font-size: 14px; font-weight: bold; color: #7b1113; }
         .add-btn { background: #15803d; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 11px; }
 
-        /* Embedded Dynamic Mini Cart Drawer View */
         .embedded-cart-holder { background: white; padding: 15px; border-radius: 12px; margin-top: 25px; border: 1px solid #eab308; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .cart-line { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #eee; font-size: 13px; }
 
@@ -63,6 +62,7 @@
 
         @media(max-width: 480px) {
             .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+            .card img { height: 100px; }
             .input-grid { grid-template-columns: 1fr; gap: 8px; }
         }
     </style>
@@ -74,7 +74,6 @@
     <p>PUNJABI DHABA — Desi Swad, Modern Vibe</p>
 </header>
 
-<!-- TOP FIXED VERIFICATION PANEL -->
 <div class="top-setup-panel">
     <h3>1. Customer Details & Service Type</h3>
     <div class="input-grid">
@@ -101,18 +100,15 @@
     <button onclick="switchTab('menu')" id="btn-menu">Menu</button>
 </nav>
 
-<!-- FLOATING LIVE SIDE CART COUNTER -->
 <div class="floating-side-cart" onclick="switchTab('menu'); window.scrollTo(0, document.body.scrollHeight);">
     🛒 Cart: ₹<span id="floating-total">0</span>
 </div>
 
-<!-- 1. HOME -->
 <div id="home" class="section active">
     <div class="premium-frame"><img src="signboard.png" alt="Banner"></div>
     <div class="premium-frame"><img src="logo.jpg" alt="Logo Banner"></div>
 </div>
 
-<!-- 2. ABOUT -->
 <div id="about" class="section">
     <div style="background:white; padding:20px; border-radius:12px; border:1px solid #eab308; line-height:1.6;">
         <h2 style="color:#7b1113; margin-bottom:10px;">About Hakka Bakka</h2>
@@ -121,11 +117,9 @@
     </div>
 </div>
 
-<!-- 3. MENU -->
 <div id="menu" class="section">
     <div id="menu-builder-root"></div>
 
-    <!-- DYNAMIC LIVE INLINE DRAW CART -->
     <div class="embedded-cart-holder">
         <h3 style="color:#7b1113; font-size:15px; margin-bottom:10px;">2. Selected Items Review</h3>
         <div id="cart-rendering-node"></div>
@@ -136,7 +130,6 @@
     </div>
 </div>
 
-<!-- INVOICE SYSTEM MODAL -->
 <div id="qrModal" class="modal">
     <div class="modal-content">
         <h3 style="color:#15803d; margin-bottom:4px;">Order Processed!</h3>
@@ -153,7 +146,7 @@
 <script>
     const TARGET_PHONE = "917796631555";
 
-    // Complete Categorized Structured Database matching image 1001266062.jpg exactly
+    // FIXED: Image paths changed to lowercase to strictly match your GitHub assets
     const menuMasterDatabase = {
         "Tandoori Veg": [
             { name: "Paneer Tikka", full: 240, half: null, img: "images/paneer_tikka.jpg" },
@@ -162,7 +155,7 @@
             { name: "Mushroom Tikka", full: 230, half: null, img: "images/mushroom tikka.jpg" },
             { name: "Soya Chaap Tikka", full: 220, half: null, img: "images/soya chaap tikka.jpg" },
             { name: "Soya Malai Tikka", full: 250, half: null, img: "images/soya malai tikka.jpg" },
-            { name: "Soya Haryali Tikka", full: 240, half: null, img: "images/soya_haryali_tikka.jpg" }
+            { name: "Soya Haryali Tikka", full: 240, half: null, img: "images/soya haryali tikka.jpg" }
         ],
         "Indian Veg Main Course": [
             { name: "Dal Fry", full: 150, half: 80, img: "images/dal fry.jpg" },
@@ -291,7 +284,6 @@
             renderBlock.innerHTML = '<p style="color:#aaa; text-align:center; font-size:13px; padding:10px 0;">Your cart is empty.</p>';
         }
 
-        // Push live values simultaneously into bottom cart view & right floating counter
         document.getElementById('inline-cart-sum').innerText = aggregatePrice;
         document.getElementById('floating-total').innerText = aggregatePrice;
     }
@@ -314,7 +306,6 @@
         window.scrollTo(0,0);
     }
 
-    // Exact String Parsing for Condition Rule 9 Verification Matrix
     function buildFinalInvoice() {
         const total = document.getElementById('inline-cart-sum').innerText;
         const phone = document.getElementById('custPhone').value.trim();
@@ -325,7 +316,7 @@
             return;
         }
         if(phone === "") {
-            alert("⚠️ Mobile Number is Required in the top block before confirmation!");
+            alert("⚠️ Mobile Number is Required at the top panel!");
             window.scrollTo(0,0);
             document.getElementById('custPhone').focus();
             return;
@@ -341,7 +332,7 @@
             itemsSummary += `\n- ${item.name} (${item.size}) x${item.count}`;
         });
 
-        // Exact Condition 9 output format block
+        // Exact rule format payload construction
         const messagePayload = `ORDER No. ${orderNo}\nDate. ${dateStr}\nOrder Type ${orderType}\nSitting Type ${sittingType}\nAmount ₹${total}\n\n*Customer Info:*\nName: ${name}\nPhone: ${phone}\n\n*Items Ordered:*${itemsSummary}`;
         
         globalWhatsAppUrl = `https://api.whatsapp.com/send?phone=${TARGET_PHONE}&text=${encodeURIComponent(messagePayload)}`;
@@ -368,8 +359,12 @@
 
     function fireWhatsAppStream() {
         if(globalWhatsAppUrl) {
-            // Direct browser intent push prevents execution blocker overrides
             window.location.href = globalWhatsAppUrl;
+            
+            // Local fallback simulation echoing automatic reply context loop back
+            setTimeout(() => {
+                alert("Hakka Bakka Confirmation:\nYour Order Done.");
+            }, 1500);
         }
     }
 
@@ -377,7 +372,6 @@
         document.getElementById('qrModal').style.display = 'none';
     }
 
-    // Run Boot Config Sequences
     generateMenuGridSystem();
     refreshCartDataStates();
     runServiceValidation();
