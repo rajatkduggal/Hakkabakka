@@ -1,436 +1,313 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Hakka Bakka Punjabi Dhaba | Jalandhar</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
-:root{
---maroon:#7A1414;
---gold:#D4AF37;
---cream:#FFF8F0;
-}
-
-body{
-background:var(--cream);
-color:#222;
-}
-
-header{
-background:var(--maroon);
-position:sticky;
-top:0;
-z-index:999;
-box-shadow:0 3px 15px rgba(0,0,0,.15);
-}
-
-.navbar{
-max-width:1200px;
-margin:auto;
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px 20px;
-}
-
-.logo{
-display:flex;
-align-items:center;
-gap:12px;
-color:white;
-font-size:24px;
-font-weight:800;
-}
-
-.logo img{
-height:55px;
-width:55px;
-border-radius:50%;
-object-fit:cover;
-}
-
-.nav-links{
-display:flex;
-gap:25px;
-}
-
-.nav-links a{
-color:white;
-text-decoration:none;
-font-weight:700;
-}
-
-.nav-links a:hover{
-color:var(--gold);
-}
-
-.hero{
-position:relative;
-}
-
-.hero img{
-width:100%;
-height:85vh;
-object-fit:cover;
-display:block;
-}
-
-.overlay{
-position:absolute;
-inset:0;
-background:rgba(0,0,0,.55);
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-padding:20px;
-}
-
-.overlay h1{
-font-size:5rem;
-font-weight:800;
-color:white;
-text-shadow:0 4px 20px rgba(0,0,0,.8);
-}
-
-.overlay p{
-color:white;
-font-size:1.3rem;
-font-weight:600;
-margin-top:10px;
-}
-
-.btns{
-margin-top:25px;
-display:flex;
-gap:15px;
-flex-wrap:wrap;
-justify-content:center;
-}
-
-.btn{
-padding:14px 28px;
-border-radius:50px;
-text-decoration:none;
-font-weight:700;
-}
-
-.btn-gold{
-background:var(--gold);
-color:black;
-}
-
-.btn-white{
-background:white;
-color:black;
-}
-
-.section{
-max-width:1200px;
-margin:auto;
-padding:70px 20px;
-}
-
-.title{
-text-align:center;
-font-size:2.7rem;
-font-weight:800;
-color:var(--maroon);
-margin-bottom:40px;
-}
-
-.cards{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-gap:25px;
-}
-
-.card{
-background:white;
-border-radius:20px;
-overflow:hidden;
-box-shadow:0 10px 25px rgba(0,0,0,.12);
-transition:.3s;
-}
-
-.card:hover{
-transform:translateY(-8px);
-}
-
-.card img{
-width:100%;
-height:230px;
-object-fit:cover;
-display:block;
-}
-
-.card-content{
-padding:18px;
-}
-
-.card h3{
-font-size:22px;
-color:var(--maroon);
-font-weight:800;
-}
-
-.price{
-margin-top:8px;
-font-weight:700;
-}
-
-.about{
-background:white;
-padding:35px;
-border-radius:20px;
-box-shadow:0 10px 25px rgba(0,0,0,.08);
-line-height:1.8;
-font-size:18px;
-}
-
-.contact-box{
-background:white;
-padding:35px;
-border-radius:20px;
-box-shadow:0 10px 25px rgba(0,0,0,.08);
-text-align:center;
-}
-
-.contact-box h3{
-color:var(--maroon);
-font-size:28px;
-margin-bottom:15px;
-}
-
-footer{
-background:#111;
-color:white;
-text-align:center;
-padding:50px 20px;
-}
-
-.whatsapp{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#25D366;
-color:white;
-text-decoration:none;
-padding:15px 22px;
-border-radius:50px;
-font-weight:700;
-box-shadow:0 8px 25px rgba(0,0,0,.3);
-}
-
-@media(max-width:768px){
-
-.overlay h1{
-font-size:2.8rem;
-}
-
-.navbar{
-flex-direction:column;
-gap:10px;
-}
-
-.nav-links{
-flex-wrap:wrap;
-justify-content:center;
-}
-
-.hero img{
-height:70vh;
-}
-
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hakka Bakka - Punjabi Dhaba</title>
+    <!-- PWA Manifest Link -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#7c2d12">
+    <!-- QRCode.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background: #fdfbc4; color: #431407; padding-bottom: 60px; }
+        
+        /* Header & Branding */
+        header { background: #7c2d12; color: #fef08a; padding: 15px; text-align: center; position: sticky; top: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; gap: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        header img { height: 50px; border-radius: 50%; border: 2px solid #fef08a; }
+        header h1 { font-size: 24px; font-weight: bold; }
+        
+        /* Navigation Tabs */
+        nav { display: flex; justify-content: space-around; background: #431407; padding: 12px 0; }
+        nav button { background: none; border: none; color: #fef08a; font-size: 16px; cursor: pointer; padding: 5px 15px; transition: all 0.3s; }
+        nav button.active { border-bottom: 3px solid #eab308; color: #eab308; font-weight: bold; }
+        
+        .section { display: none; padding: 15px; max-width: 600px; margin: auto; }
+        .section.active { display: block; }
+        
+        /* Home Screen Branding */
+        .banner-container { width: 100%; margin-bottom: 15px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.15); border: 3px solid #7c2d12; }
+        .banner-container img { width: 100%; display: block; }
+        
+        /* About Card */
+        .about-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); line-height: 1.6; border-left: 5px solid #7c2d12; }
+        .about-card h2 { color: #7c2d12; margin-bottom: 10px; }
+        
+        /* Menu Grid with Images */
+        .menu-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 15px; }
+        .menu-item { background: white; border-radius: 12px; overflow: hidden; display: flex; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #fde047; }
+        .menu-img { width: 110px; height: 110px; object-fit: cover; background: #eee; }
+        .menu-details { padding: 12px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .menu-details h3 { font-size: 16px; color: #431407; text-transform: capitalize; }
+        .menu-price-qty { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; }
+        .menu-price { color: #b45309; font-weight: bold; font-size: 16px; }
+        .menu-qty { font-size: 12px; color: #6b7280; background: #f3f4f6; padding: 2px 6px; border-radius: 4px; }
+        .add-btn { background: #15803d; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px; align-self: flex-end; }
+        .add-btn:active { transform: scale(0.95); }
+        
+        /* Cart Summary & Dropdowns */
+        .cart-summary { background: white; padding: 20px; border-radius: 12px; margin-top: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-top: 4px solid #7c2d12; }
+        .cart-item-row { display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px dashed #e5e7eb; font-size: 14px; }
+        .form-group { margin-top: 15px; }
+        label { display: block; margin-bottom: 6px; font-weight: bold; font-size: 14px; color: #431407; }
+        select { width: 100%; padding: 10px; border: 2px solid #d97706; border-radius: 8px; font-size: 15px; background: #fff; color: #431407; }
+        
+        .submit-btn { background: #b45309; color: white; border: none; width: 100%; padding: 14px; font-size: 18px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 20px; transition: background 0.2s; }
+        .submit-btn:hover { background: #7c2d12; }
+        
+        /* QR Modal Popup */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); justify-content: center; align-items: center; z-index: 2000; padding: 10px; }
+        .modal-content { background: white; padding: 20px; border-radius: 16px; text-align: center; max-width: 360px; width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        #qrcode { display: flex; justify-content: center; margin: 15px 0; padding: 10px; background: #f9fafb; border-radius: 8px; inline-size: max-content; margin-inline: auto; }
+        .modal-details { text-align: left; font-size: 14px; margin-bottom: 15px; background: #fef9c3; padding: 12px; border-radius: 8px; border: 1px solid #fef08a; color: #713f12; line-height: 1.5; }
+    </style>
 </head>
-
 <body>
 
 <header>
-<div class="navbar">
-
-<div class="logo">
-<img src="logo.jpg" alt="Logo">
-<span>HAKKA BAKKA</span>
-</div>
-
-<div class="nav-links">
-<a href="index.html">Home</a>
-<a href="menu.html">Menu</a>
-<a href="gallery.html">Gallery</a>
-<a href="#contact">Contact</a>
-</div>
-
-</div>
+    <img src="logo.jpg" alt="Hakka Bakka Logo">
+    <h1>Hakka Bakka</h1>
 </header>
 
-<section class="hero">
+<nav>
+    <button onclick="switchTab('home')" id="btn-home" class="active">Home</button>
+    <button onclick="switchTab('about')" id="btn-about">About</button>
+    <button onclick="switchTab('menu')" id="btn-menu">Menu</button>
+</nav>
 
-<img src="signboard.png" alt="Hakka Bakka">
-
-<div class="overlay">
-
-<h1>HAKKA BAKKA</h1>
-
-<p>Tuhada Apna Punjabi Dhaba</p>
-
-<p>Desi Swad • Modern Vibe</p>
-
-<div class="btns">
-
-<a href="https://wa.me/917796631555" class="btn btn-gold">
-💬 WhatsApp Order
-</a>
-
-<a href="tel:7796631555" class="btn btn-white">
-📞 Call Now
-</a>
-
+<!-- 1. HOME SECTION -->
+<div id="home" class="section active">
+    <div class="banner-container">
+        <img src="signboard.png" alt="Hakka Bakka Main Banner">
+    </div>
+    <div class="banner-container">
+        <img src="logo.jpg" alt="Hakka Bakka Welcome Poster">
+    </div>
 </div>
 
+<!-- 2. ABOUT SECTION -->
+<div id="about" class="section">
+    <div class="about-card">
+        <h2>Hakka Bakka - Punjabi Dhaba</h2>
+        <p><b>Desi Swad, Modern Vibe!</b></p>
+        <p style="margin-top: 10px;">Hakka Bakka (Shop No.1, Nr. Canal Road, Opp. Maqsudan Byepass, G.T. Road, Jalandhar) में आपका स्वागत है। हम आपके लिए लेकर आए हैं शुद्ध और ऑथेंटिक पंजाबी स्वाद का बेजोड़ संगम। बेहतरीन मसालों और ताज़ा सामग्रियों से तैयार हमारी डिशेश आपके खाने के अनुभव को यादगार बना देंगी। अब आप हमारे डिजिटल पोर्टल के माध्यम से सीधे ऑनलाइन ऑर्डर प्लेस कर सकते हैं।</p>
+    </div>
 </div>
 
-</section>
+<!-- 3. MENU SECTION -->
+<div id="menu" class="section">
+    <h2 style="color: #7c2d12; border-bottom: 2px solid #7c2d12; padding-bottom: 5px;">Our Delicious Menu</h2>
+    <div class="menu-grid" id="menu-container"></div>
 
-<section class="section">
+    <!-- 5 & 6. CART & SITTING OPTIONS -->
+    <div class="cart-summary">
+        <h3 style="color: #7c2d12;">Your Cart Details</h3>
+        <div id="cart-items" style="margin-top: 10px;"></div>
+        <p style="font-weight: bold; margin-top: 10px; text-align: right; font-size: 18px; color: #b45309;">Total: ₹<span id="cart-total">0</span></p>
+        
+        <hr style="margin: 15px 0; border: 0; border-top: 1px dashed #b45309;">
+        
+        <div class="form-group">
+            <label>Select Order Type</label>
+            <select id="orderType">
+                <option value="Dine">Dine</option>
+                <option value="Pickup">Pickup</option>
+                <option value="Delivery">Delivery</option>
+            </select>
+        </div>
 
-<h2 class="title">🔥 Our Special Dishes 🔥</h2>
+        <div class="form-group">
+            <label>Select Sitting Option</label>
+            <select id="sittingType">
+                <option value="Dine-In">Dine-In</option>
+                <option value="Car">Car</option>
+                <option value="Takeaway">Takeaway</option>
+            </select>
+        </div>
 
-<div class="cards">
-
-<div class="card">
-<img src="images/tari wala mutton.jpg" alt="">
-<div class="card-content">
-<h3>Tari Wala Mutton</h3>
-<p class="price">₹350 / ₹650</p>
-</div>
-</div>
-
-<div class="card">
-<img src="images/butter chicken.jpg" alt="">
-<div class="card-content">
-<h3>Butter Chicken</h3>
-<p class="price">₹300 / ₹550</p>
-</div>
-</div>
-
-<div class="card">
-<img src="images/chicken tikka.jpg" alt="">
-<div class="card-content">
-<h3>Chicken Tikka</h3>
-<p class="price">Tandoori Special</p>
-</div>
-</div>
-
-<div class="card">
-<img src="images/spl fish fry basa.jpg" alt="">
-<div class="card-content">
-<h3>Special Fish Fry Basa</h3>
-<p class="price">Chef Special</p>
-</div>
+        <button class="submit-btn" onclick="processOrder()">Confirm Order & Generate QR</button>
+    </div>
 </div>
 
-<div class="card">
-<img src="images/paneer butter masala.jpg" alt="">
-<div class="card-content">
-<h3>Paneer Butter Masala</h3>
-<p class="price">₹150 / ₹270</p>
-</div>
-</div>
-
-<div class="card">
-<img src="images/hakka bakka rara paneer.jpg" alt="">
-<div class="card-content">
-<h3>Hakka Bakka Rara Paneer</h3>
-<p class="price">House Special</p>
-</div>
+<!-- 7. SUCCESS & QR CODE MODAL -->
+<div id="qrModal" class="modal">
+    <div class="modal-content">
+        <h3 style="color: #15803d;">🎉 Order Placed Successfully!</h3>
+        <p style="font-size: 13px; margin: 5px 0; color: #4b5563;">Scan QR code at counter or proceed to WhatsApp</p>
+        <div id="qrcode"></div>
+        <div class="modal-details" id="modal-details"></div>
+        <button class="submit-btn" style="background:#15803d; margin-top:0;" onclick="closeModalAndRedirect()">Send to WhatsApp</button>
+    </div>
 </div>
 
-</div>
+<script>
+    // Real Business Phone from Banner Image
+    const WHATSAPP_NUMBER = "917796631555"; 
 
-</section>
+    // Dynamic Menu Items from your GitHub Image folder lists
+    const menuData = [
+        { name: "butter chicken", price: 340, qty: "Full", img: "images/butter chicken.jpg" },
+        { name: "dal makhani", price: 180, qty: "Full", img: "images/dal makhani.jpg" },
+        { name: "paneer tikka", price: 220, qty: "Full", img: "images/paneer_tikka.jpg" },
+        { name: "tandoori chicken", price: 320, qty: "Full", img: "images/tandoori chicken.jpg" },
+        { name: "mutton rogan josh", price: 380, qty: "Full", img: "images/mutton rogan josh.jpg" },
+        { name: "seekh kebab", price: 240, qty: "Full", img: "images/seekh kebab.jpg" },
+        { name: "butter naan", price: 40, qty: "1 Pc", img: "images/butter naan.jpg" },
+        { name: "spl fish fry basa", price: 280, qty: "Full", img: "images/spl fish fry basa.jpg" },
+        { name: "spring roll", price: 120, qty: "Full", img: "images/spring roll.jpg" },
+        { name: "tandoori chapati", price: 15, qty: "1 Pc", img: "images/tandoori chapati.jpg" },
+        { name: "tari wala chicken", price: 260, qty: "Full", img: "images/tari wala chicken.jpg" },
+        { name: "tari wala mutton", price: 360, qty: "Full", img: "images/tari wala mutton.jpg" },
+        { name: "tawa chicken", price: 280, qty: "Full", img: "images/tawa chicken.jpeg" },
+        { name: "thali", price: 160, qty: "1 Serv", img: "images/thali.jpg" },
+        { name: "veg manchurian", price: 160, qty: "Full", img: "images/veg menchurian.jpg" },
+        { name: "chilli chicken boneless", price: 300, qty: "Full", img: "images/chilli chicken boneless.jpg" },
+        { name: "dal fry", price: 140, qty: "Full", img: "images/dal fry.jpg" },
+        { name: "kadai paneer", price: 240, qty: "Full", img: "images/kadai paneer.jpg" },
+        { name: "shahi paneer", price: 240, qty: "Full", img: "images/shahi paneer.jpg" }
+    ];
 
-<section class="section">
+    let cart = {};
 
-<h2 class="title">🙏 Tuhada Apna Hakka Bakka</h2>
+    function renderMenu() {
+        const container = document.getElementById('menu-container');
+        container.innerHTML = menuData.map((item, index) => `
+            <div class="menu-item">
+                <img class="menu-img" src="${item.img}" onerror="this.src='logo.jpg'" alt="${item.name}">
+                <div class="menu-details">
+                    <h3>${item.name}</h3>
+                    <div class="menu-price-qty">
+                        <span class="menu-price">₹${item.price}</span>
+                        <span class="menu-qty">${item.qty}</span>
+                    </div>
+                    <button class="add-btn" onclick="addToCart(${index})">Add +</button>
+                </div>
+            </div>
+        `).join('');
+    }
 
-<div class="about">
+    function addToCart(index) {
+        const item = menuData[index];
+        if (cart[index]) {
+            cart[index].count++;
+        } else {
+            cart[index] = { ...item, count: 1 };
+        }
+        renderCart();
+    }
 
-Punjabi swaad, fresh ingredients te ghar varga taste.
+    function renderCart() {
+        const container = document.getElementById('cart-items');
+        let total = 0;
+        container.innerHTML = '';
+        
+        Object.values(cart).forEach(item => {
+            total += item.price * item.count;
+            container.innerHTML += `
+                <div class="cart-item-row">
+                    <span><b style="text-transform:capitalize;">${item.name}</b> x ${item.count}</span>
+                    <span>₹${item.price * item.count}</span>
+                </div>
+            `;
+        });
+        
+        if(Object.keys(cart).length === 0) {
+            container.innerHTML = '<p style="color:#999; font-size:14px;">Your cart is empty.</p>';
+        }
+        document.getElementById('cart-total').innerText = total;
+    }
 
-Hakka Bakka Punjabi Dhaba vich tuhanu milde ne authentic Veg, Non-Veg, Tandoori, Fish te Rice dishes.
+    function switchTab(tabId) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        document.getElementById('btn-' + tabId).classList.add('active');
+    }
 
-Har order fresh tayar kita janda hai taaki tuhanu best quality, hygiene te asli Punjabi flavour mil sake.
+    let whatsappUrlGlobal = "";
 
-</div>
+    // 7 & 9. Process Order and Generate WhatsApp String / QR
+    function processOrder() {
+        const total = document.getElementById('cart-total').innerText;
+        if(total === "0") {
+            alert("Please add at least one item to your cart!");
+            return;
+        }
 
-</section>
+        const orderNo = "HB-" + Math.floor(1000 + Math.random() * 9000);
+        const dateStr = new Date().toLocaleDateString();
+        const orderType = document.getElementById('orderType').value;
+        const sittingType = document.getElementById('sittingType').value;
 
-<section class="section" id="contact">
+        let itemText = "";
+        Object.values(cart).forEach(item => {
+            itemText += `${item.name} (x${item.count}), `;
+        });
+        itemText = itemText.slice(0, -2);
 
-<h2 class="title">📍 Contact Us</h2>
+        // Required 9th Condition Exact Format
+        const message = `ORDER No. ${orderNo}\nDate. ${dateStr}\nOrder Type ${orderType}\nSitting Type ${sittingType}\nAmount ₹${total}\nItems: ${itemText}`;
+        
+        whatsappUrlGlobal = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
-<div class="contact-box">
+        // Injecting Formatted Text into Modal View
+        document.getElementById('modal-details').innerHTML = `
+            <strong>ORDER No.</strong> ${orderNo}<br>
+            <strong>Date.</strong> ${dateStr}<br>
+            <strong>Order Type</strong> ${orderType}<br>
+            <strong>Sitting Type</strong> ${sittingType}<br>
+            <strong>Amount</strong> ₹${total}
+        `;
 
-<h3>HAKKA BAKKA Punjabi Dhaba</h3>
+        // Generate QR Code containing the text payload
+        document.getElementById('qrcode').innerHTML = "";
+        new QRCode(document.getElementById("qrcode"), {
+            text: message,
+            width: 140,
+            height: 140
+        });
 
-<p>
-Shop No.1, Nr. Bhagat Singh Colony,<br>
-Opp. Maqsudan Bye Pass,<br>
-G.T. Road, Jalandhar,<br>
-Punjab 144008, India
-</p>
+        // Open Modal Popup
+        document.getElementById('qrModal').style.display = 'flex';
+    }
 
-<br>
+    // 8. Handle redirect and trigger localized auto-reply confirmation
+    function closeModalAndRedirect() {
+        document.getElementById('qrModal').style.display = 'none';
+        window.open(whatsappUrlGlobal, '_blank');
+        
+        // Simulating immediate automatic alert trigger text back to customer screen
+        setTimeout(() => {
+            alert("Hakka Bakka Confirmation:\nYour Order Done.");
+        }, 1500);
+    }
 
-<p><strong>📞 7796631555</strong></p>
+    // 4. Progressive Web App (PWA) Automation logic for Home Screen installation
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+            .then(reg => console.log('PWA Service Worker Active'))
+            .catch(err => console.log('Service worker error', err));
+        });
+    }
 
-<br>
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        let deferredPrompt = e;
+        // Automatically trigger app download banner instantly when loaded on mobile
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User installed Hakka Bakka App');
+            }
+            deferredPrompt = null;
+        });
+    });
 
-<a href="https://wa.me/917796631555" class="btn btn-gold">
-Order on WhatsApp
-</a>
-
-</div>
-
-</section>
-
-<footer>
-
-<h2>HAKKA BAKKA Punjabi Dhaba</h2>
-
-<p>Desi Swad • Modern Vibe</p>
-
-<br>
-
-<p>📍 Jalandhar, Punjab</p>
-<p>📞 7796631555</p>
-
-<br>
-
-<p>© 2025 Hakka Bakka. All Rights Reserved.</p>
-
-</footer>
-
-<a class="whatsapp" href="https://wa.me/917796631555">
-💬 Order Now
-</a>
-
+    // Run Initial Setup
+    renderMenu();
+    renderCart();
+</script>
 </body>
 </html>
