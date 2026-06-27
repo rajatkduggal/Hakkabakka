@@ -8,8 +8,6 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#7b1113">
 <link rel="stylesheet" href="style.css">
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 
 <body>
@@ -49,45 +47,19 @@
             GT Road, Jalandhar.
         </p>
 
-        <p>Contact: 7796631555</p>
+        <p>
+            Contact: 7796631555
+        </p>
     </div>
 </section>
 
 <!-- MENU -->
 <section id="menu" class="page">
-
     <img src="menu_20_6_26.jpg" class="full-menu">
 
     <button class="order-btn" onclick="openCart()">
         Click Here For Online Orders
     </button>
-
-    <!-- CART SECTION -->
-    <div id="cartSection" class="hidden">
-
-        <div class="customer-box">
-            <input type="text" id="custName" placeholder="Name (Optional)">
-            <input type="tel" id="custPhone" placeholder="Mobile Number">
-
-            <select id="orderType">
-                <option>Dine-In</option>
-                <option>Pickup</option>
-                <option>Delivery</option>
-            </select>
-        </div>
-
-        <div id="menuItems"></div>
-
-        <div class="cart-box">
-            <h2>Your Cart</h2>
-            <div id="cartItems"></div>
-            <h3>Total ₹<span id="cartTotal">0</span></h3>
-
-            <button onclick="saveOrder()">Confirm Order</button>
-        </div>
-
-    </div>
-
 </section>
 
 <script src="script.js"></script>
