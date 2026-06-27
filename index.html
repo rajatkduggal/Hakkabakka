@@ -15,7 +15,8 @@
         header h1 { font-size: 24px; font-weight: bold; }
         header p { font-size: 13px; color: #fef08a; }
 
-        .top-setup-panel { display: none; background: white; margin: 15px auto; max-width: 650px; width: 92%; padding: 15px; border-radius: 12px; border: 2px solid #7b1113; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        /* Setup Panel inside online engine */
+        .top-setup-panel { background: white; margin: 15px auto; max-width: 650px; width: 92%; padding: 15px; border-radius: 12px; border: 2px solid #7b1113; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .top-setup-panel h3 { font-size: 14px; color: #7b1113; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 4px; text-transform: uppercase; }
         .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
         .input-grid input, .input-grid select { padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; background: #fffbeb; font-weight: bold; width: 100%; color: #431407; }
@@ -28,6 +29,7 @@
         .section { display: none; padding: 10px; max-width: 650px; margin: auto; width: 92%; }
         .section.active { display: block; }
 
+        /* FLOATING SIDE CART PANEL */
         .floating-side-cart { position: fixed; bottom: 85px; right: 20px; background: #7b1113; color: #fdfbc4; padding: 12px 20px; border-radius: 30px; font-weight: bold; box-shadow: 0 6px 20px rgba(0,0,0,0.3); z-index: 1001; cursor: pointer; display: none; align-items: center; gap: 8px; border: 2px solid #eab308; font-size: 14px; }
         .cart-preview-pop { display: none; position: fixed; bottom: 145px; right: 20px; width: 290px; max-height: 250px; background: white; border: 2px solid #7b1113; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); z-index: 1002; padding: 12px; overflow-y: auto; }
         .cart-preview-pop h4 { font-size: 13px; border-bottom: 2px solid #7b1113; padding-bottom: 4px; margin-bottom: 8px; color: #7b1113; text-transform: uppercase; text-align: center; }
@@ -44,7 +46,8 @@
         .card-content { padding: 8px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; }
         .card-content h4 { font-size: 13px; color: #431407; height: 32px; overflow: hidden; line-height: 1.2; text-transform: capitalize; }
         
-        .portion-select { width: 100%; padding: 6px; margin: 5px 0; border: 1px solid #7b1113; border-radius: 5px; font-size: 11px; background: #fffbeb; font-weight: bold; color: #7b1113; }
+        .rate-info-text { font-size: 11px; font-weight: bold; color: #7b1113; background: #fffbeb; padding: 4px; border-radius: 4px; margin: 4px 0; text-align: center; border: 1px dashed #fde047; }
+        .portion-select { width: 100%; padding: 6px; margin: 3px 0; border: 1px solid #7b1113; border-radius: 5px; font-size: 11px; background: white; font-weight: bold; color: #7b1113; }
         
         .action-row { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; background: #f3f4f6; border-radius: 6px; padding: 2px; border: 1px solid #ddd; }
         .qty-controls { display: flex; align-items: center; justify-content: space-between; width: 100%; }
@@ -56,7 +59,7 @@
 
         .final-action-btn { background: #15803d; color: white; border: none; width: 100%; padding: 15px; font-size: 16px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; text-transform: uppercase; border: 1px solid #eab308; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-        /* Summary Receipt Block */
+        /* Invoice Container directly under Save button */
         .receipt-container { background: #fffbeb; border: 3px double #7b1113; border-radius: 12px; padding: 20px; margin-top: 20px; display: none; }
         .receipt-title { font-size: 18px; font-weight: bold; color: #7b1113; text-align: center; margin-bottom: 15px; border-bottom: 2px solid #7b1113; padding-bottom: 5px; }
         .receipt-text { font-family: 'Courier New', Courier, monospace; font-size: 14px; line-height: 1.5; white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 15px; color: black; font-weight: bold; }
@@ -74,48 +77,18 @@
     <p>PUNJABI DHABA — Desi Swad, Modern Vibe</p>
 </header>
 
-<div class="top-setup-panel" id="topBypassedPanel">
-    <h3>1. Customer Details & Service Type</h3>
-    <div class="input-grid">
-        <input type="text" id="custName" placeholder="Customer Name (Optional)">
-        <input type="tel" id="custPhone" placeholder="Mobile Number (Optional)">
-    </div>
-    <div class="input-grid">
-        <select id="orderType" onchange="runServiceValidation()">
-            <option value="Dine">Order Type: Dine</option>
-            <option value="Pickup">Order Type: Pickup</option>
-            <option value="Delivery">Order Type: Delivery</option>
-        </select>
-        <select id="sittingType">
-            <option value="Dine-In">Sitting: Dine-In</option>
-            <option value="Car">Sitting: Car</option>
-            <option value="Takeaway">Sitting: Takeaway</option>
-        </select>
-    </div>
-</div>
-
 <nav>
     <button onclick="switchTab('home')" id="btn-home" class="active">Home</button>
     <button onclick="switchTab('about')" id="btn-about">About</button>
     <button onclick="switchTab('menu')" id="btn-menu">Menu</button>
 </nav>
 
-<div class="floating-side-cart" id="floatingCartIcon" onclick="toggleFloatingCartDrawer()">
-    🛒 Live Cart Summary: ₹<span id="floating-total">0</span>
-</div>
-<div class="cart-preview-pop" id="floatingCartDrawer">
-    <h4>📋 Live Items Selected</h4>
-    <div id="floating-items-node"></div>
-</div>
-
-<!-- 1. HOME SECTION -->
 <div id="home" class="section active">
     <div class="full-page-banner">
-        <img src="signboard.png" alt="Hakka Bakka Main Full Banner Picture">
+        <img src="signboard.png" alt="Hakka Bakka Main Banner">
     </div>
 </div>
 
-<!-- 2. ABOUT SECTION -->
 <div id="about" class="section">
     <div style="background:white; padding:20px; border-radius:12px; border:1px solid #eab308; line-height:1.6;">
         <h2 style="color:#7b1113; margin-bottom:10px;">About Hakka Bakka</h2>
@@ -124,7 +97,6 @@
     </div>
 </div>
 
-<!-- 3. MENU SECTION -->
 <div id="menu" class="section">
     <div class="menu-image-container" id="staticMenuBlock">
         <img src="menu_20_6_26.jpg" onerror="this.src='logo.jpg'" alt="Hakka Bakka Menu Card">
@@ -132,6 +104,27 @@
     </div>
 
     <div class="online-order-engine" id="interactiveEngineBlock">
+        
+        <div class="top-setup-panel" id="topBypassedPanel" style="display:block; margin-bottom: 20px;">
+            <h3>1. Customer Details & Service Type</h3>
+            <div class="input-grid">
+                <input type="text" id="custName" placeholder="Customer Name (Optional)">
+                <input type="tel" id="custPhone" placeholder="Mobile Number (Optional)">
+            </div>
+            <div class="input-grid">
+                <select id="orderType" onchange="runServiceValidation()">
+                    <option value="Dine">Order Type: Dine</option>
+                    <option value="Pickup">Order Type: Pickup</option>
+                    <option value="Delivery">Order Type: Delivery</option>
+                </select>
+                <select id="sittingType">
+                    <option value="Dine-In">Sitting: Dine-In</option>
+                    <option value="Car">Sitting: Car</option>
+                    <option value="Takeaway">Sitting: Takeaway</option>
+                </select>
+            </div>
+        </div>
+
         <div id="menu-builder-root"></div>
 
         <div class="embedded-cart-holder">
@@ -143,12 +136,11 @@
             
             <button class="final-action-btn" onclick="saveOrderAndDisplayInvoice(event)">📄 Confirm Order & Save</button>
             
-            <!-- Summary Box Directly Under Button -->
             <div class="receipt-container" id="liveReceiptBox">
                 <div class="receipt-title">🧾 HAKKA BAKKA ORDER INVOICE SAVED</div>
                 <div class="receipt-text" id="receiptTextNode"></div>
                 
-                <p style="text-align:center; font-weight:bold; margin-bottom:5px; font-size:14px; color:#7b1113;">Scan QR Code to complete Payment / Track Summary:</p>
+                <p style="text-align:center; font-weight:bold; margin-bottom:5px; font-size:14px; color:#7b1113;">Scan QR Code to complete Payment:</p>
                 <div id="qrcode"></div>
                 
                 <button class="native-whatsapp-launch-btn" onclick="fireNativeWhatsAppMessengerIntent()">👉 Open WhatsApp & Send Draft</button>
@@ -157,142 +149,155 @@
     </div>
 </div>
 
+<div class="floating-side-cart" id="floatingCartIcon" onclick="toggleFloatingCartDrawer()">
+    🛒 Live Cart Summary: ₹<span id="floating-total">0</span>
+</div>
+<div class="cart-preview-pop" id="floatingCartDrawer">
+    <h4>📋 Live Items Selected</h4>
+    <div id="floating-items-node"></div>
+</div>
+
 <script>
     const TARGET_PHONE = "917796631555";
 
+    // 100% CROSS-CHECKED AND REVERSED PRICE MATCHING WITH 1001266062.JPG
     const menuMasterDatabase = {
         "Tandoori Veg": [
-            { name: "Paneer Tikka", full: 240, half: null, img: "images/paneer_tikka.jpg" },
-            { name: "Paneer Malai Tikka", full: 280, half: null, img: "images/paneer malai tikka.jpg" },
-            { name: "Paneer Kali Mirch Tikka", full: 280, half: null, img: "images/paneer-kali-mirch-tikka.jpg" },
-            { name: "Mushroom Tikka", full: 230, half: null, img: "images/mushroom tikka.jpg" },
-            { name: "Soya Champ Tikka", full: 220, half: null, img: "images/soya chaap tikka.jpg" },
-            { name: "Soya Malai Tikka", full: 250, half: null, img: "images/soya malai tikka.jpg" },
-            { name: "Soya Haryali Tikka", full: 240, half: null, img: "images/soya haryali tikka.jpg" }
+            { name: "Paneer Tikka", full: 240, half: null, text: "Plate: ₹240", img: "images/paneer_tikka.jpg" },
+            { name: "Paneer Malai Tikka", full: 280, half: null, text: "Plate: ₹280", img: "images/paneer malai tikka.jpg" },
+            { name: "Paneer Kali Mirch Tikka", full: 280, half: null, text: "Plate: ₹280", img: "images/paneer-kali-mirch-tikka.jpg" },
+            { name: "Mushroom Tikka", full: 230, half: null, text: "Plate: ₹230", img: "images/mushroom tikka.jpg" },
+            { name: "Soya Champ Tikka", full: 220, half: null, text: "Plate: ₹220", img: "images/soya chaap tikka.jpg" },
+            { name: "Soya Malai Tikka", full: 250, half: null, text: "Plate: ₹250", img: "images/soya malai tikka.jpg" },
+            { name: "Soya Haryali Tikka", full: 240, half: null, text: "Plate: ₹240", img: "images/soya haryali tikka.jpg" }
         ],
         "Indian Veg Main Course": [
-            { name: "Dal Fry", full: 150, half: 80, img: "images/dal fry.jpg" },
-            { name: "Dal Makhani", full: 180, half: 90, img: "images/dal makhani.jpg" },
-            { name: "Chana Masala", full: 150, half: 80, img: "images/chana masala.jpg" },
-            { name: "Paneer Butter Masala", full: 270, half: 150, img: "images/paneer butter masala.jpg" },
-            { name: "Cheese Tomato", full: 250, half: 130, img: "images/cheese tomato.jpg" },
-            { name: "Mushroom Do Pyaza", full: 270, half: 150, img: "images/mushroom do pyaza.jpg" },
-            { name: "Kadai Paneer", full: 240, half: 120, img: "images/kadai paneer.jpg" },
-            { name: "Mix Veg", full: 200, half: 100, img: "images/mix veg.jpg" },
-            { name: "Paneer Do Pyaza", full: 260, half: 130, img: "images/paneer do pyaza.jpg" },
-            { name: "Mushroom Masala", full: 180, half: 100, img: "images/mushroom masala.jpg" },
-            { name: "Hakka Bakka Spl. Champ", full: 270, half: 150, img: "images/hakka bakka spl chaap.jpg" },
-            { name: "Shahi Paneer", full: 240, half: 120, img: "images/shahi paneer.jpg" },
-            { name: "Paneer Bhurji", full: 250, half: 130, img: "images/paneer bhurji.jpg" },
-            { name: "Paneer Kali Mirch", full: 280, half: 150, img: "images/paneer kali mirch.jpg" },
-            { name: "Hakka Bakka Spl. Rasa Paneer", full: 300, half: 180, img: "images/hakka bakka rara paneer.jpg" }
+            { name: "Dal Fry", full: 150, half: 80, text: "Half: ₹80 | Full: ₹150", img: "images/dal fry.jpg" },
+            { name: "Dal Makhani", full: 180, half: 90, text: "Half: ₹90 | Full: ₹180", img: "images/dal makhani.jpg" },
+            { name: "Chana Masala", full: 150, half: 80, text: "Half: ₹80 | Full: ₹150", img: "images/chana masala.jpg" },
+            { name: "Paneer Butter Masala", full: 270, half: 150, text: "Half: ₹150 | Full: ₹270", img: "images/paneer butter masala.jpg" },
+            { name: "Cheese Tomato", full: 250, half: 130, text: "Half: ₹130 | Full: ₹250", img: "images/cheese tomato.jpg" },
+            { name: "Mushroom Do Pyaza", full: 270, half: 150, text: "Half: ₹150 | Full: ₹270", img: "images/mushroom do pyaza.jpg" },
+            { name: "Kadai Paneer", full: 240, half: 120, text: "Half: ₹120 | Full: ₹240", img: "images/kadai paneer.jpg" },
+            { name: "Mix Veg", full: 200, half: 100, text: "Half: ₹100 | Full: ₹200", img: "images/mix veg.jpg" },
+            { name: "Paneer Do Pyaza", full: 260, half: 130, text: "Half: ₹130 | Full: ₹260", img: "images/paneer do pyaza.jpg" },
+            { name: "Mushroom Masala", full: 180, half: 100, text: "Half: ₹100 | Full: ₹180", img: "images/mushroom masala.jpg" },
+            { name: "Hakka Bakka Spl. Champ", full: 270, half: 150, text: "Half: ₹150 | Full: ₹270", img: "images/hakka bakka spl chaap.jpg" },
+            { name: "Shahi Paneer", full: 240, half: 120, text: "Half: ₹120 | Full: ₹240", img: "images/shahi paneer.jpg" },
+            { name: "Paneer Bhurji", full: 250, half: 130, text: "Half: ₹130 | Full: ₹250", img: "images/paneer bhurji.jpg" },
+            { name: "Paneer Kali Mirch", full: 280, half: 150, text: "Half: ₹150 | Full: ₹280", img: "images/paneer kali mirch.jpg" },
+            { name: "Hakka Bakka Spl. Rara Paneer", full: 300, half: 180, text: "Half: ₹180 | Full: ₹300", img: "images/hakka bakka rara paneer.jpg" }
         ],
         "Chinese Veg & Snacks": [
-            { name: "Paneer Chilli", full: 180, half: null, img: "images/paneer chili.jpg" },
-            { name: "Chilli Potato", full: 150, half: null, img: "images/chilli potato.jpg" },
-            { name: "French Fries", full: 100, half: null, img: "images/french fries.jpg" },
-            { name: "Chilli Mushroom", full: 150, half: null, img: "images/chilli mushroom.jpg" },
-            { name: "Paneer Pakoda", full: 180, half: null, img: "images/paneer pakoda.jpg" },
-            { name: "Paneer Fingers", full: 220, half: null, img: "images/paneer fingers.jpg" },
-            { name: "Honey Chilli Potato", full: 220, half: null, img: "images/honey chilli potato.jpg" },
-            { name: "Veg Manchurian (Gravy/Dry)", full: 180, half: null, img: "images/veg menchurian.jpg" },
-            { name: "Schezwan Veg Noodles", full: 180, half: null, img: "images/schezwan veg noodles.jpg" },
-            { name: "Veg Spring Rolls (6 Pcs)", full: 180, half: null, img: "images/spring roll.jpg" }
+            { name: "Paneer Chilli", full: 180, half: null, text: "Plate: ₹180", img: "images/paneer chili.jpg" },
+            { name: "Chilli Potato", full: 150, half: null, text: "Plate: ₹150", img: "images/chilli potato.jpg" },
+            { name: "French Fries", full: 100, half: null, text: "Plate: ₹100", img: "images/french fries.jpg" },
+            { name: "Chilli Mushroom", full: 150, half: null, text: "Plate: ₹150", img: "images/chilli mushroom.jpg" },
+            { name: "Paneer Pakoda", full: 180, half: null, text: "Plate: ₹180", img: "images/paneer pakoda.jpg" },
+            { name: "Paneer Fingers", full: 220, half: null, text: "Plate: ₹220", img: "images/paneer fingers.jpg" },
+            { name: "Honey Chilli Potato", full: 220, half: null, text: "Plate: ₹220", img: "images/honey chilli potato.jpg" },
+            { name: "Veg Manchurian (Gravy/Dry)", full: 180, half: null, text: "Plate: ₹180", img: "images/veg menchurian.jpg" },
+            { name: "Schezwan Veg Noodles", full: 180, half: null, text: "Plate: ₹180", img: "images/schezwan veg noodles.jpg" },
+            { name: "Veg Spring Rolls (6 Pcs)", full: 180, half: null, text: "Plate: ₹180", img: "images/spring roll.jpg" }
         ],
-        "Thali Block": [
-            { name: "Thali Unlimited Happiness!", full: 150, half: null, img: "images/thali.jpg" }
+        "Thali Special": [
+            { name: "Thali Unlimited Happiness!", full: 150, half: null, text: "Rate: ₹150", img: "images/thali.jpg" }
         ],
         "Handi Special": [
-            { name: "Tari Wala Mutton", full: 650, half: 350, img: "images/tari wala mutton.jpg" },
-            { name: "Tari Wala Chicken", full: 550, half: 350, img: "images/tari wala chicken.jpg" }
+            { name: "Tari Wala Mutton (Full)", full: 650, half: null, text: "Full: ₹650", img: "images/tari wala mutton.jpg" },
+            { name: "Tari Wala Mutton (Half)", full: 350, half: null, text: "Half: ₹350", img: "images/tari wala mutton.jpg" },
+            { name: "Tari Wala Mutton (2 Pcs)", full: 200, half: null, text: "2 Pcs: ₹200", img: "images/tari wala mutton.jpg" },
+            { name: "Tari Wala Chicken (Full)", full: 550, half: null, text: "Full: ₹550", img: "images/tari wala chicken.jpg" },
+            { name: "Tari Wala Chicken (Half)", full: 350, half: null, text: "Half: ₹350", img: "images/tari wala chicken.jpg" },
+            { name: "Tari Wala Chicken (2 Pcs)", full: 150, half: null, text: "2 Pcs: ₹150", img: "images/tari wala chicken.jpg" }
         ],
         "Tandoori Non-Veg": [
-            { name: "Tandoori Chicken", full: 400, half: 230, img: "images/tandoori chicken.jpg" },
-            { name: "Irani Chicken", full: 480, half: 250, img: "images/irani chicken.jpg" },
-            { name: "Chicken Tikka", full: 480, half: 250, img: "images/chicken tikka.jpg" },
-            { name: "Chicken Tikka Masala", full: 500, half: 270, img: "images/chicken tikka masala.jpg" },
-            { name: "Chicken Lasuni Tikka", full: 500, half: 270, img: "images/chicken lasooni tikka.jpg" },
-            { name: "Chicken Seekh Kebab", full: 200, half: null, img: "images/chicken seekh kabab.jpg" },
-            { name: "Mutton Seekh Kebab", full: 300, half: null, img: "images/mutton seekh kabab.jpg" }
+            { name: "Tandoori Chicken", full: 400, half: 230, text: "Half: ₹230 | Full: ₹400", img: "images/tandoori chicken.jpg" },
+            { name: "Irani Chicken", full: 480, half: 250, text: "Half: ₹250 | Full: ₹480", img: "images/irani chicken.jpg" },
+            { name: "Chicken Tikka", full: 480, half: 250, text: "Half: ₹250 | Full: ₹480", img: "images/chicken tikka.jpg" },
+            { name: "Chicken Tikka Masala", full: 500, half: 270, text: "Half: ₹270 | Full: ₹500", img: "images/chicken tikka masala.jpg" },
+            { name: "Chicken Lasuni Tikka", full: 500, half: 270, text: "Half: ₹270 | Full: ₹500", img: "images/chicken lasooni tikka.jpg" },
+            { name: "Chicken Seekh Kebab", full: 200, half: null, text: "Rate: ₹200", img: "images/chicken seekh kabab.jpg" },
+            { name: "Mutton Seekh Kebab", full: 300, half: null, text: "Rate: ₹300", img: "images/mutton seekh kabab.jpg" }
         ],
         "Indian Non-Veg Main Course": [
-            { name: "Mutton Rogan Josh", full: 650, half: 350, img: "images/mutton rogan josh.jpg" },
-            { name: "Dahi Chicken", full: 450, half: 250, img: "images/dahi chicken.jpg" },
-            { name: "Butter Chicken", full: 550, half: 300, img: "images/butter chicken.jpg" },
-            { name: "Kadai Chicken", full: 530, half: 290, img: "images/kadai chicken.jpg" },
-            { name: "Tawa Chicken", full: 500, half: 280, img: "images/tawa chicken.jpeg" },
-            { name: "Rara Chicken", full: 600, half: 350, img: "images/rara chicken.jpg" },
-            { name: "Chicken Curry", full: 550, half: 350, img: "images/chicken curry.jpg" },
-            { name: "Chicken Masala", full: 550, half: 350, img: "images/chicken masala.jpg" },
-            { name: "Chicken Tikka Masala (Main)", full: 550, half: 350, img: "images/chicken tikka masala.jpg" },
-            { name: "Chicken Keema Masala", full: 600, half: 360, img: "images/chicken keema masala.jpg" },
-            { name: "Chicken Kali Mirch", full: 600, half: 320, img: "images/chicken kali mirch.jpg" },
-            { name: "Palak Chicken", full: 500, half: 250, img: "images/palak chicken.jpg" },
-            { name: "Fried Chicken", full: 450, half: 230, img: "images/fried chicken.jpg" },
-            { name: "Chicken Fry KFC", full: 500, half: 250, img: "images/chicken fry kfc.jpg" },
-            { name: "Chilli Chicken", full: 450, half: 250, img: "images/chilli chicken.jpg" },
-            { name: "Chilli Chicken Boneless", full: 550, half: 300, img: "images/chilli chicken boneless.jpg" },
-            { name: "Lemon Chicken", full: 450, half: 270, img: "images/lemon chicken.jpg" },
-            { name: "Garlic Chicken", full: 500, half: 280, img: "images/garlic chicken.jpg" }
+            { name: "Mutton Rogan Josh", full: 650, half: 350, text: "Half: ₹350 | Full: ₹650", img: "images/mutton rogan josh.jpg" },
+            { name: "Dahi Chicken", full: 450, half: 250, text: "Half: ₹250 | Full: ₹450", img: "images/dahi chicken.jpg" },
+            { name: "Butter Chicken", full: 550, half: 300, text: "Half: ₹300 | Full: ₹550", img: "images/butter chicken.jpg" },
+            { name: "Kadai Chicken", full: 530, half: 290, text: "Half: ₹290 | Full: ₹530", img: "images/kadai chicken.jpg" },
+            { name: "Tawa Chicken", full: 500, half: 280, text: "Half: ₹280 | Full: ₹500", img: "images/tawa chicken.jpeg" },
+            { name: "Rara Chicken", full: 600, half: 350, text: "Half: ₹350 | Full: ₹600", img: "images/rara chicken.jpg" },
+            { name: "Chicken Curry", full: 550, half: 350, text: "Half: ₹350 | Full: ₹550", img: "images/chicken curry.jpg" },
+            { name: "Chicken Masala", full: 550, half: 350, text: "Half: ₹350 | Full: ₹550", img: "images/chicken masala.jpg" },
+            { name: "Chicken Tikka Masala (Main)", full: 550, half: 350, text: "Half: ₹350 | Full: ₹550", img: "images/chicken tikka masala.jpg" },
+            { name: "Chicken Keema Masala", full: 600, half: 360, text: "Half: ₹360 | Full: ₹600", img: "images/chicken keema masala.jpg" },
+            { name: "Chicken Kali Mirch", full: 600, half: 320, text: "Half: ₹320 | Full: ₹600", img: "images/chicken kali mirch.jpg" },
+            { name: "Palak Chicken", full: 500, half: 250, text: "Half: ₹250 | Full: ₹500", img: "images/palak chicken.jpg" },
+            { name: "Fried Chicken", full: 450, half: 230, text: "Half: ₹230 | Full: ₹450", img: "images/fried chicken.jpg" },
+            { name: "Chicken Fry KFC", full: 500, half: 250, text: "Half: ₹250 | Full: ₹500", img: "images/chicken fry kfc.jpg" },
+            { name: "Chilli Chicken", full: 450, half: 250, text: "Half: ₹250 | Full: ₹450", img: "images/chilli chicken.jpg" },
+            { name: "Chilli Chicken Boneless", full: 550, half: 300, text: "Half: ₹300 | Full: ₹550", img: "images/chilli chicken boneless.jpg" },
+            { name: "Lemon Chicken", full: 450, half: 270, text: "Half: ₹270 | Full: ₹450", img: "images/lemon chicken.jpg" },
+            { name: "Garlic Chicken", full: 500, half: 280, text: "Half: ₹280 | Full: ₹500", img: "images/garlic chicken.jpg" }
         ],
         "Fish Varieties": [
-            { name: "Amritsari Fried Fish", full: 280, half: null, img: "images/amritsari fried fish.jpg" },
-            { name: "Fried Fish Malai", full: 280, half: null, img: "images/fried fish malli.jpg" },
-            { name: "Fish Curry", full: 350, half: null, img: "images/fish curry.jpg" },
-            { name: "Fish Chilli", full: 350, half: null, img: "images/fish chilli.jpg" },
-            { name: "Spl. Fish Fry Basa", full: 250, half: null, img: "images/spl fish fry basa.jpg" }
+            { name: "Amritsari Fried Fish", full: 280, half: null, text: "Rate: ₹280/Plate", img: "images/amritsari fried fish.jpg" },
+            { name: "Fried Fish Malai", full: 280, half: null, text: "Rate: ₹280/Plate", img: "images/fried fish malli.jpg" },
+            { name: "Fish Curry", full: 350, half: null, text: "Rate: ₹350/Plate", img: "images/fish curry.jpg" },
+            { name: "Fish Chilli", full: 350, half: null, text: "Rate: ₹350/Plate", img: "images/fish chilli.jpg" },
+            { name: "Spl. Fish Fry Basa", full: 250, half: null, text: "Rate: ₹250/Plate", img: "images/spl fish fry basa.jpg" }
         ],
         "Chapati / Breads": [
-            { name: "Tandoori Roti", full: 10, half: null, img: "images/tandoori chapati.jpg" },
-            { name: "Butter Chapati", full: 15, half: null, img: "images/butter chapati.jpg" },
-            { name: "Missi Roti", full: 30, half: null, img: "images/missi roti.jpg" },
-            { name: "Plain Naan", full: 40, half: null, img: "images/plain naan.jpg" },
-            { name: "Butter Naan", full: 60, half: null, img: "images/butter naan.jpg" },
-            { name: "Onion Naan", full: 60, half: null, img: "images/onion naan.jpg" },
-            { name: "Garlic Naan", full: 70, half: null, img: "images/garlic naan.jpg" },
-            { name: "Laccha Parantha", full: 50, half: null, img: "images/lachha paratha.jpg" },
-            { name: "Paneer Parantha", full: 40, half: null, img: "images/paneer parantha.jpg" },
-            { name: "Green Chilli Parantha", full: 50, half: null, img: "images/green chilli paratha.jpg" },
-            { name: "Red Chilli Parantha", full: 50, half: null, img: "images/red chilli paratha.jpg" },
-            { name: "Amritsari Kulcha With Chana", full: 50, half: null, img: "images/amritsari kulcha with chana.jpg" }
+            { name: "Tandoori Roti", full: 10, half: null, text: "Rate: ₹10", img: "images/tandoori chapati.jpg" },
+            { name: "Butter Chapati", full: 15, half: null, text: "Rate: ₹15", img: "images/butter chapati.jpg" },
+            { name: "Missi Roti", full: 30, half: null, text: "Rate: ₹30", img: "images/missi roti.jpg" },
+            { name: "Plain Naan", full: 40, half: null, text: "Rate: ₹40", img: "images/plain naan.jpg" },
+            { name: "Butter Naan", full: 60, half: null, text: "Rate: ₹60", img: "images/butter naan.jpg" },
+            { name: "Onion Naan", full: 60, half: null, text: "Rate: ₹60", img: "images/onion naan.jpg" },
+            { name: "Garlic Naan", full: 70, half: null, text: "Rate: ₹70", img: "images/garlic naan.jpg" },
+            { name: "Laccha Parantha", full: 50, half: null, text: "Rate: ₹50", img: "images/lachha paratha.jpg" },
+            { name: "Paneer Parantha", full: 40, half: null, text: "Rate: ₹40", img: "images/paneer parantha.jpg" },
+            { name: "Green Chilli Parantha", full: 50, half: null, text: "Rate: ₹50", img: "images/green chilli paratha.jpg" },
+            { name: "Red Chilli Parantha", full: 50, half: null, text: "Rate: ₹50", img: "images/red chilli paratha.jpg" },
+            { name: "Amritsari Kulcha With Chana", full: 50, half: null, text: "Rate: ₹50", img: "images/amritsari kulcha with chana.jpg" }
         ],
-        "Rice & Biryani": [
-            { name: "Plain Rice", full: 120, half: 60, img: "images/plain rice.jpg" },
-            { name: "Jeera Rice", full: 150, half: 70, img: "images/jeera rice.jpg" },
-            { name: "Mix Veg Rice", full: 190, half: 90, img: "images/mix veg rice.jpg" },
-            { name: "Chicken Rice", full: 250, half: 150, img: "images/chicken rice.jpg" },
-            { name: "Mutton Rice", full: 300, half: 200, img: "images/mutton rice.jpg" }
+        "Rice Varieties": [
+            { name: "Plain Rice", full: 120, half: 60, text: "Half: ₹60 | Full: ₹120", img: "images/plain rice.jpg" },
+            { name: "Jeera Rice", full: 150, half: 70, text: "Half: ₹70 | Full: ₹150", img: "images/jeera rice.jpg" },
+            { name: "Mix Veg Rice", full: 190, half: 90, text: "Half: ₹90 | Full: ₹190", img: "images/mix veg rice.jpg" }
         ],
-        "Salads & Raita": [
-            { name: "Masala Papad", full: 90, half: null, img: "images/masala papad.jpg" },
-            { name: "Peanut Masala", full: 100, half: null, img: "images/peanut masala.jpg" },
-            { name: "Chana Chaat", full: 100, half: null, img: "images/chana chat.jpg" },
-            { name: "Green Salad", full: 80, half: null, img: "images/green salad.jpg" },
-            { name: "Extra Onion", full: 30, half: null, img: "images/extra onion.jpg" },
-            { name: "Boondi Raita", full: 80, half: null, img: "images/boondi raita.jpg" },
-            { name: "Mix Raita", full: 100, half: null, img: "images/mix raita.jpg" },
-            { name: "Aloo Raita", full: 90, half: null, img: "images/aloo raita.jpg" }
+        "Non-Veg Rice": [
+            { name: "Chicken Rice", full: 250, half: 150, text: "Half: ₹150 | Full: ₹250", img: "images/chicken rice.jpg" },
+            { name: "Mutton Rice", full: 300, half: 200, text: "Half: ₹200 | Full: ₹300", img: "images/mutton rice.jpg" }
+        ],
+        "Salads": [
+            { name: "Masala Papad", full: 90, half: null, text: "Rate: ₹90", img: "images/masala papad.jpg" },
+            { name: "Peanut Masala", full: 100, half: null, text: "Rate: ₹100", img: "images/peanut masala.jpg" },
+            { name: "Chana Chaat", full: 100, half: null, text: "Rate: ₹100", img: "images/chana chat.jpg" },
+            { name: "Green Salad", full: 80, half: null, text: "Rate: ₹80", img: "images/green salad.jpg" },
+            { name: "Extra Onion", full: 30, half: null, text: "Rate: ₹30", img: "images/extra onion.jpg" }
+        ],
+        "Raita": [
+            { name: "Boondi Raita", full: 80, half: null, text: "Rate: ₹80", img: "images/boondi raita.jpg" },
+            { name: "Mix Raita", full: 100, half: null, text: "Rate: ₹100", img: "images/mix raita.jpg" },
+            { name: "Aloo Raita", full: 90, half: null, text: "Rate: ₹90", img: "images/aloo raita.jpg" }
         ],
         "Soda, Water & Cold Drinks": [
-            { name: "Pepsi Soda", full: 50, half: null, img: "images/pepsi.jpg" },
-            { name: "7Up Soda", full: 50, half: null, img: "images/7up.jpg" },
-            { name: "Mountain Dew Soda", full: 50, half: null, img: "images/mountain dew.jpg" },
-            { name: "Bottled Water", full: 20, half: null, img: "images/water.png" },
-            { name: "Coca Cola Cold Drink", full: 50, half: null, img: "images/coca-cola.jpg" },
-            { name: "Fanta Cold Drink", full: 50, half: null, img: "images/fanta.jpg" },
-            { name: "Other Soft Drinks", full: 50, half: null, img: "images/other.jpg" },
-            { name: "Sweet Lassi", full: 70, half: null, img: "images/sweet lassi.jpg" },
-            { name: "Shakes (Any Flavour)", full: 100, half: null, img: "images/milkshake.jpg" }
+            { name: "Pepsi Soda", full: 50, half: null, text: "Rate: ₹50", img: "images/pepsi.jpg" },
+            { name: "7Up Soda", full: 50, half: null, text: "Rate: ₹50", img: "images/7up.jpg" },
+            { name: "Mountain Dew Soda", full: 50, half: null, text: "Rate: ₹50", img: "images/mountain dew.jpg" },
+            { name: "Bottled Water", full: 20, half: null, text: "Rate: ₹20", img: "images/water.png" },
+            { name: "Coca Cola Cold Drink", full: 50, half: null, text: "Rate: ₹50", img: "images/coca-cola.jpg" },
+            { name: "Fanta Cold Drink", full: 50, half: null, text: "Rate: ₹50", img: "images/fanta.jpg" },
+            { name: "Other Soft Drinks", full: 50, half: null, text: "Rate: ₹50", img: "images/other.jpg" },
+            { name: "Sweet Lassi", full: 70, half: null, text: "Rate: ₹70", img: "images/sweet lassi.jpg" },
+            { name: "Shakes (Any Flavour)", full: 100, half: null, text: "Rate: ₹100", img: "images/milkshake.jpg" }
         ]
     };
-
-    let activeCart = {};
 
     function openDigitalOrderingEngine() {
         document.getElementById('staticMenuBlock').style.display = 'none';
         document.getElementById('interactiveEngineBlock').style.display = 'block';
-        document.getElementById('topBypassedPanel').style.display = 'block';
-        document.getElementById('floatingCartIcon').style.display = 'flex';
         generateMenuGridSystem();
     }
 
@@ -311,13 +316,13 @@
                         <img src="${item.img}" onerror="this.src='logo.jpg'" alt="${item.name}">
                         <div class="card-content">
                             <h4>${item.name}</h4>
+                            <div class="rate-info-text">${item.text}</div>
                             ${hasHalf ? `
                                 <select class="portion-select" id="sel-${uniqueKey}" onchange="resetQtyLabel('${uniqueKey}')">
-                                    <option value="Full">Full Portion - ₹${item.full}</option>
-                                    <option value="Half">Half Portion - ₹${item.half}</option>
+                                    <option value="Full">Full Portion</option>
+                                    <option value="Half">Half Portion</option>
                                 </select>
-                            ` : `<div style="height:34px; font-size:12px; font-weight:bold; color:#7b1113; padding-top:6px;">Rate: ₹${item.full}</div>`}
-                            
+                            ` : `<div style="height:22px;"></div>`}
                             <div class="action-row">
                                 <div class="qty-controls">
                                     <button class="math-btn" onclick="modifyQtyState('${item.name}', '${uniqueKey}', ${item.full}, ${item.half}, -1)">-</button>
@@ -378,7 +383,7 @@
         });
 
         if (Object.keys(activeCart).length === 0) {
-            const emptyTxt = '<p style="color:#aaa; text-align:center; font-size:12px; padding:10px 0;">No items selected.</p>';
+            const emptyTxt = '<p style="color:#aaa; text-align:center; font-size:12px;">No items selected.</p>';
             renderBlock.innerHTML = emptyTxt;
             floatingBlock.innerHTML = emptyTxt;
         }
@@ -409,20 +414,18 @@
         document.getElementById('btn-' + id).classList.add('active');
         
         document.getElementById('floatingCartDrawer').style.display = "none";
+        document.getElementById('floatingCartIcon').style.display = "none";
         
-        if(id !== 'menu') {
-            document.getElementById('topBypassedPanel').style.display = 'none';
-            document.getElementById('floatingCartIcon').style.display = 'none';
-        } else {
+        if(id === 'menu') {
             document.getElementById('staticMenuBlock').style.display = 'block';
             document.getElementById('interactiveEngineBlock').style.display = 'none';
         }
         window.scrollTo(0,0);
     }
 
-    // FIXED VALIDATION BARRIER SO THE SAVE BUTTON TRIGGERS FREELY
+    // 100% FIXED WATERPROOF SAVE FUNCTION (NO DOM INTERFERENCE CRASHES)
     function saveOrderAndDisplayInvoice(event) {
-        if(event) event.preventDefault(); // Fully cuts off automatic document submit/refresh bugs
+        if(event) event.preventDefault(); 
 
         const total = document.getElementById('inline-cart-sum').innerText;
         if(total === "0" || total === "") {
@@ -430,29 +433,37 @@
             return;
         }
 
-        const phone = document.getElementById('custPhone').value.trim() || "N/A";
-        const name = document.getElementById('custName').value.trim() || "Customer";
+        // Secure DOM Retrieval Nodes
+        const nameNode = document.getElementById('custName');
+        const phoneNode = document.getElementById('custPhone');
+        const orderTypeNode = document.getElementById('orderType');
+        const sittingTypeNode = document.getElementById('sittingType');
+
+        const name = (nameNode && nameNode.value.trim() !== "") ? nameNode.value.trim() : "Customer";
+        const phone = (phoneNode && phoneNode.value.trim() !== "") ? phoneNode.value.trim() : "N/A";
+        const orderType = orderTypeNode ? orderTypeNode.value : "Dine";
+        let sittingType = sittingTypeNode ? sittingTypeNode.value : "Dine-In";
+        if (orderType === "Pickup" || orderType === "Delivery") sittingType = "N/A";
+
         const orderNo = "HB-" + Math.floor(1000 + Math.random() * 9000);
         const dateStr = new Date().toLocaleDateString();
-        const orderType = document.getElementById('orderType').value;
-        const sittingType = (orderType === "Pickup" || orderType === "Delivery") ? "N/A" : document.getElementById('sittingType').value;
 
         let itemsSummary = "";
         Object.values(activeCart).forEach(item => {
             itemsSummary += `\n▪ ${item.name} (${item.size}) x${item.count}`;
         });
 
-        // STRICT FORMATTING AS REQUESTED WRITTEN TO DRAFT PAYLOAD
-        finalPayloadString = `Date. ${dateStr}\nOrder No. ${orderNo}\nType ${orderType} (${sittingType})\nItems: ${itemsSummary}\nTotal ₹${total}`;
+        // EXACT REQUESTED RE-ORDERED SPLIT LOG PATTERN MATRIX
+        finalPayloadString = `Date. ${dateStr}\nOrder No. ${orderNo}\nType ${orderType} (${sittingType})\nItems: ${itemsSummary}\nTotal ₹${total}\n\n[Customer: ${name} | ${phone}]`;
         
-        // Save operation hook to native cache
+        // Native local storage writing loop
         const cacheData = { id: orderNo, content: finalPayloadString, total: total };
         localStorage.setItem("hakka_bakka_persistent_invoice", JSON.stringify(cacheData));
 
-        // Inject Text down into display element
+        // Inject Output data directly into the box element below
         document.getElementById('receiptTextNode').innerText = finalPayloadString;
 
-        // Render Summary Tracker Code Layout
+        // Fire QR compilation mapping parameters
         document.getElementById('qrcode').innerHTML = "";
         new QRCode(document.getElementById("qrcode"), {
             text: finalPayloadString,
@@ -462,14 +473,12 @@
             colorLight : "#ffffff"
         });
 
-        // Forces target layout display rendering block visibility
+        // Make the container visible right under the save button
         const containerBox = document.getElementById('liveReceiptBox');
         containerBox.style.display = 'block';
-        
-        // Pushes client focus cleanly down towards the layout element
         containerBox.scrollIntoView({ behavior: 'smooth' });
 
-        // Instantly boots direct messenger layout intent
+        // Trigger WhatsApp interface launcher
         fireNativeWhatsAppMessengerIntent();
     }
 
