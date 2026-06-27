@@ -1,20 +1,25 @@
-body{
+*{
 margin:0;
-font-family:Arial;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
 background:#f8f3e7;
+color:#431407;
 }
 
 nav{
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:15px;
-background:#7b1113;
+padding:15px 20px;
+background:linear-gradient(to right,#7b1113,#4a090b);
 color:white;
-}
-
-.logo{
-width:60px;
+position:sticky;
+top:0;
+z-index:1000;
 }
 
 .logo-box{
@@ -23,15 +28,26 @@ align-items:center;
 gap:10px;
 }
 
+.logo{
+width:60px;
+height:60px;
+border-radius:50%;
+}
+
 nav ul{
 display:flex;
-gap:20px;
+gap:25px;
 list-style:none;
 }
 
 nav li{
 cursor:pointer;
 font-weight:bold;
+font-size:16px;
+}
+
+nav li:hover{
+color:#ffd700;
 }
 
 .page{
@@ -39,83 +55,64 @@ display:none;
 padding:20px;
 }
 
-.active{
+.page.active{
 display:block;
 }
 
 .banner{
 width:100%;
-border-radius:10px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.2);
 }
 
 .about-box{
 background:white;
-padding:20px;
-border-radius:10px;
-line-height:1.8;
+padding:25px;
+border-radius:15px;
+line-height:1.9;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+.about-box h1{
+color:#7b1113;
+margin-bottom:15px;
 }
 
 .full-menu{
 width:100%;
-border-radius:10px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.15);
 }
 
 .order-btn{
 width:100%;
-padding:15px;
+padding:18px;
 background:#15803d;
 color:white;
+font-size:20px;
+font-weight:bold;
 border:none;
-font-size:18px;
-margin:20px 0;
-border-radius:10px;
+border-radius:12px;
+margin-top:20px;
+cursor:pointer;
 }
 
-.hidden{
-display:none;
+.order-btn:hover{
+background:#166534;
 }
 
-.customer-box input,
-.customer-box select{
-width:100%;
-padding:12px;
-margin-bottom:10px;
-border:1px solid #ccc;
-border-radius:8px;
+@media(max-width:768px){
+nav{
+flex-direction:column;
+gap:10px;
 }
 
-.menu-grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
+nav ul{
 gap:15px;
 }
 
-.menu-item{
-background:white;
-padding:10px;
-border-radius:10px;
+.logo{
+width:50px;
+height:50px;
 }
-
-.menu-item button{
-width:100%;
-padding:8px;
-background:#7b1113;
-color:white;
-border:none;
-}
-
-.cart-box{
-margin-top:20px;
-background:white;
-padding:20px;
-border-radius:10px;
-}
-
-.cart-box button{
-width:100%;
-padding:15px;
-background:#25D366;
-border:none;
-color:white;
-font-size:18px;
 }
