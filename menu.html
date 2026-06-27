@@ -3,132 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hakka Bakka Menu</title>
+<title>Hakka Bakka - Premium Digital Menu</title>
+<!-- QRCode.js Library Support for Standalone QR Generation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
-body{
-margin:0;
-padding:0;
-font-family:Arial,sans-serif;
-background:#f8f5ef;
-}
+body { margin: 0; padding: 0; font-family: Arial, sans-serif; background: #f8f5ef; color: #431407; }
+header { background: #7b1113; color: white; padding: 20px; text-align: center; }
+.logo { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; border: 2px solid #fff; }
+#searchBox { width: 90%; padding: 14px; margin: 20px auto; display: block; border: 2px solid #7b1113; border-radius: 8px; font-size: 16px; max-width: 600px; }
+.section-title { text-align: center; font-size: 22px; font-weight: bold; background: #7b1113; color: white; padding: 12px; margin: 25px 20px 10px 20px; border-radius: 10px; }
 
-header{
-background:#7b1113;
-color:white;
-padding:20px;
-text-align:center;
-}
+/* 2-Column Responsive Layout for Mobile and Desktop */
+.menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px; max-width: 800px; margin: auto; }
+.card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,.1); border: 1px solid #fde047; display: flex; flex-direction: column; justify-content: space-between; }
+.card img { width: 100%; height: 130px; object-fit: cover; background: #eee; }
+.card-content { padding: 10px; text-align: center; flex-get: 1; display: flex; flex-direction: column; justify-content: space-between; }
+.card-content h3 { font-size: 14px; margin: 5px 0; height: 36px; overflow: hidden; text-transform: capitalize; }
 
-.logo{
-width:120px;
-height:120px;
-object-fit:cover;
-border-radius:50%;
-}
+.portion-select { width: 100%; padding: 6px; margin: 5px 0; border: 1px solid #7b1113; border-radius: 6px; font-size: 12px; background: #fffbeb; font-weight: bold; }
+.price { font-size: 16px; font-weight: bold; color: #7b1113; margin: 5px 0; }
+button { padding: 8px 14px; border: none; background: #7b1113; color: white; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px; width: 100%; }
+button:active { transform: scale(0.95); }
 
-#searchBox{
-width:90%;
-padding:14px;
-margin:20px auto;
-display:block;
-border:2px solid #7b1113;
-border-radius:8px;
-font-size:16px;
-}
+/* Sticky Cart Summary Box at the Bottom */
+.cart-summary { background: white; padding: 20px; border-radius: 15px; margin: 30px auto; max-width: 600px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border-top: 5px solid #7b1113; width: 90%; }
+.cart-item-row { display: flex; justify-content: space-between; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed #ddd; font-size: 14px; }
+.form-group { margin-top: 15px; }
+.form-group.hidden { display: none; } /* Used for dynamic hiding */
+label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 13px; }
+select { width: 100%; padding: 10px; border: 2px solid #7b1113; border-radius: 8px; font-size: 14px; background: white; font-weight: bold; }
 
-.section-title{
-text-align:center;
-font-size:24px;
-font-weight:bold;
-background:#7b1113;
-color:white;
-padding:12px;
-margin:20px;
-border-radius:10px;
-}
+/* Modal/Popup Window styling */
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); justify-content: center; align-items: center; z-index: 2000; padding: 10px; }
+.modal-content { background: white; padding: 20px; border-radius: 16px; text-align: center; max-width: 350px; width: 100%; }
+#qrcode { display: flex; justify-content: center; margin: 15px 0; padding: 10px; background: #f9fafb; border-radius: 8px; width: max-content; margin-inline: auto; }
+.modal-details { text-align: left; font-size: 14px; margin-bottom: 15px; background: #fffbeb; padding: 12px; border-radius: 8px; border: 1px solid #fde047; line-height: 1.5; }
 
-.menu-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:20px;
-padding:20px;
-}
-
-.card{
-background:white;
-border-radius:15px;
-overflow:hidden;
-box-shadow:0 4px 12px rgba(0,0,0,.15);
-}
-
-.card img{
-width:100%;
-height:220px;
-object-fit:cover;
-}
-
-.card-content{
-padding:15px;
-text-align:center;
-}
-
-.price{
-font-size:18px;
-font-weight:bold;
-color:#7b1113;
-margin:10px 0;
-}
-
-button{
-padding:10px 14px;
-margin:4px;
-border:none;
-background:#7b1113;
-color:white;
-border-radius:6px;
-cursor:pointer;
-font-weight:bold;
-}
-
-.cart-btn{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#7b1113;
-color:white;
-padding:15px;
-border-radius:50%;
-font-size:22px;
-cursor:pointer;
-z-index:999;
-}
-
-#cartPanel{
-display:none;
-position:fixed;
-right:0;
-top:0;
-width:320px;
-height:100%;
-background:white;
-padding:20px;
-overflow-y:auto;
-box-shadow:-5px 0 15px rgba(0,0,0,.2);
-z-index:999;
-}
-
-.cart-item{
-display:flex;
-justify-content:space-between;
-padding:10px 0;
-border-bottom:1px solid #ddd;
-}
-
-@media(max-width:768px){
-.menu-grid{
-grid-template-columns:1fr;
-}
+@media(max-width: 480px) {
+    .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 8px; }
+    .card img { height: 100px; }
 }
 </style>
 </head>
@@ -136,97 +50,283 @@ grid-template-columns:1fr;
 <body>
 
 <header>
-<img src="logo.jpg" class="logo">
+<img src="logo.jpg" class="logo" onerror="this.src='logo.jpg'">
 <h1>Hakka Bakka Punjabi Dhaba</h1>
 <p>Desi Swad • Modern Vibe</p>
 </header>
 
-<input type="text" id="searchBox" placeholder="Search Menu..." onkeyup="searchMenu()">
+<input type="text" id="searchBox" placeholder="Search Menu items..." onkeyup="searchMenu()">
 
-<!-- TANDOORI VEG -->
-<div class="section-title">Tandoori Veg</div>
-<div class="menu-grid">
-<div class="card"><img src="images/paneer_tikka.jpg"><div class="card-content"><h3>Paneer Tikka</h3><div class="price">₹240</div><button onclick="addToCart('Paneer Tikka',240)">Add</button></div></div>
-<div class="card"><img src="images/paneer malai tikka.jpg"><div class="card-content"><h3>Paneer Malai Tikka</h3><div class="price">₹280</div><button onclick="addToCart('Paneer Malai Tikka',280)">Add</button></div></div>
-<div class="card"><img src="images/paneer-kali-mirch-tikka.jpg"><div class="card-content"><h3>Paneer Kali Mirch Tikka</h3><div class="price">₹280</div><button onclick="addToCart('Paneer Kali Mirch Tikka',280)">Add</button></div></div>
-<div class="card"><img src="images/mushroom tikka.jpg"><div class="card-content"><h3>Mushroom Tikka</h3><div class="price">₹230</div><button onclick="addToCart('Mushroom Tikka',230)">Add</button></div></div>
-<div class="card"><img src="images/soya chaap tikka.jpg"><div class="card-content"><h3>Soya Chaap Tikka</h3><div class="price">₹220</div><button onclick="addToCart('Soya Chaap Tikka',220)">Add</button></div></div>
-<div class="card"><img src="images/soya malai tikka.jpg"><div class="card-content"><h3>Soya Malai Tikka</h3><div class="price">₹250</div><button onclick="addToCart('Soya Malai Tikka',250)">Add</button></div></div>
+<div id="dynamic-menu-target"></div>
+
+<!-- COMPREHENSIVE AUTOMATED CART ENGINE -->
+<div class="cart-summary">
+    <h2 style="color: #7b1113; font-size: 18px; border-bottom: 2px solid #7b1113; padding-bottom: 5px;">Selected Cart Items</h2>
+    <div id="cart-items-box" style="margin-top: 10px;"></div>
+    <p style="font-weight: bold; margin-top: 12px; text-align: right; font-size: 18px; color: #7b1113;">Total Amount: ₹<span id="cart-total">0</span></p>
+    
+    <hr style="margin: 15px 0; border: 0; border-top: 1px dashed #7b1113;">
+    
+    <!-- Order Type Setup -->
+    <div class="form-group">
+        <label>Order Type</label>
+        <select id="orderType" onchange="handleOrderTypeShift()">
+            <option value="Dine">Dine</option>
+            <option value="Pickup">Pickup</option>
+            <option value="Delivery">Delivery</option>
+        </select>
+    </div>
+
+    <!-- Sitting Selection (Will shut down if Pickup/Delivery is active) -->
+    <div class="form-group" id="sittingWrapper">
+        <label>Sitting Option</label>
+        <select id="sittingType">
+            <option value="Dine-In">Dine-In</option>
+            <option value="Car">Car</option>
+            <option value="Takeaway">Takeaway</option>
+        </select>
+    </div>
+
+    <button style="margin-top:20px; padding: 14px; font-size:16px;" onclick="generateReceipt()">Confirm Order & Generate QR</button>
 </div>
 
-<!-- VEG MAIN -->
-<div class="section-title">Veg Main Course</div>
-<div class="menu-grid">
-<div class="card"><img src="images/dal fry.jpg"><div class="card-content"><h3>Dal Fry</h3><div class="price">₹80 / ₹150</div></div></div>
-<div class="card"><img src="images/dal makhani.jpg"><div class="card-content"><h3>Dal Makhani</h3><div class="price">₹90 / ₹180</div></div></div>
-<div class="card"><img src="images/chana masala.jpg"><div class="card-content"><h3>Chana Masala</h3><div class="price">₹80 / ₹150</div></div></div>
-<div class="card"><img src="images/paneer butter masala.jpg"><div class="card-content"><h3>Paneer Butter Masala</h3><div class="price">₹150 / ₹270</div></div></div>
-<div class="card"><img src="images/kadai paneer.jpg"><div class="card-content"><h3>Kadai Paneer</h3><div class="price">₹120 / ₹240</div></div></div>
-<div class="card"><img src="images/shahi paneer.jpg"><div class="card-content"><h3>Shahi Paneer</h3><div class="price">₹120 / ₹240</div></div></div>
-<div class="card"><img src="images/hakka bakka rara paneer.jpg"><div class="card-content"><h3>Hakka Bakka Rara Paneer</h3><div class="price">₹180 / ₹300</div></div></div>
+<!-- IN-APP MODAL DISPLAY FOR QR AND FINAL CHECKOUT -->
+<div id="qrModal" class="modal">
+    <div class="modal-content">
+        <h3 style="color: #15803d; margin-bottom: 5px;">🎉 Order Confirmed!</h3>
+        <p style="font-size: 12px; color: #6b7280;">Scan this summary at counter or pass to WhatsApp</p>
+        <div id="qrcode"></div>
+        <div class="modal-details" id="modal-details"></div>
+        <button style="background:#15803d;" onclick="dispatchToWhatsApp()">Proceed to Send WhatsApp</button>
+    </div>
 </div>
 
-<!-- CHINESE VEG -->
-<div class="section-title">Chinese Veg</div>
-<div class="menu-grid">
-<div class="card"><img src="images/paneer chili.jpg"><div class="card-content"><h3>Paneer Chilli</h3><div class="price">₹180</div></div></div>
-<div class="card"><img src="images/chilli potato.jpg"><div class="card-content"><h3>Chilli Potato</h3><div class="price">₹150</div></div></div>
-<div class="card"><img src="images/chilli mushroom.jpg"><div class="card-content"><h3>Chilli Mushroom</h3><div class="price">₹150</div></div></div>
-<div class="card"><img src="images/french fries.jpg"><div class="card-content"><h3>French Fries</h3><div class="price">₹100</div></div></div>
-</div>
+<script>
+// Main Centralized Master Database matching all images precisely
+const menuDatabase = {
+    "Tandoori Veg": [
+        { name: "Paneer Tikka", full: 240, half: 130, img: "images/paneer_tikka.jpg" },
+        { name: "Paneer Malai Tikka", full: 280, half: 150, img: "images/paneer malai tikka.jpg" },
+        { name: "Paneer Kali Mirch Tikka", full: 280, half: 150, img: "images/paneer-kali-mirch-tikka.jpg" },
+        { name: "Mushroom Tikka", full: 230, half: 120, img: "images/mushroom tikka.jpg" },
+        { name: "Soya Chaap Tikka", full: 220, half: 120, img: "images/soya chaap tikka.jpg" },
+        { name: "Soya Malai Tikka", full: 250, half: 140, img: "images/soya malai tikka.jpg" }
+    ],
+    "Veg Main Course": [
+        { name: "Dal Fry", full: 150, half: 80, img: "images/dal fry.jpg" },
+        { name: "Dal Makhani", full: 180, half: 90, img: "images/dal makhani.jpg" },
+        { name: "Chana Masala", full: 150, half: 80, img: "images/chana masala.jpg" },
+        { name: "Paneer Butter Masala", full: 270, half: 150, img: "images/paneer butter masala.jpg" },
+        { name: "Kadai Paneer", full: 240, half: 120, img: "images/kadai paneer.jpg" },
+        { name: "Shahi Paneer", full: 240, half: 120, img: "images/shahi paneer.jpg" },
+        { name: "Hakka Bakka Rara Paneer", full: 300, half: 180, img: "images/hakka bakka rara paneer.jpg" }
+    ],
+    "Chinese Veg": [
+        { name: "Paneer Chilli", full: 180, half: null, img: "images/paneer chili.jpg" },
+        { name: "Chilli Potato", full: 150, half: null, img: "images/chilli potato.jpg" },
+        { name: "Chilli Mushroom", full: 150, half: null, img: "images/chilli mushroom.jpg" },
+        { name: "French Fries", full: 100, half: null, img: "images/french fries.jpg" }
+    ],
+    "Handi Special": [
+        { name: "Tari Wala Mutton", full: 650, half: 350, img: "images/tari wala mutton.jpg" },
+        { name: "Tari Wala Chicken", full: 550, half: 350, img: "images/tari wala chicken.jpg" }
+    ],
+    "Non Veg Main Course": [
+        { name: "Butter Chicken", full: 550, half: 300, img: "images/butter chicken.jpg" },
+        { name: "Kadai Chicken", full: 530, half: 290, img: "images/kadai chicken.jpg" },
+        { name: "Chicken Curry", full: 550, half: 350, img: "images/chicken curry.jpg" },
+        { name: "Chicken Masala", full: 550, half: 350, img: "images/chicken masala.jpg" }
+    ],
+    "Rice": [
+        { name: "Plain Rice", full: 120, half: 60, img: "images/plain rice.jpg" },
+        { name: "Jeera Rice", full: 150, half: 70, img: "images/jeera rice.jpg" },
+        { name: "Mix Veg Rice", full: 190, half: 90, img: "images/mix veg rice.jpg" }
+    ],
+    "Breads": [
+        { name: "Tandoori Roti", full: 10, half: null, img: "images/tandoori chapati.jpg" },
+        { name: "Butter Naan", full: 60, half: null, img: "images/butter naan.jpg" },
+        { name: "Garlic Naan", full: 70, half: null, img: "images/garlic naan.jpg" },
+        { name: "Lachha Paratha", full: 50, half: null, img: "images/lachha paratha.jpg" }
+    ],
+    "Drinks": [
+        { name: "Sweet Lassi", full: 70, half: null, img: "images/sweet lassi.jpg" },
+        { name: "Water Bottle", full: 20, half: null, img: "images/water bottle.jpg" },
+        { name: "All Shakes", full: 100, half: null, img: "images/milkshake.jpg" }
+    ]
+};
 
-<!-- HANDI -->
-<div class="section-title">Handi Special</div>
-<div class="menu-grid">
-<div class="card"><img src="images/tari wala mutton.jpg"><div class="card-content"><h3>Tari Wala Mutton</h3><div class="price">₹350 / ₹650</div></div></div>
-<div class="card"><img src="images/tari wala chicken.jpg"><div class="card-content"><h3>Tari Wala Chicken</h3><div class="price">₹350 / ₹550</div></div></div>
-</div>
+let activeCart = {};
+const PHONE_NUMBER = "917796631555"; 
 
-<!-- NON VEG -->
-<div class="section-title">Non Veg Main Course</div>
-<div class="menu-grid">
-<div class="card"><img src="images/butter chicken.jpg"><div class="card-content"><h3>Butter Chicken</h3><div class="price">₹300 / ₹550</div></div></div>
-<div class="card"><img src="images/kadai chicken.jpg"><div class="card-content"><h3>Kadai Chicken</h3><div class="price">₹290 / ₹530</div></div></div>
-<div class="card"><img src="images/chicken curry.jpg"><div class="card-content"><h3>Chicken Curry</h3><div class="price">₹350 / ₹550</div></div></div>
-<div class="card"><img src="images/chicken masala.jpg"><div class="card-content"><h3>Chicken Masala</h3><div class="price">₹350 / ₹550</div></div></div>
-</div>
+// Render Structure out of Database Object
+function buildMenuUI() {
+    const target = document.getElementById('dynamic-menu-target');
+    let htmlOutput = "";
 
-<!-- RICE -->
-<div class="section-title">Rice</div>
-<div class="menu-grid">
-<div class="card"><img src="images/plain rice.jpg"><div class="card-content"><h3>Plain Rice</h3><div class="price">₹60 / ₹120</div></div></div>
-<div class="card"><img src="images/jeera rice.jpg"><div class="card-content"><h3>Jeera Rice</h3><div class="price">₹70 / ₹150</div></div></div>
-<div class="card"><img src="images/mix veg rice.jpg"><div class="card-content"><h3>Mix Veg Rice</h3><div class="price">₹90 / ₹190</div></div></div>
-</div>
+    for (const category in menuDatabase) {
+        htmlOutput += `<div class="category-block"><div class="section-title">${category}</div>`;
+        htmlOutput += `<div class="menu-grid">`;
+        
+        menuDatabase[category].forEach((item, idx) => {
+            const uniqueID = `${category.replace(/\s+/g, '')}-${idx}`;
+            const hasHalfOption = item.half !== null;
+            
+            htmlOutput += `
+                <div class="card" data-name="${item.name.toLowerCase()}">
+                    <img src="${item.img}" onerror="this.src='logo.jpg'" alt="${item.name}">
+                    <div class="card-content">
+                        <h3>${item.name}</h3>
+                        ${hasHalfOption ? `
+                            <select class="portion-select" id="sizeSelector-${uniqueID}" onchange="changeItemPrice('${uniqueID}', ${item.full}, ${item.half})">
+                                <option value="Full">Full Portion</option>
+                                <option value="Half">Half Portion</option>
+                            </select>
+                        ` : `<div style="height:29px; margin: 5px 0;"></div>`}
+                        <div class="price" id="priceDisplay-${uniqueID}">₹${item.full}</div>
+                        <button onclick="pushToCart('${item.name}', '${uniqueID}', ${item.full}, ${item.half})">Add to Order</button>
+                    </div>
+                </div>
+            `;
+        });
+        htmlOutput += `</div></div>`;
+    }
+    target.innerHTML = htmlOutput;
+}
 
-<!-- BREADS -->
-<div class="section-title">Breads</div>
-<div class="menu-grid">
-<div class="card"><img src="images/tandoori chapati.jpg"><div class="card-content"><h3>Tandoori Roti</h3><div class="price">₹10</div></div></div>
-<div class="card"><img src="images/butter naan.jpg"><div class="card-content"><h3>Butter Naan</h3><div class="price">₹60</div></div></div>
-<div class="card"><img src="images/garlic naan.jpg"><div class="card-content"><h3>Garlic Naan</h3><div class="price">₹70</div></div></div>
-<div class="card"><img src="images/lachha paratha.jpg"><div class="card-content"><h3>Lachha Paratha</h3><div class="price">₹50</div></div></div>
-</div>
+function changeItemPrice(id, fullPrice, halfPrice) {
+    const selector = document.getElementById(`sizeSelector-${id}`);
+    const priceTag = document.getElementById(`priceDisplay-${id}`);
+    if (selector && selector.value === "Half") {
+        priceTag.innerText = "₹" + halfPrice;
+    } else {
+        priceTag.innerText = "₹" + fullPrice;
+    }
+}
 
-<!-- DRINKS -->
-<div class="section-title">Drinks</div>
-<div class="menu-grid">
-<div class="card"><img src="images/sweet lassi.jpg"><div class="card-content"><h3>Sweet Lassi</h3><div class="price">₹70</div></div></div>
-<div class="card"><img src="images/water bottle.jpg"><div class="card-content"><h3>Water Bottle</h3><div class="price">₹20</div></div></div>
-<div class="card"><img src="images/milkshake.jpg"><div class="card-content"><h3>All Shakes</h3><div class="price">₹100</div></div></div>
-</div>
+function pushToCart(name, uniqueID, fullPrice, halfPrice) {
+    const selector = document.getElementById(`sizeSelector-${uniqueID}`);
+    const chosenSize = selector ? selector.value : "Full";
+    const charge = chosenSize === "Half" ? halfPrice : fullPrice;
+    
+    const cartToken = `${name}-${chosenSize}`;
 
-<div class="cart-btn" onclick="toggleCart()">🛒 <span id="cartCount">0</span></div>
+    if (activeCart[cartToken]) {
+        activeCart[cartToken].count++;
+    } else {
+        activeCart[cartToken] = { name: name, portion: chosenSize, rate: charge, count: 1 };
+    }
+    refreshCartUI();
+}
 
-<div id="cartPanel">
-<h2>Your Cart</h2>
-<div id="cartItems"></div>
-<h3>Total ₹<span id="cartTotal">0</span></h3>
-<button onclick="checkoutWhatsApp()">Order on WhatsApp</button>
-<button onclick="clearCart()">Clear Cart</button>
-</div>
+function refreshCartUI() {
+    const container = document.getElementById('cart-items-box');
+    let totalSum = 0;
+    container.innerHTML = '';
 
-<script src="script.js"></script>
+    Object.values(activeCart).forEach(entry => {
+        totalSum += entry.rate * entry.count;
+        container.innerHTML += `
+            <div class="cart-item-row">
+                <span><b>${entry.name}</b> (${entry.portion}) x ${entry.count}</span>
+                <span>₹${entry.rate * entry.count}</span>
+            </div>
+        `;
+    });
 
+    if (Object.keys(activeCart).length === 0) {
+        container.innerHTML = '<p style="color:#aaa; font-size:13px; text-align:center;">Cart is empty right now.</p>';
+    }
+    document.getElementById('cart-total').innerText = totalSum;
+}
+
+// 2. LOGIC FIX: Shuts down and hides Sitting Options if Delivery/Pickup is selected
+function handleOrderTypeShift() {
+    const currentMode = document.getElementById('orderType').value;
+    const sittingWrapper = document.getElementById('sittingWrapper');
+    
+    if (currentMode === "Pickup" || currentMode === "Delivery") {
+        sittingWrapper.classList.add('hidden'); 
+    } else {
+        sittingWrapper.classList.remove('hidden'); 
+    }
+}
+
+// Search Filter functionality
+function searchMenu() {
+    const input = document.getElementById('searchBox').value.toLowerCase();
+    const cards = document.querySelectorAll('.card');
+    
+    cards.forEach(card => {
+        const itemTitle = card.getAttribute('data-name');
+        if (itemTitle.includes(input)) {
+            card.style.display = "flex";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
+
+let trackingWhatsAppUrl = "";
+
+// 5, 6 & 9. Formulating string to meet explicit design matrix specifications
+function generateReceipt() {
+    const netAmount = document.getElementById('cart-total').innerText;
+    if (netAmount === "0") {
+        alert("Please add at least one item to your cart before proceeding.");
+        return;
+    }
+
+    const orderNumberGenerated = "HB-" + Math.floor(1000 + Math.random() * 9000);
+    const stampedDate = new Date().toLocaleDateString();
+    const chosenType = document.getElementById('orderType').value;
+    
+    // Evaluate if sitting option needs to display or return N/A
+    const sittingValue = (chosenType === "Pickup" || chosenType === "Delivery") ? "N/A" : document.getElementById('sittingType').value;
+
+    let compiledItems = "";
+    Object.values(activeCart).forEach(entry => {
+        compiledItems += `${entry.name} (${entry.portion} x${entry.count}), `;
+    });
+    compiledItems = compiledItems.slice(0, -2);
+
+    // Exact Format mandated by Rule 9
+    const textOutputBody = `ORDER No. ${orderNumberGenerated}\nDate. ${stampedDate}\nOrder Type ${chosenType}\nSitting Type ${sittingValue}\nAmount ₹${netAmount}\nItems: ${compiledItems}`;
+    
+    trackingWhatsAppUrl = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(textOutputBody)}`;
+
+    // Inject into popup view box
+    document.getElementById('modal-details').innerHTML = `
+        <strong>ORDER No.</strong> ${orderNumberGenerated}<br>
+        <strong>Date.</strong> ${stampedDate}<br>
+        <strong>Order Type</strong> ${chosenType}<br>
+        <strong>Sitting Type</strong> ${sittingValue}<br>
+        <strong>Amount</strong> ₹${netAmount}
+    `;
+
+    // Fire QR Code Generation
+    document.getElementById('qrcode').innerHTML = "";
+    new QRCode(document.getElementById("qrcode"), {
+        text: textOutputBody,
+        width: 140,
+        height: 140
+    });
+
+    document.getElementById('qrModal').style.display = 'flex';
+}
+
+function dispatchToWhatsApp() {
+    document.getElementById('qrModal').style.display = 'none';
+    window.open(trackingWhatsAppUrl, '_blank');
+    
+    // Local notification echo representing instant auto confirmation loop back
+    setTimeout(() => {
+        alert("Hakka Bakka System Update:\nYour Order Done.");
+    }, 1200);
+}
+
+// Initial Boot execution sequence hooks
+buildMenuUI();
+handleOrderTypeShift();
+</script>
 </body>
 </html>
