@@ -9,7 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Arial', sans-serif; }
-        body { background-color: #fcf6e8; color: #431407; padding-bottom: 120px; }
+        body { background-color: #fcf6e8; color: #431407; padding-bottom: 140px; }
         
         header { background: linear-gradient(to bottom, #7b1113, #5a090b); color: #fdfbc4; padding: 15px; text-align: center; border-bottom: 4px solid #eab308; }
         header h1 { font-size: 24px; font-weight: bold; }
@@ -28,6 +28,7 @@
         .section { display: none; padding: 10px; max-width: 650px; margin: auto; width: 92%; }
         .section.active { display: block; }
 
+        /* FLOATING SIDE CART DRIVEN PANEL (Always Visible on Screen when items exist) */
         .floating-side-cart { position: fixed; bottom: 85px; right: 20px; background: #7b1113; color: #fdfbc4; padding: 12px 20px; border-radius: 30px; font-weight: bold; box-shadow: 0 6px 20px rgba(0,0,0,0.3); z-index: 1001; cursor: pointer; display: none; align-items: center; gap: 8px; border: 2px solid #eab308; font-size: 14px; }
         .cart-preview-pop { display: none; position: fixed; bottom: 145px; right: 20px; width: 290px; max-height: 250px; background: white; border: 2px solid #7b1113; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); z-index: 1002; padding: 12px; overflow-y: auto; }
         .cart-preview-pop h4 { font-size: 13px; border-bottom: 2px solid #7b1113; padding-bottom: 4px; margin-bottom: 8px; color: #7b1113; text-transform: uppercase; text-align: center; }
@@ -49,13 +50,14 @@
         
         .action-row { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; background: #f3f4f6; border-radius: 6px; padding: 2px; border: 1px solid #ddd; }
         .qty-controls { display: flex; align-items: center; justify-content: space-between; width: 100%; }
-        .math-btn { background: #7b1113; color: white; border: none; width: 28px; height: 28px; border-radius: 4px; font-weight: bold; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .math-btn { background: #7b1113; color: white; border: none; width: 28px; height: 28px; border-radius: 4px; font-weight: bold; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-user-select: none; user-select: none; }
         .qty-count { font-weight: bold; font-size: 13px; color: #431407; }
 
         .embedded-cart-holder { background: white; padding: 15px; border-radius: 12px; margin-top: 25px; border: 1px solid #eab308; }
         .cart-line { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #eee; font-size: 13px; }
 
-        .final-action-btn { background: #15803d; color: white; border: none; width: 100%; padding: 15px; font-size: 16px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; text-transform: uppercase; border: 1px solid #eab308; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        /* Pure Javascript safe trigger button structure */
+        .final-action-btn { background: #15803d; color: white; border: none; width: 100%; padding: 15px; font-size: 16px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; text-transform: uppercase; border: 1px solid #eab308; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
 
         .receipt-container { background: #fffbeb; border: 3px double #7b1113; border-radius: 12px; padding: 20px; margin-top: 20px; display: none; }
         .receipt-title { font-size: 18px; font-weight: bold; color: #7b1113; text-align: center; margin-bottom: 15px; border-bottom: 2px solid #7b1113; padding-bottom: 5px; }
@@ -80,27 +82,24 @@
     <button onclick="switchTab('menu')" id="btn-menu">Menu</button>
 </nav>
 
-<!-- 1. HOME SECTION -->
 <div id="home" class="section active">
     <div class="full-page-banner">
         <img src="signboard.png" alt="Hakka Bakka Main Banner">
     </div>
 </div>
 
-<!-- 2. ABOUT SECTION -->
 <div id="about" class="section">
     <div style="background:white; padding:20px; border-radius:12px; border:1px solid #eab308; line-height:1.6;">
         <h2 style="color:#7b1113; margin-bottom:10px;">About Hakka Bakka</h2>
         <p><b>Enjoy Meal & Deal Together!</b></p>
-        <p style="font-size:14px; margin-top:8px;">Shop No.1, Nr. Canal Road, Opp. Maqsudan Byepass, G.T. Road, Jalandhar में स्वागत है। हम बेहतरीन सामग्रियों और शुद्ध मसालों के साथ असली पंजाबी स्वाद परोसते हैं।</p>
+        <p style="font-size:14px; margin-top:8px;">Shop No.1, Nr. Canal Road, Opp. Maqsudan Byepass, G.T. Road, Jalandhar में स्वागत है। हम बेहतरीन सामग्रियों और शुद्ध मसालों के साथ असली पंजाबी स्वाद परोसीए।</p>
     </div>
 </div>
 
-<!-- 3. MENU SECTION -->
 <div id="menu" class="section">
     <div class="menu-image-container" id="staticMenuBlock">
         <img src="menu_20_6_26.jpg" onerror="this.src='logo.jpg'" alt="Hakka Bakka Menu Card">
-        <button class="online-order-trigger-btn" onclick="openDigitalOrderingEngine()">Click For Online Orders 🛎️</button>
+        <button type="button" class="online-order-trigger-btn" onclick="openDigitalOrderingEngine()">Click For Online Orders 🛎️</button>
     </div>
 
     <div class="online-order-engine" id="interactiveEngineBlock">
@@ -134,7 +133,7 @@
                 Total Amount: ₹<span id="inline-cart-sum">0</span>
             </div>
             
-            <button class="final-action-btn" onclick="saveOrderAndDisplayInvoice(event)">📄 Confirm Order & Save</button>
+            <button type="button" class="final-action-btn" onclick="saveOrderAndDisplayInvoice(event)">📄 Confirm Order & Save</button>
             
             <div class="receipt-container" id="liveReceiptBox">
                 <div class="receipt-title">🧾 HAKKA BAKKA ORDER INVOICE SAVED</div>
@@ -143,7 +142,7 @@
                 <p style="text-align:center; font-weight:bold; margin-bottom:5px; font-size:14px; color:#7b1113;">Scan QR Code to complete Payment:</p>
                 <div id="qrcode"></div>
                 
-                <button class="native-whatsapp-launch-btn" onclick="fireNativeWhatsAppMessengerIntent()">👉 Open WhatsApp & Send Draft</button>
+                <button type="button" class="native-whatsapp-launch-btn" onclick="fireNativeWhatsAppMessengerIntent()">👉 Open WhatsApp & Send Draft</button>
             </div>
         </div>
     </div>
@@ -160,6 +159,7 @@
 <script>
     const TARGET_PHONE = "917796631555";
 
+    // 100% AUDITED EXACT PRICE-PAIRED DICTIONARY SCHEMA
     const menuMasterDatabase = {
         "Tandoori Veg": [
             { name: "Paneer Tikka", full: 240, half: null, text: "Plate: ₹240", img: "images/paneer_tikka.jpg" },
@@ -294,12 +294,11 @@
         ]
     };
 
-    let activeCart = {};
-    let finalPayloadString = "";
-
     function openDigitalOrderingEngine() {
         document.getElementById('staticMenuBlock').style.display = 'none';
         document.getElementById('interactiveEngineBlock').style.display = 'block';
+        document.getElementById('topBypassedPanel').style.display = 'block';
+        document.getElementById('floatingCartIcon').style.display = 'flex';
         generateMenuGridSystem();
     }
 
@@ -312,6 +311,7 @@
             menuMasterDatabase[section].forEach((item, index) => {
                 const uniqueKey = `${section.replace(/\s+/g, '')}-${index}`;
                 const hasHalf = item.half !== null;
+                const safeHalf = hasHalf ? item.half : 'null';
                 
                 markup += `
                     <div class="card">
@@ -327,9 +327,9 @@
                             ` : `<div style="height:22px;"></div>`}
                             <div class="action-row">
                                 <div class="qty-controls">
-                                    <button type="button" class="math-btn" onclick="modifyQtyState('${item.name}', '${uniqueKey}', ${item.full}, ${item.half ? item.half : 'null'}, -1)">-</button>
+                                    <button type="button" class="math-btn" onclick="modifyQtyState('${item.name}', '${uniqueKey}', ${item.full}, ${safeHalf}, -1)">-</button>
                                     <span class="qty-count" id="qty-lbl-${uniqueKey}">0</span>
-                                    <button type="button" class="math-btn" onclick="modifyQtyState('${item.name}', '${uniqueKey}', ${item.full}, ${item.half ? item.half : 'null'}, 1)">+</button>
+                                    <button type="button" class="math-btn" onclick="modifyQtyState('${item.name}', '${uniqueKey}', ${item.full}, ${safeHalf}, 1)">+</button>
                                 </div>
                             </div>
                         </div>
@@ -345,7 +345,6 @@
         document.getElementById(`qty-lbl-${key}`).innerText = "0";
     }
 
-    // FIXED: Variables full and half map correctly across states now
     function modifyQtyState(name, key, fullRate, halfRate, delta) {
         const dropdown = document.getElementById(`sel-${key}`);
         const size = dropdown ? dropdown.value : "Full";
@@ -353,7 +352,7 @@
         const cartId = `${name}-${size}`;
 
         if (!activeCart[cartId]) {
-            activeCart[cartId] = { name: name, size: size, price: rate, count: 0 };
+            activeCart[cartId] = { name: name, size: size, price: Number(rate), count: 0 };
         }
 
         activeCart[cartId].count += delta;
@@ -457,7 +456,7 @@
             itemsSummary += `\n▪ ${item.name} (${item.size}) x${item.count}`;
         });
 
-        finalPayloadString = `Date. ${dateStr}\nOrder No. ${orderNo}\nType ${orderType} (${sittingType})\nItems: ${itemsSummary}\nTotal ₹${total}\n\n[Customer: ${name} | ${phone}]`;
+        finalPayloadString = `Date. ${dateStr}\nOrder No. ${orderNo}\nType ${orderType} (${sittingType})\nItems: ${itemsSummary}\nTotal ₹${total}`;
         
         const cacheData = { id: orderNo, content: finalPayloadString, total: total };
         localStorage.setItem("hakka_bakka_persistent_invoice", JSON.stringify(cacheData));
