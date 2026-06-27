@@ -28,7 +28,6 @@
         .section { display: none; padding: 10px; max-width: 650px; margin: auto; width: 92%; }
         .section.active { display: block; }
 
-        /* FLOATING DETAILS SYSTEM - FIXED AS REQUESTED */
         .floating-side-cart { position: fixed; bottom: 85px; right: 20px; background: #7b1113; color: #fdfbc4; padding: 12px 20px; border-radius: 30px; font-weight: bold; box-shadow: 0 6px 20px rgba(0,0,0,0.3); z-index: 1001; cursor: pointer; display: none; align-items: center; gap: 8px; border: 2px solid #eab308; font-size: 14px; }
         .cart-preview-pop { display: none; position: fixed; bottom: 145px; right: 20px; width: 290px; max-height: 250px; background: white; border: 2px solid #7b1113; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); z-index: 1002; padding: 12px; overflow-y: auto; }
         .cart-preview-pop h4 { font-size: 13px; border-bottom: 2px solid #7b1113; padding-bottom: 4px; margin-bottom: 8px; color: #7b1113; text-transform: uppercase; text-align: center; }
@@ -55,15 +54,14 @@
         .embedded-cart-holder { background: white; padding: 15px; border-radius: 12px; margin-top: 25px; border: 1px solid #eab308; }
         .cart-line { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #eee; font-size: 13px; }
 
-        /* Exactly matches green layout button inside screenshot 1001271575.jpg */
         .final-action-btn { background: #15803d; color: white; border: none; width: 100%; padding: 15px; font-size: 16px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; text-transform: uppercase; border: 1px solid #eab308; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-        /* INVOICE DISPLAY LOGIC SHOWS DIRECTLY UNDER THE SAVE BUTTON BELOW */
+        /* Summary Receipt Block */
         .receipt-container { background: #fffbeb; border: 3px double #7b1113; border-radius: 12px; padding: 20px; margin-top: 20px; display: none; }
         .receipt-title { font-size: 18px; font-weight: bold; color: #7b1113; text-align: center; margin-bottom: 15px; border-bottom: 2px solid #7b1113; padding-bottom: 5px; }
         .receipt-text { font-family: 'Courier New', Courier, monospace; font-size: 14px; line-height: 1.5; white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 15px; color: black; font-weight: bold; }
         #qrcode { display: flex; justify-content: center; margin: 15px auto; padding: 10px; background: white; border-radius: 8px; width: max-content; border: 1px solid #eab308; }
-        .native-whatsapp-launch-btn { background: #25D366; color: white; border: none; width: 100%; padding: 14px; font-size: 17px; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(37,211,102,0.4); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 15px; }
+        .native-whatsapp-launch-btn { background: #25D366; color: white; border: none; width: 100%; padding: 14px; font-size: 17px; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(37,211,102,0.4); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 15px; width: 100%; }
 
         .full-page-banner { width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.15); border: 3px solid #7b1113; background: #fff; margin-top: 10px; }
         .full-page-banner img { width: 100%; display: block; height: auto; }
@@ -80,7 +78,7 @@
     <h3>1. Customer Details & Service Type</h3>
     <div class="input-grid">
         <input type="text" id="custName" placeholder="Customer Name (Optional)">
-        <input type="tel" id="custPhone" placeholder="Mobile Number (Required)*">
+        <input type="tel" id="custPhone" placeholder="Mobile Number (Optional)">
     </div>
     <div class="input-grid">
         <select id="orderType" onchange="runServiceValidation()">
@@ -102,7 +100,6 @@
     <button onclick="switchTab('menu')" id="btn-menu">Menu</button>
 </nav>
 
-<!-- FLOATING DYNAMIC EXTENDED DETAIL VIEW -->
 <div class="floating-side-cart" id="floatingCartIcon" onclick="toggleFloatingCartDrawer()">
     🛒 Live Cart Summary: ₹<span id="floating-total">0</span>
 </div>
@@ -146,12 +143,12 @@
             
             <button class="final-action-btn" onclick="saveOrderAndDisplayInvoice(event)">📄 Confirm Order & Save</button>
             
-            <!-- SUMMARY DISPLAY PANEL RELOCATED EXACTLY BELOW THE SAVE BUTTON DROPROWS -->
+            <!-- Summary Box Directly Under Button -->
             <div class="receipt-container" id="liveReceiptBox">
                 <div class="receipt-title">🧾 HAKKA BAKKA ORDER INVOICE SAVED</div>
                 <div class="receipt-text" id="receiptTextNode"></div>
                 
-                <p style="text-align:center; font-weight:bold; margin-bottom:5px; font-size:14px; color:#7b1113;">Scan QR Code to complete Payment:</p>
+                <p style="text-align:center; font-weight:bold; margin-bottom:5px; font-size:14px; color:#7b1113;">Scan QR Code to complete Payment / Track Summary:</p>
                 <div id="qrcode"></div>
                 
                 <button class="native-whatsapp-launch-btn" onclick="fireNativeWhatsAppMessengerIntent()">👉 Open WhatsApp & Send Draft</button>
@@ -290,7 +287,6 @@
     };
 
     let activeCart = {};
-    let finalPayloadString = "";
 
     function openDigitalOrderingEngine() {
         document.getElementById('staticMenuBlock').style.display = 'none';
@@ -424,25 +420,18 @@
         window.scrollTo(0,0);
     }
 
-    // FIXED SUBMISSION FUNCTION - PREVENTS PAGE RESET & RENDERS DIRECTLY UNDERNEATH
+    // FIXED VALIDATION BARRIER SO THE SAVE BUTTON TRIGGERS FREELY
     function saveOrderAndDisplayInvoice(event) {
-        if(event) event.preventDefault(); // Stifles browser page reload bugs immediately
+        if(event) event.preventDefault(); // Fully cuts off automatic document submit/refresh bugs
 
         const total = document.getElementById('inline-cart-sum').innerText;
-        const phone = document.getElementById('custPhone').value.trim();
-        const name = document.getElementById('custName').value.trim() || "Customer";
-
-        if(total === "0") {
+        if(total === "0" || total === "") {
             alert("Please add items to your cart first.");
             return;
         }
-        if(phone === "") {
-            alert("⚠️ Mobile Number is mandatory before confirmation!");
-            window.scrollTo(0,0);
-            document.getElementById('custPhone').focus();
-            return;
-        }
 
+        const phone = document.getElementById('custPhone').value.trim() || "N/A";
+        const name = document.getElementById('custName').value.trim() || "Customer";
         const orderNo = "HB-" + Math.floor(1000 + Math.random() * 9000);
         const dateStr = new Date().toLocaleDateString();
         const orderType = document.getElementById('orderType').value;
@@ -453,17 +442,17 @@
             itemsSummary += `\n▪ ${item.name} (${item.size}) x${item.count}`;
         });
 
-        // Exact Layout parameters matching string configuration requested
-        finalPayloadString = `Date. ${dateStr}\nOrder No. ${orderNo}\nType ${orderType} (${sittingType})\nItems: ${itemsSummary}\nTotal ₹${total}\n\n[Customer: ${name} | ${phone}]`;
+        // STRICT FORMATTING AS REQUESTED WRITTEN TO DRAFT PAYLOAD
+        finalPayloadString = `Date. ${dateStr}\nOrder No. ${orderNo}\nType ${orderType} (${sittingType})\nItems: ${itemsSummary}\nTotal ₹${total}`;
         
-        // Write persistently to local browser framework data slots
-        const orderRecord = { id: orderNo, content: finalPayloadString, total: total, clientPhone: phone, timestamp: dateStr };
-        localStorage.setItem("saved_hakka_bakka_invoice", JSON.stringify(orderRecord));
+        // Save operation hook to native cache
+        const cacheData = { id: orderNo, content: finalPayloadString, total: total };
+        localStorage.setItem("hakka_bakka_persistent_invoice", JSON.stringify(cacheData));
 
-        // Inject inside the box wrapper container located underneath the save row
+        // Inject Text down into display element
         document.getElementById('receiptTextNode').innerText = finalPayloadString;
 
-        // Render matching payment code parameter layout
+        // Render Summary Tracker Code Layout
         document.getElementById('qrcode').innerHTML = "";
         new QRCode(document.getElementById("qrcode"), {
             text: finalPayloadString,
@@ -473,14 +462,14 @@
             colorLight : "#ffffff"
         });
 
-        // Unveil the layout display summary area on-screen below the click action button
-        const summaryBox = document.getElementById('liveReceiptBox');
-        summaryBox.style.display = 'block';
+        // Forces target layout display rendering block visibility
+        const containerBox = document.getElementById('liveReceiptBox');
+        containerBox.style.display = 'block';
         
-        // Push view focus cleanly to the dynamic summary receipt box location
-        summaryBox.scrollIntoView({ behavior: 'smooth' });
+        // Pushes client focus cleanly down towards the layout element
+        containerBox.scrollIntoView({ behavior: 'smooth' });
 
-        // Trigger native intent draft wrapper payload string logic
+        // Instantly boots direct messenger layout intent
         fireNativeWhatsAppMessengerIntent();
     }
 
@@ -494,23 +483,6 @@
             }, 1000);
         }
     }
-
-    // PWA Install Script Hook blocks
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        setTimeout(() => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choice) => {
-                    deferredPrompt = null;
-                });
-            }
-        }, 1500);
-    });
-
-    runServiceValidation();
 </script>
 </body>
 </html>
