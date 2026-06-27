@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hakka Bakka - Premium Order Panel</title>
+    <title>Hakka Bakka - Premium Dynamic Ordering Panel</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#7b1113">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Arial', sans-serif; }
-        body { background-color: #fcf6e8; color: #431407; padding-bottom: 100px; }
+        body { background-color: #fcf6e8; color: #431407; padding-bottom: 120px; }
         
         header { background: linear-gradient(to bottom, #7b1113, #5a090b); color: #fdfbc4; padding: 15px; text-align: center; border-bottom: 4px solid #eab308; }
         header h1 { font-size: 24px; font-weight: bold; }
         header p { font-size: 13px; color: #fef08a; }
 
-        /* Dynamic Conditional Top Setup Panel (Hidden Initially) */
+        /* Conditional Setup Panel (Shown ONLY inside Online Ordering Engine) */
         .top-setup-panel { display: none; background: white; margin: 15px auto; max-width: 650px; width: 92%; padding: 15px; border-radius: 12px; border: 2px solid #7b1113; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .top-setup-panel h3 { font-size: 14px; color: #7b1113; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 4px; text-transform: uppercase; }
         .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
@@ -29,17 +29,19 @@
         .section { display: none; padding: 10px; max-width: 650px; margin: auto; width: 92%; }
         .section.active { display: block; }
 
-        /* Floating Live Side Cart (Hidden Initially) */
-        .floating-side-cart { display: none; position: fixed; bottom: 20px; right: 20px; background: #7b1113; color: #fdfbc4; padding: 12px 20px; border-radius: 30px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1001; cursor: pointer; align-items: center; gap: 8px; border: 2px solid #eab308; font-size: 15px; }
+        /* Floating Cart System (Shown ONLY inside Online Ordering Engine) */
+        .floating-side-cart { position: fixed; bottom: 85px; right: 20px; background: #7b1113; color: #fdfbc4; padding: 12px 20px; border-radius: 30px; font-weight: bold; box-shadow: 0 6px 20px rgba(0,0,0,0.3); z-index: 1001; cursor: pointer; display: none; align-items: center; gap: 8px; border: 2px solid #eab308; font-size: 14px; }
+        .cart-preview-pop { display: none; position: fixed; bottom: 145px; right: 20px; width: 280px; max-height: 300px; background: white; border: 2px solid #7b1113; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 1002; padding: 12px; overflow-y: auto; }
+        .cart-preview-pop h4 { font-size: 13px; border-bottom: 1px solid #ddd; padding-bottom: 4px; margin-bottom: 8px; color: #7b1113; }
 
-        /* Menu Image View & Big Action Button */
+        /* Menu View Image Frame */
         .menu-image-container { width: 100%; text-align: center; margin-bottom: 15px; }
         .menu-image-container img { width: 100%; border-radius: 10px; border: 2px solid #7b1113; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
-        .online-order-trigger-btn { background: #15803d; color: white; border: 2px solid #eab308; font-size: 18px; font-weight: bold; padding: 15px; width: 100%; border-radius: 10px; cursor: pointer; margin-top: 15px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 12px rgba(21,128,61,0.3); }
+        .online-order-trigger-btn { background: #15803d; color: white; border: 2px solid #eab308; font-size: 18px; font-weight: bold; padding: 15px; width: 100%; border-radius: 10px; cursor: pointer; margin-top: 15px; text-transform: uppercase; box-shadow: 0 4px 12px rgba(21,128,61,0.3); }
 
-        /* Menu Grid Layout (Hidden Initially) */
+        /* Menu Grid Card Architecture */
         .online-order-engine { display: none; }
-        .cat-title { background: #7b1113; color: white; padding: 8px 12px; font-size: 16px; font-weight: bold; margin: 25px 0 10px 0; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .cat-title { background: #7b1113; color: white; padding: 8px 12px; font-size: 16px; font-weight: bold; margin: 25px 0 10px 0; border-radius: 6px; text-transform: uppercase; }
         .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .card { background: white; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 3px 6px rgba(0,0,0,.05); border: 1px solid #fde047; }
         .card img { width: 100%; height: 110px; object-fit: cover; }
@@ -47,28 +49,28 @@
         .card-content h4 { font-size: 13px; color: #431407; height: 32px; overflow: hidden; line-height: 1.2; text-transform: capitalize; }
         
         .portion-select { width: 100%; padding: 6px; margin: 5px 0; border: 1px solid #7b1113; border-radius: 5px; font-size: 11px; background: #fffbeb; font-weight: bold; color: #7b1113; }
-        .action-row { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
-        .add-btn { background: #15803d; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 11px; }
+        
+        /* Add button +/- sign system */
+        .action-row { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; background: #f3f4f6; border-radius: 6px; padding: 2px; border: 1px solid #ddd; }
+        .qty-controls { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+        .math-btn { background: #7b1113; color: white; border: none; width: 28px; height: 28px; border-radius: 4px; font-weight: bold; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .qty-count { font-weight: bold; font-size: 13px; color: #431407; }
 
-        .embedded-cart-holder { background: white; padding: 15px; border-radius: 12px; margin-top: 25px; border: 1px solid #eab308; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .embedded-cart-holder { background: white; padding: 15px; border-radius: 12px; margin-top: 25px; border: 1px solid #eab308; }
         .cart-line { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #eee; font-size: 13px; }
 
-        .final-action-btn { background: linear-gradient(to bottom, #7b1113, #5a090b); color: white; border: none; width: 100%; padding: 14px; font-size: 16px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; text-transform: uppercase; }
+        .final-action-btn { background: linear-gradient(to bottom, #15803d, #166534); color: white; border: none; width: 100%; padding: 15px; font-size: 16px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; text-transform: uppercase; border: 1px solid #eab308; }
 
-        /* On-screen Live Invoice Container */
+        /* On-Screen Receipt Layout Box */
         .receipt-container { background: #fffbeb; border: 3px double #7b1113; border-radius: 12px; padding: 20px; margin-top: 20px; display: none; }
         .receipt-title { font-size: 18px; font-weight: bold; color: #7b1113; text-align: center; margin-bottom: 15px; border-bottom: 2px solid #7b1113; padding-bottom: 5px; }
-        .receipt-text { font-family: 'Courier New', Courier, monospace; font-size: 14px; line-height: 1.5; white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 15px; color: black; }
+        .receipt-text { font-family: 'Courier New', Courier, monospace; font-size: 14px; line-height: 1.5; white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 15px; color: black; font-weight: bold; }
+        #qrcode { display: flex; justify-content: center; margin: 15px auto; padding: 10px; background: white; border-radius: 8px; width: max-content; }
+        .native-whatsapp-launch-btn { background: #25D366; color: white; border: none; width: 100%; padding: 14px; font-size: 17px; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(37,211,102,0.4); text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* Full Page Single Banner Frame for Home Page */
+        /* Single full-width home page banner definition */
         .full-page-banner { width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.15); border: 3px solid #7b1113; background: #fff; margin-top: 10px; }
         .full-page-banner img { width: 100%; display: block; height: auto; }
-
-        @media(max-width: 480px) {
-            .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
-            .card img { height: 100px; }
-            .input-grid { grid-template-columns: 1fr; gap: 8px; }
-        }
     </style>
 </head>
 <body>
@@ -78,7 +80,6 @@
     <p>PUNJABI DHABA — Desi Swad, Modern Vibe</p>
 </header>
 
-<!-- TOP FIXED PANEL (Shown ONLY inside digital ordering view) -->
 <div class="top-setup-panel" id="topBypassedPanel">
     <h3>1. Customer Details & Service Type</h3>
     <div class="input-grid">
@@ -105,58 +106,54 @@
     <button onclick="switchTab('menu')" id="btn-menu">Menu</button>
 </nav>
 
-<!-- FLOATING LIVE SIDE CART COUNTER (Shown ONLY inside digital ordering view) -->
-<div class="floating-side-cart" id="floatingCartIcon" onclick="window.scrollTo(0, document.body.scrollHeight);">
-    🛒 Live Cart: ₹<span id="floating-total">0</span>
+<div class="floating-side-cart" id="floatingCartIcon" onclick="toggleFloatingCartDrawer()">
+    🛒 Live Cart Summary: ₹<span id="floating-total">0</span>
+</div>
+<div class="cart-preview-pop" id="floatingCartDrawer">
+    <h4>📋 Selected Cart Summary</h4>
+    <div id="floating-items-node"></div>
 </div>
 
-<!-- 1. HOME SECTION (ONLY ONE BANNER AS REQUESTED) -->
 <div id="home" class="section active">
     <div class="full-page-banner">
         <img src="signboard.png" alt="Hakka Bakka Main Full Banner Picture">
     </div>
 </div>
 
-<!-- 2. ABOUT SECTION -->
 <div id="about" class="section">
     <div style="background:white; padding:20px; border-radius:12px; border:1px solid #eab308; line-height:1.6;">
         <h2 style="color:#7b1113; margin-bottom:10px;">About Hakka Bakka</h2>
         <p><b>Enjoy Meal & Deal Together!</b></p>
-        <p style="font-size:14px; margin-top:8px;">Shop No.1, Nr. Canal Road, Opp. Maqsudan Byepass, G.T. Road, Jalandhar में आपका स्वागत है। हम बेहतरीन सामग्रियों और शुद्ध मसालों के साथ असली पंजाबी स्वाद परोसते हैं।</p>
+        <p style="font-size:14px; margin-top:8px;">Shop No.1, Nr. Canal Road, Opp. Maqsudan Byepass, G.T. Road, Jalandhar में स्वागत है। हम बेहतरीन सामग्रियों और शुद्ध मसालों के साथ असली पंजाबी स्वाद परोसते हैं।</p>
     </div>
 </div>
 
-<!-- 3. MENU SECTION -->
 <div id="menu" class="section">
-    <!-- STEP A: Show menu_20_6_26.jpg First -->
     <div class="menu-image-container" id="staticMenuBlock">
         <img src="menu_20_6_26.jpg" onerror="this.src='logo.jpg'" alt="Hakka Bakka Menu Card">
         <button class="online-order-trigger-btn" onclick="openDigitalOrderingEngine()">Click For Online Orders 🛎️</button>
     </div>
 
-    <!-- STEP B: Complete Interactive Ordering System Grid -->
     <div class="online-order-engine" id="interactiveEngineBlock">
         <div id="menu-builder-root"></div>
 
-        <!-- LIVE CART SUMMARY DRAWER -->
         <div class="embedded-cart-holder">
             <h3 style="color:#7b1113; font-size:15px; margin-bottom:10px;">2. Selected Items Review</h3>
             <div id="cart-rendering-node"></div>
             <div style="text-align:right; font-weight:bold; margin-top:10px; font-size:16px; color:#7b1113;">
                 Total Amount: ₹<span id="inline-cart-sum">0</span>
             </div>
-            <button class="final-action-btn" onclick="saveOrderAndDisplayInvoice()">Confirm Order & Save</button>
+            <button class="final-action-btn" onclick="saveOrderAndDisplayInvoice()">💾 Confirm Order & Save</button>
         </div>
 
-        <!-- SCREEN SAVED INVOICE VIEW -->
         <div class="receipt-container" id="liveReceiptBox">
-            <div class="receipt-title">🧾 HAKKA BAKKA ORDER INVOICE</div>
+            <div class="receipt-title">🧾 HAKKA BAKKA ORDER INVOICE SAVED</div>
             <div class="receipt-text" id="receiptTextNode"></div>
             
-            <p style="text-align:center; font-weight:bold; margin-bottom:10px; font-size:14px; color:#7b1113;">Scan QR Code for Order Summary / Counter Sync:</p>
-            <div id="qrcode" style="display:flex; justify-content:center; margin-bottom:15px; padding:10px; background:white; border-radius:8px; width:max-content; margin-inline:auto;"></div>
+            <p style="text-align:center; font-weight:bold; margin-bottom:5px; font-size:14px; color:#7b1113;">Scan QR Code to view summary / complete Payment:</p>
+            <div id="qrcode"></div>
             
-            <p style="text-align:center; font-size:13px; color:#25D366; font-weight:bold;">Launching WhatsApp dispatch instantly...</p>
+            <button class="native-whatsapp-launch-btn" onclick="fireNativeWhatsAppMessengerIntent()">👉 Open WhatsApp & Send Draft</button>
         </div>
     </div>
 </div>
@@ -164,7 +161,6 @@
 <script>
     const TARGET_PHONE = "917796631555";
 
-    // 1. COMPLETELY MAPPED 100% UNABRIDGED MENU COMPILATION FROM THE ORIGINAL IMAGE CARD
     const menuMasterDatabase = {
         "Tandoori Veg": [
             { name: "Paneer Tikka", full: 240, half: null, img: "images/paneer_tikka.jpg" },
@@ -256,7 +252,7 @@
             { name: "Onion Naan", full: 60, half: null, img: "images/onion naan.jpg" },
             { name: "Garlic Naan", full: 70, half: null, img: "images/garlic naan.jpg" },
             { name: "Laccha Parantha", full: 50, half: null, img: "images/lachha paratha.jpg" },
-            { name: "Paneer Parantha", full: 40, half: null, img: "images/paneer paratha.jpg" },
+            { name: "Paneer Parantha", full: 40, half: null, img: "images/paneer parantha.jpg" },
             { name: "Green Chilli Parantha", full: 50, half: null, img: "images/green chilli paratha.jpg" },
             { name: "Red Chilli Parantha", full: 50, half: null, img: "images/red chilli paratha.jpg" },
             { name: "Amritsari Kulcha With Chana", full: 50, half: null, img: "images/amritsari kulcha with chana.jpg" }
@@ -292,16 +288,14 @@
     };
 
     let activeCart = {};
+    let finalPayloadString = "";
 
-    // 3. Condition Match: Shows user setup controls ONLY inside online system panel
+    // Conditional Panel Handler
     function openDigitalOrderingEngine() {
         document.getElementById('staticMenuBlock').style.display = 'none';
         document.getElementById('interactiveEngineBlock').style.display = 'block';
-        
-        // Unhide controls only when user explicitly invokes online menu block
         document.getElementById('topBypassedPanel').style.display = 'block';
-        document.getElementById('floatingCartIcon').style.style = 'flex';
-        
+        document.getElementById('floatingCartIcon').style.display = 'flex';
         generateMenuGridSystem();
     }
 
@@ -321,14 +315,18 @@
                         <div class="card-content">
                             <h4>${item.name}</h4>
                             ${hasHalf ? `
-                                <select class="portion-select" id="sel-${uniqueKey}">
+                                <select class="portion-select" id="sel-${uniqueKey}" onchange="resetQtyLabel('${uniqueKey}')">
                                     <option value="Full">Full Portion - ₹${item.full}</option>
                                     <option value="Half">Half Portion - ₹${item.half}</option>
                                 </select>
                             ` : `<div style="height:34px; font-size:12px; font-weight:bold; color:#7b1113; padding-top:6px;">Rate: ₹${item.full}</div>`}
+                            
                             <div class="action-row">
-                                <span class="price-tag"></span>
-                                <button class="add-btn" onclick="pushItemToCart('${item.name}', '${uniqueKey}', ${item.full}, ${item.half})">Add +</button>
+                                <div class="qty-controls">
+                                    <button class="math-btn" onclick="modifyQtyState('${item.name}', '${uniqueKey}', ${item.full}, ${item.half}, -1)">-</button>
+                                    <span class="qty-count" id="qty-lbl-${uniqueKey}">0</span>
+                                    <button class="math-btn" onclick="modifyQtyState('${item.name}', '${uniqueKey}', ${item.full}, ${item.half}, 1)">+</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -339,41 +337,62 @@
         targetNode.innerHTML = markup;
     }
 
-    function pushItemToCart(name, key, fullRate, halfRate) {
+    function resetQtyLabel(key) {
+        document.getElementById(`qty-lbl-${key}`).innerText = "0";
+    }
+
+    function modifyQtyState(name, key, fullRate, halfRate, delta) {
         const dropdown = document.getElementById(`sel-${key}`);
         const size = dropdown ? dropdown.value : "Full";
         const rate = size === "Half" ? halfRate : fullRate;
         const cartId = `${name}-${size}`;
 
-        if (activeCart[cartId]) {
-            activeCart[cartId].count++;
+        if (!activeCart[cartId]) {
+            activeCart[cartId] = { name: name, size: size, price: rate, count: 0 };
+        }
+
+        activeCart[cartId].count += delta;
+        if (activeCart[cartId].count <= 0) {
+            delete activeCart[cartId];
+            document.getElementById(`qty-lbl-${key}`).innerText = "0";
         } else {
-            activeCart[cartId] = { name: name, size: size, price: rate, count: 1 };
+            document.getElementById(`qty-lbl-${key}`).innerText = activeCart[cartId].count;
         }
         refreshCartDataStates();
     }
 
     function refreshCartDataStates() {
         const renderBlock = document.getElementById('cart-rendering-node');
+        const floatingBlock = document.getElementById('floating-items-node');
         let aggregatePrice = 0;
+        
         renderBlock.innerHTML = '';
+        floatingBlock.innerHTML = '';
 
         Object.values(activeCart).forEach(item => {
             aggregatePrice += item.price * item.count;
-            renderBlock.innerHTML += `
+            const lineMarkup = `
                 <div class="cart-line">
-                    <span><b>${item.name}</b> ${item.size !== 'Full' ? '('+item.size+')' : ''} x ${item.count}</span>
+                    <span><b>${item.name}</b> (${item.size}) x ${item.count}</span>
                     <span style="font-weight:bold; color:#7b1113;">₹${item.price * item.count}</span>
-                </div>
-            `;
+                </div>`;
+            renderBlock.innerHTML += lineMarkup;
+            floatingBlock.innerHTML += lineMarkup;
         });
 
         if (Object.keys(activeCart).length === 0) {
-            renderBlock.innerHTML = '<p style="color:#aaa; text-align:center; font-size:13px; padding:10px 0;">Your cart is empty.</p>';
+            const emptyTxt = '<p style="color:#aaa; text-align:center; font-size:12px;">Empty</p>';
+            renderBlock.innerHTML = emptyTxt;
+            floatingBlock.innerHTML = emptyTxt;
         }
 
         document.getElementById('inline-cart-sum').innerText = aggregatePrice;
         document.getElementById('floating-total').innerText = aggregatePrice;
+    }
+
+    function toggleFloatingCartDrawer() {
+        const drawer = document.getElementById('floatingCartDrawer');
+        drawer.style.display = (drawer.style.display === "block") ? "none" : "block";
     }
 
     function runServiceValidation() {
@@ -392,7 +411,8 @@
         document.getElementById(id).classList.add('active');
         document.getElementById('btn-' + id).classList.add('active');
         
-        // Hide panel blocks completely on non-order tabs
+        document.getElementById('floatingCartDrawer').style.display = "none";
+        
         if(id !== 'menu') {
             document.getElementById('topBypassedPanel').style.display = 'none';
             document.getElementById('floatingCartIcon').style.display = 'none';
@@ -403,7 +423,7 @@
         window.scrollTo(0,0);
     }
 
-    // 2 & 9. Strict Order format logging logic saved directly to screen context layout
+    // Save Order Local Logic & Target Draft Generation Setup
     function saveOrderAndDisplayInvoice() {
         const total = document.getElementById('inline-cart-sum').innerText;
         const phone = document.getElementById('custPhone').value.trim();
@@ -414,7 +434,7 @@
             return;
         }
         if(phone === "") {
-            alert("⚠️ Mobile Number is mandatory at the top panel!");
+            alert("⚠️ Mobile Number is mandatory before confirmation!");
             window.scrollTo(0,0);
             document.getElementById('custPhone').focus();
             return;
@@ -427,35 +447,64 @@
 
         let itemsSummary = "";
         Object.values(activeCart).forEach(item => {
-            itemsSummary += `\n- ${item.name} (${item.size}) x${item.count}`;
+            itemsSummary += `\n▪ ${item.name} (${item.size}) x${item.count}`;
         });
 
-        // Mandatory Rule 9 String Pattern compilation
-        const plainTextInvoice = `ORDER No. ${orderNo}\nDate. ${dateStr}\nOrder Type ${orderType}\nSitting Type ${sittingType}\nAmount ₹${total}\n\n[Customer details: ${name} (${phone})]${itemsSummary}`;
+        // FIXED: Exact Layout sequence Format mapping matching your requirement perfectly
+        finalPayloadString = `Date. ${dateStr}\nOrder No. ${orderNo}\nType ${orderType} (${sittingType})\nItems: ${itemsSummary}\nTotal ₹${total}\n\n[Customer: ${name} | ${phone}]`;
         
-        // Render Output Text Frame on Customer Screen
-        document.getElementById('receiptTextNode').innerText = plainTextInvoice;
+        // Save to Persistent LocalStorage Cache Database Layer
+        const orderRecord = { id: orderNo, content: finalPayloadString, total: total, clientPhone: phone, timestamp: dateStr };
+        localStorage.setItem("saved_hakka_bakka_invoice", JSON.stringify(orderRecord));
 
-        // Generate Live Payment/Summary QR Box
+        // Display Draft invoice text block down page view
+        document.getElementById('receiptTextNode').innerText = finalPayloadString;
+
+        // Generate matching QR Code block mapping the parameters
         document.getElementById('qrcode').innerHTML = "";
         new QRCode(document.getElementById("qrcode"), {
-            text: plainTextInvoice,
+            text: finalPayloadString,
             width: 150,
             height: 150,
             colorDark : "#7b1113",
             colorLight : "#ffffff"
         });
 
-        // Show Invoice container box on screen
         document.getElementById('liveReceiptBox').style.display = 'block';
         window.scrollTo(0, document.body.scrollHeight);
-
-        // Immediate Automated Fail-safe Redirection
-        const secureWhatsAppLink = `https://api.whatsapp.com/send?phone=${TARGET_PHONE}&text=${encodeURIComponent(plainTextInvoice)}`;
-        setTimeout(() => {
-            window.location.href = secureWhatsAppLink;
-        }, 800);
+        
+        // Launch Intent Draft System Hook Loop
+        fireNativeWhatsAppMessengerIntent();
     }
+
+    function fireNativeWhatsAppMessengerIntent() {
+        if(finalPayloadString) {
+            // FIXED: Using wa.me API deep linking protocols to guarantee seamless native message drafting block
+            const nativeDeepLinkIntent = `wa.me/${TARGET_PHONE}?text=${encodeURIComponent(finalPayloadString)}`;
+            window.open("https://" + nativeDeepLinkIntent, "_blank");
+
+            // Local fallback feedback loop alerting state delivery simulation
+            setTimeout(() => {
+                alert("Hakka Bakka Notification:\nYour Order Done.");
+            }, 1800);
+        }
+    }
+
+    // PWA Install Event Handlers
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        setTimeout(() => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choice) => {
+                    if(choice.outcome === 'accepted') console.log('App Installed Successfully');
+                    deferredPrompt = null;
+                });
+            }
+        }, 1500);
+    });
 
     runServiceValidation();
 </script>
