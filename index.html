@@ -1,72 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hakka Bakka Punjabi Dhaba</title>
-
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#7b1113">
-<link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-<!-- NAVBAR -->
-<nav>
-    <div class="logo-box">
-        <img src="logo.jpg" class="logo">
-        <h2>Hakka Bakka</h2>
-    </div>
-
-    <ul>
-        <li onclick="showPage('home')">Home</li>
-        <li onclick="showPage('about')">About</li>
-        <li onclick="showPage('menu')">Menu</li>
-    </ul>
-</nav>
-
-<!-- HOME -->
-<section id="home" class="page active">
-    <img src="signboard.png" class="banner">
-</section>
-
-<!-- ABOUT -->
-<section id="about" class="page">
-    <div class="about-box">
-        <h1>About Hakka Bakka</h1>
-        <p>
-            Welcome to Hakka Bakka Punjabi Dhaba.
-            Experience authentic Punjabi flavours with modern vibes.
-            We serve fresh ingredients, hygienic food, live tandoor
-            and premium quality dishes.
-        </p>
-
-        <p>
-            Location: Shop No.1, Nr. Canal Road, Opp. Maqsudan Bypass,
-            GT Road, Jalandhar.
-        </p>
-
-        <p>Contact: 7796631555</p>
-    </div>
-</section>
-
 <!-- MENU -->
 <section id="menu" class="page">
+
     <img src="menu_20_6_26.jpg" class="full-menu">
 
     <button class="order-btn" onclick="openCart()">
         Click Here For Online Orders
     </button>
+
 </section>
-
-<script src="script.js"></script>
-
-<script>
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js');
-}
-</script>
-
-</body>
-</html>
