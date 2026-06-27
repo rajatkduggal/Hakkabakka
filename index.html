@@ -15,7 +15,6 @@
         header h1 { font-size: 24px; font-weight: bold; }
         header p { font-size: 13px; color: #fef08a; }
 
-        /* Conditional Setup Panel (Shown ONLY inside Online Ordering Engine) */
         .top-setup-panel { display: none; background: white; margin: 15px auto; max-width: 650px; width: 92%; padding: 15px; border-radius: 12px; border: 2px solid #7b1113; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .top-setup-panel h3 { font-size: 14px; color: #7b1113; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 4px; text-transform: uppercase; }
         .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
@@ -29,17 +28,15 @@
         .section { display: none; padding: 10px; max-width: 650px; margin: auto; width: 92%; }
         .section.active { display: block; }
 
-        /* Floating Cart System (Shown ONLY inside Online Ordering Engine) */
+        /* FLOATING DETAILS SYSTEM - FIXED AS REQUESTED */
         .floating-side-cart { position: fixed; bottom: 85px; right: 20px; background: #7b1113; color: #fdfbc4; padding: 12px 20px; border-radius: 30px; font-weight: bold; box-shadow: 0 6px 20px rgba(0,0,0,0.3); z-index: 1001; cursor: pointer; display: none; align-items: center; gap: 8px; border: 2px solid #eab308; font-size: 14px; }
-        .cart-preview-pop { display: none; position: fixed; bottom: 145px; right: 20px; width: 280px; max-height: 300px; background: white; border: 2px solid #7b1113; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 1002; padding: 12px; overflow-y: auto; }
-        .cart-preview-pop h4 { font-size: 13px; border-bottom: 1px solid #ddd; padding-bottom: 4px; margin-bottom: 8px; color: #7b1113; }
+        .cart-preview-pop { display: none; position: fixed; bottom: 145px; right: 20px; width: 290px; max-height: 250px; background: white; border: 2px solid #7b1113; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); z-index: 1002; padding: 12px; overflow-y: auto; }
+        .cart-preview-pop h4 { font-size: 13px; border-bottom: 2px solid #7b1113; padding-bottom: 4px; margin-bottom: 8px; color: #7b1113; text-transform: uppercase; text-align: center; }
 
-        /* Menu View Image Frame */
         .menu-image-container { width: 100%; text-align: center; margin-bottom: 15px; }
         .menu-image-container img { width: 100%; border-radius: 10px; border: 2px solid #7b1113; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
         .online-order-trigger-btn { background: #15803d; color: white; border: 2px solid #eab308; font-size: 18px; font-weight: bold; padding: 15px; width: 100%; border-radius: 10px; cursor: pointer; margin-top: 15px; text-transform: uppercase; box-shadow: 0 4px 12px rgba(21,128,61,0.3); }
 
-        /* Menu Grid Card Architecture */
         .online-order-engine { display: none; }
         .cat-title { background: #7b1113; color: white; padding: 8px 12px; font-size: 16px; font-weight: bold; margin: 25px 0 10px 0; border-radius: 6px; text-transform: uppercase; }
         .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
@@ -50,7 +47,6 @@
         
         .portion-select { width: 100%; padding: 6px; margin: 5px 0; border: 1px solid #7b1113; border-radius: 5px; font-size: 11px; background: #fffbeb; font-weight: bold; color: #7b1113; }
         
-        /* Add button +/- sign system */
         .action-row { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; background: #f3f4f6; border-radius: 6px; padding: 2px; border: 1px solid #ddd; }
         .qty-controls { display: flex; align-items: center; justify-content: space-between; width: 100%; }
         .math-btn { background: #7b1113; color: white; border: none; width: 28px; height: 28px; border-radius: 4px; font-weight: bold; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
@@ -59,16 +55,16 @@
         .embedded-cart-holder { background: white; padding: 15px; border-radius: 12px; margin-top: 25px; border: 1px solid #eab308; }
         .cart-line { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #eee; font-size: 13px; }
 
-        .final-action-btn { background: linear-gradient(to bottom, #15803d, #166534); color: white; border: none; width: 100%; padding: 15px; font-size: 16px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; text-transform: uppercase; border: 1px solid #eab308; }
+        /* Exactly matches green layout button inside screenshot 1001271575.jpg */
+        .final-action-btn { background: #15803d; color: white; border: none; width: 100%; padding: 15px; font-size: 16px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; text-transform: uppercase; border: 1px solid #eab308; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-        /* On-Screen Receipt Layout Box */
+        /* INVOICE DISPLAY LOGIC SHOWS DIRECTLY UNDER THE SAVE BUTTON BELOW */
         .receipt-container { background: #fffbeb; border: 3px double #7b1113; border-radius: 12px; padding: 20px; margin-top: 20px; display: none; }
         .receipt-title { font-size: 18px; font-weight: bold; color: #7b1113; text-align: center; margin-bottom: 15px; border-bottom: 2px solid #7b1113; padding-bottom: 5px; }
         .receipt-text { font-family: 'Courier New', Courier, monospace; font-size: 14px; line-height: 1.5; white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 15px; color: black; font-weight: bold; }
-        #qrcode { display: flex; justify-content: center; margin: 15px auto; padding: 10px; background: white; border-radius: 8px; width: max-content; }
-        .native-whatsapp-launch-btn { background: #25D366; color: white; border: none; width: 100%; padding: 14px; font-size: 17px; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(37,211,102,0.4); text-transform: uppercase; letter-spacing: 0.5px; }
+        #qrcode { display: flex; justify-content: center; margin: 15px auto; padding: 10px; background: white; border-radius: 8px; width: max-content; border: 1px solid #eab308; }
+        .native-whatsapp-launch-btn { background: #25D366; color: white; border: none; width: 100%; padding: 14px; font-size: 17px; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(37,211,102,0.4); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 15px; }
 
-        /* Single full-width home page banner definition */
         .full-page-banner { width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.15); border: 3px solid #7b1113; background: #fff; margin-top: 10px; }
         .full-page-banner img { width: 100%; display: block; height: auto; }
     </style>
@@ -106,20 +102,23 @@
     <button onclick="switchTab('menu')" id="btn-menu">Menu</button>
 </nav>
 
+<!-- FLOATING DYNAMIC EXTENDED DETAIL VIEW -->
 <div class="floating-side-cart" id="floatingCartIcon" onclick="toggleFloatingCartDrawer()">
     🛒 Live Cart Summary: ₹<span id="floating-total">0</span>
 </div>
 <div class="cart-preview-pop" id="floatingCartDrawer">
-    <h4>📋 Selected Cart Summary</h4>
+    <h4>📋 Live Items Selected</h4>
     <div id="floating-items-node"></div>
 </div>
 
+<!-- 1. HOME SECTION -->
 <div id="home" class="section active">
     <div class="full-page-banner">
         <img src="signboard.png" alt="Hakka Bakka Main Full Banner Picture">
     </div>
 </div>
 
+<!-- 2. ABOUT SECTION -->
 <div id="about" class="section">
     <div style="background:white; padding:20px; border-radius:12px; border:1px solid #eab308; line-height:1.6;">
         <h2 style="color:#7b1113; margin-bottom:10px;">About Hakka Bakka</h2>
@@ -128,6 +127,7 @@
     </div>
 </div>
 
+<!-- 3. MENU SECTION -->
 <div id="menu" class="section">
     <div class="menu-image-container" id="staticMenuBlock">
         <img src="menu_20_6_26.jpg" onerror="this.src='logo.jpg'" alt="Hakka Bakka Menu Card">
@@ -140,20 +140,22 @@
         <div class="embedded-cart-holder">
             <h3 style="color:#7b1113; font-size:15px; margin-bottom:10px;">2. Selected Items Review</h3>
             <div id="cart-rendering-node"></div>
-            <div style="text-align:right; font-weight:bold; margin-top:10px; font-size:16px; color:#7b1113;">
+            <div style="text-align:right; font-weight:bold; margin-top:10px; font-size:16px; color:#7b1113; margin-bottom: 10px;">
                 Total Amount: ₹<span id="inline-cart-sum">0</span>
             </div>
-            <button class="final-action-btn" onclick="saveOrderAndDisplayInvoice()">💾 Confirm Order & Save</button>
-        </div>
-
-        <div class="receipt-container" id="liveReceiptBox">
-            <div class="receipt-title">🧾 HAKKA BAKKA ORDER INVOICE SAVED</div>
-            <div class="receipt-text" id="receiptTextNode"></div>
             
-            <p style="text-align:center; font-weight:bold; margin-bottom:5px; font-size:14px; color:#7b1113;">Scan QR Code to view summary / complete Payment:</p>
-            <div id="qrcode"></div>
+            <button class="final-action-btn" onclick="saveOrderAndDisplayInvoice(event)">📄 Confirm Order & Save</button>
             
-            <button class="native-whatsapp-launch-btn" onclick="fireNativeWhatsAppMessengerIntent()">👉 Open WhatsApp & Send Draft</button>
+            <!-- SUMMARY DISPLAY PANEL RELOCATED EXACTLY BELOW THE SAVE BUTTON DROPROWS -->
+            <div class="receipt-container" id="liveReceiptBox">
+                <div class="receipt-title">🧾 HAKKA BAKKA ORDER INVOICE SAVED</div>
+                <div class="receipt-text" id="receiptTextNode"></div>
+                
+                <p style="text-align:center; font-weight:bold; margin-bottom:5px; font-size:14px; color:#7b1113;">Scan QR Code to complete Payment:</p>
+                <div id="qrcode"></div>
+                
+                <button class="native-whatsapp-launch-btn" onclick="fireNativeWhatsAppMessengerIntent()">👉 Open WhatsApp & Send Draft</button>
+            </div>
         </div>
     </div>
 </div>
@@ -290,7 +292,6 @@
     let activeCart = {};
     let finalPayloadString = "";
 
-    // Conditional Panel Handler
     function openDigitalOrderingEngine() {
         document.getElementById('staticMenuBlock').style.display = 'none';
         document.getElementById('interactiveEngineBlock').style.display = 'block';
@@ -381,7 +382,7 @@
         });
 
         if (Object.keys(activeCart).length === 0) {
-            const emptyTxt = '<p style="color:#aaa; text-align:center; font-size:12px;">Empty</p>';
+            const emptyTxt = '<p style="color:#aaa; text-align:center; font-size:12px; padding:10px 0;">No items selected.</p>';
             renderBlock.innerHTML = emptyTxt;
             floatingBlock.innerHTML = emptyTxt;
         }
@@ -423,8 +424,10 @@
         window.scrollTo(0,0);
     }
 
-    // Save Order Local Logic & Target Draft Generation Setup
-    function saveOrderAndDisplayInvoice() {
+    // FIXED SUBMISSION FUNCTION - PREVENTS PAGE RESET & RENDERS DIRECTLY UNDERNEATH
+    function saveOrderAndDisplayInvoice(event) {
+        if(event) event.preventDefault(); // Stifles browser page reload bugs immediately
+
         const total = document.getElementById('inline-cart-sum').innerText;
         const phone = document.getElementById('custPhone').value.trim();
         const name = document.getElementById('custName').value.trim() || "Customer";
@@ -450,17 +453,17 @@
             itemsSummary += `\n▪ ${item.name} (${item.size}) x${item.count}`;
         });
 
-        // FIXED: Exact Layout sequence Format mapping matching your requirement perfectly
+        // Exact Layout parameters matching string configuration requested
         finalPayloadString = `Date. ${dateStr}\nOrder No. ${orderNo}\nType ${orderType} (${sittingType})\nItems: ${itemsSummary}\nTotal ₹${total}\n\n[Customer: ${name} | ${phone}]`;
         
-        // Save to Persistent LocalStorage Cache Database Layer
+        // Write persistently to local browser framework data slots
         const orderRecord = { id: orderNo, content: finalPayloadString, total: total, clientPhone: phone, timestamp: dateStr };
         localStorage.setItem("saved_hakka_bakka_invoice", JSON.stringify(orderRecord));
 
-        // Display Draft invoice text block down page view
+        // Inject inside the box wrapper container located underneath the save row
         document.getElementById('receiptTextNode').innerText = finalPayloadString;
 
-        // Generate matching QR Code block mapping the parameters
+        // Render matching payment code parameter layout
         document.getElementById('qrcode').innerHTML = "";
         new QRCode(document.getElementById("qrcode"), {
             text: finalPayloadString,
@@ -470,27 +473,29 @@
             colorLight : "#ffffff"
         });
 
-        document.getElementById('liveReceiptBox').style.display = 'block';
-        window.scrollTo(0, document.body.scrollHeight);
+        // Unveil the layout display summary area on-screen below the click action button
+        const summaryBox = document.getElementById('liveReceiptBox');
+        summaryBox.style.display = 'block';
         
-        // Launch Intent Draft System Hook Loop
+        // Push view focus cleanly to the dynamic summary receipt box location
+        summaryBox.scrollIntoView({ behavior: 'smooth' });
+
+        // Trigger native intent draft wrapper payload string logic
         fireNativeWhatsAppMessengerIntent();
     }
 
     function fireNativeWhatsAppMessengerIntent() {
         if(finalPayloadString) {
-            // FIXED: Using wa.me API deep linking protocols to guarantee seamless native message drafting block
             const nativeDeepLinkIntent = `wa.me/${TARGET_PHONE}?text=${encodeURIComponent(finalPayloadString)}`;
             window.open("https://" + nativeDeepLinkIntent, "_blank");
 
-            // Local fallback feedback loop alerting state delivery simulation
             setTimeout(() => {
                 alert("Hakka Bakka Notification:\nYour Order Done.");
-            }, 1800);
+            }, 1000);
         }
     }
 
-    // PWA Install Event Handlers
+    // PWA Install Script Hook blocks
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
@@ -499,7 +504,6 @@
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choice) => {
-                    if(choice.outcome === 'accepted') console.log('App Installed Successfully');
                     deferredPrompt = null;
                 });
             }
