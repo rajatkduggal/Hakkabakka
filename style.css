@@ -1,85 +1,121 @@
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, sans-serif;
-}
-
 body{
-    background:#fcf6e8;
-    color:#431407;
-    padding-bottom:120px;
+margin:0;
+font-family:Arial;
+background:#f8f3e7;
 }
 
-header{
-    background:linear-gradient(to bottom,#7b1113,#4a090b);
-    color:white;
-    text-align:center;
-    padding:20px;
-    border-bottom:4px solid gold;
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px;
+background:#7b1113;
+color:white;
 }
 
 .logo{
-    width:90px;
-    margin-bottom:10px;
+width:60px;
 }
 
-header h1{
-    font-size:32px;
-    font-weight:bold;
+.logo-box{
+display:flex;
+align-items:center;
+gap:10px;
 }
 
-header p{
-    color:#fef08a;
-    font-size:14px;
+nav ul{
+display:flex;
+gap:20px;
+list-style:none;
 }
 
-.banner img{
-    width:100%;
+nav li{
+cursor:pointer;
+font-weight:bold;
 }
 
-.customer-box{
-    width:95%;
-    max-width:600px;
-    margin:20px auto;
-    background:white;
-    padding:20px;
-    border-radius:12px;
+.page{
+display:none;
+padding:20px;
+}
+
+.active{
+display:block;
+}
+
+.banner{
+width:100%;
+border-radius:10px;
+}
+
+.about-box{
+background:white;
+padding:20px;
+border-radius:10px;
+line-height:1.8;
+}
+
+.full-menu{
+width:100%;
+border-radius:10px;
+}
+
+.order-btn{
+width:100%;
+padding:15px;
+background:#15803d;
+color:white;
+border:none;
+font-size:18px;
+margin:20px 0;
+border-radius:10px;
+}
+
+.hidden{
+display:none;
 }
 
 .customer-box input,
 .customer-box select{
-    width:100%;
-    padding:12px;
-    margin-bottom:10px;
-    border:1px solid #ccc;
-    border-radius:8px;
+width:100%;
+padding:12px;
+margin-bottom:10px;
+border:1px solid #ccc;
+border-radius:8px;
 }
 
-#menu{
-    width:95%;
-    margin:auto;
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:15px;
+.menu-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
+}
+
+.menu-item{
+background:white;
+padding:10px;
+border-radius:10px;
+}
+
+.menu-item button{
+width:100%;
+padding:8px;
+background:#7b1113;
+color:white;
+border:none;
 }
 
 .cart-box{
-    position:fixed;
-    bottom:0;
-    left:0;
-    width:100%;
-    background:white;
-    padding:15px;
-    border-top:3px solid #7b1113;
+margin-top:20px;
+background:white;
+padding:20px;
+border-radius:10px;
 }
 
 .cart-box button{
-    width:100%;
-    padding:14px;
-    background:#25D366;
-    color:white;
-    border:none;
-    border-radius:8px;
+width:100%;
+padding:15px;
+background:#25D366;
+border:none;
+color:white;
+font-size:18px;
 }
