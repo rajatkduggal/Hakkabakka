@@ -15,7 +15,6 @@
         header h1 { font-size: 24px; font-weight: bold; }
         header p { font-size: 13px; color: #fef08a; }
 
-        /* Setup Panel inside online engine */
         .top-setup-panel { background: white; margin: 15px auto; max-width: 650px; width: 92%; padding: 15px; border-radius: 12px; border: 2px solid #7b1113; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .top-setup-panel h3 { font-size: 14px; color: #7b1113; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 4px; text-transform: uppercase; }
         .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
@@ -29,7 +28,7 @@
         .section { display: none; padding: 10px; max-width: 650px; margin: auto; width: 92%; }
         .section.active { display: block; }
 
-        /* FLOATING SIDE CART PANEL */
+        /* FLOATING SIDE CART PANEL DISPLAY */
         .floating-side-cart { position: fixed; bottom: 85px; right: 20px; background: #7b1113; color: #fdfbc4; padding: 12px 20px; border-radius: 30px; font-weight: bold; box-shadow: 0 6px 20px rgba(0,0,0,0.3); z-index: 1001; cursor: pointer; display: none; align-items: center; gap: 8px; border: 2px solid #eab308; font-size: 14px; }
         .cart-preview-pop { display: none; position: fixed; bottom: 145px; right: 20px; width: 290px; max-height: 250px; background: white; border: 2px solid #7b1113; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); z-index: 1002; padding: 12px; overflow-y: auto; }
         .cart-preview-pop h4 { font-size: 13px; border-bottom: 2px solid #7b1113; padding-bottom: 4px; margin-bottom: 8px; color: #7b1113; text-transform: uppercase; text-align: center; }
@@ -59,12 +58,11 @@
 
         .final-action-btn { background: #15803d; color: white; border: none; width: 100%; padding: 15px; font-size: 16px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; text-transform: uppercase; border: 1px solid #eab308; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-        /* Invoice Container directly under Save button */
         .receipt-container { background: #fffbeb; border: 3px double #7b1113; border-radius: 12px; padding: 20px; margin-top: 20px; display: none; }
         .receipt-title { font-size: 18px; font-weight: bold; color: #7b1113; text-align: center; margin-bottom: 15px; border-bottom: 2px solid #7b1113; padding-bottom: 5px; }
         .receipt-text { font-family: 'Courier New', Courier, monospace; font-size: 14px; line-height: 1.5; white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 15px; color: black; font-weight: bold; }
         #qrcode { display: flex; justify-content: center; margin: 15px auto; padding: 10px; background: white; border-radius: 8px; width: max-content; border: 1px solid #eab308; }
-        .native-whatsapp-launch-btn { background: #25D366; color: white; border: none; width: 100%; padding: 14px; font-size: 17px; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(37,211,102,0.4); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 15px; width: 100%; }
+        .native-whatsapp-launch-btn { background: #25D366; color: white; border: none; width: 100%; padding: 14px; font-size: 17px; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 15px; width: 100%; }
 
         .full-page-banner { width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.15); border: 3px solid #7b1113; background: #fff; margin-top: 10px; }
         .full-page-banner img { width: 100%; display: block; height: auto; }
@@ -83,12 +81,14 @@
     <button onclick="switchTab('menu')" id="btn-menu">Menu</button>
 </nav>
 
+<!-- 1. HOME SECTION -->
 <div id="home" class="section active">
     <div class="full-page-banner">
         <img src="signboard.png" alt="Hakka Bakka Main Banner">
     </div>
 </div>
 
+<!-- 2. ABOUT SECTION -->
 <div id="about" class="section">
     <div style="background:white; padding:20px; border-radius:12px; border:1px solid #eab308; line-height:1.6;">
         <h2 style="color:#7b1113; margin-bottom:10px;">About Hakka Bakka</h2>
@@ -97,6 +97,7 @@
     </div>
 </div>
 
+<!-- 3. MENU SECTION -->
 <div id="menu" class="section">
     <div class="menu-image-container" id="staticMenuBlock">
         <img src="menu_20_6_26.jpg" onerror="this.src='logo.jpg'" alt="Hakka Bakka Menu Card">
@@ -160,7 +161,7 @@
 <script>
     const TARGET_PHONE = "917796631555";
 
-    // 100% CROSS-CHECKED AND REVERSED PRICE MATCHING WITH 1001266062.JPG
+    // FIXED VARIABLE ATTRIBUTES (full and half matching perfectly across functions)
     const menuMasterDatabase = {
         "Tandoori Veg": [
             { name: "Paneer Tikka", full: 240, half: null, text: "Plate: ₹240", img: "images/paneer_tikka.jpg" },
@@ -295,9 +296,14 @@
         ]
     };
 
+    let activeCart = {};
+    let finalPayloadString = "";
+
     function openDigitalOrderingEngine() {
         document.getElementById('staticMenuBlock').style.display = 'none';
         document.getElementById('interactiveEngineBlock').style.display = 'block';
+        document.getElementById('topBypassedPanel').style.display = 'block';
+        document.getElementById('floatingCartIcon').style.display = 'flex';
         generateMenuGridSystem();
     }
 
@@ -323,6 +329,7 @@
                                     <option value="Half">Half Portion</option>
                                 </select>
                             ` : `<div style="height:22px;"></div>`}
+                            
                             <div class="action-row">
                                 <div class="qty-controls">
                                     <button class="math-btn" onclick="modifyQtyState('${item.name}', '${uniqueKey}', ${item.full}, ${item.half}, -1)">-</button>
@@ -383,7 +390,7 @@
         });
 
         if (Object.keys(activeCart).length === 0) {
-            const emptyTxt = '<p style="color:#aaa; text-align:center; font-size:12px;">No items selected.</p>';
+            const emptyTxt = '<p style="color:#aaa; text-align:center; font-size:12px; padding:10px 0;">No items selected.</p>';
             renderBlock.innerHTML = emptyTxt;
             floatingBlock.innerHTML = emptyTxt;
         }
@@ -423,7 +430,7 @@
         window.scrollTo(0,0);
     }
 
-    // 100% FIXED WATERPROOF SAVE FUNCTION (NO DOM INTERFERENCE CRASHES)
+    // 100% SECURE & FIREFROOF ACTION HANDLER DEFINED VERBATIM
     function saveOrderAndDisplayInvoice(event) {
         if(event) event.preventDefault(); 
 
@@ -433,7 +440,6 @@
             return;
         }
 
-        // Secure DOM Retrieval Nodes
         const nameNode = document.getElementById('custName');
         const phoneNode = document.getElementById('custPhone');
         const orderTypeNode = document.getElementById('orderType');
@@ -453,17 +459,13 @@
             itemsSummary += `\n▪ ${item.name} (${item.size}) x${item.count}`;
         });
 
-        // EXACT REQUESTED RE-ORDERED SPLIT LOG PATTERN MATRIX
-        finalPayloadString = `Date. ${dateStr}\nOrder No. ${orderNo}\nType ${orderType} (${sittingType})\nItems: ${itemsSummary}\nTotal ₹${total}\n\n[Customer: ${name} | ${phone}]`;
+        finalPayloadString = `Date. ${dateStr}\nOrder No. ${orderNo}\nType ${orderType} (${sittingType})\nItems: ${itemsSummary}\nTotal ₹${total}`;
         
-        // Native local storage writing loop
         const cacheData = { id: orderNo, content: finalPayloadString, total: total };
         localStorage.setItem("hakka_bakka_persistent_invoice", JSON.stringify(cacheData));
 
-        // Inject Output data directly into the box element below
         document.getElementById('receiptTextNode').innerText = finalPayloadString;
 
-        // Fire QR compilation mapping parameters
         document.getElementById('qrcode').innerHTML = "";
         new QRCode(document.getElementById("qrcode"), {
             text: finalPayloadString,
@@ -473,12 +475,10 @@
             colorLight : "#ffffff"
         });
 
-        // Make the container visible right under the save button
         const containerBox = document.getElementById('liveReceiptBox');
         containerBox.style.display = 'block';
         containerBox.scrollIntoView({ behavior: 'smooth' });
 
-        // Trigger WhatsApp interface launcher
         fireNativeWhatsAppMessengerIntent();
     }
 
