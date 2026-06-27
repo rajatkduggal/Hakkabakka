@@ -1,166 +1,111 @@
+let cart = {};
+const TARGET_PHONE = "917796631555";
 
-let cart = JSON.parse(localStorage.getItem("hakkaCart")) || [];
+const menuItems = [
+{ name:"Paneer Tikka", price:240 },
+{ name:"Paneer Malai Tikka", price:280 },
+{ name:"Paneer Kali Mirch Tikka", price:280 },
+{ name:"Mushroom Tikka", price:230 },
+{ name:"Soya Champ Tikka", price:220 },
+{ name:"Dal Fry Half", price:80 },
+{ name:"Dal Fry Full", price:150 },
+{ name:"Dal Makhani Half", price:90 },
+{ name:"Dal Makhani Full", price:180 },
+{ name:"Butter Chicken Half", price:300 },
+{ name:"Butter Chicken Full", price:550 },
+{ name:"Tandoori Chicken Half", price:230 },
+{ name:"Tandoori Chicken Full", price:400 },
+{ name:"Mutton Rogan Josh Half", price:350 },
+{ name:"Mutton Rogan Josh Full", price:650 },
+{ name:"Chicken Rice Half", price:150 },
+{ name:"Chicken Rice Full", price:250 },
+{ name:"Mutton Rice Half", price:200 },
+{ name:"Mutton Rice Full", price:300 },
+{ name:"Tandoori Roti", price:10 },
+{ name:"Butter Chapati", price:15 },
+{ name:"Plain Naan", price:40 },
+{ name:"Butter Naan", price:60 },
+{ name:"Sweet Lassi", price:70 },
+{ name:"Bottled Water", price:20 }
+];
 
-function saveCart() {
-    localStorage.setItem("hakkaCart", JSON.stringify(cart));
-}
-
-function addToCart(name, price) {
-    let item = cart.find(x => x.name === name);
-
-    if (item) {
-        item.qty++;
-    } else {
-        cart.push({
-            name: name,
-            price: price,
-            qty: 1
-        });
-    }
-
-    saveCart();
-    renderCart();
-}
-
-function changeQty(index, value) {
-    cart[index].qty += value;
-
-    if (cart[index].qty <= 0) {
-        cart.splice(index, 1);
-    }
-
-    saveCart();
-    renderCart();
-}
-
-function clearCart() {
-    cart = [];
-    saveCart();
-    renderCart();
-}
-
-function renderCart() {
-    let cartItems = document.getElementById("cartItems");
-    let cartTotal = document.getElementById("cartTotal");
-    let cartCount = document.getElementById("cartCount");
-
-    if (!cartItems) return;
-
+function renderMenu(){
     let html = "";
-    let total = 0;
-    let count = 0;
-
-    cart.forEach((item, index) => {
-        total += item.price * item.qty;
-        count += item.qty;
-
+    menuItems.forEach((item,index)=>{
         html += `
-        <div class="cart-item">
-            <div>
-                <strong>${item.name}</strong><br>
-                ₹${item.price}
-            </div>
-
-            <div>
-                <button onclick="changeQty(${index},-1)">-</button>
-                ${item.qty}
-                <button onclick="changeQty(${index},1)">+</button>
-            </div>
-        </div>
-        `;
+        <div class="item">
+            <h4>${item.name}</h4>
+            <p>₹${item.price}</p>
+            <button onclick="addToCart(${index})">Add</button>
+        </div>`;
     });
 
-    cartItems.innerHTML = html;
-    cartTotal.innerText = total;
-    cartCount.innerText = count;
+    document.getElementById("menu").innerHTML = html;
 }
 
-function toggleCart() {
-    let panel = document.getElementById("cartPanel");
+function addToCart(index){
+    let item = menuItems[index];
 
-    if (panel.style.display === "block") {
-        panel.style.display = "none";
-    } else {
-        panel.style.display = "block";
+    if(!cart[item.name]){
+        cart[item.name] = {
+            name:item.name,
+            price:item.price,
+            qty:0
+        };
     }
+
+    cart[item.name].qty++;
+    renderCart();
 }
 
-function checkoutWhatsApp() {
+function renderCart(){
+    let html = "";
+    let total = 0;
 
-    if (cart.length === 0) {
-        alert("Cart is empty!");
+    Object.values(cart).forEach(item=>{
+        total += item.price * item.qty;
+
+        html += `
+        <div>
+            ${item.name} x ${item.qty} = ₹${item.price * item.qty}
+        </div>`;
+    });
+
+    document.getElementById("cartItems").innerHTML = html;
+    document.getElementById("cartTotal").innerText = total;
+}
+
+function saveOrder(){
+    let phone = document.getElementById("custPhone").value.trim();
+
+    if(phone.length !== 10){
+        alert("Enter valid mobile number");
         return;
     }
 
-    let customer = prompt("Enter Your Name");
-    let mobile = prompt("Enter Mobile Number");
-    let orderType = prompt("Order Type: Dine In / Delivery / Pickup");
-    let tableNo = "";
+    let orderText = "HAKKA BAKKA ORDER\n";
 
-    if (orderType.toLowerCase() === "dine in") {
-        tableNo = prompt("Enter Table Number");
-    }
-
-    let address = "";
-
-    if (orderType.toLowerCase() === "delivery") {
-        address = prompt("Enter Delivery Address");
-    }
-
-    let note = prompt("Special Instructions (Optional)");
-
-    let text = "*HAKKA BAKKA ORDER*%0A%0A";
-
-    text += "*Customer:* " + customer + "%0A";
-    text += "*Mobile:* " + mobile + "%0A";
-    text += "*Order Type:* " + orderType + "%0A";
-
-    if (tableNo) {
-        text += "*Table No:* " + tableNo + "%0A";
-    }
-
-    if (address) {
-        text += "*Address:* " + address + "%0A";
-    }
-
-    text += "%0A";
-
-    let total = 0;
-
-    cart.forEach(item => {
-        text += item.name + " x" + item.qty + " = ₹" + (item.qty * item.price) + "%0A";
-        total += item.qty * item.price;
+    Object.values(cart).forEach(item=>{
+        orderText += `${item.name} x ${item.qty}\n`;
     });
 
-    let deliveryCharge = total < 500 ? 30 : 0;
+    orderText += `Total ₹${document.getElementById("cartTotal").innerText}`;
 
-    text += "%0A*Food Total:* ₹" + total + "%0A";
-    text += "*Delivery Charge:* ₹" + deliveryCharge + "%0A";
-    text += "*Grand Total:* ₹" + (total + deliveryCharge) + "%0A";
+    localStorage.setItem("lastOrder", orderText);
 
-    if (note) {
-        text += "%0A*Special Note:* " + note;
+    const isMobile = /Android|iPhone/i.test(navigator.userAgent);
+
+    if(isMobile){
+        window.open(
+            `https://wa.me/${TARGET_PHONE}?text=${encodeURIComponent(orderText)}`,
+            "_blank"
+        );
+    }else{
+        window.open(
+            `https://web.whatsapp.com/send?phone=${TARGET_PHONE}&text=${encodeURIComponent(orderText)}`,
+            "_blank"
+        );
     }
-
-    window.open(
-        "https://wa.me/917796631555?text=" + text,
-        "_blank"
-    );
 }
 
-function searchMenu() {
-    let input = document.getElementById("searchBox").value.toLowerCase();
-    let cards = document.querySelectorAll(".card");
-
-    cards.forEach(card => {
-        let txt = card.innerText.toLowerCase();
-
-        if (txt.includes(input)) {
-            card.style.display = "block";
-        } else {
-            card.style.display = "none";
-        }
-    });
-}
-
-window.onload = renderCart;
+renderMenu();
