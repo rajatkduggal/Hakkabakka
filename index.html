@@ -9,38 +9,86 @@
 <meta name="theme-color" content="#7b1113">
 <link rel="stylesheet" href="style.css">
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
+
 <body>
 
-<header>
-    <img src="logo.jpg" class="logo">
-    <h1>HAKKA BAKKA</h1>
-    <p>Desi Swad, Modern Vibe</p>
-</header>
+<!-- NAVBAR -->
+<nav>
+    <div class="logo-box">
+        <img src="logo.jpg" class="logo">
+        <h2>Hakka Bakka</h2>
+    </div>
 
-<div class="banner">
-    <img src="signboard.png" alt="Hakka Bakka Banner">
-</div>
+    <ul>
+        <li onclick="showPage('home')">Home</li>
+        <li onclick="showPage('about')">About</li>
+        <li onclick="showPage('menu')">Menu</li>
+    </ul>
+</nav>
 
-<div class="customer-box">
-    <input type="text" id="custName" placeholder="Name (Optional)">
-    <input type="tel" id="custPhone" placeholder="Mobile Number" maxlength="10" required>
+<!-- HOME -->
+<section id="home" class="page active">
+    <img src="signboard.png" class="banner">
+</section>
 
-    <select id="orderType">
-        <option>Dine-In</option>
-        <option>Pickup</option>
-        <option>Delivery</option>
-    </select>
-</div>
+<!-- ABOUT -->
+<section id="about" class="page">
+    <div class="about-box">
+        <h1>About Hakka Bakka</h1>
+        <p>
+            Welcome to Hakka Bakka Punjabi Dhaba.
+            Experience authentic Punjabi flavours with modern vibes.
+            We serve fresh ingredients, hygienic food, live tandoor
+            and premium quality dishes.
+        </p>
 
-<div id="menu"></div>
+        <p>
+            Location: Shop No.1, Nr. Canal Road, Opp. Maqsudan Bypass,
+            GT Road, Jalandhar.
+        </p>
 
-<div class="cart-box">
-    <h2>Your Cart</h2>
-    <div id="cartItems"></div>
-    <h3>Total ₹<span id="cartTotal">0</span></h3>
-    <button onclick="saveOrder()">Confirm Order</button>
-</div>
+        <p>Contact: 7796631555</p>
+    </div>
+</section>
+
+<!-- MENU -->
+<section id="menu" class="page">
+
+    <img src="menu_20_6_26.jpg" class="full-menu">
+
+    <button class="order-btn" onclick="openCart()">
+        Click Here For Online Orders
+    </button>
+
+    <!-- CART SECTION -->
+    <div id="cartSection" class="hidden">
+
+        <div class="customer-box">
+            <input type="text" id="custName" placeholder="Name (Optional)">
+            <input type="tel" id="custPhone" placeholder="Mobile Number">
+
+            <select id="orderType">
+                <option>Dine-In</option>
+                <option>Pickup</option>
+                <option>Delivery</option>
+            </select>
+        </div>
+
+        <div id="menuItems"></div>
+
+        <div class="cart-box">
+            <h2>Your Cart</h2>
+            <div id="cartItems"></div>
+            <h3>Total ₹<span id="cartTotal">0</span></h3>
+
+            <button onclick="saveOrder()">Confirm Order</button>
+        </div>
+
+    </div>
+
+</section>
 
 <script src="script.js"></script>
 
