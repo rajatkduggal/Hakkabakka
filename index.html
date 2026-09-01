@@ -13,7 +13,7 @@ header{background:#7b1113;color:#fff;text-align:center;padding:28px 12px}
 header h1{margin:0;font-size:32px} header p{margin:8px 0;font-size:18px}
 .search{position:sticky;top:0;z-index:10;background:#fff;padding:12px}
 .search input{width:100%;padding:14px 16px;border:2px solid #7b1113;border-radius:12px;font-size:18px;background:#fff;color:#111}
-main{padding-bottom:190px}
+main{padding-bottom:100px}
 section{margin:18px 0}
 .section-title{margin:0 12px 12px;background:#7b1113;color:#fff;padding:11px 14px;border-radius:10px;text-align:center;font-size:22px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:0 12px}
@@ -25,9 +25,9 @@ section{margin:18px 0}
 .add{border:0;background:#7b1113;color:#fff;padding:9px 10px;border-radius:7px;font-weight:bold;cursor:pointer}
 .variant-row{display:flex;gap:6px;justify-content:center}
 .variant-row .add{flex:1;min-width:0;font-size:13px;padding:9px 5px}
-.cartDock{position:fixed;left:0;right:0;bottom:0;z-index:35;background:#fff;box-shadow:0 -4px 18px #0003;border-top:3px solid #7b1113;padding:9px 12px calc(9px + env(safe-area-inset-bottom));}
-.cartDockHead{display:flex;justify-content:space-between;align-items:center;font-weight:bold;color:#7b1113;margin-bottom:6px}.cartDockItems{display:flex;gap:8px;overflow-x:auto;max-height:58px;padding-bottom:3px}.cartChip{flex:0 0 auto;background:#f7f3ec;border:1px solid #ddd;border-radius:8px;padding:6px 9px;font-size:13px}.cartDockBottom{display:flex;align-items:center;gap:8px;margin-top:7px}.cartDockTotal{font-size:16px;flex:1}.cartDock .action{margin:0!important;padding:10px 12px!important;width:auto!important}.cartDock .clearCart{background:#333}.badge{font-size:13px;background:#fff;color:#7b1113;border-radius:12px;padding:2px 6px}
-.panel{display:none;position:fixed;inset:0 0 0 auto;width:min(430px,100%);background:#fff;z-index:40;padding:18px;overflow:auto;box-shadow:-4px 0 18px #0005}
+.cart{position:fixed;right:16px;bottom:18px;z-index:30;border:0;border-radius:50%;width:64px;height:64px;background:#7b1113;color:#fff;font-size:24px;box-shadow:0 3px 10px #0005}
+.badge{font-size:13px;background:#fff;color:#7b1113;border-radius:12px;padding:2px 6px}
+.panel{display:none;position:fixed;inset:0 0 0 auto;width:min(430px,92vw);background:#fff;z-index:40;padding:18px;overflow:auto;box-shadow:-8px 0 28px #0005;border-left:3px solid #7b1113;animation:slideIn .2s ease-out}.panel:before{content:"";position:fixed;inset:0 430px 0 auto;background:#0006;z-index:-1;pointer-events:none}@keyframes slideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
 .panel h2{margin-top:0;color:#7b1113}
 .order-item{padding:10px 0;border-bottom:1px solid #ddd}
 .panel input,.panel textarea,.panel select{width:100%;padding:11px;margin:6px 0;border:1px solid #aaa;border-radius:7px;font-size:16px}
@@ -42,7 +42,21 @@ section{margin:18px 0}
 @media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr);padding:0 10px;gap:10px}.card img{height:145px}.section-title{margin-left:10px;margin-right:10px}}
 @media(max-width:390px){.card img{height:125px}.content h3{font-size:14px}}
 
-.fieldLabel{display:block;font-weight:bold;margin:10px 0 4px}.cartSubtotal{padding:12px 0;border-top:1px solid #ddd;margin-top:8px;font-size:17px}.billBox{margin-top:14px;padding:12px;border:2px solid #7b1113;border-radius:10px;background:#fff8f0}.billBox>div{display:flex;justify-content:space-between;padding:5px 0}.billBox .grand{border-top:1px solid #caa;margin-top:6px;padding-top:10px;font-size:19px}.deliveryInfo{font-size:13px;margin:5px 0 8px;padding:8px;border-radius:7px;background:#f7f3ec;color:#555}.paymentStatus{font-size:13px;color:#555;text-align:center}.shareNote{font-size:13px;color:#555;text-align:center;margin-top:7px}.remove{margin-left:8px;padding:5px 8px;border:1px solid #aaa;border-radius:5px;background:#fff}.order-item{padding:12px 0;border-bottom:1px solid #ddd}.order-item>div{margin-top:6px}.empty{text-align:center;padding:35px 10px;color:#555}#paymentBox{margin-top:14px;padding:14px;border:2px solid #7b1113;border-radius:10px;background:#fff8f0}#paymentBox h3{margin:0 0 8px;color:#7b1113}#paymentBox input[type=file]{font-size:14px}</style>
+.fieldLabel{display:block;font-weight:bold;margin:10px 0 4px}.cartSubtotal{padding:12px 0;border-top:1px solid #ddd;margin-top:8px;font-size:17px}.billBox{margin-top:14px;padding:12px;border:2px solid #7b1113;border-radius:10px;background:#fff8f0}.billBox>div{display:flex;justify-content:space-between;padding:5px 0}.billBox .grand{border-top:1px solid #caa;margin-top:6px;padding-top:10px;font-size:19px}.deliveryInfo{font-size:13px;margin:5px 0 8px;padding:8px;border-radius:7px;background:#f7f3ec;color:#555}.paymentStatus{font-size:13px;color:#555;text-align:center}.shareNote{font-size:13px;color:#555;text-align:center;margin-top:7px}.remove{margin-left:8px;padding:5px 8px;border:1px solid #aaa;border-radius:5px;background:#fff}.order-item{padding:12px 0;border-bottom:1px solid #ddd}.order-item>div{margin-top:6px}.empty{text-align:center;padding:35px 10px;color:#555}#paymentBox{margin-top:14px;padding:14px;border:2px solid #7b1113;border-radius:10px;background:#fff8f0}#paymentBox h3{margin:0 0 8px;color:#7b1113}#paymentBox input[type=file]{font-size:14px}
+.cartHeaderRow{display:flex;align-items:center;justify-content:space-between;position:sticky;top:-18px;background:#fff;padding:4px 0 10px;z-index:2;border-bottom:1px solid #eee}
+.cartHeaderRow h2{margin:0!important}.iconClose{border:0;background:#333;color:#fff;border-radius:50%;width:38px;height:38px;font-size:18px}
+.cartHint{margin:8px 0 14px;color:#666;font-size:13px}
+.order-item{padding:14px 0;border-bottom:1px solid #e5e5e5}
+.order-item .item-name{font-weight:700;font-size:16px;line-height:1.3}
+.order-item .item-meta{display:flex;align-items:center;justify-content:space-between;margin-top:9px}
+.qtyBox{display:flex;align-items:center;border:1px solid #ccc;border-radius:8px;overflow:hidden}
+.qtyBox button{width:34px;height:32px;border:0;background:#f3f3f3;font-size:20px}
+.qtyBox span{min-width:32px;text-align:center;font-weight:bold}
+.item-price{font-weight:bold;color:#7b1113}
+.removeAll{border:0;background:none;color:#777;font-size:12px;margin-top:6px;padding:0}
+.cartSubtotal{font-size:18px!important;font-weight:600}
+@media(max-width:700px){.panel{width:min(92vw,430px)}.panel:before{inset:0 92vw 0 auto}}
+</style>
 </head>
 <body>
 
@@ -55,17 +69,19 @@ section{margin:18px 0}
 <div class="search"><input id="search" type="search" placeholder="Search menu..." autocomplete="off"></div>
 <main id="menu"></main>
 
-<div class="cartDock" id="cartDock">
-  <div class="cartDockHead"><span>🛒 Your Cart (<span id="count">0</span>)</span><span id="cartSubtotal">₹0</span></div>
-  <div id="items" class="cartDockItems"><div class="empty">Cart empty</div></div>
-  <div class="cartDockBottom">
-    <div class="cartDockTotal">Food Total: <b>₹<span id="cartDockTotal">0</span></b></div>
-    <button class="action clearCart" id="cartClear">Clear</button>
-    <button class="action" id="proceedBtn">Proceed to Billing</button>
-  </div>
-</div>
+<button class="cart" id="cartButton">🛒 <span class="badge" id="count">0</span></button>
 
 <div class="panel" id="cartPanel">
+  <div id="cartView">
+    <h2>🛒 Your Cart</h2>
+    <div class="cartHeaderRow"><h2>🛒 Your Order</h2><button class="iconClose" id="cartClose" aria-label="Close cart">✕</button></div>
+    <p class="cartHint">Review your selected items before billing.</p>
+    <div id="items"></div>
+    <div class="cartSubtotal">Food Total: <b>₹<span id="cartSubtotal">0</span></b></div>
+    <button class="action" id="proceedBtn">Proceed to Billing</button>
+    <button class="action close" id="cartClear">Clear Cart</button>
+  </div>
+
   <div id="billingView" style="display:none">
     <h2>🧾 Billing</h2>
     <input id="customerName" placeholder="Customer Name" autocomplete="name">
@@ -79,8 +95,8 @@ section{margin:18px 0}
 
     <div id="deliveryFields" style="display:none">
       <textarea id="address" rows="3" placeholder="Delivery Address"></textarea>
-      <input id="pincode" placeholder="Pincode (144001–144030)" type="tel" inputmode="numeric" maxlength="6">
-      <div id="deliveryInfo" class="deliveryInfo">Delivery available only in pincode 144001–144030.</div>
+      <input id="pincode" placeholder="Pincode" type="tel" inputmode="numeric" maxlength="6">
+      <div id="deliveryInfo" class="deliveryInfo" style="display:none"></div>
     </div>
 
     <div class="billBox">
@@ -96,7 +112,7 @@ section{margin:18px 0}
       <button class="action" id="upiPay" type="button">Pay with UPI</button>
       <p id="paymentStatus" class="paymentStatus"></p>
       <input id="utr" placeholder="UPI UTR / Transaction ID (optional)" inputmode="numeric">
-      <label class="fieldLabel">Payment Screenshot (optional)</label>
+      <label class="fieldLabel">Payment Screenshot <span style="color:#7b1113">*</span></label><div class="deliveryInfo">Payment screenshot is mandatory to place the order.</div>
       <input id="paymentScreenshot" type="file" accept="image/*">
     </div>
 
@@ -257,7 +273,7 @@ const panel=document.getElementById('cartPanel');
 const items=document.getElementById('items');
 const count=document.getElementById('count');
 const cartSubtotal=document.getElementById('cartSubtotal');
-const cartDockTotal=document.getElementById('cartDockTotal');
+const cartView=document.getElementById('cartView');
 const billingView=document.getElementById('billingView');
 const nameInput=document.getElementById('customerName');
 const phoneInput=document.getElementById('customerPhone');
@@ -293,10 +309,30 @@ function renderMenu(){
  }).join('')}</div></section>`).join('');
 }
 function renderCart(){
- count.textContent=cart.length;
- cartSubtotal.textContent='₹'+foodTotal();
- cartDockTotal.textContent=foodTotal();
- items.innerHTML=cart.length?cart.map((x,i)=>`<div class="order-item"><b>${esc(x.name)}</b><div>₹${Number(x.price)} <button class="remove" onclick="removeItem(${i})">Remove</button></div></div>`).join(''):'<div class="empty">Your cart is empty.<br>Add items from the menu.</div>';
+  count.textContent=cart.length;
+  cartSubtotal.textContent=foodTotal();
+
+  const groups=[];
+  cart.forEach((x,i)=>{
+    let g=groups.find(v=>v.name===x.name && v.price===x.price);
+    if(g){g.qty++;g.indices.push(i);}
+    else groups.push({name:x.name,price:x.price,qty:1,indices:[i]});
+  });
+
+  items.innerHTML=groups.length ? groups.map(g=>`
+    <div class="order-item">
+      <div class="item-name">${esc(g.name)}</div>
+      <div class="item-meta">
+        <span class="item-price">₹${g.price} × ${g.qty} = ₹${g.price*g.qty}</span>
+        <div class="qtyBox">
+          <button type="button" onclick="changeQty('${esc(g.name).replace(/'/g,"&#39;")}',${g.price},-1)">−</button>
+          <span>${g.qty}</span>
+          <button type="button" onclick="changeQty('${esc(g.name).replace(/'/g,"&#39;")}',${g.price},1)">+</button>
+        </div>
+      </div>
+      <button type="button" class="removeAll" onclick="removeGroup('${esc(g.name).replace(/'/g,"&#39;")}',${g.price})">Remove item</button>
+    </div>`).join('')
+    : '<div class="empty">Your cart is empty.<br>Add items from the menu.</div>';
 }
 function updateBilling(){
  const delivery=orderType.value==='Home Delivery';
@@ -305,7 +341,7 @@ function updateBilling(){
  billFood.textContent=food;billDelivery.textContent=charge;billTotal.textContent=total;
  if(delivery){
    const pin=pinNumber();
-   document.getElementById('deliveryInfo').innerHTML=pin===null?'Delivery: enter pincode 144001–144030.':'Delivery charge: <b>₹'+(charge||0)+'</b> — 144001–144015: ₹100, 144016–144030: ₹200.';
+   document.getElementById('deliveryInfo').style.display='none';
  }
  makeUPI();
 }
@@ -319,11 +355,22 @@ function makeUPI(){
  const note=document.createElement('div');note.className='shareNote';note.textContent='Scan QR or tap Pay with UPI. Amount ₹'+amount+' is pre-filled.';upiArea.appendChild(note);
  upiPay.onclick=()=>{paymentStatus.textContent='UPI app opening…';window.location.href=upi;};
 }
-window.removeItem=function(i){if(i>=0&&i<cart.length){cart.splice(i,1);renderCart();updateBilling();}};
+window.changeQty=function(name,price,delta){
+  const idx=cart.findIndex(x=>x.name===name && x.price===price);
+  if(delta>0){cart.push({name,price});}
+  else if(idx>=0){cart.splice(idx,1);}
+  renderCart(); updateBilling();
+};
+window.removeGroup=function(name,price){
+  for(let i=cart.length-1;i>=0;i--) if(cart[i].name===name && cart[i].price===price) cart.splice(i,1);
+  renderCart(); updateBilling();
+};
 menu.addEventListener('click',e=>{const b=e.target.closest('.add');if(!b)return;const price=Number(b.dataset.price);if(!Number.isFinite(price))return;cart.push({name:b.dataset.name,price});renderCart();});
+document.getElementById('cartButton').onclick=()=>{panel.style.display='block';cartView.style.display='block';billingView.style.display='none';renderCart();};
+document.getElementById('cartClose').onclick=()=>panel.style.display='none';
 document.getElementById('cartClear').onclick=()=>{cart.length=0;renderCart();updateBilling();};
-document.getElementById('proceedBtn').onclick=()=>{if(!cart.length){alert('Cart is empty.');return;}panel.style.display='block';billingView.style.display='block';updateBilling();};
-document.getElementById('backToCart').onclick=()=>{panel.style.display='none';};
+document.getElementById('proceedBtn').onclick=()=>{if(!cart.length){alert('Cart is empty.');return;}cartView.style.display='none';billingView.style.display='block';updateBilling();};
+document.getElementById('backToCart').onclick=()=>{billingView.style.display='none';cartView.style.display='block';};
 orderType.addEventListener('change',updateBilling);
 pincode.addEventListener('input',()=>{pincode.value=pincode.value.replace(/\D/g,'').slice(0,6);updateBilling();});
 phoneInput.addEventListener('input',()=>{phoneInput.value=phoneInput.value.replace(/\D/g,'').slice(0,10);});
@@ -335,6 +382,11 @@ document.getElementById('wa').onclick=()=>{
  if(!name){alert('Customer name enter karein.');nameInput.focus();return;}
  if(!/^\d{10}$/.test(phone)){alert('Mobile number exactly 10 digits ka hona chahiye.');phoneInput.focus();return;}
  let pin=null,addr='Not required (Pickup)';
+ if(!shot.files || !shot.files.length){
+   alert('Payment screenshot attach karna mandatory hai. Pehle UPI payment karein aur screenshot select karein.');
+   shot.focus();
+   return;
+ }
  if(type==='Home Delivery'){
    pin=pinNumber();addr=address.value.trim();
    if(!addr){alert('Delivery address enter karein.');address.focus();return;}
@@ -342,7 +394,7 @@ document.getElementById('wa').onclick=()=>{
  }
  const food=foodTotal(),charge=deliveryCharge(),total=food+charge;
  const lines=cart.map(x=>'• '+x.name+' - ₹'+Number(x.price)).join('\n');
- const msg=`*HAKKA BAKKA ONLINE ORDER*\n\n${lines}\n\nFood Total: ₹${food}\nDelivery Charges: ₹${charge}\n*TOTAL: ₹${total}*\n\nName: ${name}\nMobile: ${phone}\nType: ${type}\n${type==='Home Delivery'?'Pincode: '+pin+'\nAddress: '+addr:'Pickup: Hakka Bakka Punjabi Dhaba'}`;
+ const msg=`*HAKKA BAKKA ONLINE ORDER*\n\n${lines}\n\nFood Total: ₹${food}\nDelivery Charges: ₹${charge}\n*TOTAL: ₹${total}*\n\nName: ${name}\nMobile: ${phone}\nType: ${type}\n${type==='Home Delivery'?'Pincode: '+pin+'\nAddress: '+addr:'Pickup: Hakka Bakka Punjabi Dhaba'}\nPayment Screenshot: Attached by customer`;
  /* WhatsApp cannot be made to press Send automatically by a website. This opens the WhatsApp chat with the order text ready; customer only taps Send. */
  window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
 };
