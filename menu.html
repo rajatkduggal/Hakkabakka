@@ -59,16 +59,16 @@ section{margin:18px 0}
 <div class="panel" id="panel">
 <h2>Your Order</h2>
 <div id="items"></div>
-<h3>Total: ₹<span id="total">0</span></h3>
+<h3 id="grandTotalHeading">Total: ₹<span id="total">0</span></h3>
 
 <input id="customerName" placeholder="Customer Name">
-<input id="customerPhone" placeholder="Mobile Number">
+<input id="customerPhone" placeholder="10-digit Mobile Number" type="tel" inputmode="numeric" maxlength="10" minlength="10" pattern="[0-9]{10}" required>
 
 <select id="orderType">
 <option value="Home Delivery">Home Delivery</option>
 <option value="Pickup">Pickup</option>
 </select>
-<textarea id="address" rows="3" placeholder="Delivery Address"></textarea>
+<textarea id="address" rows="3" placeholder="Delivery Address + Pincode (144001–144030)"></textarea>
 
 <div id="paymentBox">
 <h3 style="margin:0 0 8px;color:#7b1113">💳 Online UPI Payment</h3>
@@ -102,6 +102,10 @@ section{margin:18px 0}
 
 const UPI_ID='9713545556@pthdfc';
 const WA='917796631555';
+const DELIVERY_PIN_MIN=144001;
+const DELIVERY_PIN_MAX=144030;
+const DELIVERY_CUTOFF=144015;
+
 const cart=[];
 
 const data=[
@@ -148,9 +152,7 @@ const data=[
 ["Schezwan Veg Noodles","180","images/schezwan veg noodles.jpg"],
 ["Veg Spring Rolls (6 Pcs.)","180","images/spring roll.jpg"]
 ]],
-["Thali",[
-["Unlimited Thali","150","images/thali.jpg"]
-]],
+["Thali",[["Unlimited Thali","150","images/thali.jpg"]]],
 ["Drinks",[
 ["Sweet Lassi","80","images/sweetlassi.png"],
 ["Masala Chach","60","images/kuladtea.png"],
@@ -241,17 +243,12 @@ const data=[
 ["Garlic Chicken",["280","500"],"images/garlic chicken.jpg"]
 ]],
 ["Soda, Water & Cold Drinks",[
-["Pepsi","0","images/cold_drink.png"],
-["7UP","0","images/cold_drink.png"],
-["Mountain Dew","0","images/cold_drink.png"],
-["Bottled Water","0","images/water.png"],
-["Coca-Cola","0","images/cold_drink.png"],
-["Fanta","0","images/cold_drink.png"],
+["Pepsi","0","images/cold_drink.png"],["7UP","0","images/cold_drink.png"],
+["Mountain Dew","0","images/cold_drink.png"],["Bottled Water","0","images/water.png"],
+["Coca-Cola","0","images/cold_drink.png"],["Fanta","0","images/cold_drink.png"],
 ["Other Soft Drinks","0","images/cold_drink.png"]
 ]],
-["Shakes",[
-["Shakes (Any Flavour)","100","images/milkshake.png"]
-]]
+["Shakes",[["Shakes (Any Flavour)","100","images/milkshake.png"]]]
 ];
 
 const menu=document.getElementById('menu');
@@ -265,61 +262,100 @@ const payBtn=document.getElementById('upiPay');
 const method=document.getElementById('paymentMethod');
 const shot=document.getElementById('paymentScreenshot');
 const utr=document.getElementById('utr');
+const orderType=document.getElementById('orderType');
+const address=document.getElementById('address');
+const nameInput=document.getElementById('customerName');
+const phoneInput=document.getElementById('customerPhone');
 
-function money(n){return Number(n)||0}
-function esc(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])}
+function esc(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function itemTotal(){return cart.reduce((sum,item)=>sum + Number(item.price),0)}
+function getPincode(){
+  const match=address.value.match(/\b(144\d{3})\b/);
+  return match ? Number(match[1]) : null;
+}
+function deliveryCharge(){
+  if(orderType.value!=='Home Delivery') return 0;
+  const pin=getPincode();
+  if(pin===null || pin<DELIVERY_PIN_MIN || pin>DELIVERY_PIN_MAX) return 0;
+  return pin<=DELIVERY_CUTOFF ? 100 : 200;
+}
+function grandTotal(){return itemTotal()+deliveryCharge()}
 
 function renderMenu(){
   menu.innerHTML=data.map(([section,list])=>`
-    <section>
-      <h2 class="section-title">${esc(section)}</h2>
-      <div class="grid">
-      ${list.map((x)=>{
-        const name=x[0], p=x[1], img=x[2];
-        if(Array.isArray(p)){
-          return `<article class="card">
-            <img src="${img}" alt="${esc(name)}" onerror="this.style.visibility='hidden'">
-            <div class="content"><h3>${esc(name)}</h3>
-            <div class="price">₹${p[0]} / ${p[1]}</div>
-            <div class="variant-row">
-              <button class="add" data-name="${esc(name)} - Half" data-price="${p[0]}">Half — ₹${p[0]}</button>
-              <button class="add" data-name="${esc(name)} - Full" data-price="${p[1]}">Full — ₹${p[1]}</button>
-            </div></div></article>`;
-        }
-        if(Number(p)===0){
-          return `<article class="card">
-            <img src="${img}" alt="${esc(name)}" onerror="this.style.visibility='hidden'">
-            <div class="content"><h3>${esc(name)}</h3><div class="price">Price not listed</div></div>
-          </article>`;
-        }
-        return `<article class="card">
-          <img src="${img}" alt="${esc(name)}" onerror="this.style.visibility='hidden'">
-          <div class="content"><h3>${esc(name)}</h3><div class="price">₹${p}</div>
-          <button class="add" data-name="${esc(name)}" data-price="${p}">Add to Order</button></div>
-        </article>`;
-      }).join('')}
-      </div>
-    </section>`;
-  }).join('');
+  <section>
+    <h2 class="section-title">${esc(section)}</h2>
+    <div class="grid">
+    ${list.map(x=>{
+      const name=x[0], p=x[1], img=x[2];
+      if(Array.isArray(p)) return `<article class="card">
+        <img src="${img}" alt="${esc(name)}" onerror="this.style.visibility='hidden'">
+        <div class="content"><h3>${esc(name)}</h3><div class="price">₹${p[0]} / ${p[1]}</div>
+        <div class="variant-row">
+        <button class="add" data-name="${esc(name)} - Half" data-price="${p[0]}">Half — ₹${p[0]}</button>
+        <button class="add" data-name="${esc(name)} - Full" data-price="${p[1]}">Full — ₹${p[1]}</button>
+        </div></div></article>`;
+      if(Number(p)===0) return `<article class="card"><img src="${img}" alt="${esc(name)}" onerror="this.style.visibility='hidden'">
+        <div class="content"><h3>${esc(name)}</h3><div class="price">Price not listed</div></div></article>`;
+      return `<article class="card"><img src="${img}" alt="${esc(name)}" onerror="this.style.visibility='hidden'">
+        <div class="content"><h3>${esc(name)}</h3><div class="price">₹${p}</div>
+        <button class="add" data-name="${esc(name)}" data-price="${p}">Add to Order</button></div></article>`;
+    }).join('')}
+    </div>
+  </section>`).join('');
 }
 
-function currentTotal(){return cart.reduce((s,x)=>s+money(x.price),0)}
+function updateDeliveryUI(){
+  const isDelivery=orderType.value==='Home Delivery';
+  address.style.display=isDelivery?'block':'none';
+
+  const old=document.getElementById('deliveryInfo');
+  if(old) old.remove();
+
+  if(!isDelivery) return;
+
+  const info=document.createElement('div');
+  info.id='deliveryInfo';
+  info.style.cssText='font-size:14px;margin:4px 0 8px;padding:9px;border-radius:7px;background:#f7f3ec;color:#555';
+  info.innerHTML='<b>Delivery area:</b> Pincode 144001–144030 only. '+
+    'Delivery charge: <b>₹100</b> up to 144015, <b>₹200</b> for 144016–144030.';
+  address.insertAdjacentElement('afterend',info);
+}
 
 function refresh(){
   count.textContent=cart.length;
   items.innerHTML=cart.length ? cart.map((x,i)=>
-    `<div class="order-item"><b>${esc(x.name)}</b><br>₹${money(x.price)}
+    `<div class="order-item"><b>${esc(x.name)}</b><br>₹${Number(x.price)}
     <button class="remove" onclick="removeItem(${i})">Remove</button></div>`).join('')
     : '<div class="empty">Your cart is empty.<br>Add items from the menu.</div>';
-  total.textContent=currentTotal();
+
+  const subtotal=itemTotal();
+  const charge=deliveryCharge();
+  total.textContent=grandTotal();
+  payAmount.textContent=grandTotal();
+
+  const oldSummary=document.getElementById('billSummary');
+  if(oldSummary) oldSummary.remove();
+
+  if(cart.length){
+    const summary=document.createElement('div');
+    summary.id='billSummary';
+    summary.style.cssText='padding:10px 0;border-top:1px solid #ddd;margin-top:6px';
+    summary.innerHTML='<div>Food Total: <b>₹'+subtotal+'</b></div>'+
+      (orderType.value==='Home Delivery'
+        ? '<div>Delivery Charges: <b>₹'+charge+'</b></div>'
+        : '<div>Delivery Charges: <b>₹0</b></div>');
+    document.getElementById('total').parentElement.insertAdjacentElement('afterend',summary);
+  }
   makeUPI();
 }
 
 function makeUPI(){
-  const amount=currentTotal();
+  const amount=grandTotal();
   payAmount.textContent=amount;
   upiArea.innerHTML='';
-  payBtn.style.display=method.value==='UPI'?'block':'none';
+  payBtn.style.display=method.value==='UPI'&&amount>0?'block':'none';
+
   if(!amount || method.value!=='UPI') return;
 
   const upi='upi://pay?pa='+encodeURIComponent(UPI_ID)+
@@ -341,10 +377,8 @@ function makeUPI(){
 
   const note=document.createElement('div');
   note.id='shareNote';
-  note.textContent='Scan QR — ₹'+amount+' amount pre-filled.';
+  note.textContent='Scan QR — ₹'+amount+' total amount (including delivery, if applicable) is pre-filled.';
   upiArea.appendChild(note);
-
-  payBtn.onclick=()=>{window.location.href=upi};
 }
 
 window.removeItem=function(i){
@@ -355,8 +389,8 @@ menu.addEventListener('click',e=>{
   const b=e.target.closest('.add');
   if(!b)return;
   const price=Number(b.dataset.price);
-  if(!Number.isFinite(price)){alert('Invalid price');return}
-  cart.push({name:b.dataset.name,price});
+  if(!Number.isFinite(price)){alert('This item has no valid price.');return}
+  cart.push({name:b.dataset.name,price:price});
   panel.style.display='block';
   refresh();
 });
@@ -378,40 +412,79 @@ document.getElementById('cartButton').onclick=()=>{panel.style.display='block';r
 document.getElementById('close').onclick=()=>panel.style.display='none';
 document.getElementById('clear').onclick=()=>{cart.length=0;refresh()};
 
-document.getElementById('orderType').addEventListener('change',function(){
-  document.getElementById('address').style.display=this.value==='Home Delivery'?'block':'none';
+orderType.addEventListener('change',()=>{
+  updateDeliveryUI();
+  refresh();
 });
+
+address.addEventListener('input',()=>{
+  // Keep only a normal address field, but automatically detect a 144xxx pincode.
+  refresh();
+});
+
 method.addEventListener('change',makeUPI);
+
+phoneInput.setAttribute('inputmode','numeric');
+phoneInput.setAttribute('maxlength','10');
+phoneInput.setAttribute('minlength','10');
+phoneInput.setAttribute('pattern','[0-9]{10}');
+phoneInput.addEventListener('input',()=>{
+  phoneInput.value=phoneInput.value.replace(/\D/g,'').slice(0,10);
+});
 
 document.getElementById('wa').onclick=async function(){
   if(!cart.length){alert('Please add items first.');return}
 
-  const name=document.getElementById('customerName').value.trim()||'Not provided';
-  const phone=document.getElementById('customerPhone').value.trim()||'Not provided';
-  const type=document.getElementById('orderType').value;
-  const address=type==='Home Delivery'
-    ?(document.getElementById('address').value.trim()||'Not provided')
-    :'Not required (Pickup)';
+  const name=nameInput.value.trim();
+  const phone=phoneInput.value.trim();
+
+  if(!name){alert('Please enter customer name.');nameInput.focus();return}
+  if(!/^\d{10}$/.test(phone)){
+    alert('Mobile number exactly 10 digits ka hona chahiye.');
+    phoneInput.focus();return;
+  }
+
+  const type=orderType.value;
+  let pin=null;
+
+  if(type==='Home Delivery'){
+    pin=getPincode();
+    if(pin===null || pin<DELIVERY_PIN_MIN || pin>DELIVERY_PIN_MAX){
+      alert('Home Delivery sirf pincode 144001 se 144030 tak available hai. Address me valid 6-digit pincode likhein.');
+      address.focus();return;
+    }
+  }
+
+  const charge=deliveryCharge();
+  const subtotal=itemTotal();
+  const finalTotal=subtotal+charge;
+  const addr=type==='Home Delivery'?address.value.trim():'Not required (Pickup)';
   const transaction=utr.value.trim()||'Not provided';
   const payment=method.value==='UPI'?'UPI Online':'Pay at Restaurant';
+
+  if(type==='Home Delivery' && !addr){
+    alert('Please enter delivery address.');address.focus();return;
+  }
 
   if(method.value==='UPI' && (!shot.files || !shot.files.length)){
     if(!confirm('Payment screenshot upload nahi kiya. Kya phir bhi WhatsApp order bhejna hai?')) return;
   }
 
-  const lines=cart.map(x=>'• '+x.name+' - ₹'+money(x.price)).join('\\n');
+  const lines=cart.map(x=>'• '+x.name+' - ₹'+Number(x.price)).join('\\n');
   const msg=`*HAKKA BAKKA ONLINE ORDER*
 
 ${lines}
 
-*Total: ₹${currentTotal()}*
+Food Total: ₹${subtotal}
+Delivery Charges: ₹${charge}
+*Total: ₹${finalTotal}*
 Payment: ${payment}
 UTR: ${transaction}
 
 Name: ${name}
 Mobile: ${phone}
 Type: ${type}
-Address: ${address}`;
+${type==='Home Delivery'?'Pincode: '+pin+'\\n':''}Address: ${addr}`;
 
   const file=shot.files&&shot.files.length?shot.files[0]:null;
 
@@ -430,12 +503,13 @@ Address: ${address}`;
 };
 
 renderMenu();
+updateDeliveryUI();
 refresh();
 
-/* IMPORTANT: always use the newest HTML after publishing */
+/* Service worker: force browser to check the newest version */
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('/sw.js?v=6')
+    navigator.serviceWorker.register('/sw.js?v=6',{updateViaCache:'none'})
       .then(reg=>reg.update())
       .catch(err=>console.log('SW registration failed',err));
   });
