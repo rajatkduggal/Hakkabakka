@@ -85,8 +85,18 @@ body:not(.hb-menu-open) .cart-fab{display:none!important;}
   #menuScreen .cart-pay{font-size:9px!important;padding:6px 6px!important}
 }
 
+
+.account-btn{border:1px solid #eadfd4;background:#fff;border-radius:10px;color:var(--red);padding:9px 11px;font-weight:900;white-space:nowrap}
+.auth-message{display:none;margin-top:10px;padding:10px;border-radius:10px;background:#faf6f0;color:#555;font-size:13px;line-height:1.4}
+.auth-message.show{display:block}.auth-message.ok{background:#effaf3;color:#176d3d}.auth-message.bad{background:#fff2f2;color:#9b1016}
+.account-hint{margin-top:12px;padding:12px;border:1px solid #eadfd4;border-radius:12px;background:#faf7f2;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px}
+.account-hint b{color:var(--red)}.account-hint span{color:#666;flex:1 1 100%}
+.mini-account-btn{border:0;background:var(--red);color:#fff;border-radius:8px;padding:7px 10px;font-weight:900}
+@media(max-width:600px){.account-btn{padding:8px 8px;font-size:11px}.menu-title span{display:none}}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <script>document.documentElement.classList.add("hb-v34");</script>
@@ -165,9 +175,46 @@ body:not(.hb-menu-open) .cart-fab{display:none!important;}
   </div>
 </div>
 
+
+<!-- CUSTOMER ACCOUNT -->
+<div class="modal" id="authModal" onclick="if(event.target===this)closeAuth()">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h2 id="authTitle">Customer Login</h2>
+      <button class="close" type="button" onclick="closeAuth()">✕</button>
+    </div>
+    <div id="authMessage" class="auth-message"></div>
+
+    <div id="loginForm">
+      <input class="field" id="loginEmail" type="email" placeholder="Email address" autocomplete="email">
+      <input class="field" id="loginPassword" type="password" placeholder="Password" autocomplete="current-password">
+      <button class="drawer-action" type="button" onclick="loginCustomer()">Login</button>
+      <button class="drawer-action secondary" type="button" onclick="showSignup()">Create New Account</button>
+    </div>
+
+    <div id="signupForm" style="display:none">
+      <input class="field" id="signupName" placeholder="Full Name" autocomplete="name">
+      <input class="field" id="signupPhone" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit Mobile Number" autocomplete="tel">
+      <input class="field" id="signupEmail" type="email" placeholder="Email address" autocomplete="email">
+      <input class="field" id="signupPassword" type="password" placeholder="Password (minimum 6 characters)" autocomplete="new-password">
+      <input class="field" id="signupPassword2" type="password" placeholder="Confirm Password" autocomplete="new-password">
+      <button class="drawer-action" type="button" onclick="signupCustomer()">Create Account</button>
+      <button class="drawer-action secondary" type="button" onclick="showLogin()">← Back to Login</button>
+    </div>
+
+    <div id="accountForm" style="display:none">
+      <input class="field" id="profileName" placeholder="Full Name" autocomplete="name">
+      <input class="field" id="profilePhone" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit Mobile Number" autocomplete="tel">
+      <input class="field" id="profileAddress" placeholder="Default Delivery Address" autocomplete="street-address">
+      <button class="drawer-action" type="button" onclick="saveCustomerProfile()">Save Profile</button>
+      <button class="drawer-action secondary" type="button" onclick="logoutCustomer()">Logout</button>
+    </div>
+  </div>
+</div>
+
 <!-- SEPARATE ONLINE MENU SCREEN -->
 <div id="menuScreen">
-  <div class="menu-header"><div class="menu-bar"><button class="back" onclick="closeMenu()">← Back</button><div class="menu-title"><b>Hakka Bakka Online Menu</b><span>Punjabi Dhaba • Desi Swad • Modern Vibe</span></div></div><div class="searchbox"><input id="search" type="search" placeholder="Search menu…" autocomplete="off"><div class="cart-summary" id="cartSummary" role="button" tabindex="0" aria-label="Open cart" onclick="openCart()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCart()}"><div class="cart-summary-head">🛒 <span id="cartSummaryText">Cart is empty</span></div><div id="cartSummaryList" class="cart-summary-list"></div><div class="cart-summary-total"><span>Total</span><b>₹<span id="cartSummaryTotal">0</span></b><button type="button" class="cart-pay" onclick="event.stopPropagation();proceedBilling()">💳 Pay / Checkout →</button></div></div></div></div>
+  <div class="menu-header"><div class="menu-bar"><button class="back" onclick="closeMenu()">← Back</button><div class="menu-title"><b>Hakka Bakka Online Menu</b><span>Punjabi Dhaba • Desi Swad • Modern Vibe</span></div><button class="account-btn" id="accountBtn" type="button" onclick="openAuth()">👤 Login</button></div><div class="searchbox"><input id="search" type="search" placeholder="Search menu…" autocomplete="off"><div class="cart-summary" id="cartSummary" role="button" tabindex="0" aria-label="Open cart" onclick="openCart()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCart()}"><div class="cart-summary-head">🛒 <span id="cartSummaryText">Cart is empty</span></div><div id="cartSummaryList" class="cart-summary-list"></div><div class="cart-summary-total"><span>Total</span><b>₹<span id="cartSummaryTotal">0</span></b><button type="button" class="cart-pay" onclick="event.stopPropagation();proceedBilling()">💳 Pay / Checkout →</button></div></div></div></div>
   <main class="menu-content" id="menu"></main>
 </div>
 <button class="cart-fab" id="cartFab" onclick="openCart()" style="display:none">🛒 Cart <span class="count" id="fabCount">0</span></button>
@@ -176,6 +223,12 @@ body:not(.hb-menu-open) .cart-fab{display:none!important;}
   <div class="drawer-head"><h2 id="cartHeading">Your Order</h2><button class="drawer-close" onclick="closeCart()">✕</button></div>
   <div id="cartView"><div id="items"></div><div class="bill"><div>Food Total <b>₹<span id="cartSubtotal">0</span></b></div></div><button class="drawer-action" onclick="proceedBilling()">Proceed to Billing</button><button class="drawer-action secondary" onclick="clearCart()">Clear Cart</button></div>
   <div id="billingView" style="display:none">
+    <div id="customerAccountHint" class="account-hint">
+      <b>👤 Customer Account</b>
+      <span id="customerAccountStatus">Login to save your details and order history.</span>
+      <button type="button" class="mini-account-btn" onclick="openAuth()">Login / Create Account</button>
+    </div>
+    
     <div class="order-no"><span>Your Order Number</span><strong id="orderNumber">—</strong></div>
     <input class="field" id="customerName" placeholder="Customer Name">
     <input class="field" id="customerPhone" placeholder="10-digit Mobile Number" type="tel" inputmode="numeric" maxlength="10">
@@ -189,6 +242,172 @@ body:not(.hb-menu-open) .cart-fab{display:none!important;}
 
 <script>
 const WA='917796631555', UPI_ID='9713545556@pthdfc';
+
+const SUPABASE_URL='https://ovdikdytpggvfxafyqxw.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_v7fRDnoQ-1l4wpqYEx-9_A_kT67W3rG';
+const supabaseClient=(window.supabase&&window.supabase.createClient)
+  ? window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY)
+  : null;
+let currentUser=null, currentProfile=null;
+
+function authMsg(text,kind=''){
+  const el=document.getElementById('authMessage');
+  if(!el)return;
+  el.textContent=text; el.className='auth-message show '+kind;
+}
+function showLogin(){
+  document.getElementById('authTitle').textContent='Customer Login';
+  document.getElementById('loginForm').style.display='block';
+  document.getElementById('signupForm').style.display='none';
+  document.getElementById('accountForm').style.display='none';
+  authMsg('');
+}
+function showSignup(){
+  document.getElementById('authTitle').textContent='Create Customer Account';
+  document.getElementById('loginForm').style.display='none';
+  document.getElementById('signupForm').style.display='block';
+  document.getElementById('accountForm').style.display='none';
+  authMsg('');
+}
+function showAccount(){
+  document.getElementById('authTitle').textContent='My Account';
+  document.getElementById('loginForm').style.display='none';
+  document.getElementById('signupForm').style.display='none';
+  document.getElementById('accountForm').style.display='block';
+  document.getElementById('profileName').value=currentProfile?.full_name||'';
+  document.getElementById('profilePhone').value=currentProfile?.phone||'';
+  document.getElementById('profileAddress').value=currentProfile?.default_address||'';
+  authMsg('Your customer account is active.','ok');
+}
+function openAuth(){
+  document.getElementById('authModal').classList.add('show');
+  currentUser ? showAccount() : showLogin();
+}
+function closeAuth(){document.getElementById('authModal').classList.remove('show')}
+function normalizePhone(v){return String(v||'').replace(/\D/g,'').slice(0,10)}
+async function loadCustomerProfile(user=currentUser){
+  if(!supabaseClient||!user){currentProfile=null;updateAccountUI();return}
+  const {data,error}=await supabaseClient.from('customer_profiles').select('*').eq('id',user.id).maybeSingle();
+  if(error){console.warn('Profile load:',error);currentProfile=null}
+  else currentProfile=data||null;
+  updateAccountUI();
+}
+function updateAccountUI(){
+  const btn=document.getElementById('accountBtn');
+  const status=document.getElementById('customerAccountStatus');
+  const hint=document.getElementById('customerAccountHint');
+  if(btn)btn.textContent=currentUser ? '👤 My Account' : '👤 Login';
+  if(status)status.textContent=currentUser
+    ? `Logged in as ${currentUser.email}${currentProfile?.phone?' • Mobile '+currentProfile.phone:''}.`
+    : 'Login to save your details and order history.';
+  if(hint)hint.style.display='block';
+  if(currentUser && currentProfile){
+    const n=document.getElementById('customerName'),p=document.getElementById('customerPhone'),a=document.getElementById('address');
+    if(n && !n.value)n.value=currentProfile.full_name||'';
+    if(p && !p.value)p.value=currentProfile.phone||'';
+    if(a && !a.value)a.value=currentProfile.default_address||'';
+  }
+}
+async function loginCustomer(){
+  if(!supabaseClient)return authMsg('Supabase connection not available.','bad');
+  const email=document.getElementById('loginEmail').value.trim();
+  const password=document.getElementById('loginPassword').value;
+  if(!email||!password)return authMsg('Email aur password dono enter karein.','bad');
+  const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+  if(error)return authMsg(error.message,'bad');
+  currentUser=data.user; await loadCustomerProfile(currentUser);
+  closeAuth();
+  updateAccountUI();
+}
+async function signupCustomer(){
+  if(!supabaseClient)return authMsg('Supabase connection not available.','bad');
+  const name=document.getElementById('signupName').value.trim();
+  const phone=normalizePhone(document.getElementById('signupPhone').value);
+  const email=document.getElementById('signupEmail').value.trim();
+  const password=document.getElementById('signupPassword').value;
+  const password2=document.getElementById('signupPassword2').value;
+  if(!name)return authMsg('Full name enter karein.','bad');
+  if(!/^\d{10}$/.test(phone))return authMsg('10-digit mobile number enter karein.','bad');
+  if(!email)return authMsg('Email enter karein.','bad');
+  if(password.length<6)return authMsg('Password minimum 6 characters ka hona chahiye.','bad');
+  if(password!==password2)return authMsg('Passwords match nahi kar rahe.','bad');
+  localStorage.setItem('hb_pending_profile',JSON.stringify({full_name:name,phone}));
+  const {data,error}=await supabaseClient.auth.signUp({
+    email,password,
+    options:{data:{full_name:name,phone}}
+  });
+  if(error){localStorage.removeItem('hb_pending_profile');return authMsg(error.message,'bad')}
+  if(data.user && data.session){
+    currentUser=data.user; await savePendingProfile(); closeAuth(); updateAccountUI();
+  }else{
+    showLogin();
+    authMsg('Account ban gaya. Email inbox mein verification link open karein, phir Login karein.','ok');
+  }
+}
+async function savePendingProfile(){
+  if(!supabaseClient||!currentUser)return;
+  let p=null;
+  try{p=JSON.parse(localStorage.getItem('hb_pending_profile')||'null')}catch(e){}
+  if(!p)return;
+  const {data,error}=await supabaseClient.from('customer_profiles').upsert({
+    id:currentUser.id,email:currentUser.email,full_name:p.full_name,phone:p.phone
+  }).select().single();
+  if(!error)currentProfile=data;
+  localStorage.removeItem('hb_pending_profile');
+}
+async function saveCustomerProfile(){
+  if(!supabaseClient||!currentUser)return authMsg('Pehle login karein.','bad');
+  const full_name=document.getElementById('profileName').value.trim();
+  const phone=normalizePhone(document.getElementById('profilePhone').value);
+  const default_address=document.getElementById('profileAddress').value.trim();
+  if(!full_name)return authMsg('Full name enter karein.','bad');
+  if(!/^\d{10}$/.test(phone))return authMsg('10-digit mobile number enter karein.','bad');
+  const {data,error}=await supabaseClient.from('customer_profiles').upsert({
+    id:currentUser.id,email:currentUser.email,full_name,phone,default_address
+  }).select().single();
+  if(error)return authMsg(error.message,'bad');
+  currentProfile=data; updateAccountUI(); authMsg('Profile saved successfully.','ok');
+}
+async function logoutCustomer(){
+  if(supabaseClient)await supabaseClient.auth.signOut();
+  currentUser=null; currentProfile=null; updateAccountUI(); showLogin(); closeAuth();
+}
+async function requireCustomerLogin(){
+  if(currentUser)return true;
+  openAuth();
+  authMsg('Order place karne ke liye pehle customer account se Login karein.','bad');
+  return false;
+}
+async function saveOrderToSupabase(){
+  if(!supabaseClient||!currentUser)return false;
+  const name=document.getElementById('customerName').value.trim();
+  const phone=normalizePhone(document.getElementById('customerPhone').value);
+  const type=document.getElementById('orderType').value;
+  const address=type==='Home Delivery'?document.getElementById('address').value.trim():null;
+  const pincode=type==='Home Delivery'?pin():null;
+  const total=expectedTotal();
+  const items=cart.map(x=>({name:x.name,price:x.price}));
+  const {error}=await supabaseClient.from('customer_orders').insert({
+    user_id:currentUser.id,order_no:currentOrderNo,customer_name:name,phone,
+    order_type:type,address,pincode,items,food_total:foodTotal(),
+    delivery_charges:deliveryCharge(),total_amount:total,status:'payment_verified'
+  });
+  if(error){console.error('Order save:',error);return false}
+  return true;
+}
+async function initCustomerAuth(){
+  if(!supabaseClient)return;
+  const {data}=await supabaseClient.auth.getSession();
+  currentUser=data.session?.user||null;
+  if(currentUser)await savePendingProfile();
+  if(currentUser)await loadCustomerProfile(currentUser); else updateAccountUI();
+  supabaseClient.auth.onAuthStateChange(async (_event,session)=>{
+    currentUser=session?.user||null;
+    if(currentUser){await savePendingProfile();await loadCustomerProfile(currentUser)}
+    else{currentProfile=null;updateAccountUI()}
+  });
+}
+
 let currentOrderNo='';
 const ZOMATO='https://zomato.onelink.me/xqzv/7948ndtj', SWIGGY='https://www.swiggy.com/menu/1400828?source=sharing';
 const PIN_MIN=144001,PIN_MAX=144030,PIN_CUTOFF=144015;
@@ -364,7 +583,7 @@ function monthCode(){return ['JA','FE','MA','AP','MA','JU','JU','AU','SE','OC','
 function nextOrderNumber(){const now=new Date(),key='hb_order_counter_'+now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');let n=parseInt(localStorage.getItem(key)||'0',10)+1;localStorage.setItem(key,String(n));return monthCode().toLowerCase()+n}
 function ensureOrderNumber(){if(!currentOrderNo){currentOrderNo=nextOrderNumber()}document.getElementById('orderNumber').textContent=currentOrderNo}
 function resetOrderNumber(){currentOrderNo='';document.getElementById('orderNumber').textContent='—'}
-function proceedBilling(){if(!cart.length){alert('Cart is empty.');return}ensureOrderNumber();document.body.classList.add('hb-billing-open');const drawer=document.getElementById('drawer'),card=document.getElementById('drawerCard');drawer.classList.add('show');document.getElementById('cartView').style.display='none';document.getElementById('billingView').style.display='block';if(card)card.scrollTop=0;updateBilling()}
+async function proceedBilling(){if(!cart.length){alert('Cart is empty.');return}if(!(await requireCustomerLogin()))return;ensureOrderNumber();document.body.classList.add('hb-billing-open');const drawer=document.getElementById('drawer'),card=document.getElementById('drawerCard');drawer.classList.add('show');document.getElementById('cartView').style.display='none';document.getElementById('billingView').style.display='block';if(card)card.scrollTop=0;updateBilling()}
 function backToCart(){document.body.classList.remove('hb-billing-open');document.getElementById('billingView').style.display='none';document.getElementById('cartView').style.display='block'}
 
 document.getElementById('menu').addEventListener('click',e=>{const b=e.target.closest('.add');if(!b)return;const n=b.dataset.name,p=Number(b.dataset.price);if(e.target.closest('.minus')){const i=cart.findIndex(x=>x.name===n&&x.price===p);if(i>=0)cart.splice(i,1)}else if(e.target.closest('.plus'))cart.push({name:n,price:p});else{cart.push({name:n,price:p});b.dataset.original=b.textContent}renderCart()});
@@ -391,7 +610,7 @@ function startPaymentTimer(){stopPaymentTimer();paymentStartedAt=Date.now();paym
 document.getElementById('upiPay').onclick=()=>{const amt=foodTotal()+deliveryCharge();if(!amt)return alert('Cart is empty.');startPaymentTimer();const upi='upi://pay?pa='+encodeURIComponent(UPI_ID)+'&pn='+encodeURIComponent('Hakka Bakka Punjabi Dhaba')+'&am='+amt.toFixed(2)+'&cu=INR&tn='+encodeURIComponent('HAKKA BAKKA '+currentOrderNo);window.location.href=upi};
 async function verifyPaymentScreenshot(file){stopPaymentTimer();paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};waSend.disabled=true;setPaymentCheck('', '🔍 Checking payment screenshot…','');try{if(!window.Tesseract)throw new Error('OCR engine unavailable');const result=await Tesseract.recognize(file,'eng',{logger:m=>{if(m.status==='recognizing text'&&m.progress)paymentCheck.innerHTML='<b>🔍 Checking payment screenshot…</b><span>Reading screenshot… '+Math.round(m.progress*100)+'%</span>'}});const text=result.data.text||'';const total=expectedTotal();const amounts=findAmounts(text);paymentVerification.amount=amounts.some(n=>Math.abs(n-total)<0.01);const dates=parseDateCandidates(text);const now=new Date();paymentVerification.date=dates.some(d=>sameLocalDay(d,now));const times=parseTimeCandidates(text);paymentVerification.time=times.some(x=>timeDistanceMinutes(x.h,x.mi,now)<=5);paymentVerification.order=orderNoMatches(text);paymentVerification.ocr=true;if(updateVerificationUI()){setPaymentCheck('ok','✅ Payment Slip Verified','');}else{setPaymentCheck('bad','Payment Slip Verification pura nahi hua','Kripya issi ORDER ka bhugtan kiya slip attach kare.')}}catch(e){paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment Slip Verification pura nahi hua','Kripya issi ORDER ka bhugtan kiya slip attach kare.');updateVerificationUI()}}
 paymentScreenshot.addEventListener('change',()=>{const f=paymentScreenshot.files&&paymentScreenshot.files[0];if(f)verifyPaymentScreenshot(f);else{stopPaymentTimer();paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment Slip Verification pura nahi hua','Kripya issi ORDER ka bhugtan kiya slip attach kare.');updateVerificationUI()}});
-document.getElementById('waSend').onclick=()=>{if(!cart.length)return alert('Cart is empty.');if(!updateVerificationUI()){setPaymentCheck('bad','Payment Slip Verification pura nahi hua','Kripya issi ORDER ka bhugtan kiya slip attach kare.');paymentScreenshot.scrollIntoView({behavior:'smooth',block:'center'});return;}const name=document.getElementById('customerName').value.trim(),phone=document.getElementById('customerPhone').value.trim(),type=document.getElementById('orderType').value;if(!name)return alert('Customer name enter karein.');if(!/^\d{10}$/.test(phone))return alert('10-digit mobile number enter karein.');let extra='';if(type==='Home Delivery'){const p=pin(),a=document.getElementById('address').value.trim();if(!a)return alert('Delivery address enter karein.');if(p===null||p<PIN_MIN||p>PIN_MAX)return alert('Home Delivery sirf pincode 144001 se 144030 tak available hai.');extra='\nPincode: '+p+'\nAddress: '+a}const lines=cart.map(x=>'• '+x.name+' - ₹'+x.price).join('\n');const total=foodTotal()+deliveryCharge();const msg='*HAKKA BAKKA ONLINE ORDER*\n*ORDER NO: '+currentOrderNo+'*\n\n'+lines+'\n\nFood Total: ₹'+foodTotal()+'\nDelivery Charges: ₹'+deliveryCharge()+'\n*TOTAL: ₹'+total+'*\n\nPayment Slip Verified: Order No + Amount + Date + Time\n\nName: '+name+'\nMobile: '+phone+'\nType: '+type+extra+'\n\nPlease confirm my order.';window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg)};
+document.getElementById('waSend').onclick=async()=>{if(!cart.length)return alert('Cart is empty.');if(!(await requireCustomerLogin()))return;if(!updateVerificationUI()){setPaymentCheck('bad','Payment Slip Verification pura nahi hua','Kripya issi ORDER ka bhugtan kiya slip attach kare.');paymentScreenshot.scrollIntoView({behavior:'smooth',block:'center'});return;}const name=document.getElementById('customerName').value.trim(),phone=document.getElementById('customerPhone').value.trim(),type=document.getElementById('orderType').value;if(!name)return alert('Customer name enter karein.');if(!/^\d{10}$/.test(phone))return alert('10-digit mobile number enter karein.');let extra='';if(type==='Home Delivery'){const p=pin(),a=document.getElementById('address').value.trim();if(!a)return alert('Delivery address enter karein.');if(p===null||p<PIN_MIN||p>PIN_MAX)return alert('Home Delivery sirf pincode 144001 se 144030 tak available hai.');extra='\nPincode: '+p+'\nAddress: '+a}if(supabaseClient&&currentUser){const saved=await saveOrderToSupabase();if(!saved){return alert('Order database mein save nahi ho saka. Please try again.')}}const lines=cart.map(x=>'• '+x.name+' - ₹'+x.price).join('\n');const total=foodTotal()+deliveryCharge();const msg='*HAKKA BAKKA ONLINE ORDER*\n*ORDER NO: '+currentOrderNo+'*\n\n'+lines+'\n\nFood Total: ₹'+foodTotal()+'\nDelivery Charges: ₹'+deliveryCharge()+'\n*TOTAL: ₹'+total+'*\n\nPayment Slip Verified: Order No + Amount + Date + Time\n\nName: '+name+'\nMobile: '+phone+'\nType: '+type+extra+'\n\nPlease confirm my order.';window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg)};
 
 // HERO FOOD SLIDESHOW — resolve the exact uploaded filenames from GitHub, then rotate.
 (async function(){
@@ -409,7 +628,7 @@ document.getElementById('waSend').onclick=()=>{if(!cart.length)return alert('Car
   }
   const imgs=[...document.querySelectorAll('#heroSlides img')],dots=document.getElementById('heroDots');let i=0;imgs.forEach((_,k)=>{const d=document.createElement('span');if(k===0)d.classList.add('active');dots.appendChild(d)});const ds=[...dots.children];setInterval(()=>{imgs[i].classList.remove('active');ds[i].classList.remove('active');i=(i+1)%imgs.length;imgs[i].classList.add('active');ds[i].classList.add('active')},3000);
 })();
-renderMenu();renderCart();
+renderMenu();renderCart();initCustomerAuth();
 </script>
 </body>
 </html>
