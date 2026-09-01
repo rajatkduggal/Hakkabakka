@@ -87,7 +87,7 @@ section{margin:18px 0}
 .option-wa{background:#198754;color:#fff}
 .option-zomato{background:#d8232a;color:#fff}
 .option-swiggy{background:#ff8a00;color:#fff}
-.menu-start{display:none}
+.menu-start{display:none}.menu-start.menu-visible{display:block!important;visibility:visible!important;opacity:1!important}
 #cartButton{display:none}
 .menu-active #cartButton{display:block}
 .home-footer{text-align:center;color:#777;font-size:13px;margin-top:26px;padding:0 15px}
@@ -112,7 +112,73 @@ section{margin:18px 0}
 .brand-icon{display:inline-flex;width:34px;height:34px;border-radius:50%;align-items:center;justify-content:center;margin-right:10px;font-weight:900;font-size:20px;vertical-align:middle;box-shadow:0 2px 6px rgba(0,0,0,.18)}.whatsapp-icon{background:#25D366;color:#fff;font-size:19px}.zomato-icon{background:#E23744;color:#fff;font-family:Arial}.swiggy-icon{background:#FC8019;color:#fff;font-family:Arial}.order-option{display:flex;align-items:center;justify-content:center;gap:4px}.order-option .brand-icon{flex:0 0 34px} 
 
 .menu-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;background:#fff;position:sticky;top:0;z-index:11;border-bottom:1px solid #eadfd2}.menu-top button{border:0;background:none;color:#7b1113;font-weight:800;font-size:15px}.menu-top strong{color:#222;font-size:17px}.shop-icon{display:inline-flex;align-items:center;justify-content:center;margin-right:8px;font-size:21px}
+
+/* V9 premium restaurant sections */
+.premium-sections{max-width:1000px;margin:22px auto 0;padding:0 16px}
+.premium-title{text-align:center;color:#7b1113;font-size:25px;margin:24px 0 12px}
+.special-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.special-card{background:#fff;border-radius:16px;padding:16px;text-align:center;box-shadow:0 4px 14px #0001;border:1px solid #eee0d5}
+.special-card .emoji{font-size:30px}.special-card h4{margin:8px 0 4px;color:#7b1113}.special-card p{margin:0;color:#666;font-size:13px;line-height:1.4}
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.info-card{background:#fff;border-radius:16px;padding:18px;text-align:center;box-shadow:0 4px 14px #0001;border:1px solid #eee0d5}
+.info-icon{font-size:28px}.info-card h4{margin:8px 0;color:#7b1113}.info-card p{margin:4px 0;color:#555;line-height:1.5;font-size:14px}
+.info-card a{display:inline-block;margin-top:9px;text-decoration:none;background:#7b1113;color:#fff;padding:9px 13px;border-radius:8px;font-weight:700;font-size:13px}
+.instagram-card{background:linear-gradient(135deg,#7b1113,#3e0809);color:#fff;border-radius:20px;padding:22px;text-align:center;margin:18px 0;box-shadow:0 7px 20px #0002}
+.instagram-card h3{margin:0 0 7px;font-size:22px}.instagram-card p{margin:0 0 13px}.instagram-card a{display:inline-block;background:#fff;color:#7b1113;text-decoration:none;padding:10px 18px;border-radius:9px;font-weight:800}
+.disclaimer{font-size:12px;color:#777;text-align:center;margin:14px 0 4px}
+@media(max-width:700px){.special-grid{grid-template-columns:1fr 1fr}.info-grid{grid-template-columns:1fr}.premium-sections{padding:0 10px}}
+
+
+/* ===== HAKKA BAKKA V10 DYNAMIC DESIGN ===== */
+:root{--hb:#7b1113;--hb-dark:#4e0809;--cream:#f7f3ec}
+body{background:var(--cream)!important}
+.dynamic-home{background:var(--cream);overflow:hidden}
+.dyn-hero{position:relative;min-height:72vh;display:flex;align-items:flex-end;overflow:hidden;background:#2b0708}
+.dyn-hero-media{position:absolute;inset:0}
+.dyn-hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.08);transition:opacity 1s ease,transform 6s ease}
+.dyn-hero-media img.active{opacity:1;transform:scale(1)}
+.dyn-hero-media:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0002 20%,#000b 100%)}
+.dyn-hero-content{position:relative;z-index:2;width:min(1050px,100%);margin:auto;padding:50px 20px 45px;color:#fff}
+.dyn-kicker{display:inline-block;background:#ffffff22;border:1px solid #fff5;border-radius:999px;padding:8px 13px;font-size:13px;font-weight:800;backdrop-filter:blur(5px)}
+.dyn-hero h1{font-size:clamp(42px,9vw,78px);line-height:.95;margin:15px 0 10px;text-shadow:0 4px 20px #0008}
+.dyn-hero p{font-size:clamp(17px,3vw,23px);margin:0 0 20px;font-weight:700}
+.dyn-hero-buttons{display:flex;gap:10px;flex-wrap:wrap}
+.dyn-primary,.dyn-secondary{border:0;border-radius:12px;padding:14px 19px;font-size:16px;font-weight:900;text-decoration:none;cursor:pointer}
+.dyn-primary{background:#fff;color:var(--hb)}.dyn-secondary{background:#ffffff22;color:#fff;border:1px solid #fff8}
+.dyn-dots{position:absolute;z-index:3;right:20px;bottom:30px;display:flex;gap:6px}.dyn-dot{width:8px;height:8px;border-radius:50%;background:#fff8}.dyn-dot.active{width:24px;border-radius:9px;background:#fff}
+.dyn-wrap{max-width:1050px;margin:auto;padding:0 16px}
+.dyn-section{padding:28px 0 4px}.dyn-heading{text-align:center;margin:0 0 15px;color:var(--hb);font-size:27px}
+.dyn-sub{text-align:center;color:#666;margin:-7px auto 18px;max-width:700px;font-size:14px}
+.dyn-scroll{display:flex;gap:12px;overflow-x:auto;padding:3px 2px 12px;scrollbar-width:none}.dyn-scroll::-webkit-scrollbar{display:none}
+.dyn-category{flex:0 0 150px;background:#fff;border-radius:17px;padding:16px 12px;text-align:center;box-shadow:0 5px 16px #0001;border:1px solid #eee1d7}
+.dyn-category .ic{font-size:32px}.dyn-category b{display:block;margin-top:8px;color:#333}
+.dyn-specials{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.dyn-special{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 5px 18px #0002}
+.dyn-special img{width:100%;height:180px;object-fit:cover;display:block}.dyn-special div{padding:12px}.dyn-special h3{margin:0 0 5px;color:var(--hb);font-size:17px}.dyn-special p{margin:0;color:#666;font-size:13px}
+.dyn-feature{margin:24px 0;background:linear-gradient(135deg,var(--hb),var(--hb-dark));color:#fff;border-radius:22px;padding:25px;display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:center;box-shadow:0 8px 25px #0002}
+.dyn-feature h2{font-size:31px;margin:0 0 8px}.dyn-feature p{line-height:1.6;margin:0 0 15px}.dyn-feature img{width:100%;height:220px;object-fit:cover;border-radius:15px}
+.dyn-info{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.dyn-info-card{background:#fff;border-radius:18px;padding:19px;text-align:center;box-shadow:0 4px 15px #0001}.dyn-info-card .big{font-size:28px}.dyn-info-card h3{color:var(--hb);margin:8px 0}.dyn-info-card p{font-size:13px;color:#666;line-height:1.5;margin:0}.dyn-info-card a{display:inline-block;margin-top:10px;background:var(--hb);color:#fff;text-decoration:none;padding:9px 12px;border-radius:8px;font-size:13px;font-weight:800}
+.dyn-order{margin:27px 0;background:#fff;border-radius:22px;padding:24px;text-align:center;box-shadow:0 5px 20px #0001}.dyn-order h2{margin:0;color:var(--hb)}.dyn-order p{color:#666}.dyn-order-btn{border:0;background:var(--hb);color:#fff;border-radius:13px;padding:15px 25px;font-size:18px;font-weight:900;cursor:pointer}
+.dyn-order-links{display:none;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:13px}.dyn-order-links.show{display:grid}.dyn-link{padding:14px;border-radius:11px;color:#fff;text-decoration:none;font-weight:900}.wa{background:#198754}.zo{background:#d8232a}.sw{background:#ff8a00}
+.dyn-reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.review{background:#fff;border-radius:17px;padding:18px;box-shadow:0 4px 14px #0001}.stars{color:#e3a500;letter-spacing:2px}.review p{color:#555;font-size:14px;line-height:1.5}.review b{color:var(--hb)}
+.dyn-social{background:#151515;color:#fff;border-radius:22px;padding:25px;text-align:center;margin:25px 0}.dyn-social h2{margin:0 0 8px}.dyn-social p{color:#ccc}.dyn-social a{display:inline-block;background:#fff;color:#151515;padding:11px 17px;border-radius:10px;text-decoration:none;font-weight:900}
+@media(max-width:700px){.dyn-hero{min-height:70vh}.dyn-specials{grid-template-columns:1fr 1fr}.dyn-special img{height:145px}.dyn-feature{grid-template-columns:1fr}.dyn-feature img{height:190px}.dyn-info,.dyn-reviews{grid-template-columns:1fr}.dyn-order-links.show{grid-template-columns:1fr}.dyn-wrap{padding:0 11px}}
+
+
+/* ===== V13 FOOD SHOWCASE ===== */
+.hb-food-gallery{grid-template-columns:repeat(5,1fr)}
+.hb-food-card{transition:transform .22s ease,box-shadow .22s ease}
+.hb-food-card:hover{transform:translateY(-5px);box-shadow:0 12px 28px #0002}
+.hb-food-card img{height:190px}
+.hb-food-tag{display:inline-block;font-size:11px;font-weight:800;color:#7b1113;background:#f7eee5;border:1px solid #ead8c8;border-radius:20px;padding:5px 8px;margin-bottom:7px}
+.hb-food-card h3{margin:0 0 6px!important}
+.hb-food-card p{line-height:1.45}
+@media(max-width:1000px){.hb-food-gallery{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.hb-food-gallery{grid-template-columns:repeat(2,1fr)}.hb-food-card img{height:150px}}
+@media(max-width:390px){.hb-food-card img{height:130px}.hb-food-tag{font-size:10px}.hb-food-card p{font-size:12px}}
+
 </style>
+<link rel="preload" as="image" href="images/butter chicken.jpg">
+<link rel="preload" as="image" href="newlogo.jpg">
 </head>
 <body>
 
@@ -138,7 +204,7 @@ section{margin:18px 0}
       <img class="flash-img" src="images/mutton rogan josh.jpg" alt="Mutton Rogan Josh" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/mutton%20rogan%20josh.jpg'">
     </div>
     <div class="food-flash-dots" aria-hidden="true">
-      <span class="active"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      <span class="active"></span><span></span><span></span><span></span><span></span><span></span>
     </div>
   </div>
 
@@ -164,7 +230,44 @@ section{margin:18px 0}
     </div>
   </div>
 
-  <div class="order-cta">
+  
+<div class="premium-sections">
+  <h3 class="premium-title">🔥 Hakka Bakka Favourites</h3>
+  <div class="special-grid">
+    <div class="special-card"><div class="emoji">🧀</div><h4>Paneer Tikka</h4><p>Smoky tandoori favourite with rich desi flavour.</p></div>
+    <div class="special-card"><div class="emoji">🍗</div><h4>Butter Chicken</h4><p>Creamy, buttery North Indian classic.</p></div>
+    <div class="special-card"><div class="emoji">🍖</div><h4>Mutton Rogan Josh</h4><p>Rich North Indian mutton preparation.</p></div>
+    <div class="special-card"><div class="emoji">🔥</div><h4>Tandoori Chicken</h4><p>Charred tandoori flavour, made for sharing.</p></div>
+  </div>
+
+  <h3 class="premium-title">📍 Visit Hakka Bakka</h3>
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="info-icon">📍</div><h4>Our Location</h4>
+      <p>Shop No. 1, Near Canal Road,<br>Opp. Maqsudan Bypass, G.T. Road, Jalandhar</p>
+      <a href="https://www.google.com/maps/search/?api=1&query=Hakka+Bakka+Punjabi+Dhaba+Jalandhar" target="_blank" rel="noopener">Get Directions</a>
+    </div>
+    <div class="info-card">
+      <div class="info-icon">📞</div><h4>Call / WhatsApp</h4>
+      <p>For reservations, enquiries and direct orders.</p>
+      <a href="tel:+917796631555">Call 7796631555</a>
+    </div>
+    <div class="info-card">
+      <div class="info-icon">🍽️</div><h4>Food for Every Mood</h4>
+      <p>Veg, non-veg, tandoori, Punjabi gravies, Chinese, breads, rice and refreshing drinks.</p>
+      <a href="#" onclick="openOnlineMenu();return false;">View Online Menu</a>
+    </div>
+  </div>
+
+  <div class="instagram-card">
+    <h3>📸 Follow Hakka Bakka</h3>
+    <p>Food updates, offers and new creations on Instagram</p>
+    <a href="https://www.instagram.com/hakka_bakka.in/" target="_blank" rel="noopener">@hakka_bakka.in</a>
+  </div>
+  <div class="disclaimer">Menu prices and availability may change. Please confirm the final order amount before payment.</div>
+</div>
+
+<div class="order-cta">
     <h3>How would you like to order?</h3>
     <noscript><div style="padding:10px;text-align:center;color:#7b1113">Please enable JavaScript to order online.</div></noscript><button id="onlineOrderBtn" class="primary-order" type="button" onclick="openOnlineMenu()"><span class="shop-icon">🛍️</span> Online Order</button>
     <div id="orderOptions" class="order-options" aria-label="Online order options">
@@ -179,8 +282,153 @@ section{margin:18px 0}
   </div>
 </div>
 
+
+<div id="dynamicHome" class="dynamic-home">
+  <section class="dyn-hero">
+    <div class="dyn-hero-media" id="dynHeroMedia">
+      <img class="active" src="images/butter chicken.jpg" alt="Butter Chicken" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20chicken.jpg'">
+      <img src="images/chicken kali mirch.jpg" alt="Chicken Kali Mirch" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chicken%20kali%20mirch.jpg'">
+      <img src="images/tari wala mutton 2pc.jpg" alt="Tari Wala Mutton (2 Pc)" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/tari%20wala%20mutton%202pc.jpg'">
+      <img src="images/chilli mushroom.jpg" alt="Chilli Mushroom" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chilli%20mushroom.jpg'">
+      <img src="images/dal makhani.jpg" alt="Dal Makhani" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/dal%20makhani.jpg'">
+      <img src="images/honey chilli potato.jpg" alt="Honey Chilli Potato" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/honey%20chilli%20potato.jpg'">
+      <img src="images/butter naan.jpg" alt="Butter Naan" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20naan.jpg'">
+      <img src="images/tandoori chapati.jpg" alt="Tandoori Chapati" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/tandoori%20chapati.jpg'">
+      <img src="mojitoo.png" alt="Refreshing Mojitos" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/mojitoo.png'">
+      <img src="fries.png" alt="Masala Fries & Sides" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/fries.png'">
+</div>
+    <div class="dyn-hero-content">
+      <span class="dyn-kicker">NORTH JALANDHAR • PUNJABI DHABA</span>
+      <h1>Hakka Bakka</h1>
+      <p>Desi Swad • Modern Vibe</p>
+      <div class="dyn-hero-buttons">
+        <button class="dyn-primary" type="button" onclick="openOnlineMenu()">🛍️ Explore Menu</button>
+        <a class="dyn-secondary" href="tel:+917796631555">📞 Call Us</a>
+      </div>
+    </div>
+    <div class="dyn-dots" id="dynDots">
+<span class="dyn-dot active"></span><span class="dyn-dot"></span><span class="dyn-dot"></span><span class="dyn-dot"></span><span class="dyn-dot"></span><span class="dyn-dot"></span><span class="dyn-dot"></span><span class="dyn-dot"></span><span class="dyn-dot"></span><span class="dyn-dot"></span>
+</div>
+  </section>
+
+  <div class="dyn-wrap">
+    <section class="dyn-section">
+      <h2 class="dyn-heading">Explore Our Taste</h2>
+      <p class="dyn-sub">Freshly prepared favourites inspired by Punjabi dhaba flavours, tandoor and Indian comfort food.</p>
+      <div class="dyn-scroll">
+        <div class="dyn-category"><div class="ic">🥘</div><b>Punjabi Veg</b></div>
+        <div class="dyn-category"><div class="ic">🔥</div><b>Tandoori</b></div>
+        <div class="dyn-category"><div class="ic">🍗</div><b>Non-Veg</b></div>
+        <div class="dyn-category"><div class="ic">🥡</div><b>Chinese</b></div>
+        <div class="dyn-category"><div class="ic">🍚</div><b>Rice & Breads</b></div>
+        <div class="dyn-category"><div class="ic">🥤</div><b>Drinks</b></div>
+      </div>
+    </section>
+
+    <section class="dyn-section">
+      <h2 class="dyn-heading">⭐ Hakka Bakka Signature Picks</h2>
+      <p class="dyn-sub">A tempting mix of Punjabi classics, tandoori favourites, Indo-Chinese flavours, breads and refreshing drinks.</p>
+      <div class="dyn-specials hb-food-gallery">
+        <div class="dyn-special hb-food-card">
+          <img src="images/butter chicken.jpg" alt="Butter Chicken" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20chicken.jpg'">
+          <div><span class="hb-food-tag">Non-Veg • Creamy Punjabi classic</span><h3>Butter Chicken</h3><p>Rich, buttery tomato gravy with tender chicken.</p></div>
+        </div>
+        <div class="dyn-special hb-food-card">
+          <img src="images/chicken kali mirch.jpg" alt="Chicken Kali Mirch" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chicken%20kali%20mirch.jpg'">
+          <div><span class="hb-food-tag">Non-Veg • North Indian favourite</span><h3>Chicken Kali Mirch</h3><p>Creamy black-pepper chicken with a bold, aromatic finish.</p></div>
+        </div>
+        <div class="dyn-special hb-food-card">
+          <img src="images/tari wala mutton 2pc.jpg" alt="Tari Wala Mutton (2 Pc)" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/tari%20wala%20mutton%202pc.jpg'">
+          <div><span class="hb-food-tag">Non-Veg • Punjabi style</span><h3>Tari Wala Mutton (2 Pc)</h3><p>Slow-cooked mutton in a rich, spiced Punjabi tari.</p></div>
+        </div>
+        <div class="dyn-special hb-food-card">
+          <img src="images/chilli mushroom.jpg" alt="Chilli Mushroom" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chilli%20mushroom.jpg'">
+          <div><span class="hb-food-tag">Veg • Indo-Chinese</span><h3>Chilli Mushroom</h3><p>Crispy mushrooms tossed with peppers, onion and chilli sauce.</p></div>
+        </div>
+        <div class="dyn-special hb-food-card">
+          <img src="images/dal makhani.jpg" alt="Dal Makhani" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/dal%20makhani.jpg'">
+          <div><span class="hb-food-tag">Veg • Punjabi comfort food</span><h3>Dal Makhani</h3><p>Slow-cooked black lentils finished with a rich, creamy texture.</p></div>
+        </div>
+        <div class="dyn-special hb-food-card">
+          <img src="images/honey chilli potato.jpg" alt="Honey Chilli Potato" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/honey%20chilli%20potato.jpg'">
+          <div><span class="hb-food-tag">Veg • Indo-Chinese</span><h3>Honey Chilli Potato</h3><p>Crispy potato tossed in sweet, spicy honey-chilli glaze.</p></div>
+        </div>
+        <div class="dyn-special hb-food-card">
+          <img src="images/butter naan.jpg" alt="Butter Naan" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20naan.jpg'">
+          <div><span class="hb-food-tag">Veg • Tandoor</span><h3>Butter Naan</h3><p>Soft tandoori naan finished with a generous touch of butter.</p></div>
+        </div>
+        <div class="dyn-special hb-food-card">
+          <img src="images/tandoori chapati.jpg" alt="Tandoori Chapati" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/tandoori%20chapati.jpg'">
+          <div><span class="hb-food-tag">Veg • Tandoor</span><h3>Tandoori Chapati</h3><p>Freshly baked tandoori chapati with an authentic smoky finish.</p></div>
+        </div>
+        <div class="dyn-special hb-food-card">
+          <img src="mojitoo.png" alt="Refreshing Mojitos" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/mojitoo.png'">
+          <div><span class="hb-food-tag">Drinks • Fresh & Cool</span><h3>Refreshing Mojitos</h3><p>Mint, watermelon and green-apple style refreshing mojitos.</p></div>
+        </div>
+        <div class="dyn-special hb-food-card">
+          <img src="fries.png" alt="Masala Fries & Sides" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/fries.png'">
+          <div><span class="hb-food-tag">Veg • Snacks</span><h3>Masala Fries & Sides</h3><p>Crispy, seasoned fries made for sharing.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dyn-feature">
+      <div>
+        <h2>Run by Chirag Duggal</h2>
+        <p>Hakka Bakka brings together the warmth of a Punjabi dhaba with a modern dining experience. From vegetarian favourites and tandoori dishes to hearty non-veg preparations, every plate is made to be enjoyed with family and friends.</p>
+        <button class="dyn-primary" type="button" onclick="openOnlineMenu()">View Full Menu →</button>
+      </div>
+      <img src="images/signboard.png" alt="Hakka Bakka Restaurant">
+    </section>
+
+    <section class="dyn-section">
+      <h2 class="dyn-heading">Why Hakka Bakka?</h2>
+      <div class="dyn-info">
+        <div class="dyn-info-card"><div class="big">🌿</div><h3>Fresh Ingredients</h3><p>Freshly prepared food with a focus on quality and flavour.</p></div>
+        <div class="dyn-info-card"><div class="big">🔥</div><h3>Authentic Taste</h3><p>Punjabi dhaba flavours with tandoori and Indian favourites.</p></div>
+        <div class="dyn-info-card"><div class="big">👨‍👩‍👧‍👦</div><h3>Family Friendly</h3><p>A comfortable place to enjoy good food together.</p></div>
+      </div>
+    </section>
+
+    <section class="dyn-order">
+      <h2>🛍️ Order Your Favourites</h2>
+      <p>Choose how you want to order from Hakka Bakka.</p>
+      <button id="dynOrderBtn" class="dyn-order-btn" type="button" onclick="toggleDynOrders()">ONLINE ORDER</button>
+      <div id="dynOrderLinks" class="dyn-order-links">
+        <button class="dyn-link wa" type="button" onclick="openOnlineMenu()">💬 WhatsApp Order</button>
+        <a class="dyn-link zo" href="https://zomato.onelink.me/xqzv/7948ndtj" target="_blank" rel="noopener">🍽️ Order on Zomato</a>
+        <a class="dyn-link sw" href="https://www.swiggy.com/menu/1400828?source=sharing" target="_blank" rel="noopener">🛵 Order on Swiggy</a>
+      </div>
+    </section>
+
+    <section class="dyn-section">
+      <h2 class="dyn-heading">💬 What Customers Say</h2>
+      <p class="dyn-sub">A simple review showcase — replace these with verified customer reviews whenever you have them.</p>
+      <div class="dyn-reviews">
+        <div class="review"><div class="stars">★★★★★</div><p>“Great place for Punjabi-style food and family dining.”</p><b>— Hakka Bakka Guest</b></div>
+        <div class="review"><div class="stars">★★★★★</div><p>“The tandoori dishes and rich gravies are perfect for sharing.”</p><b>— Hakka Bakka Guest</b></div>
+        <div class="review"><div class="stars">★★★★★</div><p>“Good variety of veg and non-veg options under one roof.”</p><b>— Hakka Bakka Guest</b></div>
+      </div>
+    </section>
+
+    <section class="dyn-section">
+      <div class="dyn-info">
+        <div class="dyn-info-card"><div class="big">📍</div><h3>Find Us</h3><p>Shop No. 1, Near Canal Road, Opp. Maqsudan Bypass, G.T. Road, Jalandhar</p><a href="https://www.google.com/maps/search/?api=1&query=Hakka+Bakka+Punjabi+Dhaba+Jalandhar" target="_blank" rel="noopener">Get Directions</a></div>
+        <div class="dyn-info-card"><div class="big">🕐</div><h3>Opening Hours</h3><p>For current opening hours, please call the restaurant before visiting.</p><a href="tel:+917796631555">Call Restaurant</a></div>
+        <div class="dyn-info-card"><div class="big">📞</div><h3>Contact</h3><p>WhatsApp / Call<br>7796631555</p><a href="https://wa.me/917796631555" target="_blank" rel="noopener">WhatsApp Us</a></div>
+      </div>
+    </section>
+
+    <section class="dyn-social">
+      <h2>📸 Follow Hakka Bakka</h2>
+      <p>Food updates, offers and new creations.</p>
+      <a href="https://www.instagram.com/hakka_bakka.in/" target="_blank" rel="noopener">@hakka_bakka.in</a>
+    </section>
+  </div>
+</div>
+
 <div id="menuStart" class="menu-start">
-  <div class="menu-top"><button type="button" onclick="location.reload()">← Hakka Bakka</button><strong>Online Menu</strong></div>
+  <div class="menu-top"><button type="button" onclick="closeOnlineMenu()">← Hakka Bakka</button><strong>Online Menu</strong></div>
   <div class="search"><input id="search" type="search" placeholder="Search menu..." autocomplete="off"></div>
   <main id="menu"></main>
 </div>
@@ -238,11 +486,29 @@ section{margin:18px 0}
 </div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 function openOnlineMenu(){
-  var el=document.getElementById('orderOptions');
-  if(el){
-    el.classList.add('show');
-    el.scrollIntoView({behavior:'smooth',block:'center'});
+  const home = document.getElementById('dynamicHome');
+  const menu = document.getElementById('menuStart');
+  const cartBtn = document.getElementById('cartButton');
+  if(home) home.style.display = 'none';
+  if(menu){
+    menu.classList.add('menu-visible');
+    menu.style.display = 'block';
+    menu.scrollIntoView({behavior:'smooth', block:'start'});
   }
+  if(cartBtn) cartBtn.style.display = 'flex';
+  if(typeof renderMenu === 'function') renderMenu();
+  if(typeof renderCart === 'function') renderCart();
+  document.body.classList.add('menu-open');
+}
+function closeOnlineMenu(){
+  const home=document.getElementById('dynamicHome');
+  const menu=document.getElementById('menuStart');
+  const cartBtn=document.getElementById('cartButton');
+  if(menu){menu.classList.remove('menu-visible');menu.style.display='none';}
+  if(home) home.style.display='block';
+  if(cartBtn) cartBtn.style.display='none';
+  document.body.classList.remove('menu-open');
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 function toggleOrderOptions(){
   var el=document.getElementById('orderOptions');
@@ -605,6 +871,20 @@ document.getElementById('wa').onclick=async()=>{
  window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
 };
 
+function toggleDynOrders(){
+  var el=document.getElementById('dynOrderLinks');
+  if(el) el.classList.toggle('show');
+}
+(function startDynamicHero(){
+  var imgs=[...document.querySelectorAll('#dynHeroMedia img')];
+  var dots=[...document.querySelectorAll('#dynDots .dyn-dot')];
+  if(imgs.length<2)return;
+  var i=0;
+  setInterval(function(){
+    imgs[i].classList.remove('active'); if(dots[i])dots[i].classList.remove('active');
+    i=(i+1)%imgs.length; imgs[i].classList.add('active'); if(dots[i])dots[i].classList.add('active');
+  },2600);
+})();
 renderMenu();renderCart();updateBilling();
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js?v=7',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{}));}
 })();
