@@ -8,42 +8,43 @@
 <style>
 :root{color-scheme:light}
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;background:#f7f3ec!important;color:#171717!important;font-family:Arial,sans-serif}
+html,body{margin:0;padding:0;background:#f7f3ec;color:#171717;font-family:Arial,sans-serif}
 header{background:#7b1113;color:#fff;text-align:center;padding:28px 12px}
 header h1{margin:0;font-size:32px} header p{margin:8px 0;font-size:18px}
 .search{position:sticky;top:0;z-index:10;background:#fff;padding:12px}
 .search input{width:100%;padding:14px 16px;border:2px solid #7b1113;border-radius:12px;font-size:18px;background:#fff;color:#111}
-main{display:block!important;padding-bottom:100px}
-section{display:block;margin:18px 0}
+main{padding-bottom:100px}
+section{margin:18px 0}
 .section-title{margin:0 12px 12px;background:#7b1113;color:#fff;padding:11px 14px;border-radius:10px;text-align:center;font-size:22px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:0 12px}
 .card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 3px 12px #0002;min-width:0}
 .card img{display:block;width:100%;height:175px;object-fit:cover;background:#eee}
-.card img.missing{visibility:hidden}
 .content{padding:11px;text-align:center}
 .content h3{font-size:16px;line-height:1.25;margin:0 0 8px}
 .price{font-weight:bold;color:#7b1113;margin-bottom:9px}
-.add{border:0;background:#7b1113;color:#fff;padding:9px 13px;border-radius:7px;font-weight:bold}.variant-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}.variant-row .add{flex:1;min-width:74px}.variant-label{display:block;font-size:12px;margin-bottom:5px;color:#555}
+.add{border:0;background:#7b1113;color:#fff;padding:9px 10px;border-radius:7px;font-weight:bold;cursor:pointer}
+.variant-row{display:flex;gap:6px;justify-content:center}
+.variant-row .add{flex:1;min-width:0;font-size:13px;padding:9px 5px}
 .cart{position:fixed;right:16px;bottom:18px;z-index:30;border:0;border-radius:50%;width:64px;height:64px;background:#7b1113;color:#fff;font-size:24px;box-shadow:0 3px 10px #0005}
 .badge{font-size:13px;background:#fff;color:#7b1113;border-radius:12px;padding:2px 6px}
-.panel{display:none;position:fixed;inset:0 0 0 auto;width:min(420px,100%);background:#fff;z-index:40;padding:18px;overflow:auto;box-shadow:-4px 0 18px #0005}
+.panel{display:none;position:fixed;inset:0 0 0 auto;width:min(430px,100%);background:#fff;z-index:40;padding:18px;overflow:auto;box-shadow:-4px 0 18px #0005}
 .panel h2{margin-top:0;color:#7b1113}
 .order-item{padding:10px 0;border-bottom:1px solid #ddd}
 .panel input,.panel textarea,.panel select{width:100%;padding:11px;margin:6px 0;border:1px solid #aaa;border-radius:7px;font-size:16px}
 .panel button.action{width:100%;padding:12px;margin-top:8px;border:0;border-radius:8px;background:#7b1113;color:#fff;font-weight:bold}
 .panel button.close{background:#333}
 .empty{text-align:center;padding:40px;color:#555}
+#paymentBox{margin-top:14px;padding:14px;border:2px solid #7b1113;border-radius:10px;background:#fff8f0}
+#qrbox{display:flex;justify-content:center;margin:10px 0}
+#qrbox img{width:230px;height:230px}
+#shareNote{font-size:13px;color:#555;text-align:center;margin-top:7px}
+.remove{margin-top:5px;padding:5px 9px}
 @media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr);padding:0 10px;gap:10px}.card img{height:145px}.section-title{margin-left:10px;margin-right:10px}}
-@media(max-width:390px){.grid{grid-template-columns:1fr 1fr}.card img{height:125px}.content h3{font-size:14px}}
-
-#upiQr{width:230px;height:230px;display:block;margin:10px auto;border:8px solid #fff;box-shadow:0 2px 8px #0002}
-#qrbox{display:flex;justify-content:center;margin:8px 0}
-#upiArea img{width:230px;height:230px;display:block;margin:auto}
-#paymentBox input[type=file]{font-size:14px}
-#shareNote{font-size:13px;color:#555;margin-top:7px}
+@media(max-width:390px){.card img{height:125px}.content h3{font-size:14px}}
 </style>
 </head>
 <body>
+
 <header>
 <h1>Hakka Bakka Punjabi Dhaba</h1>
 <p>Desi Swad • Modern Vibe</p>
@@ -51,26 +52,7 @@ section{display:block;margin:18px 0}
 </header>
 
 <div class="search"><input id="search" type="search" placeholder="Search menu..." autocomplete="off"></div>
-
-<main id="menu">
-<section><h2 class="section-title">Tandoori Veg</h2><div class="grid"><article class="card"><img src="images/paneer_tikka.jpg" alt="Paneer Tikka" onerror="this.classList.add('missing')"><div class="content"><h3>Paneer Tikka</h3><div class="price">₹240</div><button class="add" data-name="Paneer Tikka" data-price="240">Add to Order</button></div></article><article class="card"><img src="images/paneer malai tikka.jpg" alt="Paneer Malai Tikka" onerror="this.classList.add('missing')"><div class="content"><h3>Paneer Malai Tikka</h3><div class="price">₹280</div><button class="add" data-name="Paneer Malai Tikka" data-price="280">Add to Order</button></div></article><article class="card"><img src="images/paneer-kali-mirch-tikka.jpg" alt="Paneer Kali Mirch Tikka" onerror="this.classList.add('missing')"><div class="content"><h3>Paneer Kali Mirch Tikka</h3><div class="price">₹280</div><button class="add" data-name="Paneer Kali Mirch Tikka" data-price="280">Add to Order</button></div></article><article class="card"><img src="images/mushroom tikka.jpg" alt="Mushroom Tikka" onerror="this.classList.add('missing')"><div class="content"><h3>Mushroom Tikka</h3><div class="price">₹230</div><button class="add" data-name="Mushroom Tikka" data-price="230">Add to Order</button></div></article><article class="card"><img src="images/soya chaap tikka.jpg" alt="Soya Champ Tikka" onerror="this.classList.add('missing')"><div class="content"><h3>Soya Champ Tikka</h3><div class="price">₹220</div><button class="add" data-name="Soya Champ Tikka" data-price="220">Add to Order</button></div></article><article class="card"><img src="images/soya malai tikka.jpg" alt="Soya Malai Tikka" onerror="this.classList.add('missing')"><div class="content"><h3>Soya Malai Tikka</h3><div class="price">₹250</div><button class="add" data-name="Soya Malai Tikka" data-price="250">Add to Order</button></div></article><article class="card"><img src="images/soya hariyali tikka.jpg" alt="Soya Hariyali Tikka" onerror="this.classList.add('missing')"><div class="content"><h3>Soya Hariyali Tikka</h3><div class="price">₹240</div><button class="add" data-name="Soya Hariyali Tikka" data-price="240">Add to Order</button></div></article></div></section>
-<section><h2 class="section-title">Veg Rice</h2><div class="grid"><article class="card"><img src="images/plain rice.jpg" alt="Plain Rice" onerror="this.classList.add('missing')"><div class="content"><h3>Plain Rice</h3><div class="price">₹60 / 120</div><div class="variant-row"><button class="add" data-name="Plain Rice - Half" data-price="60">Half — ₹60</button><button class="add" data-name="Plain Rice - Full" data-price="120">Full — ₹120</button></div></div></article><article class="card"><img src="images/jeera rice.jpg" alt="Jeera Rice" onerror="this.classList.add('missing')"><div class="content"><h3>Jeera Rice</h3><div class="price">₹70 / 150</div><div class="variant-row"><button class="add" data-name="Jeera Rice - Half" data-price="70">Half — ₹70</button><button class="add" data-name="Jeera Rice - Full" data-price="150">Full — ₹150</button></div></div></article><article class="card"><img src="images/mix veg rice.jpg" alt="Mix Veg Rice" onerror="this.classList.add('missing')"><div class="content"><h3>Mix Veg Rice</h3><div class="price">₹90 / 190</div><div class="variant-row"><button class="add" data-name="Mix Veg Rice - Half" data-price="90">Half — ₹90</button><button class="add" data-name="Mix Veg Rice - Full" data-price="190">Full — ₹190</button></div></div></article></div></section>
-<section><h2 class="section-title">Indian Veg Main Course</h2><div class="grid"><article class="card"><img src="images/dal fry.jpg" alt="Dal Fry" onerror="this.classList.add('missing')"><div class="content"><h3>Dal Fry</h3><div class="price">₹80 / 150</div><div class="variant-row"><button class="add" data-name="Dal Fry - Half" data-price="80">Half — ₹80</button><button class="add" data-name="Dal Fry - Full" data-price="150">Full — ₹150</button></div></div></article><article class="card"><img src="images/dal makhani.jpg" alt="Dal Makhani" onerror="this.classList.add('missing')"><div class="content"><h3>Dal Makhani</h3><div class="price">₹90 / 180</div><div class="variant-row"><button class="add" data-name="Dal Makhani - Half" data-price="90">Half — ₹90</button><button class="add" data-name="Dal Makhani - Full" data-price="180">Full — ₹180</button></div></div></article><article class="card"><img src="images/chana masala.jpg" alt="Chana Masala" onerror="this.classList.add('missing')"><div class="content"><h3>Chana Masala</h3><div class="price">₹80 / 150</div><div class="variant-row"><button class="add" data-name="Chana Masala - Half" data-price="80">Half — ₹80</button><button class="add" data-name="Chana Masala - Full" data-price="150">Full — ₹150</button></div></div></article><article class="card"><img src="images/paneer butter masala.jpg" alt="Paneer Butter Masala" onerror="this.classList.add('missing')"><div class="content"><h3>Paneer Butter Masala</h3><div class="price">₹150 / 270</div><div class="variant-row"><button class="add" data-name="Paneer Butter Masala - Half" data-price="150">Half — ₹150</button><button class="add" data-name="Paneer Butter Masala - Full" data-price="270">Full — ₹270</button></div></div></article><article class="card"><img src="images/cheese tomato.jpg" alt="Cheese Tomato" onerror="this.classList.add('missing')"><div class="content"><h3>Cheese Tomato</h3><div class="price">₹130 / 250</div><div class="variant-row"><button class="add" data-name="Cheese Tomato - Half" data-price="130">Half — ₹130</button><button class="add" data-name="Cheese Tomato - Full" data-price="250">Full — ₹250</button></div></div></article><article class="card"><img src="images/mushroom do pyaza.jpg" alt="Mushroom Do Pyaza" onerror="this.classList.add('missing')"><div class="content"><h3>Mushroom Do Pyaza</h3><div class="price">₹150 / 270</div><div class="variant-row"><button class="add" data-name="Mushroom Do Pyaza - Half" data-price="150">Half — ₹150</button><button class="add" data-name="Mushroom Do Pyaza - Full" data-price="270">Full — ₹270</button></div></div></article><article class="card"><img src="images/kadai paneer.jpg" alt="Kadai Paneer" onerror="this.classList.add('missing')"><div class="content"><h3>Kadai Paneer</h3><div class="price">₹120 / 240</div><div class="variant-row"><button class="add" data-name="Kadai Paneer - Half" data-price="120">Half — ₹120</button><button class="add" data-name="Kadai Paneer - Full" data-price="240">Full — ₹240</button></div></div></article><article class="card"><img src="images/mix veg.jpg" alt="Mix Veg" onerror="this.classList.add('missing')"><div class="content"><h3>Mix Veg</h3><div class="price">₹100 / 200</div><div class="variant-row"><button class="add" data-name="Mix Veg - Half" data-price="100">Half — ₹100</button><button class="add" data-name="Mix Veg - Full" data-price="200">Full — ₹200</button></div></div></article><article class="card"><img src="images/paneer do pyaza.jpg" alt="Paneer Do Pyaza" onerror="this.classList.add('missing')"><div class="content"><h3>Paneer Do Pyaza</h3><div class="price">₹130 / 260</div><div class="variant-row"><button class="add" data-name="Paneer Do Pyaza - Half" data-price="130">Half — ₹130</button><button class="add" data-name="Paneer Do Pyaza - Full" data-price="260">Full — ₹260</button></div></div></article><article class="card"><img src="images/mushroom masala.jpg" alt="Mushroom Masala" onerror="this.classList.add('missing')"><div class="content"><h3>Mushroom Masala</h3><div class="price">₹100 / 180</div><div class="variant-row"><button class="add" data-name="Mushroom Masala - Half" data-price="100">Half — ₹100</button><button class="add" data-name="Mushroom Masala - Full" data-price="180">Full — ₹180</button></div></div></article><article class="card"><img src="images/hakka bakka spl chaap.jpg" alt="Hakka Bakka Spl. Champ" onerror="this.classList.add('missing')"><div class="content"><h3>Hakka Bakka Spl. Champ</h3><div class="price">₹150 / 270</div><div class="variant-row"><button class="add" data-name="Hakka Bakka Spl. Champ - Half" data-price="150">Half — ₹150</button><button class="add" data-name="Hakka Bakka Spl. Champ - Full" data-price="270">Full — ₹270</button></div></div></article><article class="card"><img src="images/shahi paneer.jpg" alt="Shahi Paneer" onerror="this.classList.add('missing')"><div class="content"><h3>Shahi Paneer</h3><div class="price">₹120 / 240</div><div class="variant-row"><button class="add" data-name="Shahi Paneer - Half" data-price="120">Half — ₹120</button><button class="add" data-name="Shahi Paneer - Full" data-price="240">Full — ₹240</button></div></div></article><article class="card"><img src="images/paneer bhurji.jpg" alt="Paneer Bhurji" onerror="this.classList.add('missing')"><div class="content"><h3>Paneer Bhurji</h3><div class="price">₹130 / 250</div><div class="variant-row"><button class="add" data-name="Paneer Bhurji - Half" data-price="130">Half — ₹130</button><button class="add" data-name="Paneer Bhurji - Full" data-price="250">Full — ₹250</button></div></div></article><article class="card"><img src="images/paneer kali mirch.jpg" alt="Paneer Kali Mirch" onerror="this.classList.add('missing')"><div class="content"><h3>Paneer Kali Mirch</h3><div class="price">₹150 / 280</div><div class="variant-row"><button class="add" data-name="Paneer Kali Mirch - Half" data-price="150">Half — ₹150</button><button class="add" data-name="Paneer Kali Mirch - Full" data-price="280">Full — ₹280</button></div></div></article><article class="card"><img src="images/hakka bakka rara paneer.jpg" alt="Hakka Bakka Spl. Rara Paneer" onerror="this.classList.add('missing')"><div class="content"><h3>Hakka Bakka Spl. Rara Paneer</h3><div class="price">₹180 / 300</div><div class="variant-row"><button class="add" data-name="Hakka Bakka Spl. Rara Paneer - Half" data-price="180">Half — ₹180</button><button class="add" data-name="Hakka Bakka Spl. Rara Paneer - Full" data-price="300">Full — ₹300</button></div></div></article></div></section>
-<section><h2 class="section-title">Chinese Veg & Veg Snacks</h2><div class="grid"><article class="card"><img src="images/paneer chili.jpg" alt="Paneer Chilli" onerror="this.classList.add('missing')"><div class="content"><h3>Paneer Chilli</h3><div class="price">₹180</div><button class="add" data-name="Paneer Chilli" data-price="180">Add to Order</button></div></article><article class="card"><img src="images/chilli potato.jpg" alt="Chilli Potato" onerror="this.classList.add('missing')"><div class="content"><h3>Chilli Potato</h3><div class="price">₹150</div><button class="add" data-name="Chilli Potato" data-price="150">Add to Order</button></div></article><article class="card"><img src="images/french fries.jpg" alt="French Fries" onerror="this.classList.add('missing')"><div class="content"><h3>French Fries</h3><div class="price">₹100</div><button class="add" data-name="French Fries" data-price="100">Add to Order</button></div></article><article class="card"><img src="images/chilli mushroom.jpg" alt="Chilli Mushroom" onerror="this.classList.add('missing')"><div class="content"><h3>Chilli Mushroom</h3><div class="price">₹150</div><button class="add" data-name="Chilli Mushroom" data-price="150">Add to Order</button></div></article><article class="card"><img src="images/paneer pakoda.jpg" alt="Paneer Pakoda" onerror="this.classList.add('missing')"><div class="content"><h3>Paneer Pakoda</h3><div class="price">₹150</div><button class="add" data-name="Paneer Pakoda" data-price="150">Add to Order</button></div></article><article class="card"><img src="images/paneer fingers.jpg" alt="Paneer Fingers" onerror="this.classList.add('missing')"><div class="content"><h3>Paneer Fingers</h3><div class="price">₹220</div><button class="add" data-name="Paneer Fingers" data-price="220">Add to Order</button></div></article><article class="card"><img src="images/honey chilli potato.jpg" alt="Honey Chilli Potato" onerror="this.classList.add('missing')"><div class="content"><h3>Honey Chilli Potato</h3><div class="price">₹220</div><button class="add" data-name="Honey Chilli Potato" data-price="220">Add to Order</button></div></article><article class="card"><img src="images/veg menchurian.jpg" alt="Veg Manchurian (Gravy/Dry)" onerror="this.classList.add('missing')"><div class="content"><h3>Veg Manchurian (Gravy/Dry)</h3><div class="price">₹180</div><button class="add" data-name="Veg Manchurian (Gravy/Dry)" data-price="180">Add to Order</button></div></article><article class="card"><img src="images/schezwan veg noodles.jpg" alt="Schezwan Veg Noodles" onerror="this.classList.add('missing')"><div class="content"><h3>Schezwan Veg Noodles</h3><div class="price">₹180</div><button class="add" data-name="Schezwan Veg Noodles" data-price="180">Add to Order</button></div></article><article class="card"><img src="images/spring roll.jpg" alt="Veg Spring Rolls (6 Pcs.)" onerror="this.classList.add('missing')"><div class="content"><h3>Veg Spring Rolls (6 Pcs.)</h3><div class="price">₹180</div><button class="add" data-name="Veg Spring Rolls (6 Pcs.)" data-price="180">Add to Order</button></div></article></div></section>
-<section><h2 class="section-title">Thali</h2><div class="grid"><article class="card"><img src="images/thali.jpg" alt="Unlimited Thali" onerror="this.classList.add('missing')"><div class="content"><h3>Unlimited Thali</h3><div class="price">₹150</div><button class="add" data-name="Unlimited Thali" data-price="150">Add to Order</button></div></article></div></section>
-<section><h2 class="section-title">Drinks</h2><div class="grid"><article class="card"><img src="images/sweetlassi.png" alt="Sweet Lassi" onerror="this.classList.add('missing')"><div class="content"><h3>Sweet Lassi</h3><div class="price">₹80</div><button class="add" data-name="Sweet Lassi" data-price="80">Add to Order</button></div></article><article class="card"><img src="images/kuladtea.png" alt="Masala Chach" onerror="this.classList.add('missing')"><div class="content"><h3>Masala Chach</h3><div class="price">₹60</div><button class="add" data-name="Masala Chach" data-price="60">Add to Order</button></div></article><article class="card"><img src="images/ice tea.jpg" alt="Lemon Ice Tea" onerror="this.classList.add('missing')"><div class="content"><h3>Lemon Ice Tea</h3><div class="price">₹115</div><button class="add" data-name="Lemon Ice Tea" data-price="115">Add to Order</button></div></article><article class="card"><img src="images/milkshake.png" alt="Shakes (Any Flavour)" onerror="this.classList.add('missing')"><div class="content"><h3>Shakes (Any Flavour)</h3><div class="price">₹115</div><button class="add" data-name="Shakes (Any Flavour)" data-price="115">Add to Order</button></div></article><article class="card"><img src="images/mojito.png" alt="Mojito" onerror="this.classList.add('missing')"><div class="content"><h3>Mojito</h3><div class="price">₹115</div><button class="add" data-name="Mojito" data-price="115">Add to Order</button></div></article><article class="card"><img src="images/coffee.png" alt="Cold Coffee with Ice Cream" onerror="this.classList.add('missing')"><div class="content"><h3>Cold Coffee with Ice Cream</h3><div class="price">₹95</div><button class="add" data-name="Cold Coffee with Ice Cream" data-price="95">Add to Order</button></div></article></div></section>
-<section><h2 class="section-title">Chapati / Breads / Kulcha</h2><div class="grid"><article class="card"><img src="images/tandoori chapati.jpg" alt="Tandoori Roti" onerror="this.classList.add('missing')"><div class="content"><h3>Tandoori Roti</h3><div class="price">₹15</div><button class="add" data-name="Tandoori Roti" data-price="15">Add to Order</button></div></article><article class="card"><img src="images/butter chapati.jpg" alt="Butter Roti" onerror="this.classList.add('missing')"><div class="content"><h3>Butter Roti</h3><div class="price">₹20</div><button class="add" data-name="Butter Roti" data-price="20">Add to Order</button></div></article><article class="card"><img src="images/missi roti.jpg" alt="Missi Roti" onerror="this.classList.add('missing')"><div class="content"><h3>Missi Roti</h3><div class="price">₹30</div><button class="add" data-name="Missi Roti" data-price="30">Add to Order</button></div></article><article class="card"><img src="images/plain naan.jpg" alt="Plain Naan" onerror="this.classList.add('missing')"><div class="content"><h3>Plain Naan</h3><div class="price">₹45</div><button class="add" data-name="Plain Naan" data-price="45">Add to Order</button></div></article><article class="card"><img src="images/butter naan.jpg" alt="Butter Naan" onerror="this.classList.add('missing')"><div class="content"><h3>Butter Naan</h3><div class="price">₹70</div><button class="add" data-name="Butter Naan" data-price="70">Add to Order</button></div></article><article class="card"><img src="images/garlic naan.jpg" alt="Garlic Naan" onerror="this.classList.add('missing')"><div class="content"><h3>Garlic Naan</h3><div class="price">₹80</div><button class="add" data-name="Garlic Naan" data-price="80">Add to Order</button></div></article><article class="card"><img src="images/lachha paratha.jpg" alt="Lachha Paratha" onerror="this.classList.add('missing')"><div class="content"><h3>Lachha Paratha</h3><div class="price">₹60</div><button class="add" data-name="Lachha Paratha" data-price="60">Add to Order</button></div></article><article class="card"><img src="images/pudina paratha.jpg" alt="Pudina Paratha" onerror="this.classList.add('missing')"><div class="content"><h3>Pudina Paratha</h3><div class="price">₹45</div><button class="add" data-name="Pudina Paratha" data-price="45">Add to Order</button></div></article><article class="card"><img src="images/green chilli paratha.jpg" alt="Green Chilli Paratha" onerror="this.classList.add('missing')"><div class="content"><h3>Green Chilli Paratha</h3><div class="price">₹50</div><button class="add" data-name="Green Chilli Paratha" data-price="50">Add to Order</button></div></article><article class="card"><img src="images/red chilli paratha.jpg" alt="Red Chilli Paratha" onerror="this.classList.add('missing')"><div class="content"><h3>Red Chilli Paratha</h3><div class="price">₹60</div><button class="add" data-name="Red Chilli Paratha" data-price="60">Add to Order</button></div></article><article class="card"><img src="images/amritsari kulcha.jpg" alt="Amritsari Kulcha" onerror="this.classList.add('missing')"><div class="content"><h3>Amritsari Kulcha</h3><div class="price">₹50</div><button class="add" data-name="Amritsari Kulcha" data-price="50">Add to Order</button></div></article><article class="card"><img src="images/amritsari kulcha with chana.jpg" alt="With Chana" onerror="this.classList.add('missing')"><div class="content"><h3>With Chana</h3><div class="price">₹60</div><button class="add" data-name="With Chana" data-price="60">Add to Order</button></div></article></div></section>
-<section><h2 class="section-title">Salads</h2><div class="grid"><article class="card"><img src="images/masala papad.jpg" alt="Masala Papad" onerror="this.classList.add('missing')"><div class="content"><h3>Masala Papad</h3><div class="price">₹90</div><button class="add" data-name="Masala Papad" data-price="90">Add to Order</button></div></article><article class="card"><img src="images/peanut masala.jpg" alt="Peanut Masala" onerror="this.classList.add('missing')"><div class="content"><h3>Peanut Masala</h3><div class="price">₹100</div><button class="add" data-name="Peanut Masala" data-price="100">Add to Order</button></div></article><article class="card"><img src="images/chana chat.jpg" alt="Chana Chaat" onerror="this.classList.add('missing')"><div class="content"><h3>Chana Chaat</h3><div class="price">₹100</div><button class="add" data-name="Chana Chaat" data-price="100">Add to Order</button></div></article><article class="card"><img src="images/salad mix.jpg" alt="Cream Salad" onerror="this.classList.add('missing')"><div class="content"><h3>Cream Salad</h3><div class="price">₹90</div><button class="add" data-name="Cream Salad" data-price="90">Add to Order</button></div></article><article class="card"><img src="images/salad mix.jpg" alt="Green Salad" onerror="this.classList.add('missing')"><div class="content"><h3>Green Salad</h3><div class="price">₹80</div><button class="add" data-name="Green Salad" data-price="80">Add to Order</button></div></article><article class="card"><img src="images/extra onion.jpg" alt="Extra Onion" onerror="this.classList.add('missing')"><div class="content"><h3>Extra Onion</h3><div class="price">₹30</div><button class="add" data-name="Extra Onion" data-price="30">Add to Order</button></div></article></div></section>
-<section><h2 class="section-title">Raita</h2><div class="grid"><article class="card"><img src="images/boondi raita.jpg" alt="Boondi Raita" onerror="this.classList.add('missing')"><div class="content"><h3>Boondi Raita</h3><div class="price">₹80</div><button class="add" data-name="Boondi Raita" data-price="80">Add to Order</button></div></article><article class="card"><img src="images/mix raita.jpg" alt="Mix Raita" onerror="this.classList.add('missing')"><div class="content"><h3>Mix Raita</h3><div class="price">₹100</div><button class="add" data-name="Mix Raita" data-price="100">Add to Order</button></div></article><article class="card"><img src="images/aloo raita.jpg" alt="Aloo Raita" onerror="this.classList.add('missing')"><div class="content"><h3>Aloo Raita</h3><div class="price">₹90</div><button class="add" data-name="Aloo Raita" data-price="90">Add to Order</button></div></article></div></section>
-<section><h2 class="section-title">Handi Special</h2><div class="grid"><article class="card"><img src="images/tari wala mutton 2pc.jpg" alt="Tari Wala Mutton - 2 Pcs." onerror="this.classList.add('missing')"><div class="content"><h3>Tari Wala Mutton - 2 Pcs.</h3><div class="price">₹200</div><button class="add" data-name="Tari Wala Mutton - 2 Pcs." data-price="200">Add to Order</button></div></article><article class="card"><img src="images/tari wala mutton.jpg" alt="Tari Wala Mutton - Half" onerror="this.classList.add('missing')"><div class="content"><h3>Tari Wala Mutton - Half</h3><div class="price">₹350</div><button class="add" data-name="Tari Wala Mutton - Half" data-price="350">Add to Order</button></div></article><article class="card"><img src="images/tari wala mutton.jpg" alt="Tari Wala Mutton - Full" onerror="this.classList.add('missing')"><div class="content"><h3>Tari Wala Mutton - Full</h3><div class="price">₹650</div><button class="add" data-name="Tari Wala Mutton - Full" data-price="650">Add to Order</button></div></article><article class="card"><img src="images/tari wala chicken.jpg" alt="Tari Wala Chicken - 2 Pcs." onerror="this.classList.add('missing')"><div class="content"><h3>Tari Wala Chicken - 2 Pcs.</h3><div class="price">₹150</div><button class="add" data-name="Tari Wala Chicken - 2 Pcs." data-price="150">Add to Order</button></div></article><article class="card"><img src="images/tari wala chicken.jpg" alt="Tari Wala Chicken - Half" onerror="this.classList.add('missing')"><div class="content"><h3>Tari Wala Chicken - Half</h3><div class="price">₹350</div><button class="add" data-name="Tari Wala Chicken - Half" data-price="350">Add to Order</button></div></article><article class="card"><img src="images/tari wala chicken.jpg" alt="Tari Wala Chicken - Full" onerror="this.classList.add('missing')"><div class="content"><h3>Tari Wala Chicken - Full</h3><div class="price">₹550</div><button class="add" data-name="Tari Wala Chicken - Full" data-price="550">Add to Order</button></div></article></div></section>
-<section><h2 class="section-title">Tandoori Non-Veg</h2><div class="grid"><article class="card"><img src="images/tandoori chicken.jpg" alt="Tandoori Chicken" onerror="this.classList.add('missing')"><div class="content"><h3>Tandoori Chicken</h3><div class="price">₹230 / 400</div><div class="variant-row"><button class="add" data-name="Tandoori Chicken - Half" data-price="230">Half — ₹230</button><button class="add" data-name="Tandoori Chicken - Full" data-price="400">Full — ₹400</button></div></div></article><article class="card"><img src="images/irani chicken.jpg" alt="Irani Chicken" onerror="this.classList.add('missing')"><div class="content"><h3>Irani Chicken</h3><div class="price">₹250 / 480</div><div class="variant-row"><button class="add" data-name="Irani Chicken - Half" data-price="250">Half — ₹250</button><button class="add" data-name="Irani Chicken - Full" data-price="480">Full — ₹480</button></div></div></article><article class="card"><img src="images/chicken tikka.jpg" alt="Chicken Tikka" onerror="this.classList.add('missing')"><div class="content"><h3>Chicken Tikka</h3><div class="price">₹250 / 480</div><div class="variant-row"><button class="add" data-name="Chicken Tikka - Half" data-price="250">Half — ₹250</button><button class="add" data-name="Chicken Tikka - Full" data-price="480">Full — ₹480</button></div></div></article><article class="card"><img src="images/chicken tikka masala.jpg" alt="Chicken Tikka Masala" onerror="this.classList.add('missing')"><div class="content"><h3>Chicken Tikka Masala</h3><div class="price">₹270 / 500</div><div class="variant-row"><button class="add" data-name="Chicken Tikka Masala - Half" data-price="270">Half — ₹270</button><button class="add" data-name="Chicken Tikka Masala - Full" data-price="500">Full — ₹500</button></div></div></article><article class="card"><img src="images/chicken lasooni tikka.jpg" alt="Chicken Lasooni Tikka" onerror="this.classList.add('missing')"><div class="content"><h3>Chicken Lasooni Tikka</h3><div class="price">₹270 / 500</div><div class="variant-row"><button class="add" data-name="Chicken Lasooni Tikka - Half" data-price="270">Half — ₹270</button><button class="add" data-name="Chicken Lasooni Tikka - Full" data-price="500">Full — ₹500</button></div></div></article><article class="card"><img src="images/chicken seekh kabab.jpg" alt="Chicken Seekh Kebab" onerror="this.classList.add('missing')"><div class="content"><h3>Chicken Seekh Kebab</h3><div class="price">₹230</div><button class="add" data-name="Chicken Seekh Kebab" data-price="230">Add to Order</button></div></article><article class="card"><img src="images/mutton seekh kabab.jpg" alt="Mutton Seekh Kebab" onerror="this.classList.add('missing')"><div class="content"><h3>Mutton Seekh Kebab</h3><div class="price">₹300</div><button class="add" data-name="Mutton Seekh Kebab" data-price="300">Add to Order</button></div></article></div></section>
-<section><h2 class="section-title">Chinese Non-Veg</h2><div class="grid"><article class="card"><img src="images/chilli chicken.jpg" alt="Chilli Chicken" onerror="this.classList.add('missing')"><div class="content"><h3>Chilli Chicken</h3><div class="price">₹250 / 450</div><div class="variant-row"><button class="add" data-name="Chilli Chicken - Half" data-price="250">Half — ₹250</button><button class="add" data-name="Chilli Chicken - Full" data-price="450">Full — ₹450</button></div></div></article><article class="card"><img src="images/chilli chicken boneless.jpg" alt="Chilli Chicken Boneless" onerror="this.classList.add('missing')"><div class="content"><h3>Chilli Chicken Boneless</h3><div class="price">₹300 / 550</div><div class="variant-row"><button class="add" data-name="Chilli Chicken Boneless - Half" data-price="300">Half — ₹300</button><button class="add" data-name="Chilli Chicken Boneless - Full" data-price="550">Full — ₹550</button></div></div></article><article class="card"><img src="images/kfc chicken.jpg" alt="KFC Chicken" onerror="this.classList.add('missing')"><div class="content"><h3>KFC Chicken</h3><div class="price">₹250 / 500</div><div class="variant-row"><button class="add" data-name="KFC Chicken - Half" data-price="250">Half — ₹250</button><button class="add" data-name="KFC Chicken - Full" data-price="500">Full — ₹500</button></div></div></article><article class="card"><img src="images/fried chicken.jpg" alt="Fried Chicken" onerror="this.classList.add('missing')"><div class="content"><h3>Fried Chicken</h3><div class="price">₹230 / 450</div><div class="variant-row"><button class="add" data-name="Fried Chicken - Half" data-price="230">Half — ₹230</button><button class="add" data-name="Fried Chicken - Full" data-price="450">Full — ₹450</button></div></div></article></div></section>
-<section><h2 class="section-title">Fish</h2><div class="grid"><article class="card"><img src="images/amritsari fried fish.jpg" alt="Amritsari Fried Fish" onerror="this.classList.add('missing')"><div class="content"><h3>Amritsari Fried Fish</h3><div class="price">₹280</div><button class="add" data-name="Amritsari Fried Fish" data-price="280">Add to Order</button></div></article><article class="card"><img src="images/fried fish malli.jpg" alt="Fried Fish Malai" onerror="this.classList.add('missing')"><div class="content"><h3>Fried Fish Malai</h3><div class="price">₹280</div><button class="add" data-name="Fried Fish Malai" data-price="280">Add to Order</button></div></article><article class="card"><img src="images/fish curry.jpg" alt="Fish Curry" onerror="this.classList.add('missing')"><div class="content"><h3>Fish Curry</h3><div class="price">₹350</div><button class="add" data-name="Fish Curry" data-price="350">Add to Order</button></div></article><article class="card"><img src="images/fish curry.jpg" alt="Fish Chilli" onerror="this.classList.add('missing')"><div class="content"><h3>Fish Chilli</h3><div class="price">₹350</div><button class="add" data-name="Fish Chilli" data-price="350">Add to Order</button></div></article><article class="card"><img src="images/spl fish fry basa.jpg" alt="Spl. Fish Fry Basa" onerror="this.classList.add('missing')"><div class="content"><h3>Spl. Fish Fry Basa</h3><div class="price">₹250</div><button class="add" data-name="Spl. Fish Fry Basa" data-price="250">Add to Order</button></div></article></div></section>
-<section><h2 class="section-title">Non-Veg Rice</h2><div class="grid"><article class="card"><img src="images/chicken rice.jpg" alt="Chicken Rice" onerror="this.classList.add('missing')"><div class="content"><h3>Chicken Rice</h3><div class="price">₹150 / 250</div><div class="variant-row"><button class="add" data-name="Chicken Rice - Half" data-price="150">Half — ₹150</button><button class="add" data-name="Chicken Rice - Full" data-price="250">Full — ₹250</button></div></div></article><article class="card"><img src="images/mutton rice.jpg" alt="Mutton Rice" onerror="this.classList.add('missing')"><div class="content"><h3>Mutton Rice</h3><div class="price">₹200 / 300</div><div class="variant-row"><button class="add" data-name="Mutton Rice - Half" data-price="200">Half — ₹200</button><button class="add" data-name="Mutton Rice - Full" data-price="300">Full — ₹300</button></div></div></article></div></section>
-<section><h2 class="section-title">Indian Non-Veg Main Course</h2><div class="grid"><article class="card"><img src="images/mutton rogan josh.jpg" alt="Mutton Rogan Josh" onerror="this.classList.add('missing')"><div class="content"><h3>Mutton Rogan Josh</h3><div class="price">₹350 / 650</div><div class="variant-row"><button class="add" data-name="Mutton Rogan Josh - Half" data-price="350">Half — ₹350</button><button class="add" data-name="Mutton Rogan Josh - Full" data-price="650">Full — ₹650</button></div></div></article><article class="card"><img src="images/dahi chicken.jpg" alt="Dahi Chicken" onerror="this.classList.add('missing')"><div class="content"><h3>Dahi Chicken</h3><div class="price">₹250 / 450</div><div class="variant-row"><button class="add" data-name="Dahi Chicken - Half" data-price="250">Half — ₹250</button><button class="add" data-name="Dahi Chicken - Full" data-price="450">Full — ₹450</button></div></div></article><article class="card"><img src="images/butter chicken.jpg" alt="Butter Chicken" onerror="this.classList.add('missing')"><div class="content"><h3>Butter Chicken</h3><div class="price">₹300 / 550</div><div class="variant-row"><button class="add" data-name="Butter Chicken - Half" data-price="300">Half — ₹300</button><button class="add" data-name="Butter Chicken - Full" data-price="550">Full — ₹550</button></div></div></article><article class="card"><img src="images/kadai chicken.jpg" alt="Kadai Chicken" onerror="this.classList.add('missing')"><div class="content"><h3>Kadai Chicken</h3><div class="price">₹290 / 530</div><div class="variant-row"><button class="add" data-name="Kadai Chicken - Half" data-price="290">Half — ₹290</button><button class="add" data-name="Kadai Chicken - Full" data-price="530">Full — ₹530</button></div></div></article><article class="card"><img src="images/tawa chicken.jpeg" alt="Tawa Chicken" onerror="this.classList.add('missing')"><div class="content"><h3>Tawa Chicken</h3><div class="price">₹280 / 500</div><div class="variant-row"><button class="add" data-name="Tawa Chicken - Half" data-price="280">Half — ₹280</button><button class="add" data-name="Tawa Chicken - Full" data-price="500">Full — ₹500</button></div></div></article><article class="card"><img src="images/rara chicken.jpg" alt="Rara Chicken" onerror="this.classList.add('missing')"><div class="content"><h3>Rara Chicken</h3><div class="price">₹350 / 600</div><div class="variant-row"><button class="add" data-name="Rara Chicken - Half" data-price="350">Half — ₹350</button><button class="add" data-name="Rara Chicken - Full" data-price="600">Full — ₹600</button></div></div></article><article class="card"><img src="images/chicken curry.jpg" alt="Chicken Curry" onerror="this.classList.add('missing')"><div class="content"><h3>Chicken Curry</h3><div class="price">₹350 / 550</div><div class="variant-row"><button class="add" data-name="Chicken Curry - Half" data-price="350">Half — ₹350</button><button class="add" data-name="Chicken Curry - Full" data-price="550">Full — ₹550</button></div></div></article><article class="card"><img src="images/chicken masala.jpg" alt="Chicken Masala" onerror="this.classList.add('missing')"><div class="content"><h3>Chicken Masala</h3><div class="price">₹350 / 550</div><div class="variant-row"><button class="add" data-name="Chicken Masala - Half" data-price="350">Half — ₹350</button><button class="add" data-name="Chicken Masala - Full" data-price="550">Full — ₹550</button></div></div></article><article class="card"><img src="images/chicken tikka masala.jpg" alt="Chicken Tikka Masala" onerror="this.classList.add('missing')"><div class="content"><h3>Chicken Tikka Masala</h3><div class="price">₹350 / 550</div><div class="variant-row"><button class="add" data-name="Chicken Tikka Masala - Half" data-price="350">Half — ₹350</button><button class="add" data-name="Chicken Tikka Masala - Full" data-price="550">Full — ₹550</button></div></div></article><article class="card"><img src="images/chicken keema masala.jpg" alt="Chicken Keema Masala" onerror="this.classList.add('missing')"><div class="content"><h3>Chicken Keema Masala</h3><div class="price">₹360 / 600</div><div class="variant-row"><button class="add" data-name="Chicken Keema Masala - Half" data-price="360">Half — ₹360</button><button class="add" data-name="Chicken Keema Masala - Full" data-price="600">Full — ₹600</button></div></div></article><article class="card"><img src="images/chicken kali mirch.jpg" alt="Chicken Kali Mirch" onerror="this.classList.add('missing')"><div class="content"><h3>Chicken Kali Mirch</h3><div class="price">₹320 / 600</div><div class="variant-row"><button class="add" data-name="Chicken Kali Mirch - Half" data-price="320">Half — ₹320</button><button class="add" data-name="Chicken Kali Mirch - Full" data-price="600">Full — ₹600</button></div></div></article><article class="card"><img src="images/palak chicken.jpg" alt="Palak Chicken" onerror="this.classList.add('missing')"><div class="content"><h3>Palak Chicken</h3><div class="price">₹250 / 500</div><div class="variant-row"><button class="add" data-name="Palak Chicken - Half" data-price="250">Half — ₹250</button><button class="add" data-name="Palak Chicken - Full" data-price="500">Full — ₹500</button></div></div></article><article class="card"><img src="images/fried chicken.jpg" alt="Fried Chicken" onerror="this.classList.add('missing')"><div class="content"><h3>Fried Chicken</h3><div class="price">₹230 / 450</div><div class="variant-row"><button class="add" data-name="Fried Chicken - Half" data-price="230">Half — ₹230</button><button class="add" data-name="Fried Chicken - Full" data-price="450">Full — ₹450</button></div></div></article><article class="card"><img src="images/chicken fry kfc.jpg" alt="Chicken Fry KFC" onerror="this.classList.add('missing')"><div class="content"><h3>Chicken Fry KFC</h3><div class="price">₹250 / 500</div><div class="variant-row"><button class="add" data-name="Chicken Fry KFC - Half" data-price="250">Half — ₹250</button><button class="add" data-name="Chicken Fry KFC - Full" data-price="500">Full — ₹500</button></div></div></article><article class="card"><img src="images/chilli chicken.jpg" alt="Chilli Chicken" onerror="this.classList.add('missing')"><div class="content"><h3>Chilli Chicken</h3><div class="price">₹250 / 450</div><div class="variant-row"><button class="add" data-name="Chilli Chicken - Half" data-price="250">Half — ₹250</button><button class="add" data-name="Chilli Chicken - Full" data-price="450">Full — ₹450</button></div></div></article><article class="card"><img src="images/chilli chicken boneless.jpg" alt="Chilli Chicken Boneless" onerror="this.classList.add('missing')"><div class="content"><h3>Chilli Chicken Boneless</h3><div class="price">₹300 / 550</div><div class="variant-row"><button class="add" data-name="Chilli Chicken Boneless - Half" data-price="300">Half — ₹300</button><button class="add" data-name="Chilli Chicken Boneless - Full" data-price="550">Full — ₹550</button></div></div></article><article class="card"><img src="images/lemon chicken.jpg" alt="Lemon Chicken" onerror="this.classList.add('missing')"><div class="content"><h3>Lemon Chicken</h3><div class="price">₹270 / 450</div><div class="variant-row"><button class="add" data-name="Lemon Chicken - Half" data-price="270">Half — ₹270</button><button class="add" data-name="Lemon Chicken - Full" data-price="450">Full — ₹450</button></div></div></article><article class="card"><img src="images/garlic chicken.jpg" alt="Garlic Chicken" onerror="this.classList.add('missing')"><div class="content"><h3>Garlic Chicken</h3><div class="price">₹280 / 500</div><div class="variant-row"><button class="add" data-name="Garlic Chicken - Half" data-price="280">Half — ₹280</button><button class="add" data-name="Garlic Chicken - Full" data-price="500">Full — ₹500</button></div></div></article></div></section>
-<section><h2 class="section-title">Soda, Water & Cold Drinks</h2><div class="grid"><article class="card"><img src="images/cold_drink.png" alt="Pepsi" onerror="this.classList.add('missing')"><div class="content"><h3>Pepsi</h3><div class="price">Price not listed</div></div></article><article class="card"><img src="images/cold_drink.png" alt="7UP" onerror="this.classList.add('missing')"><div class="content"><h3>7UP</h3><div class="price">Price not listed</div></div></article><article class="card"><img src="images/cold_drink.png" alt="Mountain Dew" onerror="this.classList.add('missing')"><div class="content"><h3>Mountain Dew</h3><div class="price">Price not listed</div></div></article><article class="card"><img src="images/water.png" alt="Bottled Water" onerror="this.classList.add('missing')"><div class="content"><h3>Bottled Water</h3><div class="price">Price not listed</div></div></article><article class="card"><img src="images/cold_drink.png" alt="Coca-Cola" onerror="this.classList.add('missing')"><div class="content"><h3>Coca-Cola</h3><div class="price">Price not listed</div></div></article><article class="card"><img src="images/cold_drink.png" alt="Fanta" onerror="this.classList.add('missing')"><div class="content"><h3>Fanta</h3><div class="price">Price not listed</div></div></article><article class="card"><img src="images/cold_drink.png" alt="Other Soft Drinks" onerror="this.classList.add('missing')"><div class="content"><h3>Other Soft Drinks</h3><div class="price">Price not listed</div></div></article></div></section>
-<section><h2 class="section-title">Shakes</h2><div class="grid"><article class="card"><img src="images/milkshake.png" alt="Shakes (Any Flavour)" onerror="this.classList.add('missing')"><div class="content"><h3>Shakes (Any Flavour)</h3><div class="price">₹100</div><button class="add" data-name="Shakes (Any Flavour)" data-price="100">Add to Order</button></div></article></div></section>
-</main>
+<main id="menu"></main>
 
 <button class="cart" id="cartButton">🛒 <span class="badge" id="count">0</span></button>
 
@@ -78,27 +60,38 @@ section{display:block;margin:18px 0}
 <h2>Your Order</h2>
 <div id="items"></div>
 <h3>Total: ₹<span id="total">0</span></h3>
+
 <input id="customerName" placeholder="Customer Name">
 <input id="customerPhone" placeholder="Mobile Number">
-<select id="orderType"><option>Home Delivery</option><option>Pickup</option></select>
+
+<select id="orderType">
+<option value="Home Delivery">Home Delivery</option>
+<option value="Pickup">Pickup</option>
+</select>
 <textarea id="address" rows="3" placeholder="Delivery Address"></textarea>
-<div id="paymentBox" style="margin-top:14px;padding:14px;border:2px solid #7b1113;border-radius:10px;background:#fff8f0">
-  <h3 style="margin:0 0 8px;color:#7b1113">💳 Online UPI Payment</h3>
-  <p style="margin:5px 0"><b>UPI ID:</b> 9713545556@pthdfc</p>
-  <p style="margin:5px 0"><b>Amount:</b> ₹<span id="payAmount">0</span></p>
-  <label style="display:block;font-weight:bold;margin-top:8px">Payment Method</label>
-  <select id="paymentMethod" style="width:100%;padding:11px;margin:6px 0;border:1px solid #aaa;border-radius:7px;font-size:16px"><option value="UPI">Pay Online via UPI</option><option value="Restaurant">Pay at Restaurant</option></select>
-  <div id="upiArea"></div>
-  <button class="action" id="upiPay" type="button">Pay Online via UPI</button>
-  <label style="display:block;font-weight:bold;margin-top:10px">📷 Payment Screenshot</label>
-  <input id="paymentScreenshot" type="file" accept="image/*" style="width:100%;margin-top:6px">
-  <input id="utr" placeholder="UPI UTR / Transaction ID">
+
+<div id="paymentBox">
+<h3 style="margin:0 0 8px;color:#7b1113">💳 Online UPI Payment</h3>
+<p style="margin:5px 0"><b>UPI ID:</b> 9713545556@pthdfc</p>
+<p style="margin:5px 0"><b>Amount:</b> ₹<span id="payAmount">0</span></p>
+
+<label style="display:block;font-weight:bold;margin-top:8px">Payment Method</label>
+<select id="paymentMethod">
+<option value="UPI">Pay Online via UPI</option>
+<option value="Restaurant">Pay at Restaurant</option>
+</select>
+
+<div id="upiArea"></div>
+<button class="action" id="upiPay" type="button">Pay Online via UPI</button>
+
+<label style="display:block;font-weight:bold;margin-top:10px">📷 Payment Screenshot</label>
+<input id="paymentScreenshot" type="file" accept="image/*">
+
+<input id="utr" placeholder="UPI UTR / Transaction ID">
+<p id="shareNote">Payment karne ke baad screenshot select karein aur UTR enter karein.</p>
 </div>
 
 <button class="action" id="wa">Order on WhatsApp</button>
-
-
-
 <button class="action close" id="clear">Clear Cart</button>
 <button class="action close" id="close">Close</button>
 </div>
@@ -106,74 +99,349 @@ section{display:block;margin:18px 0}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 (function(){
-  const cart=[];
-  const UPI_ID='9713545556@pthdfc';
-  const WA='917796631555';
-  const menu=document.getElementById('menu'), search=document.getElementById('search'), panel=document.getElementById('panel');
-  const items=document.getElementById('items'), count=document.getElementById('count'), total=document.getElementById('total');
-  const payAmount=document.getElementById('payAmount'), upiArea=document.getElementById('upiArea'), payBtn=document.getElementById('upiPay');
-  const shot=document.getElementById('paymentScreenshot'), utr=document.getElementById('utr'), method=document.getElementById('paymentMethod');
-  const money=n=>Number.isFinite(Number(n)) ? Number(n).toFixed(0) : '0';
-  function currentTotal(){return cart.reduce((s,x)=>s+(Number.isFinite(x.price)?x.price:0),0)}
-  function refresh(){
-    count.textContent=cart.length;
-    items.innerHTML=cart.length ? cart.map((x,i)=>`<div class="order-item"><b>${escapeHtml(x.name)}</b><br>₹${money(x.price)} <button onclick="removeItem(${i})" style="margin-top:5px">Remove</button></div>`).join('') : '<div class="empty">Your cart is empty.<br>Add items from the menu.</div>';
-    total.textContent=money(currentTotal());
-    makeUPI();
+
+const UPI_ID='9713545556@pthdfc';
+const WA='917796631555';
+const cart=[];
+
+const data=[
+["Tandoori Veg",[
+["Paneer Tikka","240","images/paneer_tikka.jpg"],
+["Paneer Malai Tikka","280","images/paneer malai tikka.jpg"],
+["Paneer Kali Mirch Tikka","280","images/paneer-kali-mirch-tikka.jpg"],
+["Mushroom Tikka","230","images/mushroom tikka.jpg"],
+["Soya Champ Tikka","220","images/soya chaap tikka.jpg"],
+["Soya Malai Tikka","250","images/soya malai tikka.jpg"],
+["Soya Hariyali Tikka","240","images/soya hariyali tikka.jpg"]
+]],
+["Veg Rice",[
+["Plain Rice",["60","120"],"images/plain rice.jpg"],
+["Jeera Rice",["70","150"],"images/jeera rice.jpg"],
+["Mix Veg Rice",["90","190"],"images/mix veg rice.jpg"]
+]],
+["Indian Veg Main Course",[
+["Dal Fry",["80","150"],"images/dal fry.jpg"],
+["Dal Makhani",["90","180"],"images/dal makhani.jpg"],
+["Chana Masala",["80","150"],"images/chana masala.jpg"],
+["Paneer Butter Masala",["150","270"],"images/paneer butter masala.jpg"],
+["Cheese Tomato",["130","250"],"images/cheese tomato.jpg"],
+["Mushroom Do Pyaza",["150","270"],"images/mushroom do pyaza.jpg"],
+["Kadai Paneer",["120","240"],"images/kadai paneer.jpg"],
+["Mix Veg",["100","200"],"images/mix veg.jpg"],
+["Paneer Do Pyaza",["130","260"],"images/paneer do pyaza.jpg"],
+["Mushroom Masala",["100","180"],"images/mushroom masala.jpg"],
+["Hakka Bakka Spl. Champ",["150","270"],"images/hakka bakka spl chaap.jpg"],
+["Shahi Paneer",["120","240"],"images/shahi paneer.jpg"],
+["Paneer Bhurji",["130","250"],"images/paneer bhurji.jpg"],
+["Paneer Kali Mirch",["150","280"],"images/paneer kali mirch.jpg"],
+["Hakka Bakka Spl. Rara Paneer",["180","300"],"images/hakka bakka rara paneer.jpg"]
+]],
+["Chinese Veg & Veg Snacks",[
+["Paneer Chilli","180","images/paneer chili.jpg"],
+["Chilli Potato","150","images/chilli potato.jpg"],
+["French Fries","100","images/french fries.jpg"],
+["Chilli Mushroom","150","images/chilli mushroom.jpg"],
+["Paneer Pakoda","150","images/paneer pakoda.jpg"],
+["Paneer Fingers","220","images/paneer fingers.jpg"],
+["Honey Chilli Potato","220","images/honey chilli potato.jpg"],
+["Veg Manchurian (Gravy/Dry)","180","images/veg menchurian.jpg"],
+["Schezwan Veg Noodles","180","images/schezwan veg noodles.jpg"],
+["Veg Spring Rolls (6 Pcs.)","180","images/spring roll.jpg"]
+]],
+["Thali",[
+["Unlimited Thali","150","images/thali.jpg"]
+]],
+["Drinks",[
+["Sweet Lassi","80","images/sweetlassi.png"],
+["Masala Chach","60","images/kuladtea.png"],
+["Lemon Ice Tea","115","images/ice tea.jpg"],
+["Shakes (Any Flavour)","115","images/milkshake.png"],
+["Mojito","115","images/mojito.png"],
+["Cold Coffee with Ice Cream","95","images/coffee.png"]
+]],
+["Chapati / Breads / Kulcha",[
+["Tandoori Roti","15","images/tandoori chapati.jpg"],
+["Butter Roti","20","images/butter chapati.jpg"],
+["Missi Roti","30","images/missi roti.jpg"],
+["Plain Naan","45","images/plain naan.jpg"],
+["Butter Naan","70","images/butter naan.jpg"],
+["Garlic Naan","80","images/garlic naan.jpg"],
+["Lachha Paratha","60","images/lachha paratha.jpg"],
+["Pudina Paratha","45","images/pudina paratha.jpg"],
+["Green Chilli Paratha","50","images/green chilli paratha.jpg"],
+["Red Chilli Paratha","60","images/red chilli paratha.jpg"],
+["Amritsari Kulcha","50","images/amritsari kulcha.jpg"],
+["With Chana","60","images/amritsari kulcha with chana.jpg"]
+]],
+["Salads",[
+["Masala Papad","90","images/masala papad.jpg"],
+["Peanut Masala","100","images/peanut masala.jpg"],
+["Chana Chaat","100","images/chana chat.jpg"],
+["Cream Salad","90","images/salad mix.jpg"],
+["Green Salad","80","images/salad mix.jpg"],
+["Extra Onion","30","images/extra onion.jpg"]
+]],
+["Raita",[
+["Boondi Raita","80","images/boondi raita.jpg"],
+["Mix Raita","100","images/mix raita.jpg"],
+["Aloo Raita","90","images/aloo raita.jpg"]
+]],
+["Handi Special",[
+["Tari Wala Mutton - 2 Pcs.","200","images/tari wala mutton 2pc.jpg"],
+["Tari Wala Mutton - Half","350","images/tari wala mutton.jpg"],
+["Tari Wala Mutton - Full","650","images/tari wala mutton.jpg"],
+["Tari Wala Chicken - 2 Pcs.","150","images/tari wala chicken.jpg"],
+["Tari Wala Chicken - Half","350","images/tari wala chicken.jpg"],
+["Tari Wala Chicken - Full","550","images/tari wala chicken.jpg"]
+]],
+["Tandoori Non-Veg",[
+["Tandoori Chicken",["230","400"],"images/tandoori chicken.jpg"],
+["Irani Chicken",["250","480"],"images/irani chicken.jpg"],
+["Chicken Tikka",["250","480"],"images/chicken tikka.jpg"],
+["Chicken Tikka Masala",["270","500"],"images/chicken tikka masala.jpg"],
+["Chicken Lasooni Tikka",["270","500"],"images/chicken lasooni tikka.jpg"],
+["Chicken Seekh Kebab","230","images/chicken seekh kabab.jpg"],
+["Mutton Seekh Kebab","300","images/mutton seekh kabab.jpg"]
+]],
+["Chinese Non-Veg",[
+["Chilli Chicken",["250","450"],"images/chilli chicken.jpg"],
+["Chilli Chicken Boneless",["300","550"],"images/chilli chicken boneless.jpg"],
+["KFC Chicken",["250","500"],"images/kfc chicken.jpg"],
+["Fried Chicken",["230","450"],"images/fried chicken.jpg"]
+]],
+["Fish",[
+["Amritsari Fried Fish","280","images/amritsari fried fish.jpg"],
+["Fried Fish Malai","280","images/fried fish malli.jpg"],
+["Fish Curry","350","images/fish curry.jpg"],
+["Fish Chilli","350","images/fish curry.jpg"],
+["Spl. Fish Fry Basa","250","images/spl fish fry basa.jpg"]
+]],
+["Non-Veg Rice",[
+["Chicken Rice",["150","250"],"images/chicken rice.jpg"],
+["Mutton Rice",["200","300"],"images/mutton rice.jpg"]
+]],
+["Indian Non-Veg Main Course",[
+["Mutton Rogan Josh",["350","650"],"images/mutton rogan josh.jpg"],
+["Dahi Chicken",["250","450"],"images/dahi chicken.jpg"],
+["Butter Chicken",["300","550"],"images/butter chicken.jpg"],
+["Kadai Chicken",["290","530"],"images/kadai chicken.jpg"],
+["Tawa Chicken",["280","500"],"images/tawa chicken.jpeg"],
+["Rara Chicken",["350","600"],"images/rara chicken.jpg"],
+["Chicken Curry",["350","550"],"images/chicken curry.jpg"],
+["Chicken Masala",["350","550"],"images/chicken masala.jpg"],
+["Chicken Tikka Masala",["350","550"],"images/chicken tikka masala.jpg"],
+["Chicken Keema Masala",["360","600"],"images/chicken keema masala.jpg"],
+["Chicken Kali Mirch",["320","600"],"images/chicken kali mirch.jpg"],
+["Palak Chicken",["250","500"],"images/palak chicken.jpg"],
+["Fried Chicken",["230","450"],"images/fried chicken.jpg"],
+["Chicken Fry KFC",["250","500"],"images/chicken fry kfc.jpg"],
+["Chilli Chicken",["250","450"],"images/chilli chicken.jpg"],
+["Chilli Chicken Boneless",["300","550"],"images/chilli chicken boneless.jpg"],
+["Lemon Chicken",["270","450"],"images/lemon chicken.jpg"],
+["Garlic Chicken",["280","500"],"images/garlic chicken.jpg"]
+]],
+["Soda, Water & Cold Drinks",[
+["Pepsi","0","images/cold_drink.png"],
+["7UP","0","images/cold_drink.png"],
+["Mountain Dew","0","images/cold_drink.png"],
+["Bottled Water","0","images/water.png"],
+["Coca-Cola","0","images/cold_drink.png"],
+["Fanta","0","images/cold_drink.png"],
+["Other Soft Drinks","0","images/cold_drink.png"]
+]],
+["Shakes",[
+["Shakes (Any Flavour)","100","images/milkshake.png"]
+]]
+];
+
+const menu=document.getElementById('menu');
+const panel=document.getElementById('panel');
+const items=document.getElementById('items');
+const count=document.getElementById('count');
+const total=document.getElementById('total');
+const payAmount=document.getElementById('payAmount');
+const upiArea=document.getElementById('upiArea');
+const payBtn=document.getElementById('upiPay');
+const method=document.getElementById('paymentMethod');
+const shot=document.getElementById('paymentScreenshot');
+const utr=document.getElementById('utr');
+
+function money(n){return Number(n)||0}
+function esc(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])}
+
+function renderMenu(){
+  menu.innerHTML=data.map(([section,list])=>`
+    <section>
+      <h2 class="section-title">${esc(section)}</h2>
+      <div class="grid">
+      ${list.map((x)=>{
+        const name=x[0], p=x[1], img=x[2];
+        if(Array.isArray(p)){
+          return `<article class="card">
+            <img src="${img}" alt="${esc(name)}" onerror="this.style.visibility='hidden'">
+            <div class="content"><h3>${esc(name)}</h3>
+            <div class="price">₹${p[0]} / ${p[1]}</div>
+            <div class="variant-row">
+              <button class="add" data-name="${esc(name)} - Half" data-price="${p[0]}">Half — ₹${p[0]}</button>
+              <button class="add" data-name="${esc(name)} - Full" data-price="${p[1]}">Full — ₹${p[1]}</button>
+            </div></div></article>`;
+        }
+        if(Number(p)===0){
+          return `<article class="card">
+            <img src="${img}" alt="${esc(name)}" onerror="this.style.visibility='hidden'">
+            <div class="content"><h3>${esc(name)}</h3><div class="price">Price not listed</div></div>
+          </article>`;
+        }
+        return `<article class="card">
+          <img src="${img}" alt="${esc(name)}" onerror="this.style.visibility='hidden'">
+          <div class="content"><h3>${esc(name)}</h3><div class="price">₹${p}</div>
+          <button class="add" data-name="${esc(name)}" data-price="${p}">Add to Order</button></div>
+        </article>`;
+      }).join('')}
+      </div>
+    </section>`;
+  }).join('');
+}
+
+function currentTotal(){return cart.reduce((s,x)=>s+money(x.price),0)}
+
+function refresh(){
+  count.textContent=cart.length;
+  items.innerHTML=cart.length ? cart.map((x,i)=>
+    `<div class="order-item"><b>${esc(x.name)}</b><br>₹${money(x.price)}
+    <button class="remove" onclick="removeItem(${i})">Remove</button></div>`).join('')
+    : '<div class="empty">Your cart is empty.<br>Add items from the menu.</div>';
+  total.textContent=currentTotal();
+  makeUPI();
+}
+
+function makeUPI(){
+  const amount=currentTotal();
+  payAmount.textContent=amount;
+  upiArea.innerHTML='';
+  payBtn.style.display=method.value==='UPI'?'block':'none';
+  if(!amount || method.value!=='UPI') return;
+
+  const upi='upi://pay?pa='+encodeURIComponent(UPI_ID)+
+    '&pn='+encodeURIComponent('Hakka Bakka Punjabi Dhaba')+
+    '&am='+amount.toFixed(2)+'&cu=INR';
+
+  const box=document.createElement('div');
+  box.id='qrbox';
+  upiArea.appendChild(box);
+
+  if(window.QRCode){
+    new QRCode(box,{text:upi,width:230,height:230,correctLevel:QRCode.CorrectLevel.M});
+  }else{
+    const img=document.createElement('img');
+    img.alt='UPI Payment QR';
+    img.src='https://api.qrserver.com/v1/create-qr-code/?size=230x230&data='+encodeURIComponent(upi);
+    box.appendChild(img);
   }
-  function escapeHtml(v){return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
-  function makeUPI(){
-    const amount=currentTotal();
-    payAmount.textContent=money(amount);
-    upiArea.innerHTML='';
-    if(!amount) return;
-    const upi='upi://pay?pa='+encodeURIComponent(UPI_ID)+'&pn='+encodeURIComponent('Hakka Bakka Punjabi Dhaba')+'&am='+amount.toFixed(2)+'&cu=INR';
-    const box=document.createElement('div'); box.id='qrbox'; upiArea.appendChild(box);
-    if(window.QRCode){new QRCode(box,{text:upi,width:230,height:230,correctLevel:QRCode.CorrectLevel.M});}
-    else { const img=document.createElement('img'); img.alt='UPI Payment QR'; img.src='https://api.qrserver.com/v1/create-qr-code/?size=230x230&data='+encodeURIComponent(upi); box.appendChild(img); }
-    const note=document.createElement('div'); note.id='shareNote'; note.textContent='Scan QR. Amount ₹'+money(amount)+' is pre-filled.'; upiArea.appendChild(note);
-    payBtn.onclick=()=>{window.location.href=upi};
-    method.onchange=()=>{upiArea.style.display=method.value==='UPI'?'block':'none';payBtn.style.display=method.value==='UPI'?'block':'none';};
-    method.onchange();
-  }
-  window.removeItem=function(i){if(i>=0&&i<cart.length){cart.splice(i,1);refresh()}};
-  menu.addEventListener('click',e=>{
-    const b=e.target.closest('.add'); if(!b)return;
-    const price=Number(b.dataset.price);
-    if(!Number.isFinite(price)){alert('This item has no valid price yet.');return;}
-    cart.push({name:b.dataset.name||b.closest('.card').querySelector('h3').textContent,price});
-    panel.style.display='block'; refresh();
-  });
-  search.addEventListener('input',function(){
-    const q=this.value.trim().toLowerCase();
-    document.querySelectorAll('section').forEach(sec=>{let visible=0;sec.querySelectorAll('.card').forEach(card=>{const ok=card.querySelector('h3').textContent.toLowerCase().includes(q);card.style.display=ok?'':'none';if(ok)visible++});sec.style.display=visible?'':'none'});
-  });
-  document.getElementById('cartButton').onclick=()=>{panel.style.display='block';refresh()};
-  document.getElementById('close').onclick=()=>panel.style.display='none';
-  document.getElementById('clear').onclick=()=>{cart.length=0;refresh()};
-  document.getElementById('orderType').addEventListener('change',function(){document.getElementById('address').style.display=this.value==='Home Delivery'?'block':'none'});
-  document.getElementById('wa').onclick=async function(){
-    if(!cart.length){alert('Please add items first.');return}
-    const name=document.getElementById('customerName').value.trim()||'Not provided';
-    const phone=document.getElementById('customerPhone').value.trim()||'Not provided';
-    const type=document.getElementById('orderType').value;
-    const address=type==='Home Delivery'?(document.getElementById('address').value.trim()||'Not provided'):'Not required (Pickup)';
-    const transaction=utr.value.trim()||'Not provided';
-    const payment=method.value==='UPI'?'UPI Online':'Pay at Restaurant';
-    if(method.value==='UPI' && (!shot.files || !shot.files.length)){
-      if(!confirm('Payment screenshot upload nahi kiya. Kya phir bhi WhatsApp order bhejna hai?')) return;
-    }
-    const lines=cart.map(x=>'• '+x.name+' - ₹'+money(x.price)).join('\n');
-    const msg=`*HAKKA BAKKA ONLINE ORDER*\n\n${lines}\n\n*Total: ₹${money(currentTotal())}*\nPayment: ${payment}\nUTR: ${transaction}\n\nName: ${name}\nMobile: ${phone}\nType: ${type}\nAddress: ${address}`;
-    const file=shot.files&&shot.files.length?shot.files[0]:null;
-    if(file && navigator.canShare && navigator.canShare({files:[file]})){
-      try{await navigator.share({title:'Hakka Bakka Order',text:msg,files:[file]});return}catch(e){}
-    }
-    window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
-    if(file)setTimeout(()=>alert('WhatsApp open ho gaya. Agar screenshot attach na hua ho to selected screenshot ko chat me manually attach karke Send kar dena.'),800);
-  };
+
+  const note=document.createElement('div');
+  note.id='shareNote';
+  note.textContent='Scan QR — ₹'+amount+' amount pre-filled.';
+  upiArea.appendChild(note);
+
+  payBtn.onclick=()=>{window.location.href=upi};
+}
+
+window.removeItem=function(i){
+  if(i>=0&&i<cart.length){cart.splice(i,1);refresh()}
+};
+
+menu.addEventListener('click',e=>{
+  const b=e.target.closest('.add');
+  if(!b)return;
+  const price=Number(b.dataset.price);
+  if(!Number.isFinite(price)){alert('Invalid price');return}
+  cart.push({name:b.dataset.name,price});
+  panel.style.display='block';
   refresh();
+});
+
+document.getElementById('search').addEventListener('input',function(){
+  const q=this.value.trim().toLowerCase();
+  document.querySelectorAll('section').forEach(sec=>{
+    let visible=0;
+    sec.querySelectorAll('.card').forEach(card=>{
+      const ok=card.querySelector('h3').textContent.toLowerCase().includes(q);
+      card.style.display=ok?'':'none';
+      if(ok)visible++;
+    });
+    sec.style.display=visible?'':'none';
+  });
+});
+
+document.getElementById('cartButton').onclick=()=>{panel.style.display='block';refresh()};
+document.getElementById('close').onclick=()=>panel.style.display='none';
+document.getElementById('clear').onclick=()=>{cart.length=0;refresh()};
+
+document.getElementById('orderType').addEventListener('change',function(){
+  document.getElementById('address').style.display=this.value==='Home Delivery'?'block':'none';
+});
+method.addEventListener('change',makeUPI);
+
+document.getElementById('wa').onclick=async function(){
+  if(!cart.length){alert('Please add items first.');return}
+
+  const name=document.getElementById('customerName').value.trim()||'Not provided';
+  const phone=document.getElementById('customerPhone').value.trim()||'Not provided';
+  const type=document.getElementById('orderType').value;
+  const address=type==='Home Delivery'
+    ?(document.getElementById('address').value.trim()||'Not provided')
+    :'Not required (Pickup)';
+  const transaction=utr.value.trim()||'Not provided';
+  const payment=method.value==='UPI'?'UPI Online':'Pay at Restaurant';
+
+  if(method.value==='UPI' && (!shot.files || !shot.files.length)){
+    if(!confirm('Payment screenshot upload nahi kiya. Kya phir bhi WhatsApp order bhejna hai?')) return;
+  }
+
+  const lines=cart.map(x=>'• '+x.name+' - ₹'+money(x.price)).join('\\n');
+  const msg=`*HAKKA BAKKA ONLINE ORDER*
+
+${lines}
+
+*Total: ₹${currentTotal()}*
+Payment: ${payment}
+UTR: ${transaction}
+
+Name: ${name}
+Mobile: ${phone}
+Type: ${type}
+Address: ${address}`;
+
+  const file=shot.files&&shot.files.length?shot.files[0]:null;
+
+  if(file && navigator.canShare && navigator.canShare({files:[file]})){
+    try{
+      await navigator.share({title:'Hakka Bakka Order',text:msg,files:[file]});
+      return;
+    }catch(e){}
+  }
+
+  window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
+
+  if(file){
+    setTimeout(()=>alert('WhatsApp open ho gaya. Agar screenshot attach na hua ho to screenshot manually attach karke Send kar dena.'),800);
+  }
+};
+
+renderMenu();
+refresh();
+
+/* IMPORTANT: always use the newest HTML after publishing */
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js?v=6')
+      .then(reg=>reg.update())
+      .catch(err=>console.log('SW registration failed',err));
+  });
+}
+
 })();
-</script></script>
+</script>
 </body>
 </html>
