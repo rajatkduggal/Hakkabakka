@@ -110,13 +110,15 @@ section{margin:18px 0}
 .food-flash-dots span.active{width:20px;border-radius:8px;background:#fff}
 @media(max-width:500px){.hero-banner,.hero-banner .hero-signboard{height:230px;min-height:230px}.food-flash-strip{height:155px;margin:10px 12px 0}}
 .brand-icon{display:inline-flex;width:34px;height:34px;border-radius:50%;align-items:center;justify-content:center;margin-right:10px;font-weight:900;font-size:20px;vertical-align:middle;box-shadow:0 2px 6px rgba(0,0,0,.18)}.whatsapp-icon{background:#25D366;color:#fff;font-size:19px}.zomato-icon{background:#E23744;color:#fff;font-family:Arial}.swiggy-icon{background:#FC8019;color:#fff;font-family:Arial}.order-option{display:flex;align-items:center;justify-content:center;gap:4px}.order-option .brand-icon{flex:0 0 34px} 
+
+.menu-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;background:#fff;position:sticky;top:0;z-index:11;border-bottom:1px solid #eadfd2}.menu-top button{border:0;background:none;color:#7b1113;font-weight:800;font-size:15px}.menu-top strong{color:#222;font-size:17px}.shop-icon{display:inline-flex;align-items:center;justify-content:center;margin-right:8px;font-size:21px}
 </style>
 </head>
 <body>
 
 <div id="homeScreen" class="home-screen">
   <div class="hero-banner">
-    <img class="hero-signboard" src="images/signboard.png" alt="Hakka Bakka Restaurant">
+    <img class="hero-signboard" src="images/signboard.png" alt="Hakka Bakka Restaurant" onerror="this.style.display='none'">
     <div class="hero-overlay">
       <h1>Hakka Bakka</h1>
       <p>Punjabi Dhaba • Desi Swad • Modern Vibe</p>
@@ -125,7 +127,7 @@ section{margin:18px 0}
 
   <div class="food-flash-strip" aria-label="Hakka Bakka food highlights">
     <div class="food-flash" id="foodFlash">
-      <img class="flash-img active" src="images/paneer_tikka.jpg" alt="Paneer Tikka">
+      <img class="flash-img active" src="images/paneer tikka.jpg" alt="Paneer Tikka">
       <img class="flash-img" src="images/butter chicken.jpg" alt="Butter Chicken">
       <img class="flash-img" src="images/chilli mushroom.jpg" alt="Chilli Mushroom">
       <img class="flash-img" src="images/mutton rogan josh.jpg" alt="Mutton Rogan Josh">
@@ -139,7 +141,7 @@ section{margin:18px 0}
 
   <div class="profile-wrap">
     <div class="profile-card">
-      <img class="logo-round" src="images/logo.jpg" alt="Hakka Bakka Logo">
+      <img class="logo-round" src="images/logo.jpg" alt="Hakka Bakka Logo" onerror="this.style.display='none'">
       <h2>Hakka Bakka Restaurant</h2>
       <p class="tagline">Authentic Punjabi Taste with a Modern Vibe</p>
       <p class="story">
@@ -161,9 +163,9 @@ section{margin:18px 0}
 
   <div class="order-cta">
     <h3>How would you like to order?</h3>
-    <noscript><div style="padding:10px;text-align:center;color:#7b1113">Please enable JavaScript to order online.</div></noscript><button id="onlineOrderBtn" class="primary-order" type="button" onclick="toggleOrderOptions()">🛍️ Online Order</button>
+    <noscript><div style="padding:10px;text-align:center;color:#7b1113">Please enable JavaScript to order online.</div></noscript><button id="onlineOrderBtn" class="primary-order" type="button" onclick="openOnlineMenu()"><span class="shop-icon">🛍</span> Online Order</button>
     <div id="orderOptions" class="order-options">
-      <button id="whatsappOrderBtn" class="order-option option-wa" type="button" onclick="openWhatsAppMenu()">💬 WhatsApp Order</button>
+      <button id="whatsappOrderBtn" class="order-option option-wa" type="button" onclick="openWhatsAppMenu()"><span class="brand-icon whatsapp-icon">W</span> WhatsApp Order</button>
       <a class="order-option option-zomato" href="https://zomato.onelink.me/xqzv/7948ndtj" target="_blank" rel="noopener"><span class="brand-icon zomato-icon">Z</span> Order on Zomato</a>
       <a class="order-option option-swiggy" href="https://www.swiggy.com/menu/1400828?source=sharing" target="_blank" rel="noopener"><span class="brand-icon swiggy-icon">S</span> Order on Swiggy</a>
     </div>
@@ -175,6 +177,7 @@ section{margin:18px 0}
 </div>
 
 <div id="menuStart" class="menu-start">
+  <div class="menu-top"><button type="button" onclick="location.reload()">← Hakka Bakka</button><strong>Online Menu</strong></div>
   <div class="search"><input id="search" type="search" placeholder="Search menu..." autocomplete="off"></div>
   <main id="menu"></main>
 </div>
@@ -231,16 +234,20 @@ section{margin:18px 0}
   </div>
 </div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
+function openOnlineMenu(){
+  var home=document.getElementById('homeScreen');
+  var menu=document.getElementById('menuStart');
+  document.body.classList.add('menu-active');
+  if(home) home.style.display='none';
+  if(menu) menu.style.display='block';
+  window.scrollTo(0,0);
+}
 function toggleOrderOptions(){
   var el=document.getElementById('orderOptions');
   if(el) el.classList.toggle('show');
 }
 function openWhatsAppMenu(){
-  var home=document.getElementById('homeScreen');
-  var menu=document.getElementById('menuStart');
-  if(home) home.style.display='none';
-  if(menu) menu.style.display='block';
-  window.scrollTo(0,0);
+  window.location.href='https://wa.me/917796631555?text='+encodeURIComponent('Hello Hakka Bakka, I would like to place an order.');
 }
 </script>
 
@@ -268,7 +275,7 @@ const PIN_MIN=144001, PIN_MAX=144030, PIN_CUTOFF=144015;
 const cart=[];
 const data=[
 ["Tandoori Veg",[
-["Paneer Tikka","240","images/paneer_tikka.jpg"],
+["Paneer Tikka","240","images/paneer tikka.jpg"],
 ["Paneer Malai Tikka","280","images/paneer malai tikka.jpg"],
 ["Paneer Kali Mirch Tikka","280","images/paneer-kali-mirch-tikka.jpg"],
 ["Mushroom Tikka","230","images/mushroom tikka.jpg"],
@@ -588,23 +595,6 @@ document.getElementById('wa').onclick=async()=>{
  // Fallback for browsers without file sharing: open WhatsApp with order text.
  window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
 };
-document.getElementById('waDirect').onclick=function(){
- if(!cart.length)return alert('Cart is empty.');
- const name=nameInput.value.trim(),phone=phoneInput.value.trim(),type=orderType.value;
- if(!name){alert('Customer name enter karein.');nameInput.focus();return;}
- if(!/^\d{10}$/.test(phone)){alert('Mobile number exactly 10 digits ka hona chahiye.');phoneInput.focus();return;}
- let pin=null,addr='Not required (Pickup)';
- if(type==='Home Delivery'){
-   pin=pinNumber();addr=address.value.trim();
-   if(!addr){alert('Delivery address enter karein.');address.focus();return;}
-   if(pin===null||pin<PIN_MIN||pin>PIN_MAX){alert('Home Delivery sirf pincode 144001 se 144030 tak available hai.');pincode.focus();return;}
- }
- const food=foodTotal(),charge=deliveryCharge(),total=food+charge;
- const lines=cart.map(x=>'• '+x.name+' - ₹'+Number(x.price)).join('\n');
- const msg=`*HAKKA BAKKA ONLINE ORDER*\n\n${lines}\n\nFood Total: ₹${food}\nDelivery Charges: ₹${charge}\n*TOTAL: ₹${total}*\n\nName: ${name}\nMobile: ${phone}\nType: ${type}\n${type==='Home Delivery'?'Pincode: '+pin+'\nAddress: '+addr:'Pickup: Hakka Bakka Punjabi Dhaba'}\nPayment: ${method.value==='UPI'?'UPI Online':'Pay at Restaurant'}\nUTR: ${utr.value.trim()||'Not provided'}\nPayment Screenshot: Please attach`;
- window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
-};
-
 
 renderMenu();renderCart();updateBilling();
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js?v=6',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{}));}
