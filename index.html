@@ -13,7 +13,7 @@ header{background:#7b1113;color:#fff;text-align:center;padding:28px 12px}
 header h1{margin:0;font-size:32px} header p{margin:8px 0;font-size:18px}
 .search{position:sticky;top:0;z-index:10;background:#fff;padding:12px}
 .search input{width:100%;padding:14px 16px;border:2px solid #7b1113;border-radius:12px;font-size:18px;background:#fff;color:#111}
-main{padding-bottom:100px}
+main{padding-bottom:190px}
 section{margin:18px 0}
 .section-title{margin:0 12px 12px;background:#7b1113;color:#fff;padding:11px 14px;border-radius:10px;text-align:center;font-size:22px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:0 12px}
@@ -25,8 +25,8 @@ section{margin:18px 0}
 .add{border:0;background:#7b1113;color:#fff;padding:9px 10px;border-radius:7px;font-weight:bold;cursor:pointer}
 .variant-row{display:flex;gap:6px;justify-content:center}
 .variant-row .add{flex:1;min-width:0;font-size:13px;padding:9px 5px}
-.cart{position:fixed;right:16px;bottom:18px;z-index:30;border:0;border-radius:50%;width:64px;height:64px;background:#7b1113;color:#fff;font-size:24px;box-shadow:0 3px 10px #0005}
-.badge{font-size:13px;background:#fff;color:#7b1113;border-radius:12px;padding:2px 6px}
+.cartDock{position:fixed;left:0;right:0;bottom:0;z-index:35;background:#fff;box-shadow:0 -4px 18px #0003;border-top:3px solid #7b1113;padding:9px 12px calc(9px + env(safe-area-inset-bottom));}
+.cartDockHead{display:flex;justify-content:space-between;align-items:center;font-weight:bold;color:#7b1113;margin-bottom:6px}.cartDockItems{display:flex;gap:8px;overflow-x:auto;max-height:58px;padding-bottom:3px}.cartChip{flex:0 0 auto;background:#f7f3ec;border:1px solid #ddd;border-radius:8px;padding:6px 9px;font-size:13px}.cartDockBottom{display:flex;align-items:center;gap:8px;margin-top:7px}.cartDockTotal{font-size:16px;flex:1}.cartDock .action{margin:0!important;padding:10px 12px!important;width:auto!important}.cartDock .clearCart{background:#333}.badge{font-size:13px;background:#fff;color:#7b1113;border-radius:12px;padding:2px 6px}
 .panel{display:none;position:fixed;inset:0 0 0 auto;width:min(430px,100%);background:#fff;z-index:40;padding:18px;overflow:auto;box-shadow:-4px 0 18px #0005}
 .panel h2{margin-top:0;color:#7b1113}
 .order-item{padding:10px 0;border-bottom:1px solid #ddd}
@@ -55,18 +55,17 @@ section{margin:18px 0}
 <div class="search"><input id="search" type="search" placeholder="Search menu..." autocomplete="off"></div>
 <main id="menu"></main>
 
-<button class="cart" id="cartButton">🛒 <span class="badge" id="count">0</span></button>
+<div class="cartDock" id="cartDock">
+  <div class="cartDockHead"><span>🛒 Your Cart (<span id="count">0</span>)</span><span id="cartSubtotal">₹0</span></div>
+  <div id="items" class="cartDockItems"><div class="empty">Cart empty</div></div>
+  <div class="cartDockBottom">
+    <div class="cartDockTotal">Food Total: <b>₹<span id="cartDockTotal">0</span></b></div>
+    <button class="action clearCart" id="cartClear">Clear</button>
+    <button class="action" id="proceedBtn">Proceed to Billing</button>
+  </div>
+</div>
 
 <div class="panel" id="cartPanel">
-  <div id="cartView">
-    <h2>🛒 Your Cart</h2>
-    <div id="items"></div>
-    <div class="cartSubtotal">Food Total: <b>₹<span id="cartSubtotal">0</span></b></div>
-    <button class="action" id="proceedBtn">Proceed to Billing</button>
-    <button class="action close" id="cartClose">Continue Shopping</button>
-    <button class="action close" id="cartClear">Clear Cart</button>
-  </div>
-
   <div id="billingView" style="display:none">
     <h2>🧾 Billing</h2>
     <input id="customerName" placeholder="Customer Name" autocomplete="name">
@@ -258,7 +257,7 @@ const panel=document.getElementById('cartPanel');
 const items=document.getElementById('items');
 const count=document.getElementById('count');
 const cartSubtotal=document.getElementById('cartSubtotal');
-const cartView=document.getElementById('cartView');
+const cartDockTotal=document.getElementById('cartDockTotal');
 const billingView=document.getElementById('billingView');
 const nameInput=document.getElementById('customerName');
 const phoneInput=document.getElementById('customerPhone');
@@ -295,7 +294,8 @@ function renderMenu(){
 }
 function renderCart(){
  count.textContent=cart.length;
- cartSubtotal.textContent=foodTotal();
+ cartSubtotal.textContent='₹'+foodTotal();
+ cartDockTotal.textContent=foodTotal();
  items.innerHTML=cart.length?cart.map((x,i)=>`<div class="order-item"><b>${esc(x.name)}</b><div>₹${Number(x.price)} <button class="remove" onclick="removeItem(${i})">Remove</button></div></div>`).join(''):'<div class="empty">Your cart is empty.<br>Add items from the menu.</div>';
 }
 function updateBilling(){
@@ -320,12 +320,10 @@ function makeUPI(){
  upiPay.onclick=()=>{paymentStatus.textContent='UPI app opening…';window.location.href=upi;};
 }
 window.removeItem=function(i){if(i>=0&&i<cart.length){cart.splice(i,1);renderCart();updateBilling();}};
-menu.addEventListener('click',e=>{const b=e.target.closest('.add');if(!b)return;const price=Number(b.dataset.price);if(!Number.isFinite(price))return;cart.push({name:b.dataset.name,price});renderCart();panel.style.display='block';cartView.style.display='block';billingView.style.display='none';});
-document.getElementById('cartButton').onclick=()=>{panel.style.display='block';cartView.style.display='block';billingView.style.display='none';renderCart();};
-document.getElementById('cartClose').onclick=()=>panel.style.display='none';
+menu.addEventListener('click',e=>{const b=e.target.closest('.add');if(!b)return;const price=Number(b.dataset.price);if(!Number.isFinite(price))return;cart.push({name:b.dataset.name,price});renderCart();});
 document.getElementById('cartClear').onclick=()=>{cart.length=0;renderCart();updateBilling();};
-document.getElementById('proceedBtn').onclick=()=>{if(!cart.length){alert('Cart is empty.');return;}cartView.style.display='none';billingView.style.display='block';updateBilling();};
-document.getElementById('backToCart').onclick=()=>{billingView.style.display='none';cartView.style.display='block';};
+document.getElementById('proceedBtn').onclick=()=>{if(!cart.length){alert('Cart is empty.');return;}panel.style.display='block';billingView.style.display='block';updateBilling();};
+document.getElementById('backToCart').onclick=()=>{panel.style.display='none';};
 orderType.addEventListener('change',updateBilling);
 pincode.addEventListener('input',()=>{pincode.value=pincode.value.replace(/\D/g,'').slice(0,6);updateBilling();});
 phoneInput.addEventListener('input',()=>{phoneInput.value=phoneInput.value.replace(/\D/g,'').slice(0,10);});
