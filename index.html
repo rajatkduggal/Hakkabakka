@@ -82,7 +82,7 @@ section{margin:18px 0}
 .order-cta{max-width:900px;margin:20px auto 0;padding:0 16px}
 .order-cta h3{text-align:center;margin:0 0 12px;color:#222;font-size:21px}
 .primary-order{width:100%;border:0;border-radius:14px;padding:16px;background:#7b1113;color:#fff;font-size:20px;font-weight:800;box-shadow:0 5px 14px #7b111344;cursor:pointer}
-.order-options{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}.order-options.show{display:grid}
+.order-options{display:none;grid-template-columns:1fr;gap:10px;margin-top:12px}.order-options.show{display:grid}
 .order-option{display:flex;align-items:center;justify-content:center;gap:9px;text-decoration:none;border:0;border-radius:12px;padding:14px;font-size:17px;font-weight:800;cursor:pointer}
 .option-wa{background:#198754;color:#fff}
 .option-zomato{background:#d8232a;color:#fff}
@@ -118,7 +118,7 @@ section{margin:18px 0}
 
 <div id="homeScreen" class="home-screen">
   <div class="hero-banner">
-    <img class="hero-signboard" src="images/signboard.png" alt="Hakka Bakka Restaurant" onerror="this.style.display='none'">
+    <img class="hero-signboard" src="signboard.png" alt="Hakka Bakka Restaurant" onerror="this.style.display='none'">
     <div class="hero-overlay">
       <h1>Hakka Bakka</h1>
       <p>Punjabi Dhaba • Desi Swad • Modern Vibe</p>
@@ -127,12 +127,12 @@ section{margin:18px 0}
 
   <div class="food-flash-strip" aria-label="Hakka Bakka food highlights">
     <div class="food-flash" id="foodFlash">
-      <img class="flash-img active" src="images/paneer tikka.jpg" alt="Paneer Tikka">
-      <img class="flash-img" src="images/butter chicken.jpg" alt="Butter Chicken">
-      <img class="flash-img" src="images/chilli mushroom.jpg" alt="Chilli Mushroom">
-      <img class="flash-img" src="images/mutton rogan josh.jpg" alt="Mutton Rogan Josh">
+      <img class="flash-img active" src="dosa.png" alt="Veg Special">
+      <img class="flash-img" src="fries.png" alt="Veg Snacks">
+      <img class="flash-img" src="springroll.png" alt="Veg Spring Rolls">
       <img class="flash-img" src="images/tandoori chicken.jpg" alt="Tandoori Chicken">
-      <img class="flash-img" src="images/paneer butter masala.jpg" alt="Paneer Butter Masala">
+      <img class="flash-img" src="images/butter chicken.jpg" alt="Butter Chicken">
+      <img class="flash-img" src="images/mutton rogan josh.jpg" alt="Mutton Rogan Josh">
     </div>
     <div class="food-flash-dots" aria-hidden="true">
       <span class="active"></span><span></span><span></span><span></span><span></span><span></span>
@@ -141,7 +141,7 @@ section{margin:18px 0}
 
   <div class="profile-wrap">
     <div class="profile-card">
-      <img class="logo-round" src="images/logo.jpg" alt="Hakka Bakka Logo" onerror="this.style.display='none'">
+      <img class="logo-round" src="logo.jpg" alt="Hakka Bakka Logo" onerror="this.style.display='none'">
       <h2>Hakka Bakka Restaurant</h2>
       <p class="tagline">Authentic Punjabi Taste with a Modern Vibe</p>
       <p class="story">
@@ -163,8 +163,8 @@ section{margin:18px 0}
 
   <div class="order-cta">
     <h3>How would you like to order?</h3>
-    <noscript><div style="padding:10px;text-align:center;color:#7b1113">Please enable JavaScript to order online.</div></noscript><button id="onlineOrderBtn" class="primary-order" type="button" onclick="openOnlineMenu()"><span class="shop-icon">🛍</span> Online Order</button>
-    <div id="orderOptions" class="order-options">
+    <noscript><div style="padding:10px;text-align:center;color:#7b1113">Please enable JavaScript to order online.</div></noscript><button id="onlineOrderBtn" class="primary-order" type="button" onclick="openOnlineMenu()"><span class="shop-icon">🛍️</span> Online Order</button>
+    <div id="orderOptions" class="order-options" aria-label="Online order options">
       <button id="whatsappOrderBtn" class="order-option option-wa" type="button" onclick="openWhatsAppMenu()"><span class="brand-icon whatsapp-icon">W</span> WhatsApp Order</button>
       <a class="order-option option-zomato" href="https://zomato.onelink.me/xqzv/7948ndtj" target="_blank" rel="noopener noreferrer"><span class="brand-icon zomato-icon">Z</span><span>Order on Zomato</span></a>
       <a class="order-option option-swiggy" href="https://www.swiggy.com/menu/1400828?source=sharing" target="_blank" rel="noopener noreferrer"><span class="brand-icon swiggy-icon">S</span><span>Order on Swiggy</span></a>
@@ -235,12 +235,11 @@ section{margin:18px 0}
 </div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 function openOnlineMenu(){
-  var home=document.getElementById('homeScreen');
-  var menu=document.getElementById('menuStart');
-  document.body.classList.add('menu-active');
-  if(home) home.style.display='none';
-  if(menu) menu.style.display='block';
-  window.scrollTo(0,0);
+  var el=document.getElementById('orderOptions');
+  if(el){
+    el.classList.add('show');
+    el.scrollIntoView({behavior:'smooth',block:'center'});
+  }
 }
 function toggleOrderOptions(){
   var el=document.getElementById('orderOptions');
