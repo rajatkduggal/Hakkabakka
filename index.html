@@ -57,17 +57,11 @@ section{margin:18px 0}
 .cartSubtotal{font-size:18px!important;font-weight:600}
 @media(max-width:700px){.panel{width:min(92vw,430px)}.panel:before{inset:0 92vw 0 auto}}
 
-.add.selected{
-  background:#198754!important;
-  color:#fff!important;
-  border:2px solid #146c43!important;
-  box-shadow:0 0 0 3px #19875433,0 4px 10px #0002;
-  transform:scale(1.02);
-}
-.card.selected-card{
-  box-shadow:0 0 0 3px #198754,0 5px 16px #0003;
-}
-.add.selected::before{content:"✓ ";font-weight:900}
+.card.selected-card{box-shadow:0 0 0 3px #198754,0 5px 16px #0003}
+.add.selected{background:#198754!important;color:#fff!important;border:0!important;padding:0!important}
+.qty-control{display:flex;align-items:center;justify-content:center;background:#198754;border-radius:8px;overflow:hidden;margin:0 auto;width:138px;height:40px}
+.qty-control button{border:0;background:#198754;color:#fff;font-size:24px;font-weight:900;width:44px;height:40px;padding:0;line-height:40px}
+.qty-control .qty-number{min-width:50px;text-align:center;color:#fff;font-weight:900;font-size:18px;border-left:1px solid #ffffff66;border-right:1px solid #ffffff66}
 </style>
 </head>
 <body>
@@ -325,15 +319,21 @@ function refreshSelectedItems(){
   document.querySelectorAll('.add').forEach(b=>{
     const name=b.dataset.name||'';
     const price=Number(b.dataset.price);
-    const selected=cart.some(x=>x.name===name && x.price===price);
-    b.classList.toggle('selected',selected);
+    const qty=cart.filter(x=>x.name===name && x.price===price).length;
     const card=b.closest('.card');
-    if(card) card.classList.toggle('selected-card',selected);
-    if(selected){
+    if(qty>0){
+      if(card) card.classList.add('selected-card');
       if(!b.dataset.originalText) b.dataset.originalText=b.textContent;
-      b.textContent='Selected';
-    }else if(b.dataset.originalText){
-      b.textContent=b.dataset.originalText;
+      b.classList.add('selected');
+      b.innerHTML=`<span class="qty-control">
+        <button type="button" class="item-minus" aria-label="Decrease quantity">−</button>
+        <span class="qty-number">${qty}</span>
+        <button type="button" class="item-plus" aria-label="Increase quantity">+</button>
+      </span>`;
+    }else{
+      if(card) card.classList.remove('selected-card');
+      b.classList.remove('selected');
+      if(b.dataset.originalText) b.textContent=b.dataset.originalText;
     }
   });
 }
@@ -396,7 +396,20 @@ window.removeGroup=function(name,price){
   for(let i=cart.length-1;i>=0;i--) if(cart[i].name===name && cart[i].price===price) cart.splice(i,1);
   renderCart(); updateBilling();
 };
-menu.addEventListener('click',e=>{const b=e.target.closest('.add');if(!b)return;const price=Number(b.dataset.price);if(!Number.isFinite(price))return;cart.push({name:b.dataset.name,price});renderCart();});
+menu.addEventListener('click',e=>{
+ const b=e.target.closest('.add');if(!b)return;
+ const price=Number(b.dataset.price);if(!Number.isFinite(price))return;
+ const name=b.dataset.name||b.closest('.card').querySelector('h3').textContent;
+ if(e.target.closest('.item-minus')){
+   const idx=cart.findIndex(x=>x.name===name&&x.price===price);
+   if(idx>=0)cart.splice(idx,1);
+ }else if(e.target.closest('.item-plus')){
+   cart.push({name,price});
+ }else{
+   cart.push({name,price});
+ }
+ renderCart();updateBilling();
+});
 document.getElementById('cartButton').onclick=()=>{panel.style.display='block';cartView.style.display='block';billingView.style.display='none';renderCart();};
 document.getElementById('cartClose').onclick=()=>panel.style.display='none';
 document.getElementById('cartClear').onclick=()=>{cart.length=0;renderCart();updateBilling();};
@@ -439,6 +452,22 @@ document.getElementById('wa').onclick=async()=>{
    if(err && err.name==='AbortError') return;
  }
  // Fallback for browsers without file sharing: open WhatsApp with order text.
+ window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
+};
+document.getElementById('waDirect').onclick=function(){
+ if(!cart.length)return alert('Cart is empty.');
+ const name=nameInput.value.trim(),phone=phoneInput.value.trim(),type=orderType.value;
+ if(!name){alert('Customer name enter karein.');nameInput.focus();return;}
+ if(!/^\d{10}$/.test(phone)){alert('Mobile number exactly 10 digits ka hona chahiye.');phoneInput.focus();return;}
+ let pin=null,addr='Not required (Pickup)';
+ if(type==='Home Delivery'){
+   pin=pinNumber();addr=address.value.trim();
+   if(!addr){alert('Delivery address enter karein.');address.focus();return;}
+   if(pin===null||pin<PIN_MIN||pin>PIN_MAX){alert('Home Delivery sirf pincode 144001 se 144030 tak available hai.');pincode.focus();return;}
+ }
+ const food=foodTotal(),charge=deliveryCharge(),total=food+charge;
+ const lines=cart.map(x=>'• '+x.name+' - ₹'+Number(x.price)).join('\n');
+ const msg=`*HAKKA BAKKA ONLINE ORDER*\n\n${lines}\n\nFood Total: ₹${food}\nDelivery Charges: ₹${charge}\n*TOTAL: ₹${total}*\n\nName: ${name}\nMobile: ${phone}\nType: ${type}\n${type==='Home Delivery'?'Pincode: '+pin+'\nAddress: '+addr:'Pickup: Hakka Bakka Punjabi Dhaba'}\nPayment: ${method.value==='UPI'?'UPI Online':'Pay at Restaurant'}\nUTR: ${utr.value.trim()||'Not provided'}\nPayment Screenshot: Please attach`;
  window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
 };
 renderMenu();renderCart();updateBilling();
