@@ -56,6 +56,18 @@ section{margin:18px 0}
 .removeAll{border:0;background:none;color:#777;font-size:12px;margin-top:6px;padding:0}
 .cartSubtotal{font-size:18px!important;font-weight:600}
 @media(max-width:700px){.panel{width:min(92vw,430px)}.panel:before{inset:0 92vw 0 auto}}
+
+.add.selected{
+  background:#198754!important;
+  color:#fff!important;
+  border:2px solid #146c43!important;
+  box-shadow:0 0 0 3px #19875433,0 4px 10px #0002;
+  transform:scale(1.02);
+}
+.card.selected-card{
+  box-shadow:0 0 0 3px #198754,0 5px 16px #0003;
+}
+.add.selected::before{content:"✓ ";font-weight:900}
 </style>
 </head>
 <body>
@@ -308,9 +320,28 @@ function renderMenu(){
   return `<article class="card"><img src="${img}" alt="${esc(name)}" onerror="this.style.visibility='hidden'"><div class="content"><h3>${esc(name)}</h3><div class="price">₹${p}</div><button class="add" data-name="${esc(name)}" data-price="${p}">Add to Order</button></div></article>`;
  }).join('')}</div></section>`).join('');
 }
+
+function refreshSelectedItems(){
+  document.querySelectorAll('.add').forEach(b=>{
+    const name=b.dataset.name||'';
+    const price=Number(b.dataset.price);
+    const selected=cart.some(x=>x.name===name && x.price===price);
+    b.classList.toggle('selected',selected);
+    const card=b.closest('.card');
+    if(card) card.classList.toggle('selected-card',selected);
+    if(selected){
+      if(!b.dataset.originalText) b.dataset.originalText=b.textContent;
+      b.textContent='Selected';
+    }else if(b.dataset.originalText){
+      b.textContent=b.dataset.originalText;
+    }
+  });
+}
+
 function renderCart(){
   count.textContent=cart.length;
   cartSubtotal.textContent=foodTotal();
+  refreshSelectedItems();
 
   const groups=[];
   cart.forEach((x,i)=>{
@@ -376,7 +407,7 @@ pincode.addEventListener('input',()=>{pincode.value=pincode.value.replace(/\D/g,
 phoneInput.addEventListener('input',()=>{phoneInput.value=phoneInput.value.replace(/\D/g,'').slice(0,10);});
 address.addEventListener('input',()=>{});
 document.getElementById('search').addEventListener('input',function(){const q=this.value.trim().toLowerCase();document.querySelectorAll('section').forEach(sec=>{let v=0;sec.querySelectorAll('.card').forEach(card=>{const ok=card.querySelector('h3').textContent.toLowerCase().includes(q);card.style.display=ok?'':'none';if(ok)v++;});sec.style.display=v?'':'none';});});
-document.getElementById('wa').onclick=()=>{
+document.getElementById('wa').onclick=async()=>{
  if(!cart.length)return alert('Cart is empty.');
  const name=nameInput.value.trim(),phone=phoneInput.value.trim(),type=orderType.value;
  if(!name){alert('Customer name enter karein.');nameInput.focus();return;}
@@ -395,7 +426,19 @@ document.getElementById('wa').onclick=()=>{
  const food=foodTotal(),charge=deliveryCharge(),total=food+charge;
  const lines=cart.map(x=>'• '+x.name+' - ₹'+Number(x.price)).join('\n');
  const msg=`*HAKKA BAKKA ONLINE ORDER*\n\n${lines}\n\nFood Total: ₹${food}\nDelivery Charges: ₹${charge}\n*TOTAL: ₹${total}*\n\nName: ${name}\nMobile: ${phone}\nType: ${type}\n${type==='Home Delivery'?'Pincode: '+pin+'\nAddress: '+addr:'Pickup: Hakka Bakka Punjabi Dhaba'}\nPayment Screenshot: Attached by customer`;
- /* WhatsApp cannot be made to press Send automatically by a website. This opens the WhatsApp chat with the order text ready; customer only taps Send. */
+ // On Android/Chrome, use the native Share Sheet so the selected payment screenshot
+ // travels as a real image attachment along with the order text. A website cannot
+ // silently press WhatsApp's final Send button, so the customer selects WhatsApp and taps Send.
+ const file=shot.files[0];
+ try{
+   if(file && navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+     await navigator.share({title:'Hakka Bakka Online Order',text:msg,files:[file]});
+     return;
+   }
+ }catch(err){
+   if(err && err.name==='AbortError') return;
+ }
+ // Fallback for browsers without file sharing: open WhatsApp with order text.
  window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
 };
 renderMenu();renderCart();updateBilling();
