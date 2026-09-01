@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#7b1113">
-<title>Hakka Bakka | Punjabi Dhaba • V39</title>
+<title>Hakka Bakka | Punjabi Dhaba • V41</title>
 <style>
 :root{--red:#7b1113;--red2:#4b080a;--cream:#fbf7f0;--gold:#d9a441;--ink:#171717;--muted:#6d6862;--green:#18a957;--orange:#ff8a00}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:Inter,Arial,Helvetica,sans-serif}button,a{font:inherit}button{cursor:pointer}img{max-width:100%}
@@ -88,7 +88,8 @@ body:not(.hb-menu-open) .cart-fab{display:none!important;}
 
 .account-btn{border:1px solid #eadfd4;background:#fff;border-radius:10px;color:var(--red);padding:9px 11px;font-weight:900;white-space:nowrap}
 .auth-message{display:none;margin-top:10px;padding:10px;border-radius:10px;background:#faf6f0;color:#555;font-size:13px;line-height:1.4}
-.auth-message.show{display:block}.auth-message.ok{background:#effaf3;color:#176d3d}.auth-message.bad{background:#fff2f2;color:#9b1016}
+ .auth-message.show{display:block}.auth-message.ok{background:#effaf3;color:#176d3d}.auth-message.bad{background:#fff2f2;color:#9b1016}
+.order-history{margin-top:16px;border-top:1px solid #eee;padding-top:14px}.order-history-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.order-history-head h3{margin:0;color:var(--red);font-size:18px}.order-history-refresh{border:1px solid #ddd;background:#f7f4ef;border-radius:9px;padding:7px 10px;font-weight:800;color:#555}.order-history-list{margin-top:10px;display:grid;gap:10px}.order-history-empty{padding:14px;border:1px dashed #d9d1c7;border-radius:12px;background:#faf8f5;color:#777;text-align:center;font-size:13px}.order-card{border:1px solid #e5ddd3;border-radius:13px;background:#fff;padding:12px;box-shadow:0 4px 14px #0000000a}.order-card-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.order-card-no{font-weight:900;color:var(--red);font-size:17px}.order-card-date{font-size:11px;color:#777;margin-top:2px}.order-status{font-size:10px;font-weight:900;text-transform:uppercase;border-radius:999px;padding:5px 8px;background:#effaf3;color:#176d3d;white-space:nowrap}.order-items{margin:9px 0 7px;padding-top:7px;border-top:1px solid #eee;color:#444;font-size:13px;line-height:1.45}.order-item-line{display:flex;justify-content:space-between;gap:10px}.order-card-bottom{display:flex;justify-content:space-between;gap:10px;border-top:1px solid #eee;padding-top:8px;font-size:12px;color:#666}.order-card-total{font-size:16px;font-weight:900;color:var(--red)}
 .account-hint{margin-top:12px;padding:12px;border:1px solid #eadfd4;border-radius:12px;background:#faf7f2;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px}
 .account-hint b{color:var(--red)}.account-hint span{color:#666;flex:1 1 100%}
 .mini-account-btn{border:0;background:var(--red);color:#fff;border-radius:8px;padding:7px 10px;font-weight:900}
@@ -207,6 +208,12 @@ body:not(.hb-menu-open) .cart-fab{display:none!important;}
       <input class="field" id="profilePhone" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit Mobile Number" autocomplete="tel">
       <input class="field" id="profileAddress" placeholder="Default Delivery Address" autocomplete="street-address">
       <button class="drawer-action" type="button" onclick="saveCustomerProfile()">Save Profile</button>
+
+      <div class="order-history">
+        <div class="order-history-head"><h3>📦 Order History</h3><button class="order-history-refresh" type="button" onclick="loadCustomerOrders()">↻ Refresh</button></div>
+        <div id="orderHistoryList" class="order-history-list"><div class="order-history-empty">Loading your orders…</div></div>
+      </div>
+
       <button class="drawer-action secondary" type="button" onclick="logoutCustomer()">Logout</button>
     </div>
   </div>
@@ -274,10 +281,11 @@ function showAccount(){
   document.getElementById('loginForm').style.display='none';
   document.getElementById('signupForm').style.display='none';
   document.getElementById('accountForm').style.display='block';
-  document.getElementById('profileName').value=currentProfile?.full_name||'';
-  document.getElementById('profilePhone').value=currentProfile?.phone||'';
+  document.getElementById('profileName').value=currentProfile?.full_name||currentUser?.user_metadata?.full_name||'';
+  document.getElementById('profilePhone').value=currentProfile?.phone||currentUser?.user_metadata?.phone||'';
   document.getElementById('profileAddress').value=currentProfile?.default_address||'';
   authMsg('Your customer account is active.','ok');
+  loadCustomerOrders();
 }
 function openAuth(){
   document.getElementById('authModal').classList.add('show');
@@ -334,7 +342,10 @@ async function signupCustomer(){
   localStorage.setItem('hb_pending_profile',JSON.stringify({full_name:name,phone}));
   const {data,error}=await supabaseClient.auth.signUp({
     email,password,
-    options:{data:{full_name:name,phone}}
+    options:{
+      emailRedirectTo:'https://hakkabakka.in',
+      data:{full_name:name,phone}
+    }
   });
   if(error){localStorage.removeItem('hb_pending_profile');return authMsg(error.message,'bad')}
   if(data.user && data.session){
@@ -348,13 +359,33 @@ async function savePendingProfile(){
   if(!supabaseClient||!currentUser)return;
   let p=null;
   try{p=JSON.parse(localStorage.getItem('hb_pending_profile')||'null')}catch(e){}
-  if(!p)return;
+  const meta=currentUser.user_metadata||{};
+  if(!p && (meta.full_name||meta.phone))p={full_name:meta.full_name||'',phone:normalizePhone(meta.phone||'')};
+  if(!p?.full_name || !/^\d{10}$/.test(normalizePhone(p.phone)))return;
   const {data,error}=await supabaseClient.from('customer_profiles').upsert({
-    id:currentUser.id,email:currentUser.email,full_name:p.full_name,phone:p.phone
+    id:currentUser.id,email:currentUser.email,full_name:p.full_name,phone:normalizePhone(p.phone)
   }).select().single();
   if(!error)currentProfile=data;
-  localStorage.removeItem('hb_pending_profile');
+  if(localStorage.getItem('hb_pending_profile'))localStorage.removeItem('hb_pending_profile');
 }
+async function loadCustomerOrders(){
+  const list=document.getElementById('orderHistoryList');
+  if(!list)return;
+  if(!supabaseClient||!currentUser){list.innerHTML='<div class="order-history-empty">Please login to view your orders.</div>';return}
+  list.innerHTML='<div class="order-history-empty">Loading your orders…</div>';
+  const {data,error}=await supabaseClient.from('customer_orders').select('id,order_no,customer_name,phone,order_type,address,pincode,items,food_total,delivery_charges,total_amount,status,created_at').eq('user_id',currentUser.id).order('created_at',{ascending:false});
+  if(error){console.error('Order history load:',error);list.innerHTML='<div class="order-history-empty">Order history load nahi ho saki. Please refresh.</div>';return}
+  if(!data?.length){list.innerHTML='<div class="order-history-empty">Abhi tak koi online order nahi mila.</div>';return}
+  list.innerHTML=data.map(o=>{
+    const items=Array.isArray(o.items)?o.items:[];
+    const lines=items.length?items.map(x=>`<div class="order-item-line"><span>${escapeHtml(x.name||'Item')}</span><b>₹${Number(x.price||0).toFixed(0)}</b></div>`).join(''):'<div>No item details</div>';
+    const dt=o.created_at?new Date(o.created_at).toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'';
+    const status=String(o.status||'placed').replace(/_/g,' ');
+    return `<div class="order-card"><div class="order-card-top"><div><div class="order-card-no">Order #${escapeHtml(o.order_no||'—')}</div><div class="order-card-date">${escapeHtml(dt)}</div></div><span class="order-status">${escapeHtml(status)}</span></div><div class="order-items">${lines}</div><div class="order-card-bottom"><span>${escapeHtml(o.order_type||'Pickup')}</span><span>Food ₹${Number(o.food_total||0).toFixed(0)}${Number(o.delivery_charges||0)>0?' + Delivery ₹'+Number(o.delivery_charges).toFixed(0):''}</span><span class="order-card-total">₹${Number(o.total_amount||0).toFixed(0)}</span></div></div>`;
+  }).join('');
+}
+function escapeHtml(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]||c))}
+
 async function saveCustomerProfile(){
   if(!supabaseClient||!currentUser)return authMsg('Pehle login karein.','bad');
   const full_name=document.getElementById('profileName').value.trim();
