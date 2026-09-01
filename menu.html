@@ -36,7 +36,10 @@ section{display:block;margin:18px 0}
 @media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr);padding:0 10px;gap:10px}.card img{height:145px}.section-title{margin-left:10px;margin-right:10px}}
 @media(max-width:390px){.grid{grid-template-columns:1fr 1fr}.card img{height:125px}.content h3{font-size:14px}}
 
-#upiQr{width:210px;height:210px;display:block;margin:10px auto;border:8px solid #fff;box-shadow:0 2px 8px #0002}
+#upiQr{width:230px;height:230px;display:block;margin:10px auto;border:8px solid #fff;box-shadow:0 2px 8px #0002}
+#qrbox{display:flex;justify-content:center;margin:8px 0}
+#upiArea img{width:230px;height:230px;display:block;margin:auto}
+#paymentBox input[type=file]{font-size:14px}
 #shareNote{font-size:13px;color:#555;margin-top:7px}
 </style>
 </head>
@@ -79,18 +82,22 @@ section{display:block;margin:18px 0}
 <input id="customerPhone" placeholder="Mobile Number">
 <select id="orderType"><option>Home Delivery</option><option>Pickup</option></select>
 <textarea id="address" rows="3" placeholder="Delivery Address"></textarea>
-<button class="action" id="wa">Order on WhatsApp</button>
-
 <div id="paymentBox" style="margin-top:14px;padding:14px;border:2px solid #7b1113;border-radius:10px;background:#fff8f0">
   <h3 style="margin:0 0 8px;color:#7b1113">💳 Online UPI Payment</h3>
   <p style="margin:5px 0"><b>UPI ID:</b> 9713545556@pthdfc</p>
   <p style="margin:5px 0"><b>Amount:</b> ₹<span id="payAmount">0</span></p>
+  <label style="display:block;font-weight:bold;margin-top:8px">Payment Method</label>
+  <select id="paymentMethod" style="width:100%;padding:11px;margin:6px 0;border:1px solid #aaa;border-radius:7px;font-size:16px"><option value="UPI">Pay Online via UPI</option><option value="Restaurant">Pay at Restaurant</option></select>
   <div id="upiArea"></div>
   <button class="action" id="upiPay" type="button">Pay Online via UPI</button>
   <label style="display:block;font-weight:bold;margin-top:10px">📷 Payment Screenshot</label>
   <input id="paymentScreenshot" type="file" accept="image/*" style="width:100%;margin-top:6px">
   <input id="utr" placeholder="UPI UTR / Transaction ID">
 </div>
+
+<button class="action" id="wa">Order on WhatsApp</button>
+
+
 
 <button class="action close" id="clear">Clear Cart</button>
 <button class="action close" id="close">Close</button>
@@ -101,39 +108,45 @@ section{display:block;margin:18px 0}
 (function(){
   const cart=[];
   const UPI_ID='9713545556@pthdfc';
+  const WA='917796631555';
   const menu=document.getElementById('menu'), search=document.getElementById('search'), panel=document.getElementById('panel');
   const items=document.getElementById('items'), count=document.getElementById('count'), total=document.getElementById('total');
   const payAmount=document.getElementById('payAmount'), upiArea=document.getElementById('upiArea'), payBtn=document.getElementById('upiPay');
-  const shot=document.getElementById('paymentScreenshot'), utr=document.getElementById('utr');
-  const money=n=>Number(n).toFixed(0);
-  function currentTotal(){return cart.reduce((s,x)=>s+x.price,0)}
+  const shot=document.getElementById('paymentScreenshot'), utr=document.getElementById('utr'), method=document.getElementById('paymentMethod');
+  const money=n=>Number.isFinite(Number(n)) ? Number(n).toFixed(0) : '0';
+  function currentTotal(){return cart.reduce((s,x)=>s+(Number.isFinite(x.price)?x.price:0),0)}
   function refresh(){
     count.textContent=cart.length;
-    items.innerHTML=cart.length?cart.map((x,i)=>`<div class="order-item"><b>${x.name}</b><br>₹${money(x.price)} <button onclick="removeItem(${i})" style="margin-top:5px">Remove</button></div>`).join(''):'<div class="empty">Your cart is empty.<br>Add items from the menu.</div>';
+    items.innerHTML=cart.length ? cart.map((x,i)=>`<div class="order-item"><b>${escapeHtml(x.name)}</b><br>₹${money(x.price)} <button onclick="removeItem(${i})" style="margin-top:5px">Remove</button></div>`).join('') : '<div class="empty">Your cart is empty.<br>Add items from the menu.</div>';
     total.textContent=money(currentTotal());
     makeUPI();
   }
+  function escapeHtml(v){return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
   function makeUPI(){
     const amount=currentTotal();
-    if(payAmount)payAmount.textContent=money(amount);
-    if(!upiArea)return;
+    payAmount.textContent=money(amount);
     upiArea.innerHTML='';
-    if(!amount)return;
+    if(!amount) return;
     const upi='upi://pay?pa='+encodeURIComponent(UPI_ID)+'&pn='+encodeURIComponent('Hakka Bakka Punjabi Dhaba')+'&am='+amount.toFixed(2)+'&cu=INR';
     const box=document.createElement('div'); box.id='qrbox'; upiArea.appendChild(box);
-    if(window.QRCode)new QRCode(box,{text:upi,width:210,height:210});
-    const note=document.createElement('div'); note.id='shareNote'; note.textContent='Scan QR or tap Pay Online via UPI. Amount ₹'+money(amount)+' is pre-filled.'; upiArea.appendChild(note);
+    if(window.QRCode){new QRCode(box,{text:upi,width:230,height:230,correctLevel:QRCode.CorrectLevel.M});}
+    else { const img=document.createElement('img'); img.alt='UPI Payment QR'; img.src='https://api.qrserver.com/v1/create-qr-code/?size=230x230&data='+encodeURIComponent(upi); box.appendChild(img); }
+    const note=document.createElement('div'); note.id='shareNote'; note.textContent='Scan QR. Amount ₹'+money(amount)+' is pre-filled.'; upiArea.appendChild(note);
     payBtn.onclick=()=>{window.location.href=upi};
+    method.onchange=()=>{upiArea.style.display=method.value==='UPI'?'block':'none';payBtn.style.display=method.value==='UPI'?'block':'none';};
+    method.onchange();
   }
-  window.removeItem=function(i){cart.splice(i,1);refresh()};
+  window.removeItem=function(i){if(i>=0&&i<cart.length){cart.splice(i,1);refresh()}};
   menu.addEventListener('click',e=>{
     const b=e.target.closest('.add'); if(!b)return;
-    cart.push({name:b.dataset.name,price:Number(b.dataset.price)});
+    const price=Number(b.dataset.price);
+    if(!Number.isFinite(price)){alert('This item has no valid price yet.');return;}
+    cart.push({name:b.dataset.name||b.closest('.card').querySelector('h3').textContent,price});
     panel.style.display='block'; refresh();
   });
   search.addEventListener('input',function(){
     const q=this.value.trim().toLowerCase();
-    document.querySelectorAll('section').forEach(sec=>{let visible=0; sec.querySelectorAll('.card').forEach(card=>{const ok=card.querySelector('h3').textContent.toLowerCase().includes(q);card.style.display=ok?'':'none';if(ok)visible++});sec.style.display=visible?'':'none'});
+    document.querySelectorAll('section').forEach(sec=>{let visible=0;sec.querySelectorAll('.card').forEach(card=>{const ok=card.querySelector('h3').textContent.toLowerCase().includes(q);card.style.display=ok?'':'none';if(ok)visible++});sec.style.display=visible?'':'none'});
   });
   document.getElementById('cartButton').onclick=()=>{panel.style.display='block';refresh()};
   document.getElementById('close').onclick=()=>panel.style.display='none';
@@ -146,18 +159,21 @@ section{display:block;margin:18px 0}
     const type=document.getElementById('orderType').value;
     const address=type==='Home Delivery'?(document.getElementById('address').value.trim()||'Not provided'):'Not required (Pickup)';
     const transaction=utr.value.trim()||'Not provided';
-    const payment=shot.files&&shot.files.length?'UPI (screenshot attached/shared)':'UPI';
+    const payment=method.value==='UPI'?'UPI Online':'Pay at Restaurant';
+    if(method.value==='UPI' && (!shot.files || !shot.files.length)){
+      if(!confirm('Payment screenshot upload nahi kiya. Kya phir bhi WhatsApp order bhejna hai?')) return;
+    }
     const lines=cart.map(x=>'• '+x.name+' - ₹'+money(x.price)).join('\n');
     const msg=`*HAKKA BAKKA ONLINE ORDER*\n\n${lines}\n\n*Total: ₹${money(currentTotal())}*\nPayment: ${payment}\nUTR: ${transaction}\n\nName: ${name}\nMobile: ${phone}\nType: ${type}\nAddress: ${address}`;
     const file=shot.files&&shot.files.length?shot.files[0]:null;
     if(file && navigator.canShare && navigator.canShare({files:[file]})){
       try{await navigator.share({title:'Hakka Bakka Order',text:msg,files:[file]});return}catch(e){}
     }
-    window.location.href='https://wa.me/917796631555?text='+encodeURIComponent(msg);
-    if(file) setTimeout(()=>alert('Screenshot selected hai. Agar WhatsApp me attachment automatically na aaye, screenshot ko order chat me manually attach kar dena.'),700);
+    window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
+    if(file)setTimeout(()=>alert('WhatsApp open ho gaya. Agar screenshot attach na hua ho to selected screenshot ko chat me manually attach karke Send kar dena.'),800);
   };
   refresh();
 })();
-</script>
+</script></script>
 </body>
 </html>
