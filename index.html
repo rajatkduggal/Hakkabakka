@@ -2,555 +2,149 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#7b1113">
-<title>Hakka Bakka Online Menu</title>
+<title>Hakka Bakka | Punjabi Dhaba • V25</title>
 <style>
-:root{color-scheme:light}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;background:#f7f3ec;color:#171717;font-family:Arial,sans-serif}
-header{background:#7b1113;color:#fff;text-align:center;padding:28px 12px}
-header h1{margin:0;font-size:32px} header p{margin:8px 0;font-size:18px}
-.search{position:sticky;top:0;z-index:10;background:#fff;padding:12px}
-.search input{width:100%;padding:14px 16px;border:2px solid #7b1113;border-radius:12px;font-size:18px;background:#fff;color:#111}
-main{padding-bottom:100px}
-section{margin:18px 0}
-.section-title{margin:0 12px 12px;background:#7b1113;color:#fff;padding:11px 14px;border-radius:10px;text-align:center;font-size:22px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:0 12px}
-.card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 3px 12px #0002;min-width:0}
-.card img{display:block;width:100%;height:175px;object-fit:cover;background:#eee}
-.content{padding:11px;text-align:center}
-.content h3{font-size:16px;line-height:1.25;margin:0 0 8px}
-.price{font-weight:bold;color:#7b1113;margin-bottom:9px}
-.add{border:0;background:#7b1113;color:#fff;padding:9px 10px;border-radius:7px;font-weight:bold;cursor:pointer}
-.variant-row{display:flex;gap:6px;justify-content:center}
-.variant-row .add{flex:1;min-width:0;font-size:13px;padding:9px 5px}
-.cart{position:fixed;right:16px;bottom:18px;z-index:30;border:0;border-radius:50%;width:64px;height:64px;background:#7b1113;color:#fff;font-size:24px;box-shadow:0 3px 10px #0005}
-.badge{font-size:13px;background:#fff;color:#7b1113;border-radius:12px;padding:2px 6px}
-.panel{display:none;position:fixed;inset:0 0 0 auto;width:min(430px,92vw);background:#fff;z-index:40;padding:18px;overflow:auto;box-shadow:-8px 0 28px #0005;border-left:3px solid #7b1113;animation:slideIn .2s ease-out}.panel:before{content:"";position:fixed;inset:0 430px 0 auto;background:#0006;z-index:-1;pointer-events:none}@keyframes slideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
-.panel h2{margin-top:0;color:#7b1113}
-.order-item{padding:10px 0;border-bottom:1px solid #ddd}
-.panel input,.panel textarea,.panel select{width:100%;padding:11px;margin:6px 0;border:1px solid #aaa;border-radius:7px;font-size:16px}
-.panel button.action{width:100%;padding:12px;margin-top:8px;border:0;border-radius:8px;background:#7b1113;color:#fff;font-weight:bold}
-.panel button.close{background:#333}
-.empty{text-align:center;padding:40px;color:#555}
-#paymentBox{margin-top:14px;padding:14px;border:2px solid #7b1113;border-radius:10px;background:#fff8f0}
-#qrbox{display:flex;justify-content:center;margin:10px 0}
-#qrbox img{width:230px;height:230px}
-#shareNote{font-size:13px;color:#555;text-align:center;margin-top:7px}
-.remove{margin-top:5px;padding:5px 9px}
-@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr);padding:0 10px;gap:10px}.card img{height:145px}.section-title{margin-left:10px;margin-right:10px}}
-@media(max-width:390px){.card img{height:125px}.content h3{font-size:14px}}
+:root{--red:#7b1113;--red2:#4b080a;--cream:#fbf7f0;--gold:#d9a441;--ink:#171717;--muted:#6d6862;--green:#18a957;--orange:#ff8a00}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:Inter,Arial,Helvetica,sans-serif}button,a{font:inherit}button{cursor:pointer}img{max-width:100%}
+/* HOME */
+.home{min-height:100vh;background:linear-gradient(180deg,#fff 0,#fbf7f0 55%,#f5eee5 100%)}
+.hero{position:relative;height:min(72vh,620px);min-height:480px;overflow:hidden;background:#260507;color:#fff;border-radius:0 0 34px 34px;box-shadow:0 16px 45px #0002}
+.hero-slides,.hero-slides img{position:absolute;inset:0;width:100%;height:100%}.hero-slides img{object-fit:cover;opacity:0;transform:scale(1.05);transition:opacity .9s ease,transform 5s ease}.hero-slides img.active{opacity:1;transform:scale(1)}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0005 0%,#0001 35%,#000b 100%);pointer-events:none}
+.hero-top{position:absolute;z-index:3;top:20px;left:20px;right:20px;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:12px}.brand img{width:64px;height:64px;border-radius:50%;object-fit:cover;background:#fff;border:3px solid #fff;box-shadow:0 5px 18px #0005}.brand span{font-weight:900;font-size:14px;letter-spacing:.8px;text-transform:uppercase;text-shadow:0 2px 8px #0008}.hero-order-mini{border:1px solid #fff8;background:#ffffff18;color:#fff;padding:11px 15px;border-radius:999px;font-weight:800;backdrop-filter:blur(8px)}
+.hero-copy{position:absolute;z-index:3;left:clamp(20px,6vw,80px);right:clamp(20px,6vw,80px);bottom:52px}.eyebrow{display:inline-flex;align-items:center;gap:7px;background:#ffffff18;border:1px solid #fff4;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;backdrop-filter:blur(7px)}.hero h1{font-size:clamp(44px,7vw,78px);line-height:.95;margin:14px 0 8px;letter-spacing:-2px}.hero-copy p{font-size:clamp(17px,2.3vw,25px);margin:0 0 22px;font-weight:700}.hero-actions{display:flex;gap:10px;flex-wrap:wrap}.btn{border:0;border-radius:12px;padding:13px 18px;font-weight:900}.btn-primary{background:#fff;color:var(--red)}.btn-glass{background:#ffffff18;border:1px solid #fff7;color:#fff}.hero-dots{position:absolute;z-index:4;bottom:20px;right:24px;display:flex;gap:6px}.hero-dots span{width:7px;height:7px;border-radius:50%;background:#fff8;transition:.25s}.hero-dots span.active{width:24px;border-radius:8px;background:#fff}
+.wrap{max-width:1180px;margin:auto;padding:0 18px}.quick{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:-28px;position:relative;z-index:5}.quick-card{background:#fff;border:1px solid #eadfd4;border-radius:17px;padding:14px 10px;text-align:center;box-shadow:0 8px 24px #0001}.quick-card b{display:block;font-size:13px;margin-top:6px}.quick-card .qicon{font-size:24px}
+.section{padding:38px 0 4px}.section-head{text-align:center;margin-bottom:20px}.section-head .label{color:var(--red);font-size:12px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase}.section-head h2{font-size:clamp(28px,4vw,42px);margin:5px 0 7px;letter-spacing:-1px}.section-head p{color:var(--muted);max-width:680px;margin:auto;line-height:1.55}
+.feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.feature{background:#fff;border:1px solid #eadfd4;border-radius:21px;overflow:hidden;box-shadow:0 8px 22px #0001;transition:.25s}.feature:hover{transform:translateY(-5px);box-shadow:0 14px 30px #0002}.feature-media{height:210px;position:relative;overflow:hidden;background:#eee}.feature-media img{width:100%;height:100%;object-fit:cover;display:block}.feature-badge{position:absolute;top:10px;left:10px;background:#ffffffe8;color:var(--red);padding:6px 9px;border-radius:999px;font-size:11px;font-weight:900}.feature-body{padding:15px}.feature-body h3{margin:0 0 6px;color:var(--red);font-size:18px}.feature-body p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
+.story-band{margin-top:35px;border-radius:26px;background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;padding:28px;display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center;box-shadow:0 14px 32px #7b111333}.story-band h2{font-size:32px;margin:0 0 8px}.story-band p{line-height:1.6;color:#fffdfd;margin:0}.story-points{display:grid;grid-template-columns:1fr 1fr;gap:10px}.point{border:1px solid #fff3;background:#fff1;border-radius:15px;padding:13px}.point b{display:block}.point span{font-size:12px;color:#fff9}
+.order-block{margin:38px 0;background:#fff;border:1px solid #eadfd4;border-radius:25px;padding:26px;text-align:center;box-shadow:0 8px 25px #0001}.order-block h2{margin:0 0 6px;font-size:30px}.order-block p{color:var(--muted);margin:0 0 18px}.online-btn{border:0;background:var(--red);color:#fff;border-radius:14px;padding:16px 28px;font-size:19px;font-weight:900;box-shadow:0 8px 20px #7b111344}.footer{padding:18px 0 38px;text-align:center;color:#777;font-size:13px}.footer strong{color:var(--red)}
+/* ORDER MODAL */
+.modal{position:fixed;inset:0;background:#0009;z-index:100;display:none;align-items:flex-end;justify-content:center;padding:18px}.modal.show{display:flex}.modal-card{width:min(520px,100%);background:#fff;border-radius:25px;padding:23px;box-shadow:0 20px 70px #0007;animation:up .2s ease}.modal-head{display:flex;justify-content:space-between;align-items:center}.modal-head h2{margin:0;color:var(--red)}.close{width:38px;height:38px;border:0;border-radius:50%;background:#f2eee8}.order-choice{display:flex;align-items:center;gap:13px;text-decoration:none;color:#fff;border-radius:15px;padding:16px;margin-top:11px;font-weight:900}.order-choice .icon{width:43px;height:43px;border-radius:50%;display:grid;place-items:center;background:#ffffff25;font-size:22px;font-weight:900}.wa{background:#16a65a;border:0;width:100%;text-align:left}.zo{background:#d9232e}.sw{background:#ff8500}.choice-copy small{display:block;font-weight:500;opacity:.9;margin-top:2px}
+@keyframes up{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+/* MENU SCREEN */
+#menuScreen{display:none;min-height:100vh;background:#f7f2ea}.menu-header{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #e8ddd0;padding:12px 14px;box-shadow:0 4px 14px #0001}.menu-bar{max-width:1180px;margin:auto;display:flex;align-items:center;gap:10px}.back{border:0;background:#f0ebe4;border-radius:11px;padding:10px 13px;font-weight:900}.menu-title{flex:1}.menu-title b{display:block;color:var(--red);font-size:18px}.menu-title span{font-size:11px;color:#777}.searchbox{max-width:1180px;margin:10px auto 0;display:flex;gap:9px;align-items:center}.searchbox input{flex:1;min-width:0;padding:13px 16px;border:1px solid #d9cfc4;border-radius:12px;font-size:16px;outline:none}.cart-summary{flex:0 0 43%;min-width:0;border:1px solid #eadfd4;background:#fff;border-radius:12px;padding:13px 12px;color:var(--red);font-weight:900;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 3px 10px #0000000d}.cart-summary:active{transform:scale(.99)}.menu-content{max-width:1180px;margin:auto;padding:18px 14px 100px}.menu-section{margin-bottom:28px}.menu-section h2{font-size:22px;color:var(--red);margin:0 0 12px;padding-left:5px}.menu-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.menu-card{background:#fff;border:1px solid #eadfd4;border-radius:16px;overflow:hidden;box-shadow:0 4px 14px #0001}.menu-card img{width:100%;height:170px;object-fit:cover;display:block;background:#eee}.menu-body{padding:11px}.menu-body h3{font-size:15px;line-height:1.25;margin:0 0 7px}.price{color:var(--red);font-weight:900;margin-bottom:9px}.add{width:100%;border:0;background:var(--red);color:#fff;border-radius:9px;padding:9px;font-weight:800}.variant{display:flex;gap:6px}.variant .add{font-size:12px;padding:9px 5px}.selected{background:#159451!important}.qty-control{display:flex;align-items:center;justify-content:center;gap:0;background:#159451;border-radius:9px;color:#fff;height:38px}.qty-control button{border:0;background:none;color:#fff;width:40px;height:38px;font-size:22px;font-weight:900}.qty-control span{min-width:35px;text-align:center;font-weight:900}.menu-empty{text-align:center;padding:60px 10px;color:#777}
+.cart-fab{position:fixed;right:17px;bottom:18px;z-index:50;border:0;background:var(--red);color:#fff;border-radius:999px;padding:14px 18px;font-weight:900;box-shadow:0 7px 22px #0004;display:none}.cart-fab .count{background:#fff;color:var(--red);border-radius:999px;padding:2px 7px;margin-left:5px}
+/* CART */
+.drawer{position:fixed;inset:0;z-index:90;display:none;background:#0007}.drawer.show{display:block}.drawer-card{position:absolute;right:0;top:0;bottom:0;width:min(460px,94vw);background:#fff;padding:18px;overflow:auto;box-shadow:-12px 0 35px #0004}.drawer-head{display:flex;align-items:center;justify-content:space-between}.drawer-head h2{margin:0;color:var(--red)}.drawer-close{border:0;background:#eee;border-radius:50%;width:38px;height:38px}.cart-item{padding:12px 0;border-bottom:1px solid #eee}.cart-item .top{font-weight:800}.cart-item .bottom{display:flex;align-items:center;justify-content:space-between;margin-top:8px}.qty{display:flex;align-items:center;border:1px solid #ddd;border-radius:8px;overflow:hidden}.qty button{border:0;background:#f4f4f4;width:34px;height:31px;font-size:18px}.qty span{min-width:30px;text-align:center;font-weight:800}.drawer-action{width:100%;border:0;border-radius:10px;background:var(--red);color:#fff;padding:12px;font-weight:900;margin-top:10px}.drawer-action.secondary{background:#333}.order-no{margin-top:12px;background:linear-gradient(135deg,#fff8ea,#f8efe1);border:1px solid #e2c58e;border-radius:13px;padding:13px 15px;display:flex;align-items:center;justify-content:space-between;gap:12px}.order-no span{font-size:12px;color:#777;font-weight:800;text-transform:uppercase;letter-spacing:.8px}.order-no strong{font-size:22px;color:var(--red);letter-spacing:1px}.bill{margin-top:14px;background:#faf6f0;border:1px solid #eadfd4;border-radius:13px;padding:12px}.bill div{display:flex;justify-content:space-between;padding:4px 0}.bill .grand{border-top:1px solid #ddd;margin-top:5px;padding-top:9px;font-size:18px}.field{width:100%;padding:11px;border:1px solid #ccc;border-radius:8px;margin-top:7px;font-size:15px}.label{display:block;font-size:13px;font-weight:800;margin-top:12px}.pay{margin-top:14px;border:1px solid #eadfd4;border-radius:13px;padding:13px}.pay h3{margin:0;color:var(--red)}#qr{display:flex;justify-content:center;margin:10px 0}.pay small{color:#777}.error{color:#b00020;font-size:13px}
+@media(max-width:900px){.quick{grid-template-columns:repeat(3,1fr)}.feature-grid{grid-template-columns:repeat(2,1fr)}.menu-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.hero{height:590px;min-height:0;border-radius:0 0 25px 25px}.hero-top{top:13px;left:13px;right:13px}.brand img{width:55px;height:55px}.brand span{font-size:12px}.hero-copy{bottom:48px;left:18px;right:18px}.hero h1{font-size:48px}.hero-copy p{font-size:17px}.hero-order-mini{padding:9px 12px;font-size:13px}.quick{margin-top:-20px;gap:8px}.quick-card{padding:11px 7px}.quick-card b{font-size:11px}.quick-card .qicon{font-size:21px}.wrap{padding:0 12px}.section{padding-top:32px}.feature-grid{grid-template-columns:1fr 1fr;gap:9px}.feature-media{height:145px}.feature-body{padding:11px}.feature-body h3{font-size:15px}.feature-body p{font-size:11px}.story-band{grid-template-columns:1fr;padding:21px}.story-band h2{font-size:25px}.story-points{grid-template-columns:1fr 1fr}.order-block{padding:22px 15px}.menu-grid{grid-template-columns:1fr 1fr;gap:9px}.menu-card img{height:135px}.menu-content{padding:14px 10px 100px}.menu-bar{gap:7px}.menu-title b{font-size:16px}.searchbox{margin-top:8px;gap:7px}.searchbox input{padding:12px 11px;font-size:14px}.cart-summary{flex-basis:46%;padding:12px 10px;font-size:13px}.modal{padding:10px}.modal-card{border-radius:22px;padding:18px}.order-choice{padding:13px}.order-choice .icon{width:39px;height:39px}.footer{padding-bottom:30px}}
+@media(max-width:380px){.feature-grid{grid-template-columns:1fr}.feature-media{height:180px}.quick{grid-template-columns:repeat(2,1fr)}}
 
-.fieldLabel{display:block;font-weight:bold;margin:10px 0 4px}.cartSubtotal{padding:12px 0;border-top:1px solid #ddd;margin-top:8px;font-size:17px}.billBox{margin-top:14px;padding:12px;border:2px solid #7b1113;border-radius:10px;background:#fff8f0}.billBox>div{display:flex;justify-content:space-between;padding:5px 0}.billBox .grand{border-top:1px solid #caa;margin-top:6px;padding-top:10px;font-size:19px}.deliveryInfo{font-size:13px;margin:5px 0 8px;padding:8px;border-radius:7px;background:#f7f3ec;color:#555}.paymentStatus{font-size:13px;color:#555;text-align:center}.shareNote{font-size:13px;color:#555;text-align:center;margin-top:7px}.remove{margin-left:8px;padding:5px 8px;border:1px solid #aaa;border-radius:5px;background:#fff}.order-item{padding:12px 0;border-bottom:1px solid #ddd}.order-item>div{margin-top:6px}.empty{text-align:center;padding:35px 10px;color:#555}#paymentBox{margin-top:14px;padding:14px;border:2px solid #7b1113;border-radius:10px;background:#fff8f0}#paymentBox h3{margin:0 0 8px;color:#7b1113}#paymentBox input[type=file]{font-size:14px}
-.cartHeaderRow{display:flex;align-items:center;justify-content:space-between;position:sticky;top:-18px;background:#fff;padding:4px 0 10px;z-index:2;border-bottom:1px solid #eee}
-.cartHeaderRow h2{margin:0!important}.iconClose{border:0;background:#333;color:#fff;border-radius:50%;width:38px;height:38px;font-size:18px}
-.cartHint{margin:8px 0 14px;color:#666;font-size:13px}
-.order-item{padding:14px 0;border-bottom:1px solid #e5e5e5}
-.order-item .item-name{font-weight:700;font-size:16px;line-height:1.3}
-.order-item .item-meta{display:flex;align-items:center;justify-content:space-between;margin-top:9px}
-.qtyBox{display:flex;align-items:center;border:1px solid #ccc;border-radius:8px;overflow:hidden}
-.qtyBox button{width:34px;height:32px;border:0;background:#f3f3f3;font-size:20px}
-.qtyBox span{min-width:32px;text-align:center;font-weight:bold}
-.item-price{font-weight:bold;color:#7b1113}
-.removeAll{border:0;background:none;color:#777;font-size:12px;margin-top:6px;padding:0}
-.cartSubtotal{font-size:18px!important;font-weight:600}
-@media(max-width:700px){.panel{width:min(92vw,430px)}.panel:before{inset:0 92vw 0 auto}}
-
-.card.selected-card{box-shadow:0 0 0 3px #198754,0 5px 16px #0003}
-.add.selected{background:#198754!important;color:#fff!important;border:0!important;padding:0!important}
-.qty-control{display:flex;align-items:center;justify-content:center;background:#198754;border-radius:8px;overflow:hidden;margin:0 auto;width:138px;height:40px}
-.qty-control button{border:0;background:#198754;color:#fff;font-size:24px;font-weight:900;width:44px;height:40px;padding:0;line-height:40px}
-.qty-control .qty-number{min-width:50px;text-align:center;color:#fff;font-weight:900;font-size:18px;border-left:1px solid #ffffff66;border-right:1px solid #ffffff66}
-
-/* ===== HAKKA BAKKA PROFESSIONAL HOME ===== */
-.home-screen{min-height:calc(100vh - 1px);background:linear-gradient(180deg,#fffdf9 0%,#f7f3ec 100%);padding-bottom:48px}
-.hero-banner{position:relative;max-width:1100px;margin:0 auto;overflow:hidden;border-radius:0 0 28px 28px;background:#7b1113;box-shadow:0 8px 30px #0002}
-.hero-banner img{display:block;width:100%;height:260px;object-fit:cover;object-position:center}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,#0002 20%,#000a 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:26px 20px;color:#fff}
-.hero-overlay h1{margin:0;font-size:34px;line-height:1.05;text-shadow:0 2px 8px #0008}
-.hero-overlay p{margin:8px 0 0;font-size:16px;font-weight:600}
-.profile-wrap{max-width:900px;margin:-35px auto 0;position:relative;z-index:2;padding:0 16px}
-.profile-card{background:#fff;border-radius:22px;padding:24px 20px;box-shadow:0 8px 30px #0002;text-align:center;border:1px solid #eadfd2}
-.logo-round{width:82px;height:82px;border-radius:50%;object-fit:cover;border:4px solid #fff;box-shadow:0 3px 14px #0003;margin-top:-58px;background:#fff}
-.profile-card h2{margin:12px 0 5px;color:#7b1113;font-size:28px}
-.tagline{font-size:17px;font-weight:700;margin:0;color:#333}
-.story{font-size:15px;line-height:1.65;color:#555;max-width:720px;margin:12px auto 0}
-.story b{color:#7b1113}
-.taste-row{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:16px 0 4px}
-.taste-chip{padding:8px 12px;border-radius:999px;background:#f7f3ec;color:#7b1113;font-size:13px;font-weight:700;border:1px solid #ead7c7}
-.order-cta{max-width:900px;margin:20px auto 0;padding:0 16px}
-.order-cta h3{text-align:center;margin:0 0 12px;color:#222;font-size:21px}
-.primary-order{width:100%;border:0;border-radius:14px;padding:16px;background:#7b1113;color:#fff;font-size:20px;font-weight:800;box-shadow:0 5px 14px #7b111344;cursor:pointer}
-.order-options{display:none;grid-template-columns:1fr;gap:10px;margin-top:12px}.order-options.show{display:grid}
-.order-option{display:flex;align-items:center;justify-content:center;gap:9px;text-decoration:none;border:0;border-radius:12px;padding:14px;font-size:17px;font-weight:800;cursor:pointer}
-.option-wa{background:#198754;color:#fff}
-.option-zomato{background:#d8232a;color:#fff}
-.option-swiggy{background:#ff8a00;color:#fff}
-.menu-start{display:none}.menu-start.menu-visible{display:block!important;visibility:visible!important;opacity:1!important}
-#cartButton{display:none}
-.menu-active #cartButton{display:block}
-.home-footer{text-align:center;color:#777;font-size:13px;margin-top:26px;padding:0 15px}
-.home-footer strong{color:#7b1113}
-@media(min-width:701px){.order-options{grid-template-columns:repeat(3,1fr)}.hero-banner img{height:330px}}
-@media(max-width:500px){.hero-banner{border-radius:0 0 22px 22px}.hero-banner img{height:230px}.hero-overlay h1{font-size:29px}.profile-card{padding:22px 15px}.profile-card h2{font-size:24px}}
-
-
-/* First-page food flash + reliable banner */
-.hero-banner{position:relative;overflow:hidden;background:#7b1113;min-height:230px}
-.hero-banner .hero-signboard{position:relative;z-index:2;display:block;width:100%;height:230px;object-fit:cover}
-.food-flash-strip{position:relative;margin:12px 16px 0;height:150px;border-radius:18px;overflow:hidden;background:#7b1113;box-shadow:0 6px 18px rgba(0,0,0,.16)}
-.food-flash{position:absolute;inset:0;z-index:1;overflow:hidden}
-.food-flash .flash-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.04);transition:opacity .7s ease,transform 4s ease}
-.food-flash .flash-img.active{opacity:1;transform:scale(1)}
-.food-flash:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.58));pointer-events:none}
-.hero-signboard{transition:opacity .35s ease}
-.food-flash-dots{position:absolute;z-index:4;left:50%;bottom:10px;transform:translateX(-50%);display:flex;gap:6px}
-.food-flash-dots span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.55)}
-.food-flash-dots span.active{width:20px;border-radius:8px;background:#fff}
-@media(max-width:500px){.hero-banner,.hero-banner .hero-signboard{height:230px;min-height:230px}.food-flash-strip{height:155px;margin:10px 12px 0}}
-.brand-icon{display:inline-flex;width:34px;height:34px;border-radius:50%;align-items:center;justify-content:center;margin-right:10px;font-weight:900;font-size:20px;vertical-align:middle;box-shadow:0 2px 6px rgba(0,0,0,.18)}.whatsapp-icon{background:#25D366;color:#fff;font-size:19px}.zomato-icon{background:#E23744;color:#fff;font-family:Arial}.swiggy-icon{background:#FC8019;color:#fff;font-family:Arial}.order-option{display:flex;align-items:center;justify-content:center;gap:4px}.order-option .brand-icon{flex:0 0 34px} 
-
-.menu-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;background:#fff;position:sticky;top:0;z-index:11;border-bottom:1px solid #eadfd2}.menu-top button{border:0;background:none;color:#7b1113;font-weight:800;font-size:15px}.menu-top strong{color:#222;font-size:17px}.shop-icon{display:inline-flex;align-items:center;justify-content:center;margin-right:8px;font-size:21px}
-
-/* V9 premium restaurant sections */
-.premium-sections{max-width:1000px;margin:22px auto 0;padding:0 16px}
-.premium-title{text-align:center;color:#7b1113;font-size:25px;margin:24px 0 12px}
-.special-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.special-card{background:#fff;border-radius:16px;padding:16px;text-align:center;box-shadow:0 4px 14px #0001;border:1px solid #eee0d5}
-.special-card .emoji{font-size:30px}.special-card h4{margin:8px 0 4px;color:#7b1113}.special-card p{margin:0;color:#666;font-size:13px;line-height:1.4}
-.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.info-card{background:#fff;border-radius:16px;padding:18px;text-align:center;box-shadow:0 4px 14px #0001;border:1px solid #eee0d5}
-.info-icon{font-size:28px}.info-card h4{margin:8px 0;color:#7b1113}.info-card p{margin:4px 0;color:#555;line-height:1.5;font-size:14px}
-.info-card a{display:inline-block;margin-top:9px;text-decoration:none;background:#7b1113;color:#fff;padding:9px 13px;border-radius:8px;font-weight:700;font-size:13px}
-.instagram-card{background:linear-gradient(135deg,#7b1113,#3e0809);color:#fff;border-radius:20px;padding:22px;text-align:center;margin:18px 0;box-shadow:0 7px 20px #0002}
-.instagram-card h3{margin:0 0 7px;font-size:22px}.instagram-card p{margin:0 0 13px}.instagram-card a{display:inline-block;background:#fff;color:#7b1113;text-decoration:none;padding:10px 18px;border-radius:9px;font-weight:800}
-.disclaimer{font-size:12px;color:#777;text-align:center;margin:14px 0 4px}
-@media(max-width:700px){.special-grid{grid-template-columns:1fr 1fr}.info-grid{grid-template-columns:1fr}.premium-sections{padding:0 10px}}
-
-
-/* ===== HAKKA BAKKA V10 DYNAMIC DESIGN ===== */
-:root{--hb:#7b1113;--hb-dark:#4e0809;--cream:#f7f3ec}
-body{background:var(--cream)!important}
-.dynamic-home{background:var(--cream);overflow:hidden}
-.dyn-hero{position:relative;min-height:72vh;display:flex;align-items:flex-end;overflow:hidden;background:#2b0708}
-.dyn-hero-media{position:absolute;inset:0}
-.dyn-hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.08);transition:opacity 1s ease,transform 6s ease}
-.dyn-hero-media img.active{opacity:1;transform:scale(1)}
-.dyn-hero-media:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0002 20%,#000b 100%)}
-.dyn-hero-content{position:relative;z-index:2;width:min(1050px,100%);margin:auto;padding:50px 20px 45px;color:#fff}
-.dyn-kicker{display:inline-block;background:#ffffff22;border:1px solid #fff5;border-radius:999px;padding:8px 13px;font-size:13px;font-weight:800;backdrop-filter:blur(5px)}
-.dyn-hero h1{font-size:clamp(42px,9vw,78px);line-height:.95;margin:15px 0 10px;text-shadow:0 4px 20px #0008}
-.dyn-hero p{font-size:clamp(17px,3vw,23px);margin:0 0 20px;font-weight:700}
-.dyn-hero-buttons{display:flex;gap:10px;flex-wrap:wrap}
-.dyn-primary,.dyn-secondary{border:0;border-radius:12px;padding:14px 19px;font-size:16px;font-weight:900;text-decoration:none;cursor:pointer}
-.dyn-primary{background:#fff;color:var(--hb)}.dyn-secondary{background:#ffffff22;color:#fff;border:1px solid #fff8}
-.dyn-dots{position:absolute;z-index:3;right:20px;bottom:30px;display:flex;gap:6px}.dyn-dot{width:8px;height:8px;border-radius:50%;background:#fff8}.dyn-dot.active{width:24px;border-radius:9px;background:#fff}
-.dyn-wrap{max-width:1050px;margin:auto;padding:0 16px}
-.dyn-section{padding:28px 0 4px}.dyn-heading{text-align:center;margin:0 0 15px;color:var(--hb);font-size:27px}
-.dyn-sub{text-align:center;color:#666;margin:-7px auto 18px;max-width:700px;font-size:14px}
-.dyn-scroll{display:flex;gap:12px;overflow-x:auto;padding:3px 2px 12px;scrollbar-width:none}.dyn-scroll::-webkit-scrollbar{display:none}
-.dyn-category{flex:0 0 150px;background:#fff;border-radius:17px;padding:16px 12px;text-align:center;box-shadow:0 5px 16px #0001;border:1px solid #eee1d7}
-.dyn-category .ic{font-size:32px}.dyn-category b{display:block;margin-top:8px;color:#333}
-.dyn-specials{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.dyn-special{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 5px 18px #0002}
-.dyn-special img{width:100%;height:180px;object-fit:cover;display:block}.dyn-special div{padding:12px}.dyn-special h3{margin:0 0 5px;color:var(--hb);font-size:17px}.dyn-special p{margin:0;color:#666;font-size:13px}
-.dyn-feature{margin:24px 0;background:linear-gradient(135deg,var(--hb),var(--hb-dark));color:#fff;border-radius:22px;padding:25px;display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:center;box-shadow:0 8px 25px #0002}
-.dyn-feature h2{font-size:31px;margin:0 0 8px}.dyn-feature p{line-height:1.6;margin:0 0 15px}.dyn-feature img{width:100%;height:220px;object-fit:cover;border-radius:15px}
-.dyn-info{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.dyn-info-card{background:#fff;border-radius:18px;padding:19px;text-align:center;box-shadow:0 4px 15px #0001}.dyn-info-card .big{font-size:28px}.dyn-info-card h3{color:var(--hb);margin:8px 0}.dyn-info-card p{font-size:13px;color:#666;line-height:1.5;margin:0}.dyn-info-card a{display:inline-block;margin-top:10px;background:var(--hb);color:#fff;text-decoration:none;padding:9px 12px;border-radius:8px;font-size:13px;font-weight:800}
-.dyn-order{margin:27px 0;background:#fff;border-radius:22px;padding:24px;text-align:center;box-shadow:0 5px 20px #0001}.dyn-order h2{margin:0;color:var(--hb)}.dyn-order p{color:#666}.dyn-order-btn{border:0;background:var(--hb);color:#fff;border-radius:13px;padding:15px 25px;font-size:18px;font-weight:900;cursor:pointer}
-.dyn-order-links{display:none;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:13px}.dyn-order-links.show{display:grid}.dyn-link{padding:14px;border-radius:11px;color:#fff;text-decoration:none;font-weight:900}.wa{background:#198754}.zo{background:#d8232a}.sw{background:#ff8a00}
-.dyn-reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.review{background:#fff;border-radius:17px;padding:18px;box-shadow:0 4px 14px #0001}.stars{color:#e3a500;letter-spacing:2px}.review p{color:#555;font-size:14px;line-height:1.5}.review b{color:var(--hb)}
-.dyn-social{background:#151515;color:#fff;border-radius:22px;padding:25px;text-align:center;margin:25px 0}.dyn-social h2{margin:0 0 8px}.dyn-social p{color:#ccc}.dyn-social a{display:inline-block;background:#fff;color:#151515;padding:11px 17px;border-radius:10px;text-decoration:none;font-weight:900}
-@media(max-width:700px){.dyn-hero{min-height:70vh}.dyn-specials{grid-template-columns:1fr 1fr}.dyn-special img{height:145px}.dyn-feature{grid-template-columns:1fr}.dyn-feature img{height:190px}.dyn-info,.dyn-reviews{grid-template-columns:1fr}.dyn-order-links.show{grid-template-columns:1fr}.dyn-wrap{padding:0 11px}}
-
-
-/* ===== V13 FOOD SHOWCASE ===== */
-.hb-food-gallery{grid-template-columns:repeat(5,1fr)}
-.hb-food-card{transition:transform .22s ease,box-shadow .22s ease}
-.hb-food-card:hover{transform:translateY(-5px);box-shadow:0 12px 28px #0002}
-.hb-food-card img{height:190px}
-.hb-food-tag{display:inline-block;font-size:11px;font-weight:800;color:#7b1113;background:#f7eee5;border:1px solid #ead8c8;border-radius:20px;padding:5px 8px;margin-bottom:7px}
-.hb-food-card h3{margin:0 0 6px!important}
-.hb-food-card p{line-height:1.45}
-@media(max-width:1000px){.hb-food-gallery{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:700px){.hb-food-gallery{grid-template-columns:repeat(2,1fr)}.hb-food-card img{height:150px}}
-@media(max-width:390px){.hb-food-card img{height:130px}.hb-food-tag{font-size:10px}.hb-food-card p{font-size:12px}}
-
+.payment-check{margin:10px 0 0;padding:12px 14px;border:1px solid #eadfd4;border-radius:12px;background:#faf7f2;color:#5f5a55;font-size:13px;line-height:1.45}.payment-check b{display:block;color:var(--red);margin-bottom:4px}.payment-check.ok{border-color:#86c99e;background:#f1fbf4}.payment-check.ok b{color:#147a3e}.payment-check.bad{border-color:#e6a0a0;background:#fff5f5}.payment-check.bad b{color:#a10f16}.payment-check small{display:block;margin-top:5px;color:#777}
+#waSend:disabled{opacity:.48;cursor:not-allowed;filter:grayscale(.2)}
 </style>
-<link rel="preload" as="image" href="images/butter chicken.jpg">
-<link rel="preload" as="image" href="newlogo.jpg">
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
 <body>
 
-<div id="homeScreen" class="home-screen">
-  <div class="hero-banner">
-    <img class="hero-signboard" src="signboard.png" alt="Hakka Bakka Restaurant" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/signboard.png'">
-    <div class="hero-overlay">
+<!-- SINGLE PROFESSIONAL WELCOME PAGE -->
+<div id="home" class="home">
+  <section class="hero">
+    <div class="hero-slides" id="heroSlides">
+      <img class="active" data-image-hint="mojito" alt="Mojito">
+      <img data-image-hint="masala chach" alt="Masala Chach">
+      <img data-image-hint="cold coffee" alt="Cold Coffee">
+      <img src="images/butter chicken.jpg" alt="Butter Chicken" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20chicken.jpg'">
+      <img src="images/chicken kali mirch.jpg" alt="Chicken Kali Mirch" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chicken%20kali%20mirch.jpg'">
+      <img src="images/tari wala mutton 2pc.jpg" alt="Tari Wala Mutton" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/tari%20wala%20mutton%202pc.jpg'">
+      <img src="images/chilli mushroom.jpg" alt="Chilli Mushroom" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chilli%20mushroom.jpg'">
+      <img src="images/dal makhani.jpg" alt="Dal Makhani" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/dal%20makhani.jpg'">
+      <img src="images/honey chilli potato.jpg" alt="Honey Chilli Potato" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/honey%20chilli%20potato.jpg'">
+      <img src="images/butter naan.jpg" alt="Butter Naan" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20naan.jpg'">
+      <img src="images/tandoori chapati.jpg" alt="Tandoori Chapati" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/tandoori%20chapati.jpg'">
+      <img src="mojitoo.png" alt="Mojitos" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/mojitoo.png'">
+      <img src="fries.png" alt="Fries" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/fries.png'">
+    </div>
+    <div class="hero-top">
+      <div class="brand"><img src="newlogo.jpg" alt="Hakka Bakka Logo" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/newlogo.jpg'"><span>Hakka Bakka<br>Punjabi Dhaba</span></div>
+      <button class="hero-order-mini" onclick="openOrderModal()">Order Now</button>
+    </div>
+    <div class="hero-copy">
+      <span class="eyebrow">🔥 Desi Swad • Modern Vibe</span>
       <h1>Hakka Bakka</h1>
-      <p>Punjabi Dhaba • Desi Swad • Modern Vibe</p>
+      <p>Authentic Punjabi taste, tandoori favourites & hearty family meals.</p>
+      <div class="hero-actions"><button class="btn btn-primary" onclick="openMenu()">Explore Menu →</button><button class="btn btn-glass" onclick="openOrderModal()">🛍️ Online Order</button></div>
     </div>
-  </div>
-
-  <div class="food-flash-strip" aria-label="Hakka Bakka food highlights">
-    <div class="food-flash" id="foodFlash">
-      <img class="flash-img active" src="dosa.png" alt="Veg Special" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/dosa.png'">
-      <img class="flash-img" src="fries.png" alt="Veg Snacks" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/fries.png'">
-      <img class="flash-img" src="springroll.png" alt="Veg Spring Rolls" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/springroll.png'">
-      <img class="flash-img" src="images/paneer tikka.jpg" alt="Paneer Tikka" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/paneer%20tikka.jpg'">
-      <img class="flash-img" src="images/tandoori chicken.jpg" alt="Tandoori Chicken" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/tandoori%20chicken.jpg'">
-      <img class="flash-img" src="images/chicken tikka.jpg" alt="Chicken Tikka" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chicken%20tikka.jpg'">
-      <img class="flash-img" src="images/chicken seekh kabab.jpg" alt="Chicken Seekh Kebab" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chicken%20seekh%20kabab.jpg'">
-      <img class="flash-img" src="images/butter chicken.jpg" alt="Butter Chicken" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20chicken.jpg'">
-      <img class="flash-img" src="images/mutton rogan josh.jpg" alt="Mutton Rogan Josh" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/mutton%20rogan%20josh.jpg'">
-    </div>
-    <div class="food-flash-dots" aria-hidden="true">
-      <span class="active"></span><span></span><span></span><span></span><span></span><span></span>
-    </div>
-  </div>
-
-  <div class="profile-wrap">
-    <div class="profile-card">
-      <img class="logo-round" src="newlogo.jpg" alt="Hakka Bakka Logo" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/newlogo.jpg'">
-      <h2>Hakka Bakka Restaurant</h2>
-      <p class="tagline">Authentic Punjabi Taste with a Modern Vibe</p>
-      <p class="story">
-        Welcome to <b>Hakka Bakka</b> — a place for hearty Punjabi flavours, rich North Indian gravies,
-        tandoori favourites, sizzling Chinese snacks, breads, rice, refreshing drinks and much more.
-        We focus on generous portions, familiar desi flavours and food made to be enjoyed with family and friends.
-        <br><br>
-        <b>Run by Chirag Duggal</b>
-      </p>
-      <div class="taste-row">
-        <span class="taste-chip">🔥 Tandoori Favourites</span>
-        <span class="taste-chip">🥘 Punjabi Gravy</span>
-        <span class="taste-chip">🍗 Non-Veg Specials</span>
-        <span class="taste-chip">🥗 Veg Delights</span>
-        <span class="taste-chip">🥤 Refreshing Drinks</span>
-      </div>
-    </div>
-  </div>
-
-  
-<div class="premium-sections">
-  <h3 class="premium-title">🔥 Hakka Bakka Favourites</h3>
-  <div class="special-grid">
-    <div class="special-card"><div class="emoji">🧀</div><h4>Paneer Tikka</h4><p>Smoky tandoori favourite with rich desi flavour.</p></div>
-    <div class="special-card"><div class="emoji">🍗</div><h4>Butter Chicken</h4><p>Creamy, buttery North Indian classic.</p></div>
-    <div class="special-card"><div class="emoji">🍖</div><h4>Mutton Rogan Josh</h4><p>Rich North Indian mutton preparation.</p></div>
-    <div class="special-card"><div class="emoji">🔥</div><h4>Tandoori Chicken</h4><p>Charred tandoori flavour, made for sharing.</p></div>
-  </div>
-
-  <h3 class="premium-title">📍 Visit Hakka Bakka</h3>
-  <div class="info-grid">
-    <div class="info-card">
-      <div class="info-icon">📍</div><h4>Our Location</h4>
-      <p>Shop No. 1, Near Canal Road,<br>Opp. Maqsudan Bypass, G.T. Road, Jalandhar</p>
-      <a href="https://www.google.com/maps/search/?api=1&query=Hakka+Bakka+Punjabi+Dhaba+Jalandhar" target="_blank" rel="noopener">Get Directions</a>
-    </div>
-    <div class="info-card">
-      <div class="info-icon">📞</div><h4>Call / WhatsApp</h4>
-      <p>For reservations, enquiries and direct orders.</p>
-      <a href="tel:+917796631555">Call 7796631555</a>
-    </div>
-    <div class="info-card">
-      <div class="info-icon">🍽️</div><h4>Food for Every Mood</h4>
-      <p>Veg, non-veg, tandoori, Punjabi gravies, Chinese, breads, rice and refreshing drinks.</p>
-      <a href="#" onclick="openOnlineMenu();return false;">View Online Menu</a>
-    </div>
-  </div>
-
-  <div class="instagram-card">
-    <h3>📸 Follow Hakka Bakka</h3>
-    <p>Food updates, offers and new creations on Instagram</p>
-    <a href="https://www.instagram.com/hakka_bakka.in/" target="_blank" rel="noopener">@hakka_bakka.in</a>
-  </div>
-  <div class="disclaimer">Menu prices and availability may change. Please confirm the final order amount before payment.</div>
-</div>
-
-<div class="order-cta">
-    <h3>How would you like to order?</h3>
-    <noscript><div style="padding:10px;text-align:center;color:#7b1113">Please enable JavaScript to order online.</div></noscript><button id="onlineOrderBtn" class="primary-order" type="button" onclick="openOnlineMenu()"><span class="shop-icon">🛍️</span> Online Order</button>
-    <div id="orderOptions" class="order-options" aria-label="Online order options">
-      <button id="whatsappOrderBtn" class="order-option option-wa" type="button" onclick="openWhatsAppMenu()"><span class="brand-icon whatsapp-icon">W</span> WhatsApp Order</button>
-      <a class="order-option option-zomato" href="https://zomato.onelink.me/xqzv/7948ndtj" target="_blank" rel="noopener noreferrer"><span class="brand-icon zomato-icon">Z</span><span>Order on Zomato</span></a>
-      <a class="order-option option-swiggy" href="https://www.swiggy.com/menu/1400828?source=sharing" target="_blank" rel="noopener noreferrer"><span class="brand-icon swiggy-icon">S</span><span>Order on Swiggy</span></a>
-    </div>
-  </div>
-
-  <div class="home-footer">
-    <strong>Hakka Bakka</strong> • North Jalandhar • WhatsApp 7796631555
-  </div>
-</div>
-
-
-<div id="dynamicHome" class="dynamic-home">
-  <section class="dyn-hero">
-    <div class="dyn-hero-media" id="dynHeroMedia">
-      <img class="active" src="images/butter chicken.jpg" alt="Butter Chicken" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20chicken.jpg'">
-      <img src="images/chicken kali mirch.jpg" alt="Chicken Kali Mirch" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chicken%20kali%20mirch.jpg'">
-      <img src="images/tari wala mutton 2pc.jpg" alt="Tari Wala Mutton (2 Pc)" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/tari%20wala%20mutton%202pc.jpg'">
-      <img src="images/chilli mushroom.jpg" alt="Chilli Mushroom" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chilli%20mushroom.jpg'">
-      <img src="images/dal makhani.jpg" alt="Dal Makhani" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/dal%20makhani.jpg'">
-      <img src="images/honey chilli potato.jpg" alt="Honey Chilli Potato" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/honey%20chilli%20potato.jpg'">
-      <img src="images/butter naan.jpg" alt="Butter Naan" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20naan.jpg'">
-      <img src="images/tandoori chapati.jpg" alt="Tandoori Chapati" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/tandoori%20chapati.jpg'">
-      <img src="mojitoo.png" alt="Refreshing Mojitos" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/mojitoo.png'">
-      <img src="fries.png" alt="Masala Fries & Sides" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/fries.png'">
-</div>
-    <div class="dyn-hero-content">
-      <span class="dyn-kicker">NORTH JALANDHAR • PUNJABI DHABA</span>
-      <h1>Hakka Bakka</h1>
-      <p>Desi Swad • Modern Vibe</p>
-      <div class="dyn-hero-buttons">
-        <button class="dyn-primary" type="button" onclick="openOnlineMenu()">🛍️ Explore Menu</button>
-        <a class="dyn-secondary" href="tel:+917796631555">📞 Call Us</a>
-      </div>
-    </div>
-    <div class="dyn-dots" id="dynDots">
-<span class="dyn-dot active"></span><span class="dyn-dot"></span><span class="dyn-dot"></span><span class="dyn-dot"></span><span class="dyn-dot"></span><span class="dyn-dot"></span><span class="dyn-dot"></span><span class="dyn-dot"></span><span class="dyn-dot"></span><span class="dyn-dot"></span>
-</div>
+    <div class="hero-dots" id="heroDots"></div>
   </section>
 
-  <div class="dyn-wrap">
-    <section class="dyn-section">
-      <h2 class="dyn-heading">Explore Our Taste</h2>
-      <p class="dyn-sub">Freshly prepared favourites inspired by Punjabi dhaba flavours, tandoor and Indian comfort food.</p>
-      <div class="dyn-scroll">
-        <div class="dyn-category"><div class="ic">🥘</div><b>Punjabi Veg</b></div>
-        <div class="dyn-category"><div class="ic">🔥</div><b>Tandoori</b></div>
-        <div class="dyn-category"><div class="ic">🍗</div><b>Non-Veg</b></div>
-        <div class="dyn-category"><div class="ic">🥡</div><b>Chinese</b></div>
-        <div class="dyn-category"><div class="ic">🍚</div><b>Rice & Breads</b></div>
-        <div class="dyn-category"><div class="ic">🥤</div><b>Drinks</b></div>
+  <div class="wrap">
+    <div class="quick">
+      <div class="quick-card"><div class="qicon">🥘</div><b>Punjabi Veg</b></div>
+      <div class="quick-card"><div class="qicon">🔥</div><b>Tandoori</b></div>
+      <div class="quick-card"><div class="qicon">🍗</div><b>Non-Veg</b></div>
+      <div class="quick-card"><div class="qicon">🥡</div><b>Chinese</b></div>
+      <div class="quick-card"><div class="qicon">🫓</div><b>Breads</b></div>
+      <div class="quick-card"><div class="qicon">🥤</div><b>Drinks</b></div>
+    </div>
+
+    <section class="section">
+      <div class="section-head"><span class="label">From our kitchen</span><h2>Hakka Bakka Favourites</h2><p>A visual taste of the dishes customers come for — rich Punjabi gravies, tandoori favourites, Indo-Chinese bites and refreshing sides.</p></div>
+      <div class="feature-grid">
+        <article class="feature"><div class="feature-media"><img src="images/butter chicken.jpg" alt="Butter Chicken" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20chicken.jpg'"><span class="feature-badge">NON-VEG • SIGNATURE</span></div><div class="feature-body"><h3>Butter Chicken</h3><p>Rich, buttery North Indian gravy with tender chicken.</p></div></article>
+        <article class="feature"><div class="feature-media"><img src="images/chicken kali mirch.jpg" alt="Chicken Kali Mirch" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chicken%20kali%20mirch.jpg'"><span class="feature-badge">NON-VEG • FAVOURITE</span></div><div class="feature-body"><h3>Chicken Kali Mirch</h3><p>Creamy black-pepper chicken with bold aroma.</p></div></article>
+        <article class="feature"><div class="feature-media"><img src="images/chilli mushroom.jpg" alt="Chilli Mushroom" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chilli%20mushroom.jpg'"><span class="feature-badge">VEG • INDO-CHINESE</span></div><div class="feature-body"><h3>Chilli Mushroom</h3><p>Mushrooms, peppers and onion in a spicy glaze.</p></div></article>
+        <article class="feature"><div class="feature-media"><img src="images/honey chilli potato.jpg" alt="Honey Chilli Potato" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/honey%20chilli%20potato.jpg'"><span class="feature-badge">VEG • CRISPY</span></div><div class="feature-body"><h3>Honey Chilli Potato</h3><p>Crispy potato tossed in sweet-spicy honey chilli.</p></div></article>
+        <article class="feature"><div class="feature-media"><img src="images/dal makhani.jpg" alt="Dal Makhani" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/dal%20makhani.jpg'"><span class="feature-badge">VEG • PUNJABI</span></div><div class="feature-body"><h3>Dal Makhani</h3><p>Slow-cooked creamy black lentils with desi flavour.</p></div></article>
+        <article class="feature"><div class="feature-media"><img src="images/tari wala mutton 2pc.jpg" alt="Tari Wala Mutton" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/tari%20wala%20mutton%202pc.jpg'"><span class="feature-badge">NON-VEG • PUNJABI</span></div><div class="feature-body"><h3>Tari Wala Mutton</h3><p>Slow-cooked mutton in a rich Punjabi tari.</p></div></article>
+        <article class="feature"><div class="feature-media"><img src="images/butter naan.jpg" alt="Butter Naan" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20naan.jpg'"><span class="feature-badge">TANDOOR • BREAD</span></div><div class="feature-body"><h3>Butter Naan</h3><p>Soft tandoori naan finished with butter.</p></div></article>
+        <article class="feature"><div class="feature-media"><img src="fries.png" alt="Fries and Sides" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/fries.png'"><span class="feature-badge">SNACKS • SIDES</span></div><div class="feature-body"><h3>Fries & Sides</h3><p>Crispy seasoned sides made for sharing.</p></div></article>
       </div>
     </section>
 
-    <section class="dyn-section">
-      <h2 class="dyn-heading">⭐ Hakka Bakka Signature Picks</h2>
-      <p class="dyn-sub">A tempting mix of Punjabi classics, tandoori favourites, Indo-Chinese flavours, breads and refreshing drinks.</p>
-      <div class="dyn-specials hb-food-gallery">
-        <div class="dyn-special hb-food-card">
-          <img src="images/butter chicken.jpg" alt="Butter Chicken" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20chicken.jpg'">
-          <div><span class="hb-food-tag">Non-Veg • Creamy Punjabi classic</span><h3>Butter Chicken</h3><p>Rich, buttery tomato gravy with tender chicken.</p></div>
-        </div>
-        <div class="dyn-special hb-food-card">
-          <img src="images/chicken kali mirch.jpg" alt="Chicken Kali Mirch" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chicken%20kali%20mirch.jpg'">
-          <div><span class="hb-food-tag">Non-Veg • North Indian favourite</span><h3>Chicken Kali Mirch</h3><p>Creamy black-pepper chicken with a bold, aromatic finish.</p></div>
-        </div>
-        <div class="dyn-special hb-food-card">
-          <img src="images/tari wala mutton 2pc.jpg" alt="Tari Wala Mutton (2 Pc)" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/tari%20wala%20mutton%202pc.jpg'">
-          <div><span class="hb-food-tag">Non-Veg • Punjabi style</span><h3>Tari Wala Mutton (2 Pc)</h3><p>Slow-cooked mutton in a rich, spiced Punjabi tari.</p></div>
-        </div>
-        <div class="dyn-special hb-food-card">
-          <img src="images/chilli mushroom.jpg" alt="Chilli Mushroom" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chilli%20mushroom.jpg'">
-          <div><span class="hb-food-tag">Veg • Indo-Chinese</span><h3>Chilli Mushroom</h3><p>Crispy mushrooms tossed with peppers, onion and chilli sauce.</p></div>
-        </div>
-        <div class="dyn-special hb-food-card">
-          <img src="images/dal makhani.jpg" alt="Dal Makhani" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/dal%20makhani.jpg'">
-          <div><span class="hb-food-tag">Veg • Punjabi comfort food</span><h3>Dal Makhani</h3><p>Slow-cooked black lentils finished with a rich, creamy texture.</p></div>
-        </div>
-        <div class="dyn-special hb-food-card">
-          <img src="images/honey chilli potato.jpg" alt="Honey Chilli Potato" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/honey%20chilli%20potato.jpg'">
-          <div><span class="hb-food-tag">Veg • Indo-Chinese</span><h3>Honey Chilli Potato</h3><p>Crispy potato tossed in sweet, spicy honey-chilli glaze.</p></div>
-        </div>
-        <div class="dyn-special hb-food-card">
-          <img src="images/butter naan.jpg" alt="Butter Naan" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20naan.jpg'">
-          <div><span class="hb-food-tag">Veg • Tandoor</span><h3>Butter Naan</h3><p>Soft tandoori naan finished with a generous touch of butter.</p></div>
-        </div>
-        <div class="dyn-special hb-food-card">
-          <img src="images/tandoori chapati.jpg" alt="Tandoori Chapati" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/tandoori%20chapati.jpg'">
-          <div><span class="hb-food-tag">Veg • Tandoor</span><h3>Tandoori Chapati</h3><p>Freshly baked tandoori chapati with an authentic smoky finish.</p></div>
-        </div>
-        <div class="dyn-special hb-food-card">
-          <img src="mojitoo.png" alt="Refreshing Mojitos" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/mojitoo.png'">
-          <div><span class="hb-food-tag">Drinks • Fresh & Cool</span><h3>Refreshing Mojitos</h3><p>Mint, watermelon and green-apple style refreshing mojitos.</p></div>
-        </div>
-        <div class="dyn-special hb-food-card">
-          <img src="fries.png" alt="Masala Fries & Sides" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/fries.png'">
-          <div><span class="hb-food-tag">Veg • Snacks</span><h3>Masala Fries & Sides</h3><p>Crispy, seasoned fries made for sharing.</p></div>
-        </div>
-      </div>
+    <section class="story-band">
+      <div><h2>Punjabi heart. Modern vibe.</h2><p>Hakka Bakka brings together familiar Punjabi flavours, tandoori cooking, North Indian gravies and Indo-Chinese favourites in one easy family dining experience.</p></div>
+      <div class="story-points"><div class="point"><b>👨‍👩‍👧‍👦 Family Friendly</b><span>Made to enjoy together</span></div><div class="point"><b>🔥 Tandoor Favourites</b><span>Smoky, hot & fresh</span></div><div class="point"><b>🥗 Veg + Non-Veg</b><span>Something for everyone</span></div><div class="point"><b>🥤 Refreshing Drinks</b><span>Mojitos & more</span></div></div>
     </section>
 
-    <section class="dyn-feature">
-      <div>
-        <h2>Run by Chirag Duggal</h2>
-        <p>Hakka Bakka brings together the warmth of a Punjabi dhaba with a modern dining experience. From vegetarian favourites and tandoori dishes to hearty non-veg preparations, every plate is made to be enjoyed with family and friends.</p>
-        <button class="dyn-primary" type="button" onclick="openOnlineMenu()">View Full Menu →</button>
-      </div>
-      <img src="images/signboard.png" alt="Hakka Bakka Restaurant">
-    </section>
-
-    <section class="dyn-section">
-      <h2 class="dyn-heading">Why Hakka Bakka?</h2>
-      <div class="dyn-info">
-        <div class="dyn-info-card"><div class="big">🌿</div><h3>Fresh Ingredients</h3><p>Freshly prepared food with a focus on quality and flavour.</p></div>
-        <div class="dyn-info-card"><div class="big">🔥</div><h3>Authentic Taste</h3><p>Punjabi dhaba flavours with tandoori and Indian favourites.</p></div>
-        <div class="dyn-info-card"><div class="big">👨‍👩‍👧‍👦</div><h3>Family Friendly</h3><p>A comfortable place to enjoy good food together.</p></div>
-      </div>
-    </section>
-
-    <section class="dyn-order">
-      <h2>🛍️ Order Your Favourites</h2>
-      <p>Choose how you want to order from Hakka Bakka.</p>
-      <button id="dynOrderBtn" class="dyn-order-btn" type="button" onclick="toggleDynOrders()">ONLINE ORDER</button>
-      <div id="dynOrderLinks" class="dyn-order-links">
-        <button class="dyn-link wa" type="button" onclick="openOnlineMenu()">💬 WhatsApp Order</button>
-        <a class="dyn-link zo" href="https://zomato.onelink.me/xqzv/7948ndtj" target="_blank" rel="noopener">🍽️ Order on Zomato</a>
-        <a class="dyn-link sw" href="https://www.swiggy.com/menu/1400828?source=sharing" target="_blank" rel="noopener">🛵 Order on Swiggy</a>
-      </div>
-    </section>
-
-    <section class="dyn-section">
-      <h2 class="dyn-heading">💬 What Customers Say</h2>
-      <p class="dyn-sub">A simple review showcase — replace these with verified customer reviews whenever you have them.</p>
-      <div class="dyn-reviews">
-        <div class="review"><div class="stars">★★★★★</div><p>“Great place for Punjabi-style food and family dining.”</p><b>— Hakka Bakka Guest</b></div>
-        <div class="review"><div class="stars">★★★★★</div><p>“The tandoori dishes and rich gravies are perfect for sharing.”</p><b>— Hakka Bakka Guest</b></div>
-        <div class="review"><div class="stars">★★★★★</div><p>“Good variety of veg and non-veg options under one roof.”</p><b>— Hakka Bakka Guest</b></div>
-      </div>
-    </section>
-
-    <section class="dyn-section">
-      <div class="dyn-info">
-        <div class="dyn-info-card"><div class="big">📍</div><h3>Find Us</h3><p>Shop No. 1, Near Canal Road, Opp. Maqsudan Bypass, G.T. Road, Jalandhar</p><a href="https://www.google.com/maps/search/?api=1&query=Hakka+Bakka+Punjabi+Dhaba+Jalandhar" target="_blank" rel="noopener">Get Directions</a></div>
-        <div class="dyn-info-card"><div class="big">🕐</div><h3>Opening Hours</h3><p>For current opening hours, please call the restaurant before visiting.</p><a href="tel:+917796631555">Call Restaurant</a></div>
-        <div class="dyn-info-card"><div class="big">📞</div><h3>Contact</h3><p>WhatsApp / Call<br>7796631555</p><a href="https://wa.me/917796631555" target="_blank" rel="noopener">WhatsApp Us</a></div>
-      </div>
-    </section>
-
-    <section class="dyn-social">
-      <h2>📸 Follow Hakka Bakka</h2>
-      <p>Food updates, offers and new creations.</p>
-      <a href="https://www.instagram.com/hakka_bakka.in/" target="_blank" rel="noopener">@hakka_bakka.in</a>
-    </section>
+    <section class="order-block"><h2>Ready to order?</h2><p>Choose your favourite way to order from Hakka Bakka.</p><button class="online-btn" onclick="openOrderModal()">🛍️ Online Order</button></section>
+    <div class="footer"><strong>Hakka Bakka</strong> • North Jalandhar • WhatsApp 7796631555</div>
   </div>
 </div>
 
-<div id="menuStart" class="menu-start">
-  <div class="menu-top"><button type="button" onclick="closeOnlineMenu()">← Hakka Bakka</button><strong>Online Menu</strong></div>
-  <div class="search"><input id="search" type="search" placeholder="Search menu..." autocomplete="off"></div>
-  <main id="menu"></main>
+<!-- ORDER CHOOSER: ONLY ONE BUTTON ON HOME, THREE OPTIONS HERE -->
+<div class="modal" id="orderModal" onclick="if(event.target===this)closeOrderModal()">
+  <div class="modal-card">
+    <div class="modal-head"><h2>Choose how to order</h2><button class="close" onclick="closeOrderModal()">✕</button></div>
+    <button class="order-choice wa" type="button" onclick="closeOrderModal();openMenu()"><span class="icon">W</span><span class="choice-copy">WhatsApp Order<small>Open Online Menu &amp; send your order directly to WhatsApp</small></span></button>
+    <a class="order-choice zo" href="https://zomato.onelink.me/xqzv/7948ndtj" target="_blank" rel="noopener"><span class="icon">Z</span><span class="choice-copy">Order on Zomato<small>Open Hakka Bakka on Zomato</small></span></a>
+    <a class="order-choice sw" href="https://www.swiggy.com/menu/1400828?source=sharing" target="_blank" rel="noopener"><span class="icon">S</span><span class="choice-copy">Order on Swiggy<small>Open Hakka Bakka on Swiggy</small></span></a>
+  </div>
 </div>
 
-<button class="cart" id="cartButton">🛒 <span class="badge" id="count">0</span></button>
+<!-- SEPARATE ONLINE MENU SCREEN -->
+<div id="menuScreen">
+  <div class="menu-header"><div class="menu-bar"><button class="back" onclick="closeMenu()">← Back</button><div class="menu-title"><b>Hakka Bakka Online Menu</b><span>Punjabi Dhaba • Desi Swad • Modern Vibe</span></div></div><div class="searchbox"><input id="search" type="search" placeholder="Search menu…" autocomplete="off"><button class="cart-summary" id="cartSummary" onclick="openCart()">🛒 <span id="cartSummaryText">Cart is empty</span></button></div></div>
+  <main class="menu-content" id="menu"></main>
+</div>
+<button class="cart-fab" id="cartFab" onclick="openCart()" style="display:none">🛒 Cart <span class="count" id="fabCount">0</span></button>
 
-<div class="panel" id="cartPanel">
-  <div id="cartView">
-    <h2>🛒 Your Cart</h2>
-    <div class="cartHeaderRow"><h2>🛒 Your Order</h2><button class="iconClose" id="cartClose" aria-label="Close cart">✕</button></div>
-    <p class="cartHint">Review your selected items before billing.</p>
-    <div id="items"></div>
-    <div class="cartSubtotal">Food Total: <b>₹<span id="cartSubtotal">0</span></b></div>
-    <button class="action" id="proceedBtn">Proceed to Billing</button>
-    <button class="action close" id="cartClear">Clear Cart</button>
-  </div>
-
+<div class="drawer" id="drawer" onclick="if(event.target===this)closeCart()"><div class="drawer-card">
+  <div class="drawer-head"><h2 id="cartHeading">Your Order</h2><button class="drawer-close" onclick="closeCart()">✕</button></div>
+  <div id="cartView"><div id="items"></div><div class="bill"><div>Food Total <b>₹<span id="cartSubtotal">0</span></b></div></div><button class="drawer-action" onclick="proceedBilling()">Proceed to Billing</button><button class="drawer-action secondary" onclick="clearCart()">Clear Cart</button></div>
   <div id="billingView" style="display:none">
-    <h2>🧾 Billing</h2>
-    <input id="customerName" placeholder="Customer Name" autocomplete="name">
-    <input id="customerPhone" placeholder="10-digit Mobile Number" type="tel" inputmode="numeric" maxlength="10" autocomplete="tel">
-
-    <label class="fieldLabel">Order Type</label>
-    <select id="orderType">
-      <option value="Pickup">Pickup</option>
-      <option value="Home Delivery">Home Delivery</option>
-    </select>
-
-    <div id="deliveryFields" style="display:none">
-      <textarea id="address" rows="3" placeholder="Delivery Address"></textarea>
-      <input id="pincode" placeholder="Pincode" type="tel" inputmode="numeric" maxlength="6">
-      <div id="deliveryInfo" class="deliveryInfo" style="display:none"></div>
-    </div>
-
-    <div class="billBox">
-      <div>Food Total <span>₹<b id="billFood">0</b></span></div>
-      <div>Delivery Charges <span>₹<b id="billDelivery">0</b></span></div>
-      <div class="grand"><strong>Total Amount</strong><strong>₹<span id="billTotal">0</span></strong></div>
-    </div>
-
-    <div id="paymentBox">
-      <h3>💳 Pay with UPI</h3>
-      <p><b>UPI ID:</b> 9713545556@pthdfc</p>
-      <div id="upiArea"></div>
-      <button class="action" id="upiPay" type="button">Pay with UPI</button>
-      <p id="paymentStatus" class="paymentStatus"></p>
-      <input id="utr" placeholder="UPI UTR / Transaction ID (optional)" inputmode="numeric">
-      <label class="fieldLabel">Payment Screenshot <span style="color:#7b1113">*</span></label><div class="deliveryInfo">Payment screenshot is mandatory to place the order.</div>
-      <input id="paymentScreenshot" type="file" accept="image/*">
-    </div>
-
-    <button class="action" id="wa">Send Order on WhatsApp</button>
-    <button class="action close" id="backToCart">← Back to Cart</button>
+    <div class="order-no"><span>Your Order Number</span><strong id="orderNumber">—</strong></div>
+    <input class="field" id="customerName" placeholder="Customer Name">
+    <input class="field" id="customerPhone" placeholder="10-digit Mobile Number" type="tel" inputmode="numeric" maxlength="10">
+    <label class="label">Order Type</label><select class="field" id="orderType"><option value="Pickup">Pickup</option><option value="Home Delivery">Home Delivery</option></select>
+    <div id="deliveryFields" style="display:none"><textarea class="field" id="address" rows="3" placeholder="Delivery Address"></textarea><input class="field" id="pincode" placeholder="Pincode" maxlength="6" inputmode="numeric"></div>
+    <div class="bill"><div>Food Total <span>₹<b id="billFood">0</b></span></div><div>Delivery Charges <span>₹<b id="billDelivery">0</b></span></div><div class="grand"><strong>Total</strong><strong>₹<span id="billTotal">0</span></strong></div></div>
+    <div class="pay"><h3>💳 UPI Payment</h3><small>UPI ID: 9713545556@pthdfc</small><div id="qr"></div><button class="drawer-action" id="upiPay">Pay with UPI</button><small id="paymentStatus"></small><input class="field" id="utr" placeholder="UPI UTR / Transaction ID (optional)"><label class="label">Payment Screenshot <strong style="color:#8b1118">(Required)</strong></label><div style="font-size:13px;color:#666;margin:-4px 0 8px">Payment screenshot ke bina order WhatsApp par send nahi hoga.</div><input class="field" id="paymentScreenshot" type="file" accept="image/*" required><div id="paymentCheck" class="payment-check" aria-live="polite" style="display:none"></div></div>
+    <button class="drawer-action" id="waSend">Send Order on WhatsApp</button><button class="drawer-action secondary" onclick="backToCart()">← Back to Cart</button>
   </div>
-</div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script>
-function openOnlineMenu(){
-  const home = document.getElementById('dynamicHome');
-  const menu = document.getElementById('menuStart');
-  const cartBtn = document.getElementById('cartButton');
-  if(home) home.style.display = 'none';
-  if(menu){
-    menu.classList.add('menu-visible');
-    menu.style.display = 'block';
-    menu.scrollIntoView({behavior:'smooth', block:'start'});
-  }
-  if(cartBtn) cartBtn.style.display = 'flex';
-  if(typeof renderMenu === 'function') renderMenu();
-  if(typeof renderCart === 'function') renderCart();
-  document.body.classList.add('menu-open');
-}
-function closeOnlineMenu(){
-  const home=document.getElementById('dynamicHome');
-  const menu=document.getElementById('menuStart');
-  const cartBtn=document.getElementById('cartButton');
-  if(menu){menu.classList.remove('menu-visible');menu.style.display='none';}
-  if(home) home.style.display='block';
-  if(cartBtn) cartBtn.style.display='none';
-  document.body.classList.remove('menu-open');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-function toggleOrderOptions(){
-  var el=document.getElementById('orderOptions');
-  if(el) el.classList.toggle('show');
-}
-function openWhatsAppMenu(){
-  var home=document.getElementById('homeScreen');
-  var menuScreen=document.getElementById('menuStart');
-  var cartBtn=document.getElementById('cartButton');
-  if(home) home.style.display='none';
-  if(menuScreen) menuScreen.style.display='block';
-  if(cartBtn) cartBtn.style.display='block';
-  window.scrollTo({top:0,behavior:'smooth'});
-  if(typeof renderCart==='function') renderCart();
-}
-</script>
+</div></div>
 
 <script>
-(function(){
-  const imgs=[...document.querySelectorAll('#foodFlash .flash-img')];
-  const dots=[...document.querySelectorAll('.food-flash-dots span')];
-  if(!imgs.length) return;
-  let i=0;
-  function show(n){
-    i=(n+imgs.length)%imgs.length;
-    imgs.forEach((img,k)=>img.classList.toggle('active',k===i));
-    dots.forEach((dot,k)=>dot.classList.toggle('active',k===i));
-  }
-  imgs.forEach(img=>{img.addEventListener('error',()=>{img.style.visibility='hidden';});});
-  setInterval(()=>show(i+1),3000);
-})();
-</script>
-
-<script>
-(function(){
-const UPI_ID='9713545556@pthdfc';
-const WA='917796631555';
-const PIN_MIN=144001, PIN_MAX=144030, PIN_CUTOFF=144015;
-const cart=[];
+const WA='917796631555', UPI_ID='9713545556@pthdfc';
+let currentOrderNo='';
+const ZOMATO='https://zomato.onelink.me/xqzv/7948ndtj', SWIGGY='https://www.swiggy.com/menu/1400828?source=sharing';
+const PIN_MIN=144001,PIN_MAX=144030,PIN_CUTOFF=144015;
+let cart=[];
 const data=[
 ["Tandoori Veg",[
-["Paneer Tikka","240","images/paneer tikka.jpg"],
+["Paneer Tikka","240","paneertikka.png"],
 ["Paneer Malai Tikka","280","images/paneer malai tikka.jpg"],
 ["Paneer Kali Mirch Tikka","280","images/paneer-kali-mirch-tikka.jpg"],
 ["Mushroom Tikka","230","images/mushroom tikka.jpg"],
@@ -594,12 +188,12 @@ const data=[
 ]],
 ["Thali",[["Unlimited Thali","150","images/thali.jpg"]]],
 ["Drinks",[
-["Sweet Lassi","80","images/sweetlassi.png"],
-["Masala Chach","60","images/kuladtea.png"],
-["Lemon Ice Tea","115","images/ice tea.jpg"],
-["Shakes (Any Flavour)","115","images/milkshake.png"],
-["Mojito","115","images/mojito.png"],
-["Cold Coffee with Ice Cream","95","images/coffee.png"]
+["Sweet Lassi","80","sweetlassi.jpg"],
+["Masala Chach","60","masalachas.jpg"],
+["Lemon Ice Tea","115","lemon_iced_tea.jpg"],
+["Shakes (Any Flavour)","115","shakesanyflavour.jpeg"],
+["Mojito","115","guava-mojito.jpg"],
+["Cold Coffee with Ice Cream","95","coldcoffeewithicecream.jpg"]
 ]],
 ["Chapati / Breads / Kulcha",[
 ["Tandoori Roti","15","images/tandoori chapati.jpg"],
@@ -612,7 +206,7 @@ const data=[
 ["Pudina Paratha","45","images/pudina paratha.jpg"],
 ["Green Chilli Paratha","50","images/green chilli paratha.jpg"],
 ["Red Chilli Paratha","60","images/red chilli paratha.jpg"],
-["Amritsari Kulcha","50","images/amritsari kulcha.jpg"],
+["Amritsari Kulcha","50","amritsarikulcha.jpg"],
 ["With Chana","60","images/amritsari kulcha with chana.jpg"]
 ]],
 ["Salads",[
@@ -663,7 +257,7 @@ const data=[
 ["Mutton Rice",["200","300"],"images/mutton rice.jpg"]
 ]],
 ["Indian Non-Veg Main Course",[
-["Mutton Rogan Josh",["350","650"],"images/mutton rogan josh.jpg"],
+["Mutton Rogan Josh",["350","650"],"muttonrogan.jpg"],
 ["Dahi Chicken",["250","450"],"images/dahi chicken.jpg"],
 ["Butter Chicken",["300","550"],"images/butter chicken.jpg"],
 ["Kadai Chicken",["290","530"],"images/kadai chicken.jpg"],
@@ -688,206 +282,73 @@ const data=[
 ["Coca-Cola","0","images/cold_drink.png"],["Fanta","0","images/cold_drink.png"],
 ["Other Soft Drinks","0","images/cold_drink.png"]
 ]],
-["Shakes",[["Shakes (Any Flavour)","100","images/milkshake.png"]]]
+["Shakes",[["Shakes (Any Flavour)","100","shakesanyflavour.jpeg"]]]
 ];
-const menu=document.getElementById('menu');
-const panel=document.getElementById('cartPanel');
-const items=document.getElementById('items');
-const count=document.getElementById('count');
-const cartSubtotal=document.getElementById('cartSubtotal');
-const cartView=document.getElementById('cartView');
-const billingView=document.getElementById('billingView');
-const nameInput=document.getElementById('customerName');
-const phoneInput=document.getElementById('customerPhone');
-const orderType=document.getElementById('orderType');
-const deliveryFields=document.getElementById('deliveryFields');
-const address=document.getElementById('address');
-const pincode=document.getElementById('pincode');
-const billFood=document.getElementById('billFood');
-const billDelivery=document.getElementById('billDelivery');
-const billTotal=document.getElementById('billTotal');
-const upiArea=document.getElementById('upiArea');
-const upiPay=document.getElementById('upiPay');
-const paymentStatus=document.getElementById('paymentStatus');
-const utr=document.getElementById('utr');
-const shot=document.getElementById('paymentScreenshot');
+const menuEl=document.getElementById('menu');
+const esc=s=>String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+function imageTag(img,name){const candidates=[];const add=u=>{if(u&&!candidates.includes(u))candidates.push(u)};add(img);if(!img.startsWith('images/'))add('images/'+img);add('https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/'+img);if(!img.startsWith('images/'))add('https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/'+img);const enc=u=>encodeURI(u).replace(/'/g,'%27');const list=JSON.stringify(candidates.map(enc)).replace(/'/g,'&#39;');return `<img src="${enc(candidates[0])}" alt="${esc(name)}" loading="lazy" data-candidates='${list}' data-try="0" onerror="const a=JSON.parse(this.dataset.candidates),i=+this.dataset.try+1;this.dataset.try=i;if(i<a.length)this.src=a[i];else this.style.visibility='hidden';">`}
+function renderMenu(){menuEl.innerHTML=data.map(([section,list])=>`<section class="menu-section"><h2>${esc(section)}</h2><div class="menu-grid">${list.map(x=>{const n=x[0],p=x[1],im=x[2];if(Array.isArray(p))return `<article class="menu-card">${imageTag(im,n)}<div class="menu-body"><h3>${esc(n)}</h3><div class="price">₹${p[0]} / ₹${p[1]}</div><div class="variant"><button class="add" data-name="${esc(n)} - Half" data-price="${p[0]}">Half ₹${p[0]}</button><button class="add" data-name="${esc(n)} - Full" data-price="${p[1]}">Full ₹${p[1]}</button></div></div></article>`;if(Number(p)===0)return `<article class="menu-card">${imageTag(im,n)}<div class="menu-body"><h3>${esc(n)}</h3><div class="price">Price not listed</div></div></article>`;return `<article class="menu-card">${imageTag(im,n)}<div class="menu-body"><h3>${esc(n)}</h3><div class="price">₹${p}</div><button class="add" data-name="${esc(n)}" data-price="${p}">Add to Order</button></div></article>`}).join('')}</div></section>`).join('')}
+function foodTotal(){return cart.reduce((s,x)=>s+x.price,0)}
+function pin(){return /^144\d{3}$/.test(pincode.value)?Number(pincode.value):null}
+function deliveryCharge(){if(orderType.value!=='Home Delivery')return 0;const p=pin();return p!==null&&p>=PIN_MIN&&p<=PIN_MAX?(p<=PIN_CUTOFF?100:200):0}
+function refreshButtons(){document.querySelectorAll('.add').forEach(b=>{const n=b.dataset.name,p=Number(b.dataset.price),q=cart.filter(x=>x.name===n&&x.price===p).length;if(q){b.classList.add('selected');b.innerHTML=`<span class="qty-control"><button class="minus">−</button><span>${q}</span><button class="plus">+</button></span>`}else{b.classList.remove('selected');b.textContent=b.dataset.original||b.textContent;if(!b.dataset.original)b.dataset.original=b.textContent}})}
+function renderCart(){const groups=[];cart.forEach(x=>{let g=groups.find(y=>y.name===x.name&&y.price===x.price);if(g)g.q++;else groups.push({name:x.name,price:x.price,q:1})});document.getElementById('cartSubtotal').textContent=foodTotal();document.getElementById('fabCount').textContent=cart.length;updateCartSummary(groups);document.getElementById('items').innerHTML=groups.length?groups.map(g=>`<div class="cart-item"><div class="top">${esc(g.name)}</div><div class="bottom"><b style="color:var(--red)">₹${g.price*g.q}</b><div class="qty"><button onclick="changeQty('${esc(g.name).replace(/'/g,"\\'")}',${g.price},-1)">−</button><span>${g.q}</span><button onclick="changeQty('${esc(g.name).replace(/'/g,"\\'")}',${g.price},1)">+</button></div></div></div>`).join(''):'<div class="menu-empty">Your cart is empty.<br>Add items from the menu.</div>';refreshButtons();updateBilling()}
+function updateCartSummary(groups){const el=document.getElementById('cartSummaryText');if(!el)return;if(!groups.length){el.textContent='Cart is empty';return}const names=groups.slice(0,2).map(g=>`${g.name}${g.q>1?' ×'+g.q:''}`).join(', ');el.textContent=`${cart.length} item${cart.length===1?'':'s'} • ${names}${groups.length>2?' +'+(groups.length-2)+' more':''}`;}
+function changeQty(n,p,d){if(d>0)cart.push({name:n,price:p});else{const i=cart.findIndex(x=>x.name===n&&x.price===p);if(i>=0)cart.splice(i,1)}renderCart()}
+function clearCart(){cart=[];resetOrderNumber();renderCart()}
+function updateBilling(){const home=orderType.value==='Home Delivery';document.getElementById('deliveryFields').style.display=home?'block':'none';const f=foodTotal(),c=deliveryCharge();document.getElementById('billFood').textContent=f;document.getElementById('billDelivery').textContent=c;document.getElementById('billTotal').textContent=f+c;makeUPI()}
+function makeUPI(){const q=document.getElementById('qr'),amt=foodTotal()+deliveryCharge();q.innerHTML='';if(!amt)return;const upi='upi://pay?pa='+encodeURIComponent(UPI_ID)+'&pn='+encodeURIComponent('Hakka Bakka Punjabi Dhaba')+'&am='+encodeURIComponent(amt.toFixed(2))+'&cu=INR';const wrap=document.createElement('div');wrap.style.cssText='width:230px;margin:12px auto;text-align:center';const img=document.createElement('img');img.alt='UPI QR Code';img.width=220;img.height=220;img.style.cssText='display:block;width:220px;height:220px;margin:auto;border-radius:8px;background:#fff';img.src='https://quickchart.io/qr?text='+encodeURIComponent(upi)+'&size=220&margin=2';img.onerror=()=>{wrap.innerHTML='<div style="padding:24px;border:1px solid #ddd;border-radius:12px;background:#fafafa"><b>QR could not load</b><br><small>UPI ID: '+UPI_ID+'<br>Amount: ₹'+amt+'</small></div>'};wrap.appendChild(img);const cap=document.createElement('div');cap.style.cssText='font-size:13px;color:#666;margin-top:8px';cap.innerHTML='Scan & pay <b>₹'+amt+'</b><br>UPI ID: '+UPI_ID;wrap.appendChild(cap);q.appendChild(wrap)}
+function openMenu(){document.getElementById('home').style.display='none';document.getElementById('menuScreen').style.display='block';document.getElementById('cartFab').style.display='none';window.scrollTo(0,0);renderMenu();renderCart()}
+function closeMenu(){document.getElementById('menuScreen').style.display='none';document.getElementById('home').style.display='block';document.getElementById('cartFab').style.display='none';closeCart();window.scrollTo(0,0)}
+function openOrderModal(){document.getElementById('orderModal').classList.add('show')}
+function closeOrderModal(){document.getElementById('orderModal').classList.remove('show')}
+function openCart(){document.getElementById('drawer').classList.add('show');document.getElementById('cartView').style.display='block';document.getElementById('billingView').style.display='none';renderCart()}
+function closeCart(){document.getElementById('drawer').classList.remove('show')}
+function monthCode(){return ['JA','FE','MA','AP','MA','JU','JU','AU','SE','OC','NO','DE'][new Date().getMonth()]}
+function nextOrderNumber(){const now=new Date(),key='hb_order_counter_'+now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');let n=parseInt(localStorage.getItem(key)||'0',10)+1;localStorage.setItem(key,String(n));return monthCode().toLowerCase()+n}
+function ensureOrderNumber(){if(!currentOrderNo){currentOrderNo=nextOrderNumber()}document.getElementById('orderNumber').textContent=currentOrderNo}
+function resetOrderNumber(){currentOrderNo='';document.getElementById('orderNumber').textContent='—'}
+function proceedBilling(){if(!cart.length){alert('Cart is empty.');return}ensureOrderNumber();document.getElementById('cartView').style.display='none';document.getElementById('billingView').style.display='block';updateBilling()}
+function backToCart(){document.getElementById('billingView').style.display='none';document.getElementById('cartView').style.display='block'}
 
-function esc(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
-function foodTotal(){return cart.reduce((s,x)=>s+(Number(x.price)||0),0)}
-function pinNumber(){const n=Number(pincode.value);return /^144\d{3}$/.test(pincode.value)?n:null}
-function deliveryCharge(){
-  if(orderType.value!=='Home Delivery') return 0;
-  const pin=pinNumber();
-  if(pin===null || pin<PIN_MIN || pin>PIN_MAX) return 0;
-  return pin<=PIN_CUTOFF ? 100 : 200;
-}
-function grandTotal(){return foodTotal()+deliveryCharge()}
-function renderMenu(){
- menu.innerHTML=data.map(([section,list])=>`<section><h2 class="section-title">${esc(section)}</h2><div class="grid">${list.map(x=>{
-  const name=x[0],p=x[1],img=x[2];
-  if(Array.isArray(p)) return `<article class="card"><img src="${img}" alt="${esc(name)}" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/'+encodeURI('${img}')}else{this.style.visibility='hidden'}"><div class="content"><h3>${esc(name)}</h3><div class="price">₹${p[0]} / ${p[1]}</div><div class="variant-row"><button class="add" data-name="${esc(name)} - Half" data-price="${p[0]}">Half — ₹${p[0]}</button><button class="add" data-name="${esc(name)} - Full" data-price="${p[1]}">Full — ₹${p[1]}</button></div></div></article>`;
-  if(Number(p)===0) return `<article class="card"><img src="${img}" alt="${esc(name)}" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/'+encodeURI('${img}')}else{this.style.visibility='hidden'}"><div class="content"><h3>${esc(name)}</h3><div class="price">Price not listed</div></div></article>`;
-  return `<article class="card"><img src="${img}" alt="${esc(name)}" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/'+encodeURI('${img}')}else{this.style.visibility='hidden'}"><div class="content"><h3>${esc(name)}</h3><div class="price">₹${p}</div><button class="add" data-name="${esc(name)}" data-price="${p}">Add to Order</button></div></article>`;
- }).join('')}</div></section>`).join('');
-}
+document.getElementById('menu').addEventListener('click',e=>{const b=e.target.closest('.add');if(!b)return;const n=b.dataset.name,p=Number(b.dataset.price);if(e.target.closest('.minus')){const i=cart.findIndex(x=>x.name===n&&x.price===p);if(i>=0)cart.splice(i,1)}else if(e.target.closest('.plus'))cart.push({name:n,price:p});else{cart.push({name:n,price:p});b.dataset.original=b.textContent}renderCart()});
+document.getElementById('search').addEventListener('input',e=>{const q=e.target.value.toLowerCase().trim();document.querySelectorAll('.menu-section').forEach(sec=>{let any=false;sec.querySelectorAll('.menu-card').forEach(card=>{const ok=card.textContent.toLowerCase().includes(q);card.style.display=ok?'':'none';if(ok)any=true});sec.style.display=any?'':'none'})});
+document.getElementById('orderType').addEventListener('change',updateBilling);document.getElementById('pincode').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,6);updateBilling()});document.getElementById('customerPhone').addEventListener('input',e=>e.target.value=e.target.value.replace(/\D/g,'').slice(0,10));
+document.getElementById('upiPay').onclick=()=>{const amt=foodTotal()+deliveryCharge();if(!amt)return alert('Cart is empty.');const ps=document.getElementById('paymentStatus');ps.textContent='⏱️ Payment complete karke 2 minutes ke andar payment screenshot upload karein.';ps.style.display='block';clearTimeout(window.__paymentTimer);window.__paymentTimer=setTimeout(()=>{ps.textContent='';ps.style.display='none'},10000);window.location.href='upi://pay?pa='+encodeURIComponent(UPI_ID)+'&pn='+encodeURIComponent('Hakka Bakka Punjabi Dhaba')+'&am='+amt.toFixed(2)+'&cu=INR'};
+let paymentVerification={file:false,amount:false,date:false,time:false,ocr:false};
+const paymentScreenshot=document.getElementById('paymentScreenshot'), paymentCheck=document.getElementById('paymentCheck'), waSend=document.getElementById('waSend');
+waSend.disabled=true;
+function expectedTotal(){return foodTotal()+deliveryCharge()}
+function setPaymentCheck(kind,title,detail){if(!kind){paymentCheck.style.display='none';paymentCheck.innerHTML='';return;}paymentCheck.style.display='block';paymentCheck.className='payment-check '+kind;paymentCheck.innerHTML='<b>'+title+'</b>'}
+function normalizeMoneyText(t){return t.replace(/[₹RsI|]/gi,' ').replace(/,/g,'').replace(/\s+/g,' ')}
+function findAmounts(text){const t=normalizeMoneyText(text);const out=[];const re=/(?:rs\.?\s*)?(\d{2,6}(?:\.\d{1,2})?)/gi;let m;while((m=re.exec(t))){const n=Number(m[1]);if(n>=1&&n<=200000)out.push(n)}return [...new Set(out)]}
+function parseDateCandidates(text){const t=text.replace(/\s+/g,' ');const out=[];let m;const patterns=[/(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})/g,/(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})/g];for(const re of patterns){while((m=re.exec(t))){let d,y,mo;if(re===patterns[1]){y=+m[1];mo=+m[2];d=+m[3]}else{d=+m[1];mo=+m[2];y=+m[3];if(y<100)y+=2000}if(mo>=1&&mo<=12&&d>=1&&d<=31){const dt=new Date(y,mo-1,d);if(dt.getFullYear()===y&&dt.getMonth()===mo-1&&dt.getDate()===d)out.push(dt)}}}return out}
+function parseTimeCandidates(text){const t=text.replace(/\s+/g,' ');const out=[];let m;const re=/(\d{1,2})[:.](\d{2})(?:[:.](\d{2}))?\s*(AM|PM)?/gi;while((m=re.exec(t))){let h=+m[1],mi=+m[2];if(h>23||mi>59)continue;const ap=(m[4]||'').toUpperCase();if(ap==='PM'&&h<12)h+=12;if(ap==='AM'&&h===12)h=0;out.push({h,mi})}return out}
+function sameLocalDay(d,now){return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth()&&d.getDate()===now.getDate()}
+function timeDistanceMinutes(h,mi,now){let a=h*60+mi,b=now.getHours()*60+now.getMinutes(),diff=Math.abs(a-b);return Math.min(diff,1440-diff)}
+function updateVerificationUI(){const ok=paymentVerification.file&&paymentVerification.amount&&paymentVerification.date&&paymentVerification.time&&paymentVerification.ocr;waSend.disabled=!ok;return ok}
+async function verifyPaymentScreenshot(file){paymentVerification={file:true,amount:false,date:false,time:false,ocr:false};waSend.disabled=true;setPaymentCheck('', '', '');try{if(!window.Tesseract)throw new Error('OCR engine unavailable');const result=await Tesseract.recognize(file,'eng',{logger:()=>{}});const text=result.data.text||'';const total=expectedTotal();const amounts=findAmounts(text);const matched=amounts.some(n=>Math.abs(n-total)<0.01);paymentVerification.amount=matched;const dates=parseDateCandidates(text);const times=parseTimeCandidates(text);const now=new Date();const today=dates.some(d=>sameLocalDay(d,now));paymentVerification.date=today;const recent=times.some(x=>timeDistanceMinutes(x.h,x.mi,now)<=2);paymentVerification.time=recent;paymentVerification.ocr=true;if(matched&&today&&recent){setPaymentCheck('ok','✅ Payment Slip Verification successful','');}else{setPaymentCheck('bad','Payment Slip Verification pura nahi hua, Kripya issi ORDER ka bhugtan kiya slip attach kare.','')}updateVerificationUI()}catch(e){paymentVerification={file:true,amount:false,date:false,time:false,ocr:false};setPaymentCheck('bad','Payment Slip Verification pura nahi hua, Kripya issi ORDER ka bhugtan kiya slip attach kare.','');updateVerificationUI()}}
+paymentScreenshot.addEventListener('change',()=>{const f=paymentScreenshot.files&&paymentScreenshot.files[0];if(f)verifyPaymentScreenshot(f);else{paymentVerification={file:false,amount:false,date:false,time:false,ocr:false};setPaymentCheck('bad','Payment Slip Verification pura nahi hua, Kripya issi ORDER ka bhugtan kiya slip attach kare.','');updateVerificationUI()}});
 
-function refreshSelectedItems(){
-  document.querySelectorAll('.add').forEach(b=>{
-    const name=b.dataset.name||'';
-    const price=Number(b.dataset.price);
-    const qty=cart.filter(x=>x.name===name && x.price===price).length;
-    const card=b.closest('.card');
-    if(qty>0){
-      if(card) card.classList.add('selected-card');
-      if(!b.dataset.originalText) b.dataset.originalText=b.textContent;
-      b.classList.add('selected');
-      b.innerHTML=`<span class="qty-control">
-        <button type="button" class="item-minus" aria-label="Decrease quantity">−</button>
-        <span class="qty-number">${qty}</span>
-        <button type="button" class="item-plus" aria-label="Increase quantity">+</button>
-      </span>`;
-    }else{
-      if(card) card.classList.remove('selected-card');
-      b.classList.remove('selected');
-      if(b.dataset.originalText) b.textContent=b.dataset.originalText;
-    }
-  });
-}
+document.getElementById('waSend').onclick=()=>{if(!cart.length)return alert('Cart is empty.');if(!updateVerificationUI()){alert('Payment Slip Verification pura nahi hua, Kripya issi ORDER ka bhugtan kiya slip attach kare.');paymentScreenshot.scrollIntoView({behavior:'smooth',block:'center'});return;}const name=document.getElementById('customerName').value.trim(),phone=document.getElementById('customerPhone').value.trim(),type=document.getElementById('orderType').value;if(!name)return alert('Customer name enter karein.');if(!/^\d{10}$/.test(phone))return alert('10-digit mobile number enter karein.');let extra='';if(type==='Home Delivery'){const p=pin(),a=document.getElementById('address').value.trim();if(!a)return alert('Delivery address enter karein.');if(p===null||p<PIN_MIN||p>PIN_MAX)return alert('Home Delivery sirf pincode 144001 se 144030 tak available hai.');extra='\nPincode: '+p+'\nAddress: '+a}const lines=cart.map(x=>'• '+x.name+' - ₹'+x.price).join('\n');const total=foodTotal()+deliveryCharge();const msg='*HAKKA BAKKA ONLINE ORDER*\n*ORDER NO: '+currentOrderNo+'*\n\n'+lines+'\n\nFood Total: ₹'+foodTotal()+'\nDelivery Charges: ₹'+deliveryCharge()+'\n*TOTAL: ₹'+total+'*\n\nPayment screenshot verified: amount/date/time\n\nName: '+name+'\nMobile: '+phone+'\nType: '+type+extra+'\n\nPlease confirm my order.';window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg)};
 
-function renderCart(){
-  count.textContent=cart.length;
-  cartSubtotal.textContent=foodTotal();
-  refreshSelectedItems();
-
-  const groups=[];
-  cart.forEach((x,i)=>{
-    let g=groups.find(v=>v.name===x.name && v.price===x.price);
-    if(g){g.qty++;g.indices.push(i);}
-    else groups.push({name:x.name,price:x.price,qty:1,indices:[i]});
-  });
-
-  items.innerHTML=groups.length ? groups.map(g=>`
-    <div class="order-item">
-      <div class="item-name">${esc(g.name)}</div>
-      <div class="item-meta">
-        <span class="item-price">₹${g.price} × ${g.qty} = ₹${g.price*g.qty}</span>
-        <div class="qtyBox">
-          <button type="button" onclick="changeQty('${esc(g.name).replace(/'/g,"&#39;")}',${g.price},-1)">−</button>
-          <span>${g.qty}</span>
-          <button type="button" onclick="changeQty('${esc(g.name).replace(/'/g,"&#39;")}',${g.price},1)">+</button>
-        </div>
-      </div>
-      <button type="button" class="removeAll" onclick="removeGroup('${esc(g.name).replace(/'/g,"&#39;")}',${g.price})">Remove item</button>
-    </div>`).join('')
-    : '<div class="empty">Your cart is empty.<br>Add items from the menu.</div>';
-}
-function updateBilling(){
- const delivery=orderType.value==='Home Delivery';
- deliveryFields.style.display=delivery?'block':'none';
- const food=foodTotal(),charge=deliveryCharge(),total=food+charge;
- billFood.textContent=food;billDelivery.textContent=charge;billTotal.textContent=total;
- if(delivery){
-   const pin=pinNumber();
-   document.getElementById('deliveryInfo').style.display='none';
- }
- makeUPI();
-}
-function makeUPI(){
- const amount=grandTotal();upiArea.innerHTML='';paymentStatus.textContent='';
- if(!amount){upiPay.style.display='none';return;}
- upiPay.style.display='block';
- const upi='upi://pay?pa='+encodeURIComponent(UPI_ID)+'&pn='+encodeURIComponent('Hakka Bakka Punjabi Dhaba')+'&am='+amount.toFixed(2)+'&cu=INR';
- const box=document.createElement('div');box.id='qrbox';upiArea.appendChild(box);
- if(window.QRCode)new QRCode(box,{text:upi,width:230,height:230,correctLevel:QRCode.CorrectLevel.M});
- const note=document.createElement('div');note.className='shareNote';note.textContent='Scan QR or tap Pay with UPI. Amount ₹'+amount+' is pre-filled.';upiArea.appendChild(note);
- upiPay.onclick=()=>{paymentStatus.textContent='UPI app opening…';window.location.href=upi;};
-}
-window.changeQty=function(name,price,delta){
-  const idx=cart.findIndex(x=>x.name===name && x.price===price);
-  if(delta>0){cart.push({name,price});}
-  else if(idx>=0){cart.splice(idx,1);}
-  renderCart(); updateBilling();
-};
-window.removeGroup=function(name,price){
-  for(let i=cart.length-1;i>=0;i--) if(cart[i].name===name && cart[i].price===price) cart.splice(i,1);
-  renderCart(); updateBilling();
-};
-menu.addEventListener('click',e=>{
- const b=e.target.closest('.add');if(!b)return;
- const price=Number(b.dataset.price);if(!Number.isFinite(price))return;
- const name=b.dataset.name||b.closest('.card').querySelector('h3').textContent;
- if(e.target.closest('.item-minus')){
-   const idx=cart.findIndex(x=>x.name===name&&x.price===price);
-   if(idx>=0)cart.splice(idx,1);
- }else if(e.target.closest('.item-plus')){
-   cart.push({name,price});
- }else{
-   cart.push({name,price});
- }
- renderCart();updateBilling();
-});
-document.getElementById('cartButton').onclick=()=>{panel.style.display='block';cartView.style.display='block';billingView.style.display='none';renderCart();};
-document.getElementById('cartClose').onclick=()=>panel.style.display='none';
-document.getElementById('cartClear').onclick=()=>{cart.length=0;renderCart();updateBilling();};
-document.getElementById('proceedBtn').onclick=()=>{if(!cart.length){alert('Cart is empty.');return;}cartView.style.display='none';billingView.style.display='block';updateBilling();};
-document.getElementById('backToCart').onclick=()=>{billingView.style.display='none';cartView.style.display='block';};
-orderType.addEventListener('change',updateBilling);
-pincode.addEventListener('input',()=>{pincode.value=pincode.value.replace(/\D/g,'').slice(0,6);updateBilling();});
-phoneInput.addEventListener('input',()=>{phoneInput.value=phoneInput.value.replace(/\D/g,'').slice(0,10);});
-address.addEventListener('input',()=>{});
-document.getElementById('search').addEventListener('input',function(){const q=this.value.trim().toLowerCase();document.querySelectorAll('section').forEach(sec=>{let v=0;sec.querySelectorAll('.card').forEach(card=>{const ok=card.querySelector('h3').textContent.toLowerCase().includes(q);card.style.display=ok?'':'none';if(ok)v++;});sec.style.display=v?'':'none';});});
-document.getElementById('wa').onclick=async()=>{
- if(!cart.length)return alert('Cart is empty.');
- const name=nameInput.value.trim(),phone=phoneInput.value.trim(),type=orderType.value;
- if(!name){alert('Customer name enter karein.');nameInput.focus();return;}
- if(!/^\d{10}$/.test(phone)){alert('Mobile number exactly 10 digits ka hona chahiye.');phoneInput.focus();return;}
- let pin=null,addr='Not required (Pickup)';
- if(!shot.files || !shot.files.length){
-   alert('Payment screenshot attach karna mandatory hai. Pehle UPI payment karein aur screenshot select karein.');
-   shot.focus();
-   return;
- }
- if(type==='Home Delivery'){
-   pin=pinNumber();addr=address.value.trim();
-   if(!addr){alert('Delivery address enter karein.');address.focus();return;}
-   if(pin===null||pin<PIN_MIN||pin>PIN_MAX){alert('Home Delivery sirf pincode 144001 se 144030 tak available hai.');pincode.focus();return;}
- }
- const food=foodTotal(),charge=deliveryCharge(),total=food+charge;
- const lines=cart.map(x=>'• '+x.name+' - ₹'+Number(x.price)).join('\n');
- const msg=`*HAKKA BAKKA ONLINE ORDER*\n\n${lines}\n\nFood Total: ₹${food}\nDelivery Charges: ₹${charge}\n*TOTAL: ₹${total}*\n\nName: ${name}\nMobile: ${phone}\nType: ${type}\n${type==='Home Delivery'?'Pincode: '+pin+'\nAddress: '+addr:'Pickup: Hakka Bakka Punjabi Dhaba'}\nPayment Screenshot: Attached by customer`;
- // On Android/Chrome, use the native Share Sheet so the selected payment screenshot
- // travels as a real image attachment along with the order text. A website cannot
- // silently press WhatsApp's final Send button, so the customer selects WhatsApp and taps Send.
- const file=shot.files[0];
- try{
-   if(file && navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
-     await navigator.share({title:'Hakka Bakka Online Order',text:msg,files:[file]});
-     return;
-   }
- }catch(err){
-   if(err && err.name==='AbortError') return;
- }
- // Fallback for browsers without file sharing: open WhatsApp with order text.
- window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
-};
-
-function toggleDynOrders(){
-  var el=document.getElementById('dynOrderLinks');
-  if(el) el.classList.toggle('show');
-}
-(function startDynamicHero(){
-  var imgs=[...document.querySelectorAll('#dynHeroMedia img')];
-  var dots=[...document.querySelectorAll('#dynDots .dyn-dot')];
-  if(imgs.length<2)return;
-  var i=0;
-  setInterval(function(){
-    imgs[i].classList.remove('active'); if(dots[i])dots[i].classList.remove('active');
-    i=(i+1)%imgs.length; imgs[i].classList.add('active'); if(dots[i])dots[i].classList.add('active');
-  },2600);
+// HERO FOOD SLIDESHOW — resolve the exact uploaded filenames from GitHub, then rotate.
+(async function(){
+  const repo='rajatkduggal/Hakkabakka', api='https://api.github.com/repos/'+repo+'/contents/';
+  const files=[];
+  async function list(path){try{const r=await fetch(api+path,{headers:{Accept:'application/vnd.github+json'}});if(!r.ok)return [];const j=await r.json();return Array.isArray(j)?j:[]}catch(e){return []}}
+  for(const root of ['', 'images/']){for(const f of await list(root)){if(f.type==='file')files.push(f);}}
+  const norm=x=>x.toLowerCase().replace(/%20/g,' ').replace(/[_-]+/g,' ').replace(/\s+/g,' ').trim();
+  const candidates={mojito:['guava mojito','mojito'], 'masala chach':['masala chach','masalachas','chach'], 'cold coffee':['cold coffee','cold iced coffee','cold-iced-coffee','coldcoffeewithicecream','coffee plastic glass']};
+  for(const img of document.querySelectorAll('#heroSlides img[data-image-hint]')){
+    const h=img.dataset.imageHint, hs=candidates[h].map(norm);
+    let f=files.find(x=>hs.some(v=>norm(x.name)===v));
+    if(!f) f=files.find(x=>hs.some(v=>norm(x.name).includes(v)));
+    if(f) img.src='https://raw.githubusercontent.com/'+repo+'/main/'+f.path.split('/').map(encodeURIComponent).join('/');
+  }
+  const imgs=[...document.querySelectorAll('#heroSlides img')],dots=document.getElementById('heroDots');let i=0;imgs.forEach((_,k)=>{const d=document.createElement('span');if(k===0)d.classList.add('active');dots.appendChild(d)});const ds=[...dots.children];setInterval(()=>{imgs[i].classList.remove('active');ds[i].classList.remove('active');i=(i+1)%imgs.length;imgs[i].classList.add('active');ds[i].classList.add('active')},3000);
 })();
-renderMenu();renderCart();updateBilling();
-if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js?v=7',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{}));}
-})();
+renderMenu();renderCart();
 </script>
 </body>
 </html>
