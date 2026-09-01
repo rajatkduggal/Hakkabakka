@@ -35,6 +35,9 @@ section{display:block;margin:18px 0}
 .empty{text-align:center;padding:40px;color:#555}
 @media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr);padding:0 10px;gap:10px}.card img{height:145px}.section-title{margin-left:10px;margin-right:10px}}
 @media(max-width:390px){.grid{grid-template-columns:1fr 1fr}.card img{height:125px}.content h3{font-size:14px}}
+
+#upiQr{width:210px;height:210px;display:block;margin:10px auto;border:8px solid #fff;box-shadow:0 2px 8px #0002}
+#shareNote{font-size:13px;color:#555;margin-top:7px}
 </style>
 </head>
 <body>
@@ -77,6 +80,18 @@ section{display:block;margin:18px 0}
 <select id="orderType"><option>Home Delivery</option><option>Pickup</option></select>
 <textarea id="address" rows="3" placeholder="Delivery Address"></textarea>
 <button class="action" id="wa">Order on WhatsApp</button>
+
+<div id="paymentBox" style="margin-top:14px;padding:14px;border:2px solid #7b1113;border-radius:10px;background:#fff8f0">
+  <h3 style="margin:0 0 8px;color:#7b1113">💳 Online UPI Payment</h3>
+  <p style="margin:5px 0"><b>UPI ID:</b> 9713545556@pthdfc</p>
+  <p style="margin:5px 0"><b>Amount:</b> ₹<span id="payAmount">0</span></p>
+  <div id="upiArea"></div>
+  <button class="action" id="upiPay" type="button">Pay Online via UPI</button>
+  <label style="display:block;font-weight:bold;margin-top:10px">📷 Payment Screenshot</label>
+  <input id="paymentScreenshot" type="file" accept="image/*" style="width:100%;margin-top:6px">
+  <input id="utr" placeholder="UPI UTR / Transaction ID">
+</div>
+
 <button class="action close" id="clear">Clear Cart</button>
 <button class="action close" id="close">Close</button>
 </div>
@@ -139,5 +154,73 @@ section{display:block;margin:18px 0}
   refresh();
 })();
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+(function(){
+  const UPI_ID = "9713545556@pthdfc";
+  const payAmount = document.getElementById("payAmount");
+  const upiArea = document.getElementById("upiArea");
+  const payBtn = document.getElementById("upiPay");
+  const shot = document.getElementById("paymentScreenshot");
+  const utr = document.getElementById("utr");
+
+  function currentTotal(){
+    return cart.reduce((s,x)=>s+x.price,0);
+  }
+  function makeUPI(){
+    const amount=currentTotal();
+    payAmount.textContent=amount;
+    upiArea.innerHTML="";
+    if(!amount) return;
+    const upi="upi://pay?pa="+encodeURIComponent(UPI_ID)+"&pn="+encodeURIComponent("Hakka Bakka Punjabi Dhaba")+"&am="+amount.toFixed(2)+"&cu=INR";
+    const box=document.createElement("div");
+    box.id="qrbox";
+    upiArea.appendChild(box);
+    new QRCode(box,{text:upi,width:210,height:210});
+    const note=document.createElement("div");
+    note.id="shareNote";
+    note.textContent="Scan QR or tap Pay Online via UPI.";
+    upiArea.appendChild(note);
+    payBtn.onclick=function(){ window.location.href=upi; };
+  }
+
+  const oldToggle=window.toggle;
+  document.getElementById("cartButton").addEventListener("click",function(){setTimeout(makeUPI,50)});
+  const oldAdd=window.add;
+  window.add=function(n,p){ oldAdd(n,p); setTimeout(makeUPI,50); };
+  const oldRemove=window.removeItem;
+  window.removeItem=function(i){ oldRemove(i); setTimeout(makeUPI,50); };
+  document.getElementById("clear").addEventListener("click",function(){setTimeout(makeUPI,50)});
+
+  document.getElementById("wa").onclick=async function(){
+    if(!cart.length){alert("Please add items first.");return;}
+    const name=document.getElementById("customerName").value.trim()||"Not provided";
+    const phone=document.getElementById("customerPhone").value.trim()||"Not provided";
+    const type=document.getElementById("orderType").value;
+    const address=document.getElementById("address").value.trim()||"Not provided";
+    const total=currentTotal();
+    const lines=cart.map(x=>"• "+x.name+" - ₹"+x.price).join("\n");
+    const hasShot=shot.files && shot.files.length>0;
+    const transaction=utr.value.trim()||"Not provided";
+    const msg=`*HAKKA BAKKA ONLINE ORDER*\n\n${lines}\n\n*Total: ₹${total}*\n*Payment: UPI*\nUTR: ${transaction}\n\nName: ${name}\nMobile: ${phone}\nType: ${type}\nAddress: ${address}`;
+    const file=hasShot?shot.files[0]:null;
+
+    if(file && navigator.canShare && navigator.canShare({files:[file]})){
+      try{
+        await navigator.share({title:"Hakka Bakka Order",text:msg,files:[file]});
+        return;
+      }catch(e){}
+    }
+    if(file){
+      alert("Payment screenshot selected hai. Agar WhatsApp share screen par attachment na aaye, screenshot ko WhatsApp me Hakka Bakka number 7796631555 par manually attach kar dena. Order details ab WhatsApp me khulengi.");
+    }
+    window.location.href="https://wa.me/917796631555?text="+encodeURIComponent(msg);
+  };
+
+  setTimeout(makeUPI,100);
+})();
+</script>
+
 </body>
 </html>
