@@ -82,7 +82,7 @@ section{margin:18px 0}
 .order-cta{max-width:900px;margin:20px auto 0;padding:0 16px}
 .order-cta h3{text-align:center;margin:0 0 12px;color:#222;font-size:21px}
 .primary-order{width:100%;border:0;border-radius:14px;padding:16px;background:#7b1113;color:#fff;font-size:20px;font-weight:800;box-shadow:0 5px 14px #7b111344;cursor:pointer}
-.order-options{display:none;grid-template-columns:1fr;gap:10px;margin-top:12px}
+.order-options{display:none;grid-template-columns:1fr;gap:10px;margin-top:12px}.order-options.show{display:grid}
 .order-option{display:flex;align-items:center;justify-content:center;gap:9px;text-decoration:none;border:0;border-radius:12px;padding:14px;font-size:17px;font-weight:800;cursor:pointer}
 .option-wa{background:#198754;color:#fff}
 .option-zomato{background:#d8232a;color:#fff}
@@ -95,16 +95,45 @@ section{margin:18px 0}
 @media(min-width:701px){.order-options{grid-template-columns:repeat(3,1fr)}.hero-banner img{height:330px}}
 @media(max-width:500px){.hero-banner{border-radius:0 0 22px 22px}.hero-banner img{height:230px}.hero-overlay h1{font-size:29px}.profile-card{padding:22px 15px}.profile-card h2{font-size:24px}}
 
+
+/* First-page food flash + reliable banner */
+.hero-banner{position:relative;overflow:hidden;background:#7b1113;min-height:230px}
+.hero-banner .hero-signboard{position:relative;z-index:2;display:block;width:100%;height:230px;object-fit:cover}
+.food-flash-strip{position:relative;margin:12px 16px 0;height:150px;border-radius:18px;overflow:hidden;background:#7b1113;box-shadow:0 6px 18px rgba(0,0,0,.16)}
+.food-flash{position:absolute;inset:0;z-index:1;overflow:hidden}
+.food-flash .flash-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.04);transition:opacity .7s ease,transform 4s ease}
+.food-flash .flash-img.active{opacity:1;transform:scale(1)}
+.food-flash:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.58));pointer-events:none}
+.hero-signboard{transition:opacity .35s ease}
+.food-flash-dots{position:absolute;z-index:4;left:50%;bottom:10px;transform:translateX(-50%);display:flex;gap:6px}
+.food-flash-dots span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.55)}
+.food-flash-dots span.active{width:20px;border-radius:8px;background:#fff}
+@media(max-width:500px){.hero-banner,.hero-banner .hero-signboard{height:230px;min-height:230px}.food-flash-strip{height:155px;margin:10px 12px 0}}
+.brand-icon{display:inline-flex;width:34px;height:34px;border-radius:50%;align-items:center;justify-content:center;margin-right:10px;font-weight:900;font-size:20px;vertical-align:middle;box-shadow:0 2px 6px rgba(0,0,0,.18)}.whatsapp-icon{background:#25D366;color:#fff;font-size:19px}.zomato-icon{background:#E23744;color:#fff;font-family:Arial}.swiggy-icon{background:#FC8019;color:#fff;font-family:Arial}.order-option{display:flex;align-items:center;justify-content:center;gap:4px}.order-option .brand-icon{flex:0 0 34px} 
 </style>
 </head>
 <body>
 
 <div id="homeScreen" class="home-screen">
   <div class="hero-banner">
-    <img src="images/signboard.png" alt="Hakka Bakka Restaurant">
+    <img class="hero-signboard" src="images/signboard.png" alt="Hakka Bakka Restaurant">
     <div class="hero-overlay">
       <h1>Hakka Bakka</h1>
       <p>Punjabi Dhaba • Desi Swad • Modern Vibe</p>
+    </div>
+  </div>
+
+  <div class="food-flash-strip" aria-label="Hakka Bakka food highlights">
+    <div class="food-flash" id="foodFlash">
+      <img class="flash-img active" src="images/paneer_tikka.jpg" alt="Paneer Tikka">
+      <img class="flash-img" src="images/butter chicken.jpg" alt="Butter Chicken">
+      <img class="flash-img" src="images/chilli mushroom.jpg" alt="Chilli Mushroom">
+      <img class="flash-img" src="images/mutton rogan josh.jpg" alt="Mutton Rogan Josh">
+      <img class="flash-img" src="images/tandoori chicken.jpg" alt="Tandoori Chicken">
+      <img class="flash-img" src="images/paneer butter masala.jpg" alt="Paneer Butter Masala">
+    </div>
+    <div class="food-flash-dots" aria-hidden="true">
+      <span class="active"></span><span></span><span></span><span></span><span></span><span></span>
     </div>
   </div>
 
@@ -132,11 +161,11 @@ section{margin:18px 0}
 
   <div class="order-cta">
     <h3>How would you like to order?</h3>
-    <button id="onlineOrderBtn" class="primary-order">🛍️ Online Order</button>
+    <noscript><div style="padding:10px;text-align:center;color:#7b1113">Please enable JavaScript to order online.</div></noscript><button id="onlineOrderBtn" class="primary-order" type="button" onclick="toggleOrderOptions()">🛍️ Online Order</button>
     <div id="orderOptions" class="order-options">
-      <button id="whatsappOrderBtn" class="order-option option-wa">💬 WhatsApp Order</button>
-      <a class="order-option option-zomato" href="https://zomato.onelink.me/xqzv/7948ndtj" target="_blank" rel="noopener">🍽️ Order on Zomato</a>
-      <a class="order-option option-swiggy" href="https://www.swiggy.com/menu/1400828?source=sharing" target="_blank" rel="noopener">🛵 Order on Swiggy</a>
+      <button id="whatsappOrderBtn" class="order-option option-wa" type="button" onclick="openWhatsAppMenu()">💬 WhatsApp Order</button>
+      <a class="order-option option-zomato" href="https://zomato.onelink.me/xqzv/7948ndtj" target="_blank" rel="noopener"><span class="brand-icon zomato-icon">Z</span> Order on Zomato</a>
+      <a class="order-option option-swiggy" href="https://www.swiggy.com/menu/1400828?source=sharing" target="_blank" rel="noopener"><span class="brand-icon swiggy-icon">S</span> Order on Swiggy</a>
     </div>
   </div>
 
@@ -201,6 +230,36 @@ section{margin:18px 0}
     <button class="action close" id="backToCart">← Back to Cart</button>
   </div>
 </div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+function toggleOrderOptions(){
+  var el=document.getElementById('orderOptions');
+  if(el) el.classList.toggle('show');
+}
+function openWhatsAppMenu(){
+  var home=document.getElementById('homeScreen');
+  var menu=document.getElementById('menuStart');
+  if(home) home.style.display='none';
+  if(menu) menu.style.display='block';
+  window.scrollTo(0,0);
+}
+</script>
+
+<script>
+(function(){
+  const imgs=[...document.querySelectorAll('#foodFlash .flash-img')];
+  const dots=[...document.querySelectorAll('.food-flash-dots span')];
+  if(!imgs.length) return;
+  let i=0;
+  function show(n){
+    i=(n+imgs.length)%imgs.length;
+    imgs.forEach((img,k)=>img.classList.toggle('active',k===i));
+    dots.forEach((dot,k)=>dot.classList.toggle('active',k===i));
+  }
+  imgs.forEach(img=>{img.addEventListener('error',()=>img.style.display='none');});
+  setInterval(()=>show(i+1),3000);
+})();
+</script>
+
 <script>
 (function(){
 const UPI_ID='9713545556@pthdfc';
@@ -546,21 +605,6 @@ document.getElementById('waDirect').onclick=function(){
  window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
 };
 
-const homeScreen=document.getElementById('homeScreen');
-const menuStart=document.getElementById('menuStart');
-const onlineOrderBtn=document.getElementById('onlineOrderBtn');
-const orderOptions=document.getElementById('orderOptions');
-const whatsappOrderBtn=document.getElementById('whatsappOrderBtn');
-
-onlineOrderBtn.addEventListener('click',()=>{
-  orderOptions.style.display=orderOptions.style.display==='grid'?'none':'grid';
-});
-whatsappOrderBtn.addEventListener('click',()=>{
-  homeScreen.style.display='none';
-  menuStart.style.display='block';
-  document.body.classList.add('menu-active');
-  window.scrollTo({top:0,behavior:'instant'});
-});
 
 renderMenu();renderCart();updateBilling();
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js?v=6',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{}));}
