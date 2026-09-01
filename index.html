@@ -118,7 +118,7 @@ section{margin:18px 0}
 
 <div id="homeScreen" class="home-screen">
   <div class="hero-banner">
-    <img class="hero-signboard" src="signboard.png" alt="Hakka Bakka Restaurant" onerror="this.style.display='none'">
+    <img class="hero-signboard" src="signboard.png" alt="Hakka Bakka Restaurant" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/signboard.png'">
     <div class="hero-overlay">
       <h1>Hakka Bakka</h1>
       <p>Punjabi Dhaba • Desi Swad • Modern Vibe</p>
@@ -127,21 +127,24 @@ section{margin:18px 0}
 
   <div class="food-flash-strip" aria-label="Hakka Bakka food highlights">
     <div class="food-flash" id="foodFlash">
-      <img class="flash-img active" src="dosa.png" alt="Veg Special">
-      <img class="flash-img" src="fries.png" alt="Veg Snacks">
-      <img class="flash-img" src="springroll.png" alt="Veg Spring Rolls">
-      <img class="flash-img" src="images/tandoori chicken.jpg" alt="Tandoori Chicken">
-      <img class="flash-img" src="images/butter chicken.jpg" alt="Butter Chicken">
-      <img class="flash-img" src="images/mutton rogan josh.jpg" alt="Mutton Rogan Josh">
+      <img class="flash-img active" src="dosa.png" alt="Veg Special" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/dosa.png'">
+      <img class="flash-img" src="fries.png" alt="Veg Snacks" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/fries.png'">
+      <img class="flash-img" src="springroll.png" alt="Veg Spring Rolls" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/springroll.png'">
+      <img class="flash-img" src="images/paneer tikka.jpg" alt="Paneer Tikka" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/paneer%20tikka.jpg'">
+      <img class="flash-img" src="images/tandoori chicken.jpg" alt="Tandoori Chicken" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/tandoori%20chicken.jpg'">
+      <img class="flash-img" src="images/chicken tikka.jpg" alt="Chicken Tikka" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chicken%20tikka.jpg'">
+      <img class="flash-img" src="images/chicken seekh kabab.jpg" alt="Chicken Seekh Kebab" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chicken%20seekh%20kabab.jpg'">
+      <img class="flash-img" src="images/butter chicken.jpg" alt="Butter Chicken" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20chicken.jpg'">
+      <img class="flash-img" src="images/mutton rogan josh.jpg" alt="Mutton Rogan Josh" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/mutton%20rogan%20josh.jpg'">
     </div>
     <div class="food-flash-dots" aria-hidden="true">
-      <span class="active"></span><span></span><span></span><span></span><span></span><span></span>
+      <span class="active"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
     </div>
   </div>
 
   <div class="profile-wrap">
     <div class="profile-card">
-      <img class="logo-round" src="logo.jpg" alt="Hakka Bakka Logo" onerror="this.style.display='none'">
+      <img class="logo-round" src="logo.jpg" alt="Hakka Bakka Logo" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/logo.jpg'">
       <h2>Hakka Bakka Restaurant</h2>
       <p class="tagline">Authentic Punjabi Taste with a Modern Vibe</p>
       <p class="story">
@@ -246,7 +249,14 @@ function toggleOrderOptions(){
   if(el) el.classList.toggle('show');
 }
 function openWhatsAppMenu(){
-  window.location.href='https://wa.me/917796631555?text='+encodeURIComponent('Hello Hakka Bakka, I would like to place an order.');
+  var home=document.getElementById('homeScreen');
+  var menuScreen=document.getElementById('menuStart');
+  var cartBtn=document.getElementById('cartButton');
+  if(home) home.style.display='none';
+  if(menuScreen) menuScreen.style.display='block';
+  if(cartBtn) cartBtn.style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(typeof renderCart==='function') renderCart();
 }
 </script>
 
@@ -261,7 +271,7 @@ function openWhatsAppMenu(){
     imgs.forEach((img,k)=>img.classList.toggle('active',k===i));
     dots.forEach((dot,k)=>dot.classList.toggle('active',k===i));
   }
-  imgs.forEach(img=>{img.addEventListener('error',()=>img.style.display='none');});
+  imgs.forEach(img=>{img.addEventListener('error',()=>{img.style.visibility='hidden';});});
   setInterval(()=>show(i+1),3000);
 })();
 </script>
@@ -449,9 +459,9 @@ function grandTotal(){return foodTotal()+deliveryCharge()}
 function renderMenu(){
  menu.innerHTML=data.map(([section,list])=>`<section><h2 class="section-title">${esc(section)}</h2><div class="grid">${list.map(x=>{
   const name=x[0],p=x[1],img=x[2];
-  if(Array.isArray(p)) return `<article class="card"><img src="${img}" alt="${esc(name)}" onerror="this.style.visibility='hidden'"><div class="content"><h3>${esc(name)}</h3><div class="price">₹${p[0]} / ${p[1]}</div><div class="variant-row"><button class="add" data-name="${esc(name)} - Half" data-price="${p[0]}">Half — ₹${p[0]}</button><button class="add" data-name="${esc(name)} - Full" data-price="${p[1]}">Full — ₹${p[1]}</button></div></div></article>`;
-  if(Number(p)===0) return `<article class="card"><img src="${img}" alt="${esc(name)}" onerror="this.style.visibility='hidden'"><div class="content"><h3>${esc(name)}</h3><div class="price">Price not listed</div></div></article>`;
-  return `<article class="card"><img src="${img}" alt="${esc(name)}" onerror="this.style.visibility='hidden'"><div class="content"><h3>${esc(name)}</h3><div class="price">₹${p}</div><button class="add" data-name="${esc(name)}" data-price="${p}">Add to Order</button></div></article>`;
+  if(Array.isArray(p)) return `<article class="card"><img src="${img}" alt="${esc(name)}" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/'+encodeURI('${img}')}else{this.style.visibility='hidden'}"><div class="content"><h3>${esc(name)}</h3><div class="price">₹${p[0]} / ${p[1]}</div><div class="variant-row"><button class="add" data-name="${esc(name)} - Half" data-price="${p[0]}">Half — ₹${p[0]}</button><button class="add" data-name="${esc(name)} - Full" data-price="${p[1]}">Full — ₹${p[1]}</button></div></div></article>`;
+  if(Number(p)===0) return `<article class="card"><img src="${img}" alt="${esc(name)}" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/'+encodeURI('${img}')}else{this.style.visibility='hidden'}"><div class="content"><h3>${esc(name)}</h3><div class="price">Price not listed</div></div></article>`;
+  return `<article class="card"><img src="${img}" alt="${esc(name)}" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/'+encodeURI('${img}')}else{this.style.visibility='hidden'}"><div class="content"><h3>${esc(name)}</h3><div class="price">₹${p}</div><button class="add" data-name="${esc(name)}" data-price="${p}">Add to Order</button></div></article>`;
  }).join('')}</div></section>`).join('');
 }
 
@@ -596,7 +606,7 @@ document.getElementById('wa').onclick=async()=>{
 };
 
 renderMenu();renderCart();updateBilling();
-if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js?v=6',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{}));}
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js?v=7',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{}));}
 })();
 </script>
 </body>
