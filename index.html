@@ -95,6 +95,44 @@ body:not(.hb-menu-open) .cart-fab{display:none!important;}
 .mini-account-btn{border:0;background:var(--red);color:#fff;border-radius:8px;padding:7px 10px;font-weight:900}
 @media(max-width:600px){.account-btn{padding:8px 8px;font-size:11px}.menu-title span{display:none}}
 
+
+/* V42 — floating menu controls without covering the first menu items */
+#menuScreen .menu-header{position:sticky!important;top:0!important;left:auto!important;right:auto!important;width:100%!important;z-index:1000!important;}
+#menuScreen .menu-content{padding-top:14px!important;}
+@media(max-width:600px){
+  #menuScreen .menu-content{padding:10px 10px 100px!important;}
+  #menuScreen .menu-header{position:sticky!important;top:0!important;}
+}
+
+/* V43 — Instagram Updates */
+.instagram-updates{padding:38px 0 8px}
+.ig-wrap{background:#fff;border:1px solid #eadfd4;border-radius:25px;padding:22px;box-shadow:0 8px 25px #0001}
+.ig-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:16px}
+.ig-title{display:flex;align-items:center;gap:11px}
+.ig-logo{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,#833ab4,#e1306c,#f77737);color:#fff;font-size:23px;font-weight:900}
+.ig-title h2{margin:0;color:var(--red);font-size:25px}
+.ig-title p{margin:3px 0 0;color:var(--muted);font-size:12px}
+.ig-follow{border:0;background:var(--red);color:#fff;text-decoration:none;border-radius:10px;padding:10px 13px;font-weight:900;white-space:nowrap}
+.ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.ig-card{display:block;position:relative;aspect-ratio:1/1;overflow:hidden;border-radius:15px;background:#f3eee8;text-decoration:none;color:#fff}
+.ig-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.ig-card:hover img{transform:scale(1.04)}
+.ig-overlay{position:absolute;inset:auto 0 0;padding:28px 10px 10px;background:linear-gradient(transparent,#000b);font-size:12px;font-weight:800}
+.ig-placeholder{grid-column:1/-1;border:1px dashed #d8cfc5;border-radius:15px;padding:22px;text-align:center;color:#777;background:#faf7f2}
+.ig-placeholder b{display:block;color:var(--red);margin-bottom:5px}
+.ig-note{margin-top:12px;text-align:center;color:#888;font-size:11px;line-height:1.45}
+@media(max-width:600px){
+  .instagram-updates{padding:30px 0 5px}
+  .ig-wrap{padding:16px;border-radius:21px}
+  .ig-head{align-items:flex-start}
+  .ig-title h2{font-size:21px}
+  .ig-title p{font-size:11px}
+  .ig-logo{width:40px;height:40px}
+  .ig-follow{padding:9px 10px;font-size:12px}
+  .ig-grid{gap:7px}
+  .ig-card{border-radius:11px}
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -122,13 +160,13 @@ body:not(.hb-menu-open) .cart-fab{display:none!important;}
     </div>
     <div class="hero-top">
       <div class="brand"><img src="newlogo.jpg" alt="Hakka Bakka Logo" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/newlogo.jpg'"><span>Hakka Bakka<br>Punjabi Dhaba</span></div>
-      <button class="hero-order-mini" onclick="openMenu()">Order Now</button>
+      <button class="hero-order-mini" onclick="openOrderModal()">Order Now</button>
     </div>
     <div class="hero-copy">
       <span class="eyebrow">🔥 Desi Swad • Modern Vibe</span>
       <h1>Hakka Bakka</h1>
       <p>Authentic Punjabi taste, tandoori favourites & hearty family meals.</p>
-      <div class="hero-actions"><button class="btn btn-primary" onclick="openMenu()">🛍️ Online Order</button></div>
+      <div class="hero-actions"><button class="btn btn-primary" onclick="openOrderModal()">🛍️ Online Order</button></div>
     </div>
     <div class="hero-dots" id="heroDots"></div>
   </section>
@@ -162,7 +200,37 @@ body:not(.hb-menu-open) .cart-fab{display:none!important;}
       <div class="story-points"><div class="point"><b>👨‍👩‍👧‍👦 Family Friendly</b><span>Made to enjoy together</span></div><div class="point"><b>🔥 Tandoor Favourites</b><span>Smoky, hot & fresh</span></div><div class="point"><b>🥗 Veg + Non-Veg</b><span>Something for everyone</span></div><div class="point"><b>🥤 Refreshing Drinks</b><span>Mojitos & more</span></div></div>
     </section>
 
-    <div class="footer"><strong>Hakka Bakka</strong> • North Jalandhar • WhatsApp 7796631555</div>
+    
+<!-- V43 — INSTAGRAM UPDATES -->
+<section class="instagram-updates">
+  <div class="wrap">
+    <div class="ig-wrap">
+      <div class="ig-head">
+        <div class="ig-title">
+          <div class="ig-logo">◎</div>
+          <div>
+            <h2>Instagram Updates</h2>
+            <p>Latest food, offers &amp; restaurant updates</p>
+          </div>
+        </div>
+        <a class="ig-follow" href="https://www.instagram.com/" target="_blank" rel="noopener">Follow us</a>
+      </div>
+
+      <div class="ig-grid" id="instagramUpdates">
+        <div class="ig-placeholder">
+          <b>📸 Latest Instagram Updates</b>
+          <span>Instagram posts will appear here after the official Instagram feed is connected.</span>
+        </div>
+      </div>
+
+      <div class="ig-note">
+        Follow Hakka Bakka on Instagram for new dishes, offers, reels and restaurant updates.
+      </div>
+    </div>
+  </div>
+</section>
+
+  <div class="footer"><strong>Hakka Bakka</strong> • North Jalandhar • WhatsApp 7796631555</div>
   </div>
 </div>
 
@@ -204,10 +272,11 @@ body:not(.hb-menu-open) .cart-fab{display:none!important;}
     </div>
 
     <div id="accountForm" style="display:none">
-      <input class="field" id="profileName" placeholder="Full Name" autocomplete="name">
-      <input class="field" id="profilePhone" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit Mobile Number" autocomplete="tel">
-      <input class="field" id="profileAddress" placeholder="Default Delivery Address" autocomplete="street-address">
-      <button class="drawer-action" type="button" onclick="saveCustomerProfile()">Save Profile</button>
+      <div class="account-summary" style="margin-top:12px;padding:14px 15px;border:1px solid #eadfd4;border-radius:13px;background:#faf7f2;line-height:1.55">
+        <div style="font-size:12px;color:#777;font-weight:800;text-transform:uppercase;letter-spacing:.6px">Account Details</div>
+        <div style="margin-top:6px"><b>Email:</b> <span id="accountEmail">—</span></div>
+        <div><b>Mobile:</b> <span id="accountPhone">—</span></div>
+      </div>
 
       <div class="order-history">
         <div class="order-history-head"><h3>📦 Order History</h3><button class="order-history-refresh" type="button" onclick="loadCustomerOrders()">↻ Refresh</button></div>
@@ -281,9 +350,10 @@ function showAccount(){
   document.getElementById('loginForm').style.display='none';
   document.getElementById('signupForm').style.display='none';
   document.getElementById('accountForm').style.display='block';
-  document.getElementById('profileName').value=currentProfile?.full_name||currentUser?.user_metadata?.full_name||'';
-  document.getElementById('profilePhone').value=currentProfile?.phone||currentUser?.user_metadata?.phone||'';
-  document.getElementById('profileAddress').value=currentProfile?.default_address||'';
+  const ae=document.getElementById('accountEmail');
+  const ap=document.getElementById('accountPhone');
+  if(ae)ae.textContent=currentUser?.email||'—';
+  if(ap)ap.textContent=currentProfile?.phone||currentUser?.user_metadata?.phone||'—';
   authMsg('Your customer account is active.','ok');
   loadCustomerOrders();
 }
@@ -661,5 +731,22 @@ document.getElementById('waSend').onclick=async()=>{if(!cart.length)return alert
 })();
 renderMenu();renderCart();initCustomerAuth();
 </script>
+
+<script>
+/* V43 — Instagram Updates
+   Set INSTAGRAM_PROFILE to the restaurant's real Instagram profile.
+   Automatic post loading requires a supported Instagram/Meta feed connection;
+   this UI is ready for that connection without changing the existing menu/cart.
+*/
+const INSTAGRAM_PROFILE = 'https://www.instagram.com/';
+
+(function initInstagramUpdates(){
+  const follow = document.querySelector('.ig-follow');
+  if (follow && INSTAGRAM_PROFILE && INSTAGRAM_PROFILE !== 'https://www.instagram.com/') {
+    follow.href = INSTAGRAM_PROFILE;
+  }
+})();
+</script>
+
 </body>
 </html>
