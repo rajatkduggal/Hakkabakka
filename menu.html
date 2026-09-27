@@ -10,7 +10,8 @@
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:#f7f3ec;color:#171717;font-family:Arial,sans-serif}
 header{background:#7b1113;color:#fff;text-align:center;padding:28px 12px}
-header h1{margin:0;font-size:32px} header p{margin:8px 0;font-size:18px}
+header h1{margin:0;font-size:32px}
+header p{margin:8px 0;font-size:18px}
 .search{position:sticky;top:0;z-index:10;background:#fff;padding:12px}
 .search input{width:100%;padding:14px 16px;border:2px solid #7b1113;border-radius:12px;font-size:18px;background:#fff;color:#111}
 main{padding-bottom:100px}
@@ -39,8 +40,17 @@ section{margin:18px 0}
 #qrbox img{width:230px;height:230px}
 #shareNote{font-size:13px;color:#555;text-align:center;margin-top:7px}
 .remove{margin-top:5px;padding:5px 9px}
-@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr);padding:0 10px;gap:10px}.card img{height:145px}.section-title{margin-left:10px;margin-right:10px}}
-@media(max-width:390px){.card img{height:125px}.content h3{font-size:14px}}
+#deliveryInfo{font-size:14px;margin:4px 0 8px;padding:9px;border-radius:7px;background:#f7f3ec;color:#555}
+.bill-summary{padding:10px 0;border-top:1px solid #ddd;margin-top:6px}
+@media(max-width:700px){
+  .grid{grid-template-columns:repeat(2,1fr);padding:0 10px;gap:10px}
+  .card img{height:145px}
+  .section-title{margin-left:10px;margin-right:10px}
+}
+@media(max-width:390px){
+  .card img{height:125px}
+  .content h3{font-size:14px}
+}
 </style>
 </head>
 <body>
@@ -51,7 +61,10 @@ section{margin:18px 0}
 <p>WhatsApp: 7796631555</p>
 </header>
 
-<div class="search"><input id="search" type="search" placeholder="Search menu..." autocomplete="off"></div>
+<div class="search">
+<input id="search" type="search" placeholder="Search menu..." autocomplete="off">
+</div>
+
 <main id="menu"></main>
 
 <button class="cart" id="cartButton">🛒 <span class="badge" id="count">0</span></button>
@@ -68,6 +81,7 @@ section{margin:18px 0}
 <option value="Home Delivery">Home Delivery</option>
 <option value="Pickup">Pickup</option>
 </select>
+
 <textarea id="address" rows="3" placeholder="Delivery Address + Pincode (144001–144030)"></textarea>
 
 <div id="paymentBox">
@@ -97,159 +111,203 @@ section{margin:18px 0}
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
 <script>
 (function(){
 
 const UPI_ID='9713545556@pthdfc';
 const WA='917796631555';
+
 const DELIVERY_PIN_MIN=144001;
 const DELIVERY_PIN_MAX=144030;
 const DELIVERY_CUTOFF=144015;
 
 const cart=[];
 
+/* =========================================================
+   HAKKA BAKKA UPDATED MENU PRICES
+   Prices updated exactly according to supplied menu poster.
+   ========================================================= */
+
 const data=[
+
 ["Tandoori Veg",[
-["Paneer Tikka","240","images/paneer_tikka.jpg"],
-["Paneer Malai Tikka","280","images/paneer malai tikka.jpg"],
-["Paneer Kali Mirch Tikka","280","images/paneer-kali-mirch-tikka.jpg"],
-["Mushroom Tikka","230","images/mushroom tikka.jpg"],
-["Soya Champ Tikka","220","images/soya chaap tikka.jpg"],
+["Paneer Tikka","280","images/paneer_tikka.jpg"],
+["Paneer Malai Tikka","300","images/paneer malai tikka.jpg"],
+["Paneer Kali Mirch Tikka","300","images/paneer-kali-mirch-tikka.jpg"],
+["Mushroom Tikka","250","images/mushroom tikka.jpg"],
+["Soya Chaap Tikka","220","images/soya chaap tikka.jpg"],
 ["Soya Malai Tikka","250","images/soya malai tikka.jpg"],
 ["Soya Hariyali Tikka","240","images/soya hariyali tikka.jpg"]
 ]],
+
 ["Veg Rice",[
-["Plain Rice",["60","120"],"images/plain rice.jpg"],
-["Jeera Rice",["70","150"],"images/jeera rice.jpg"],
-["Mix Veg Rice",["90","190"],"images/mix veg rice.jpg"]
+["Plain Rice","100","images/plain rice.jpg"],
+["Jeera Rice","150","images/jeera rice.jpg"],
+["Mix Veg Rice","190","images/mix veg rice.jpg"]
 ]],
+
 ["Indian Veg Main Course",[
-["Dal Fry",["80","150"],"images/dal fry.jpg"],
-["Dal Makhani",["90","180"],"images/dal makhani.jpg"],
-["Chana Masala",["80","150"],"images/chana masala.jpg"],
-["Paneer Butter Masala",["150","270"],"images/paneer butter masala.jpg"],
-["Cheese Tomato",["130","250"],"images/cheese tomato.jpg"],
-["Mushroom Do Pyaza",["150","270"],"images/mushroom do pyaza.jpg"],
-["Kadai Paneer",["120","240"],"images/kadai paneer.jpg"],
-["Mix Veg",["100","200"],"images/mix veg.jpg"],
-["Paneer Do Pyaza",["130","260"],"images/paneer do pyaza.jpg"],
-["Mushroom Masala",["100","180"],"images/mushroom masala.jpg"],
-["Hakka Bakka Spl. Champ",["150","270"],"images/hakka bakka spl chaap.jpg"],
-["Shahi Paneer",["120","240"],"images/shahi paneer.jpg"],
-["Paneer Bhurji",["130","250"],"images/paneer bhurji.jpg"],
-["Paneer Kali Mirch",["150","280"],"images/paneer kali mirch.jpg"],
-["Hakka Bakka Spl. Rara Paneer",["180","300"],"images/hakka bakka rara paneer.jpg"]
+["Dal Fry","200","images/dal fry.jpg"],
+["Dal Makhani","250","images/dal makhani.jpg"],
+["Chana Masala","200","images/chana masala.jpg"],
+["Paneer Butter Masala","270","images/paneer butter masala.jpg"],
+["Cheese Tomato","260","images/cheese tomato.jpg"],
+["Mushroom Do Pyaza","250","images/mushroom do pyaza.jpg"],
+["Kadai Paneer","250","images/kadai paneer.jpg"],
+["Mix Veg","200","images/mix veg.jpg"],
+["Paneer Do Pyaza","250","images/paneer do pyaza.jpg"],
+["Mushroom Masala","200","images/mushroom masala.jpg"],
+["Hakka Bakka Spl. Champ","250","images/hakka bakka spl chaap.jpg"],
+["Shahi Paneer","250","images/shahi paneer.jpg"],
+["Paneer Bhurji","200","images/paneer bhurji.jpg"],
+["Paneer Kali Mirch","250","images/paneer kali mirch.jpg"],
+["Hakka Bakka Spl. Rara Paneer","300","images/hakka bakka rara paneer.jpg"]
 ]],
+
 ["Chinese Veg & Veg Snacks",[
-["Paneer Chilli","180","images/paneer chili.jpg"],
-["Chilli Potato","150","images/chilli potato.jpg"],
-["French Fries","100","images/french fries.jpg"],
-["Chilli Mushroom","150","images/chilli mushroom.jpg"],
-["Paneer Pakoda","150","images/paneer pakoda.jpg"],
-["Paneer Fingers","220","images/paneer fingers.jpg"],
+["Paneer Chilli","250","images/paneer chili.jpg"],
+["Chilli Potato","200","images/chilli potato.jpg"],
+["French Fries","150","images/french fries.jpg"],
+["French Fries Peri Peri","200","images/french fries.jpg"],
+["Chilli Mushroom","200","images/chilli mushroom.jpg"],
+["Paneer Fingers","250","images/paneer fingers.jpg"],
 ["Honey Chilli Potato","220","images/honey chilli potato.jpg"],
-["Veg Manchurian (Gravy/Dry)","180","images/veg menchurian.jpg"],
-["Schezwan Veg Noodles","180","images/schezwan veg noodles.jpg"],
+["Veg Manchurian (Gravy/Dry)","200","images/veg menchurian.jpg"],
+["Schezwan Fried Noodles","250","images/schezwan veg noodles.jpg"],
 ["Veg Spring Rolls (6 Pcs.)","180","images/spring roll.jpg"]
 ]],
-["Thali",[["Unlimited Thali","150","images/thali.jpg"]]],
+
+["Thali",[
+["Unlimited Thali","200","images/thali.jpg"]
+]],
+
 ["Drinks",[
 ["Sweet Lassi","80","images/sweetlassi.png"],
-["Masala Chach","60","images/kuladtea.png"],
-["Lemon Ice Tea","115","images/ice tea.jpg"],
-["Shakes (Any Flavour)","115","images/milkshake.png"],
-["Mojito","115","images/mojito.png"],
-["Cold Coffee with Ice Cream","95","images/coffee.png"]
+["Masala Chach","80","images/kuladtea.png"],
+["Lemon Ice Tea","100","images/ice tea.jpg"],
+["Shakes (Any Flavour)","150","images/milkshake.png"],
+["Mojito","100","images/mojito.png"],
+["Cold Coffee","100","images/coffee.png"],
+["Ice Cream","100","images/ice cream.jpg"]
 ]],
+
 ["Chapati / Breads / Kulcha",[
-["Tandoori Roti","15","images/tandoori chapati.jpg"],
-["Butter Roti","20","images/butter chapati.jpg"],
-["Missi Roti","30","images/missi roti.jpg"],
-["Plain Naan","45","images/plain naan.jpg"],
-["Butter Naan","70","images/butter naan.jpg"],
-["Garlic Naan","80","images/garlic naan.jpg"],
+["Tandoori Roti","13","images/tandoori chapati.jpg"],
+["Butter Roti","18","images/butter chapati.jpg"],
+["Missi Roti","35","images/missi roti.jpg"],
+["Plain Naan","50","images/plain naan.jpg"],
+["Butter Naan","75","images/butter naan.jpg"],
+["Garlic Naan","85","images/garlic naan.jpg"],
 ["Lachha Paratha","60","images/lachha paratha.jpg"],
-["Pudina Paratha","45","images/pudina paratha.jpg"],
-["Green Chilli Paratha","50","images/green chilli paratha.jpg"],
-["Red Chilli Paratha","60","images/red chilli paratha.jpg"],
-["Amritsari Kulcha","50","images/amritsari kulcha.jpg"],
-["With Chana","60","images/amritsari kulcha with chana.jpg"]
+["Pudina Paratha","65","images/pudina paratha.jpg"],
+["Green Chilli Paratha","65","images/green chilli paratha.jpg"],
+["Red Chilli Paratha","65","images/red chilli paratha.jpg"],
+["Amritsari Kulcha with Chana (1 Pc.)","100","images/amritsari kulcha with chana.jpg"]
 ]],
+
 ["Salads",[
 ["Masala Papad","90","images/masala papad.jpg"],
 ["Peanut Masala","100","images/peanut masala.jpg"],
+["Cream Cucumber Salad","100","images/salad mix.jpg"],
 ["Chana Chaat","100","images/chana chat.jpg"],
-["Cream Salad","90","images/salad mix.jpg"],
 ["Green Salad","80","images/salad mix.jpg"],
 ["Extra Onion","30","images/extra onion.jpg"]
 ]],
+
 ["Raita",[
 ["Boondi Raita","80","images/boondi raita.jpg"],
 ["Mix Raita","100","images/mix raita.jpg"],
 ["Aloo Raita","90","images/aloo raita.jpg"]
 ]],
-["Handi Special",[
-["Tari Wala Mutton - 2 Pcs.","200","images/tari wala mutton 2pc.jpg"],
-["Tari Wala Mutton - Half","350","images/tari wala mutton.jpg"],
-["Tari Wala Mutton - Full","650","images/tari wala mutton.jpg"],
-["Tari Wala Chicken - 2 Pcs.","150","images/tari wala chicken.jpg"],
-["Tari Wala Chicken - Half","350","images/tari wala chicken.jpg"],
-["Tari Wala Chicken - Full","550","images/tari wala chicken.jpg"]
+
+["Handi Chicken",[
+["Tari Wala Chicken - 2 Pcs.","200","images/tari wala chicken.jpg"],
+["Tari Wala Chicken - Half","400","images/tari wala chicken.jpg"],
+["Tari Wala Chicken - Full","650","images/tari wala chicken.jpg"]
 ]],
+
+["Tari Wala Mutton",[
+["Tari Wala Mutton - 2 Pcs.","300","images/tari wala mutton 2pc.jpg"],
+["Tari Wala Mutton - Half","400","images/tari wala mutton.jpg"],
+["Tari Wala Mutton - Full","650","images/tari wala mutton.jpg"]
+]],
+
 ["Tandoori Non-Veg",[
-["Tandoori Chicken",["230","400"],"images/tandoori chicken.jpg"],
-["Irani Chicken",["250","480"],"images/irani chicken.jpg"],
-["Chicken Tikka",["250","480"],"images/chicken tikka.jpg"],
-["Chicken Tikka Masala",["270","500"],"images/chicken tikka masala.jpg"],
-["Chicken Lasooni Tikka",["270","500"],"images/chicken lasooni tikka.jpg"],
-["Chicken Seekh Kebab","230","images/chicken seekh kabab.jpg"],
-["Mutton Seekh Kebab","300","images/mutton seekh kabab.jpg"]
+["Tandoori Chicken",["290","500"],"images/tandoori chicken.jpg"],
+["Irani Chicken",["330","550"],"images/irani chicken.jpg"],
+["Afghani Chicken",["330","550"],"images/afghani chicken.jpg"],
+["Chicken Tikka",["330","500"],"images/chicken tikka.jpg"],
+["Lasuni Chicken Tikka",["350","600"],"images/chicken lasooni tikka.jpg"],
+["Chicken Malai Tikka",["350","600"],"images/chicken malai tikka.jpg"],
+["Chicken Seekh Kebab","250","images/chicken seekh kabab.jpg"],
+["Mutton Seekh Kebab","350","images/mutton seekh kabab.jpg"],
+["Chicken Afghani Tikka","350","images/chicken afghani tikka.jpg"]
 ]],
+
 ["Chinese Non-Veg",[
-["Chilli Chicken",["250","450"],"images/chilli chicken.jpg"],
-["Chilli Chicken Boneless",["300","550"],"images/chilli chicken boneless.jpg"],
-["KFC Chicken",["250","500"],"images/kfc chicken.jpg"],
-["Fried Chicken",["230","450"],"images/fried chicken.jpg"]
+["Chilli Chicken","350","images/chilli chicken.jpg"],
+["Chilli Chicken Boneless","400","images/chilli chicken boneless.jpg"],
+["KFC Chicken","350","images/kfc chicken.jpg"],
+["Fried Chicken","300","images/fried chicken.jpg"]
 ]],
-["Fish",[
-["Amritsari Fried Fish","280","images/amritsari fried fish.jpg"],
-["Fried Fish Malai","280","images/fried fish malli.jpg"],
-["Fish Curry","350","images/fish curry.jpg"],
-["Fish Chilli","350","images/fish curry.jpg"],
-["Spl. Fish Fry Basa","250","images/spl fish fry basa.jpg"]
-]],
+
 ["Non-Veg Rice",[
-["Chicken Rice",["150","250"],"images/chicken rice.jpg"],
-["Mutton Rice",["200","300"],"images/mutton rice.jpg"]
+["Chicken Rice","250","images/chicken rice.jpg"],
+["Mutton Rice","350","images/mutton rice.jpg"]
 ]],
+
+["Fish",[
+["Amritsari Fried Fish","350","images/amritsari fried fish.jpg"],
+["Fried Fish Malai","350","images/fried fish malli.jpg"],
+["Fish Curry","400","images/fish curry.jpg"],
+["Fish Chilli","400","images/fish curry.jpg"],
+["Spl. Fish Fry Basa","450","images/spl fish fry basa.jpg"]
+]],
+
 ["Indian Non-Veg Main Course",[
-["Mutton Rogan Josh",["350","650"],"images/mutton rogan josh.jpg"],
-["Dahi Chicken",["250","450"],"images/dahi chicken.jpg"],
-["Butter Chicken",["300","550"],"images/butter chicken.jpg"],
-["Kadai Chicken",["290","530"],"images/kadai chicken.jpg"],
-["Tawa Chicken",["280","500"],"images/tawa chicken.jpeg"],
+["Mutton Rogan Josh",["400","650"],"images/mutton rogan josh.jpg"],
+["Dahi Chicken",["300","500"],"images/dahi chicken.jpg"],
+["Butter Chicken",["350","600"],"images/butter chicken.jpg"],
+["Kadhai Chicken",["350","600"],"images/kadai chicken.jpg"],
+["Tawa Chicken",["300","550"],"images/tawa chicken.jpeg"],
 ["Rara Chicken",["350","600"],"images/rara chicken.jpg"],
-["Chicken Curry",["350","550"],"images/chicken curry.jpg"],
+["Chicken Curry",["300","550"],"images/chicken curry.jpg"],
 ["Chicken Masala",["350","550"],"images/chicken masala.jpg"],
-["Chicken Tikka Masala",["350","550"],"images/chicken tikka masala.jpg"],
+["Chicken Malai Tikka Masala",["350","550"],"images/chicken tikka masala.jpg"],
 ["Chicken Keema Masala",["360","600"],"images/chicken keema masala.jpg"],
-["Chicken Kali Mirch",["320","600"],"images/chicken kali mirch.jpg"],
-["Palak Chicken",["250","500"],"images/palak chicken.jpg"],
-["Fried Chicken",["230","450"],"images/fried chicken.jpg"],
-["Chicken Fry KFC",["250","500"],"images/chicken fry kfc.jpg"],
-["Chilli Chicken",["250","450"],"images/chilli chicken.jpg"],
-["Chilli Chicken Boneless",["300","550"],"images/chilli chicken boneless.jpg"],
-["Lemon Chicken",["270","450"],"images/lemon chicken.jpg"],
-["Garlic Chicken",["280","500"],"images/garlic chicken.jpg"]
+["Cream Kali Mirch Chicken",["350","650"],"images/chicken kali mirch.jpg"],
+["Palak Chicken",["300","550"],"images/palak chicken.jpg"],
+["Fried Chicken",["280","500"],"images/fried chicken.jpg"],
+["Chicken Fry KFC",["300","500"],"images/chicken fry kfc.jpg"],
+["Chilli Chicken",["300","550"],"images/chilli chicken.jpg"],
+["Chilli Chicken Boneless",["350","650"],"images/chilli chicken boneless.jpg"],
+["Lemon Chicken",["290","550"],"images/lemon chicken.jpg"],
+["Garlic Chicken",["290","550"],"images/garlic chicken.jpg"]
 ]],
+
+["Egg Special",[
+["Egg Omelette","100","images/egg omelette.jpg"],
+["Egg Bhurji","150","images/egg bhurji.jpg"]
+]],
+
+["Egg Main Course",[
+["Egg Curry","250","images/egg curry.jpg"]
+]],
+
 ["Soda, Water & Cold Drinks",[
-["Pepsi","0","images/cold_drink.png"],["7UP","0","images/cold_drink.png"],
-["Mountain Dew","0","images/cold_drink.png"],["Bottled Water","0","images/water.png"],
-["Coca-Cola","0","images/cold_drink.png"],["Fanta","0","images/cold_drink.png"],
+["Pepsi","0","images/cold_drink.png"],
+["7UP","0","images/cold_drink.png"],
+["Mountain Dew","0","images/cold_drink.png"],
+["Bottled Water","0","images/water.png"],
+["Coca-Cola","0","images/cold_drink.png"],
+["Fanta","0","images/cold_drink.png"],
 ["Other Soft Drinks","0","images/cold_drink.png"]
-]],
-["Shakes",[["Shakes (Any Flavour)","100","images/milkshake.png"]]]
+]]
+
 ];
+
+/* ========================================================= */
 
 const menu=document.getElementById('menu');
 const panel=document.getElementById('panel');
@@ -267,150 +325,322 @@ const address=document.getElementById('address');
 const nameInput=document.getElementById('customerName');
 const phoneInput=document.getElementById('customerPhone');
 
-function esc(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
-function itemTotal(){return cart.reduce((sum,item)=>sum + Number(item.price),0)}
+function esc(s){
+  return String(s).replace(/[&<>'"]/g,c=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'
+  }[c]))
+}
+
+function itemTotal(){
+  return cart.reduce((sum,item)=>sum+Number(item.price),0);
+}
+
 function getPincode(){
   const match=address.value.match(/\b(144\d{3})\b/);
   return match ? Number(match[1]) : null;
 }
+
 function deliveryCharge(){
   if(orderType.value!=='Home Delivery') return 0;
+
   const pin=getPincode();
+
   if(pin===null || pin<DELIVERY_PIN_MIN || pin>DELIVERY_PIN_MAX) return 0;
+
   return pin<=DELIVERY_CUTOFF ? 100 : 200;
 }
-function grandTotal(){return itemTotal()+deliveryCharge()}
+
+function grandTotal(){
+  return itemTotal()+deliveryCharge();
+}
 
 function renderMenu(){
+
   menu.innerHTML=data.map(([section,list])=>`
   <section>
     <h2 class="section-title">${esc(section)}</h2>
     <div class="grid">
+
     ${list.map(x=>{
-      const name=x[0], p=x[1], img=x[2];
-      if(Array.isArray(p)) return `<article class="card">
-        <img src="${img}" alt="${esc(name)}" onerror="this.style.visibility='hidden'">
-        <div class="content"><h3>${esc(name)}</h3><div class="price">₹${p[0]} / ${p[1]}</div>
-        <div class="variant-row">
-        <button class="add" data-name="${esc(name)} - Half" data-price="${p[0]}">Half — ₹${p[0]}</button>
-        <button class="add" data-name="${esc(name)} - Full" data-price="${p[1]}">Full — ₹${p[1]}</button>
-        </div></div></article>`;
-      if(Number(p)===0) return `<article class="card"><img src="${img}" alt="${esc(name)}" onerror="this.style.visibility='hidden'">
-        <div class="content"><h3>${esc(name)}</h3><div class="price">Price not listed</div></div></article>`;
-      return `<article class="card"><img src="${img}" alt="${esc(name)}" onerror="this.style.visibility='hidden'">
-        <div class="content"><h3>${esc(name)}</h3><div class="price">₹${p}</div>
-        <button class="add" data-name="${esc(name)}" data-price="${p}">Add to Order</button></div></article>`;
+
+      const name=x[0];
+      const p=x[1];
+      const img=x[2];
+
+      if(Array.isArray(p)){
+
+        return `
+        <article class="card">
+          <img src="${img}" alt="${esc(name)}"
+               onerror="this.style.visibility='hidden'">
+
+          <div class="content">
+            <h3>${esc(name)}</h3>
+
+            <div class="price">
+              ₹${p[0]} / ${p[1]}
+            </div>
+
+            <div class="variant-row">
+
+              <button class="add"
+                data-name="${esc(name)} - Half"
+                data-price="${p[0]}">
+                Half — ₹${p[0]}
+              </button>
+
+              <button class="add"
+                data-name="${esc(name)} - Full"
+                data-price="${p[1]}">
+                Full — ₹${p[1]}
+              </button>
+
+            </div>
+          </div>
+        </article>`;
+      }
+
+      if(Number(p)===0){
+
+        return `
+        <article class="card">
+          <img src="${img}" alt="${esc(name)}"
+               onerror="this.style.visibility='hidden'">
+
+          <div class="content">
+            <h3>${esc(name)}</h3>
+            <div class="price">Price not listed</div>
+          </div>
+        </article>`;
+      }
+
+      return `
+      <article class="card">
+        <img src="${img}" alt="${esc(name)}"
+             onerror="this.style.visibility='hidden'">
+
+        <div class="content">
+          <h3>${esc(name)}</h3>
+
+          <div class="price">₹${p}</div>
+
+          <button class="add"
+            data-name="${esc(name)}"
+            data-price="${p}">
+            Add to Order
+          </button>
+
+        </div>
+      </article>`;
+
     }).join('')}
+
     </div>
   </section>`).join('');
 }
 
 function updateDeliveryUI(){
+
   const isDelivery=orderType.value==='Home Delivery';
+
   address.style.display=isDelivery?'block':'none';
 
   const old=document.getElementById('deliveryInfo');
+
   if(old) old.remove();
 
   if(!isDelivery) return;
 
   const info=document.createElement('div');
+
   info.id='deliveryInfo';
-  info.style.cssText='font-size:14px;margin:4px 0 8px;padding:9px;border-radius:7px;background:#f7f3ec;color:#555';
-  info.innerHTML='<b>Delivery area:</b> Pincode 144001–144030 only. '+
-    'Delivery charge: <b>₹100</b> up to 144015, <b>₹200</b> for 144016–144030.';
+
+  info.innerHTML=
+    '<b>Delivery area:</b> Pincode 144001–144030 only. '+
+    'Delivery charge: <b>₹100</b> up to 144015, '+
+    '<b>₹200</b> for 144016–144030.';
+
   address.insertAdjacentElement('afterend',info);
 }
 
 function refresh(){
+
   count.textContent=cart.length;
-  items.innerHTML=cart.length ? cart.map((x,i)=>
-    `<div class="order-item"><b>${esc(x.name)}</b><br>₹${Number(x.price)}
-    <button class="remove" onclick="removeItem(${i})">Remove</button></div>`).join('')
-    : '<div class="empty">Your cart is empty.<br>Add items from the menu.</div>';
+
+  items.innerHTML=cart.length ?
+
+    cart.map((x,i)=>
+      `<div class="order-item">
+        <b>${esc(x.name)}</b><br>
+        ₹${Number(x.price)}
+        <button class="remove"
+          onclick="removeItem(${i})">
+          Remove
+        </button>
+      </div>`
+    ).join('')
+
+    :
+
+    '<div class="empty">Your cart is empty.<br>Add items from the menu.</div>';
 
   const subtotal=itemTotal();
   const charge=deliveryCharge();
+
   total.textContent=grandTotal();
   payAmount.textContent=grandTotal();
 
   const oldSummary=document.getElementById('billSummary');
+
   if(oldSummary) oldSummary.remove();
 
   if(cart.length){
+
     const summary=document.createElement('div');
+
     summary.id='billSummary';
-    summary.style.cssText='padding:10px 0;border-top:1px solid #ddd;margin-top:6px';
-    summary.innerHTML='<div>Food Total: <b>₹'+subtotal+'</b></div>'+
-      (orderType.value==='Home Delivery'
-        ? '<div>Delivery Charges: <b>₹'+charge+'</b></div>'
-        : '<div>Delivery Charges: <b>₹0</b></div>');
-    document.getElementById('total').parentElement.insertAdjacentElement('afterend',summary);
+    summary.className='bill-summary';
+
+    summary.innerHTML=
+      '<div>Food Total: <b>₹'+subtotal+'</b></div>'+
+      '<div>Delivery Charges: <b>₹'+charge+'</b></div>';
+
+    document
+      .getElementById('total')
+      .parentElement
+      .insertAdjacentElement('afterend',summary);
   }
+
   makeUPI();
 }
 
 function makeUPI(){
+
   const amount=grandTotal();
+
   payAmount.textContent=amount;
   upiArea.innerHTML='';
-  payBtn.style.display=method.value==='UPI'&&amount>0?'block':'none';
+
+  payBtn.style.display=
+    method.value==='UPI' && amount>0 ? 'block':'none';
 
   if(!amount || method.value!=='UPI') return;
 
-  const upi='upi://pay?pa='+encodeURIComponent(UPI_ID)+
+  const upi=
+    'upi://pay?pa='+encodeURIComponent(UPI_ID)+
     '&pn='+encodeURIComponent('Hakka Bakka Punjabi Dhaba')+
-    '&am='+amount.toFixed(2)+'&cu=INR';
+    '&am='+amount.toFixed(2)+
+    '&cu=INR';
 
   const box=document.createElement('div');
+
   box.id='qrbox';
   upiArea.appendChild(box);
 
   if(window.QRCode){
-    new QRCode(box,{text:upi,width:230,height:230,correctLevel:QRCode.CorrectLevel.M});
+
+    new QRCode(box,{
+      text:upi,
+      width:230,
+      height:230,
+      correctLevel:QRCode.CorrectLevel.M
+    });
+
   }else{
+
     const img=document.createElement('img');
+
     img.alt='UPI Payment QR';
-    img.src='https://api.qrserver.com/v1/create-qr-code/?size=230x230&data='+encodeURIComponent(upi);
+
+    img.src=
+      'https://api.qrserver.com/v1/create-qr-code/?size=230x230&data='+
+      encodeURIComponent(upi);
+
     box.appendChild(img);
   }
 
   const note=document.createElement('div');
+
   note.id='shareNote';
-  note.textContent='Scan QR — ₹'+amount+' total amount (including delivery, if applicable) is pre-filled.';
+
+  note.textContent=
+    'Scan QR — ₹'+amount+
+    ' total amount (including delivery, if applicable) is pre-filled.';
+
   upiArea.appendChild(note);
 }
 
 window.removeItem=function(i){
-  if(i>=0&&i<cart.length){cart.splice(i,1);refresh()}
+
+  if(i>=0 && i<cart.length){
+    cart.splice(i,1);
+    refresh();
+  }
 };
 
 menu.addEventListener('click',e=>{
+
   const b=e.target.closest('.add');
-  if(!b)return;
+
+  if(!b) return;
+
   const price=Number(b.dataset.price);
-  if(!Number.isFinite(price)){alert('This item has no valid price.');return}
-  cart.push({name:b.dataset.name,price:price});
+
+  if(!Number.isFinite(price)){
+    alert('This item has no valid price.');
+    return;
+  }
+
+  cart.push({
+    name:b.dataset.name,
+    price:price
+  });
+
   panel.style.display='block';
+
   refresh();
 });
 
-document.getElementById('search').addEventListener('input',function(){
+document
+.getElementById('search')
+.addEventListener('input',function(){
+
   const q=this.value.trim().toLowerCase();
+
   document.querySelectorAll('section').forEach(sec=>{
+
     let visible=0;
+
     sec.querySelectorAll('.card').forEach(card=>{
-      const ok=card.querySelector('h3').textContent.toLowerCase().includes(q);
+
+      const ok=
+        card.querySelector('h3')
+        .textContent
+        .toLowerCase()
+        .includes(q);
+
       card.style.display=ok?'':'none';
-      if(ok)visible++;
+
+      if(ok) visible++;
     });
+
     sec.style.display=visible?'':'none';
   });
 });
 
-document.getElementById('cartButton').onclick=()=>{panel.style.display='block';refresh()};
-document.getElementById('close').onclick=()=>panel.style.display='none';
-document.getElementById('clear').onclick=()=>{cart.length=0;refresh()};
+document.getElementById('cartButton').onclick=()=>{
+  panel.style.display='block';
+  refresh();
+};
+
+document.getElementById('close').onclick=()=>{
+  panel.style.display='none';
+};
+
+document.getElementById('clear').onclick=()=>{
+  cart.length=0;
+  refresh();
+};
 
 orderType.addEventListener('change',()=>{
   updateDeliveryUI();
@@ -418,7 +648,6 @@ orderType.addEventListener('change',()=>{
 });
 
 address.addEventListener('input',()=>{
-  // Keep only a normal address field, but automatically detect a 144xxx pincode.
   refresh();
 });
 
@@ -428,94 +657,129 @@ phoneInput.setAttribute('inputmode','numeric');
 phoneInput.setAttribute('maxlength','10');
 phoneInput.setAttribute('minlength','10');
 phoneInput.setAttribute('pattern','[0-9]{10}');
+
 phoneInput.addEventListener('input',()=>{
-  phoneInput.value=phoneInput.value.replace(/\D/g,'').slice(0,10);
+  phoneInput.value=
+    phoneInput.value.replace(/\D/g,'').slice(0,10);
 });
 
+/* UPI PAY BUTTON */
+payBtn.addEventListener('click',()=>{
+
+  const amount=grandTotal();
+
+  if(!amount){
+    alert('Please add items first.');
+    return;
+  }
+
+  const upi=
+    'upi://pay?pa='+encodeURIComponent(UPI_ID)+
+    '&pn='+encodeURIComponent('Hakka Bakka Punjabi Dhaba')+
+    '&am='+amount.toFixed(2)+
+    '&cu=INR';
+
+  window.location.href=upi;
+});
+
+/* WHATSAPP ORDER */
 document.getElementById('wa').onclick=async function(){
-  if(!cart.length){alert('Please add items first.');return}
+
+  if(!cart.length){
+    alert('Please add items first.');
+    return;
+  }
 
   const name=nameInput.value.trim();
   const phone=phoneInput.value.trim();
 
-  if(!name){alert('Please enter customer name.');nameInput.focus();return}
+  if(!name){
+    alert('Please enter customer name.');
+    nameInput.focus();
+    return;
+  }
+
   if(!/^\d{10}$/.test(phone)){
     alert('Mobile number exactly 10 digits ka hona chahiye.');
-    phoneInput.focus();return;
+    phoneInput.focus();
+    return;
   }
 
   const type=orderType.value;
   let pin=null;
 
   if(type==='Home Delivery'){
+
     pin=getPincode();
-    if(pin===null || pin<DELIVERY_PIN_MIN || pin>DELIVERY_PIN_MAX){
-      alert('Home Delivery sirf pincode 144001 se 144030 tak available hai. Address me valid 6-digit pincode likhein.');
-      address.focus();return;
+
+    if(
+      pin===null ||
+      pin<DELIVERY_PIN_MIN ||
+      pin>DELIVERY_PIN_MAX
+    ){
+      alert(
+        'Home Delivery sirf pincode 144001 se 144030 tak available hai. '+
+        'Address me valid 6-digit pincode likhein.'
+      );
+
+      address.focus();
+      return;
     }
   }
 
   const charge=deliveryCharge();
   const subtotal=itemTotal();
-  const finalTotal=subtotal+charge;
-  const addr=type==='Home Delivery'?address.value.trim():'Not required (Pickup)';
-  const transaction=utr.value.trim()||'Not provided';
-  const payment=method.value==='UPI'?'UPI Online':'Pay at Restaurant';
+  const grand=grandTotal();
 
-  if(type==='Home Delivery' && !addr){
-    alert('Please enter delivery address.');address.focus();return;
-  }
+  const paymentMethod=
+    method.value==='UPI'
+      ? 'Online UPI Payment'
+      : 'Pay at Restaurant';
 
-  if(method.value==='UPI' && (!shot.files || !shot.files.length)){
-    if(!confirm('Payment screenshot upload nahi kiya. Kya phir bhi WhatsApp order bhejna hai?')) return;
-  }
+  const transactionId=utr.value.trim();
 
-  const lines=cart.map(x=>'• '+x.name+' - ₹'+Number(x.price)).join('\\n');
-  const msg=`*HAKKA BAKKA ONLINE ORDER*
+  const orderLines=cart.map((x,i)=>
+    `${i+1}. ${x.name} - ₹${Number(x.price)}`
+  ).join('\n');
 
-${lines}
+  let message=
+`*HAKKA BAKKA PUNJABI DHABA*
+Desi Swad • Modern Vibe
+
+*NEW ORDER*
+
+Customer: ${name}
+Mobile: ${phone}
+Order Type: ${type}
+${type==='Home Delivery' ? `Address: ${address.value.trim()}` : ''}
+
+*ITEMS*
+${orderLines}
 
 Food Total: ₹${subtotal}
 Delivery Charges: ₹${charge}
-*Total: ₹${finalTotal}*
-Payment: ${payment}
-UTR: ${transaction}
+*GRAND TOTAL: ₹${grand}*
 
-Name: ${name}
-Mobile: ${phone}
-Type: ${type}
-${type==='Home Delivery'?'Pincode: '+pin+'\\n':''}Address: ${addr}`;
+Payment: ${paymentMethod}
+${transactionId ? `UTR / Transaction ID: ${transactionId}` : ''}
 
-  const file=shot.files&&shot.files.length?shot.files[0]:null;
+Please confirm the order.
 
-  if(file && navigator.canShare && navigator.canShare({files:[file]})){
-    try{
-      await navigator.share({title:'Hakka Bakka Order',text:msg,files:[file]});
-      return;
-    }catch(e){}
-  }
+WhatsApp: 7796631555`;
 
-  window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
+  const waUrl=
+    'https://wa.me/'+WA+
+    '?text='+encodeURIComponent(message);
 
-  if(file){
-    setTimeout(()=>alert('WhatsApp open ho gaya. Agar screenshot attach na hua ho to screenshot manually attach karke Send kar dena.'),800);
-  }
+  window.open(waUrl,'_blank');
 };
 
 renderMenu();
 updateDeliveryUI();
 refresh();
 
-/* Service worker: force browser to check the newest version */
-if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('/sw.js?v=6',{updateViaCache:'none'})
-      .then(reg=>reg.update())
-      .catch(err=>console.log('SW registration failed',err));
-  });
-}
-
 })();
 </script>
+
 </body>
 </html>
