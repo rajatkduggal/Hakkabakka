@@ -474,10 +474,8 @@ async function logoutCustomer(){
   currentUser=null; currentProfile=null; updateAccountUI(); showLogin(); closeAuth();
 }
 async function requireCustomerLogin(){
-  if(currentUser)return true;
-  openAuth();
-  authMsg('Order place karne ke liye pehle customer account se Login karein.','bad');
-  return false;
+  // Customer login is OPTIONAL. Ordering is allowed with name + mandatory mobile number.
+  return true;
 }
 async function saveOrderToSupabase(){
   if(!supabaseClient||!currentUser)return false;
