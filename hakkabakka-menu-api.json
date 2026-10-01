@@ -1,1 +1,200 @@
-
+{
+  "restaurant": {
+    "name": "HakkaBakka",
+    "phone": "7796631555",
+    "website": "https://www.hakkabakka.in",
+    "address": "Opp Bal Hospital, Near Bhagat Singh Colony Petrol Pump, Maqsudan Bypass, G.T. Road, Jalandhar, Punjab"
+  },
+  "currency": "INR",
+  "source": "HakkaBakka Current Menu",
+  "categories": {
+    "Tandoori Veg": {
+      "Paneer Tikka": 280,
+      "Paneer Malai Tikka": 300,
+      "Paneer Kali Mirch Tikka": 300,
+      "Mushroom Tikka": 250,
+      "Soya Chaap Tikka": 220,
+      "Soya Malai Tikka": 250,
+      "Soya Hariyali Tikka": 240
+    },
+    "Veg Rice": {
+      "Plain Rice": 100,
+      "Jeera Rice": 150,
+      "Mix Veg Rice": 190
+    },
+    "Indian Veg Main Course": {
+      "Dal Fry": 200,
+      "Dal Makhani": 250,
+      "Chana Masala": 200,
+      "Paneer Butter Masala": 270,
+      "Cheese Tomato": 260,
+      "Mushroom Do Pyaza": 250,
+      "Kadai Paneer": 250,
+      "Mix Veg": 200,
+      "Paneer Do Pyaza": 250,
+      "Mushroom Masala": 200,
+      "Hakka Bakka Spl. Champ": 250,
+      "Shahi Paneer": 250,
+      "Paneer Bhurji": 200,
+      "Paneer Kali Mirch": 250,
+      "Hakka Bakka Spl. Rara Paneer": 300
+    },
+    "Chinese Veg & Veg Snacks": {
+      "Paneer Chilli": 250,
+      "Chilli Potato": 200,
+      "French Fries": 150,
+      "French Fries Peri Peri": 200,
+      "Chilli Mushroom": 200,
+      "Paneer Fingers": 250,
+      "Honey Chilli Potato": 220,
+      "Veg Manchurian (Gravy/Dry)": 200,
+      "Schezwan Fried Noodles": 250,
+      "Veg Spring Rolls (6 Pcs.)": 180
+    },
+    "Thali": {
+      "Unlimited Thali": {
+        "price": 200,
+        "includes": [
+          "2 Roti",
+          "Rice",
+          "Dal",
+          "Sabji",
+          "Achar",
+          "Salad",
+          "Raita"
+        ]
+      }
+    },
+    "Drinks & Desserts": {
+      "Sweet Lassi": 80,
+      "Masala Chach": 80,
+      "Lemon Ice Tea": 100,
+      "Shakes (Any Flavour)": 150,
+      "Mojito": 100,
+      "Cold Coffee": 100,
+      "Ice Cream": 100
+    },
+    "Chapati/Breads/Kulcha": {
+      "Tandoori Roti": 13,
+      "Butter Roti": 18,
+      "Missi Roti": 35,
+      "Plain Naan": 50,
+      "Butter Naan": 75,
+      "Garlic Naan": 85,
+      "Lachha Paratha": 60,
+      "Pudina Paratha": 65,
+      "Green Chilli Paratha": 65,
+      "Red Chilli Paratha": 65,
+      "Amritsari Kulcha with Chana (1 Pc.)": 100
+    },
+    "Salads": {
+      "Masala Papad": 90,
+      "Peanut Masala": 100,
+      "Cream Cucumber Salad": 100,
+      "Chana Chaat": 100,
+      "Green Salad": 80,
+      "Extra Onion": 30
+    },
+    "Raita": {
+      "Boondi Raita": 80,
+      "Mix Raita": 100,
+      "Aloo Raita": 90
+    },
+    "Handi Chicken": {
+      "Tari Wala Chicken - 2 Pcs.": 200,
+      "Tari Wala Chicken - Half": 400,
+      "Tari Wala Chicken - Full": 650
+    },
+    "Tari Wala Mutton": {
+      "2 Pcs.": 300,
+      "Half": 400,
+      "Full": 650
+    },
+    "Tandoori Non-Veg": {
+      "Tandoori Chicken - Half": 290,
+      "Tandoori Chicken - Full": 500,
+      "Irani Chicken - Half": 330,
+      "Irani Chicken - Full": 550,
+      "Afghani Chicken - Half": 330,
+      "Afghani Chicken - Full": 550,
+      "Chicken Tikka - Half": 330,
+      "Chicken Tikka - Full": 500,
+      "Lasuni Chicken Tikka - Half": 350,
+      "Lasuni Chicken Tikka - Full": 600,
+      "Chicken Malai Tikka - Half": 350,
+      "Chicken Malai Tikka - Full": 600,
+      "Chicken Seekh Kebab": 250,
+      "Mutton Seekh Kebab": 350,
+      "Chicken Afghani Tikka": 350
+    },
+    "Chinese Non-Veg": {
+      "Chilli Chicken": 350,
+      "Chilli Chicken Boneless": 400,
+      "KFC Chicken": 350,
+      "Fried Chicken": 300
+    },
+    "Non-Veg Rice": {
+      "Chicken Rice": 250,
+      "Mutton Rice": 350
+    },
+    "Indian Non-Veg Main Course": {
+      "Mutton Rogan Josh - Half": 400,
+      "Mutton Rogan Josh - Full": 650,
+      "Dahi Chicken - Half": 300,
+      "Dahi Chicken - Full": 500,
+      "Butter Chicken - Half": 350,
+      "Butter Chicken - Full": 600,
+      "Kadhai Chicken - Half": 350,
+      "Kadhai Chicken - Full": 600,
+      "Tawa Chicken - Half": 300,
+      "Tawa Chicken - Full": 550,
+      "Rara Chicken - Half": 350,
+      "Rara Chicken - Full": 600,
+      "Chicken Curry - Half": 300,
+      "Chicken Curry - Full": 550,
+      "Chicken Masala - Half": 300,
+      "Chicken Masala - Full": 550,
+      "Chicken Malai Tikka Masala - Half": 350,
+      "Chicken Malai Tikka Masala - Full": 550,
+      "Chicken Keema Masala - Half": 360,
+      "Chicken Keema Masala - Full": 600,
+      "Cream Kali Mirch Chicken - Half": 350,
+      "Cream Kali Mirch Chicken - Full": 650,
+      "Palak Chicken - Half": 300,
+      "Palak Chicken - Full": 550,
+      "Fried Chicken - Half": 280,
+      "Fried Chicken - Full": 500,
+      "Chicken Fry KFC - Half": 300,
+      "Chicken Fry KFC - Full": 500,
+      "Chilli Chicken - Half": 300,
+      "Chilli Chicken - Full": 550,
+      "Chilli Chicken Boneless - Half": 350,
+      "Chilli Chicken Boneless - Full": 650,
+      "Lemon Chicken - Half": 290,
+      "Lemon Chicken - Full": 550,
+      "Garlic Chicken - Half": 290,
+      "Garlic Chicken - Full": 550
+    },
+    "Egg Special": {
+      "Egg Omelette": 100,
+      "Egg Bhurji": 150
+    },
+    "Egg Main Course": {
+      "Egg Curry": 250
+    },
+    "Soda, Water & Cold Drinks": {
+      "Pepsi": null,
+      "7UP": null,
+      "Mountain Dew": null,
+      "Bottled Water": null,
+      "Coca-Cola": null,
+      "Fanta": null,
+      "Other Soft Drinks": null
+    }
+  },
+  "rules": {
+    "price_policy": "Never guess a price.",
+    "missing_price_policy": "If price is null or unavailable, tell the customer that the current price needs staff confirmation.",
+    "source_of_truth": "This JSON is the current HakkaBakka menu and pricing source."
+  }
+}
