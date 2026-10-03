@@ -945,7 +945,7 @@ document.getElementById('orderType').addEventListener('change',()=>{saveCheckout
 let paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};
 const paymentScreenshot=document.getElementById('paymentScreenshot'), paymentCheck=document.getElementById('paymentCheck'), waSend=document.getElementById('waSend');
 const paymentTimer=document.getElementById('paymentTimer'), paymentCountdown=document.getElementById('paymentCountdown');
-const PAYMENT_WINDOW_MS=5*60*1000;
+const PAYMENT_WINDOW_MS=15*60*1000;
 let paymentStartedAt=0, paymentTimerId=null, paymentContext=null, paymentTestMode=false;
 waSend.disabled=true;
 function expectedTotal(){return foodTotal()+deliveryCharge()}
@@ -969,7 +969,7 @@ function orderNoMatches(text){const expected=normalizeOrderText(currentOrderNo);
 function hasCurrentPaymentContext(){const expected=paymentTestMode?1:expectedTotal();return !!paymentContext&&paymentContext.orderNo===currentOrderNo&&Math.abs(paymentContext.total-expected)<0.01&&Date.now()-paymentContext.startedAt<=PAYMENT_WINDOW_MS}
 function updateVerificationUI(){const orderOk=paymentTestMode?true:paymentVerification.order;const verified=paymentVerification.file&&paymentVerification.amount&&paymentVerification.date&&paymentVerification.time&&orderOk&&paymentVerification.ocr&&hasCurrentPaymentContext();waSend.disabled=!verified;return verified}
 function stopPaymentTimer(){if(paymentTimerId){clearInterval(paymentTimerId);paymentTimerId=null}paymentTimer.style.display='none'}
-function startPaymentTimer(testMode=false){stopPaymentTimer();paymentTestMode=!!testMode;paymentStartedAt=Date.now();paymentContext={startedAt:paymentStartedAt,total:paymentTestMode?1:expectedTotal(),orderNo:currentOrderNo};paymentTimer.style.display='block';paymentCountdown.textContent='05:00';paymentTimerId=setInterval(()=>{const left=Math.max(0,Math.ceil((PAYMENT_WINDOW_MS-(Date.now()-paymentStartedAt))/1000));const mm=String(Math.floor(left/60)).padStart(2,'0'),ss=String(left%60).padStart(2,'0');paymentCountdown.textContent=mm+':'+ss;if(left===0){stopPaymentTimer();updateVerificationUI()}},250)}
+function startPaymentTimer(testMode=false){stopPaymentTimer();paymentTestMode=!!testMode;paymentStartedAt=Date.now();paymentContext={startedAt:paymentStartedAt,total:paymentTestMode?1:expectedTotal(),orderNo:currentOrderNo};paymentTimer.style.display='block';paymentCountdown.textContent='15:00';paymentTimerId=setInterval(()=>{const left=Math.max(0,Math.ceil((PAYMENT_WINDOW_MS-(Date.now()-paymentStartedAt))/1000));const mm=String(Math.floor(left/60)).padStart(2,'0'),ss=String(left%60).padStart(2,'0');paymentCountdown.textContent=mm+':'+ss;if(left===0){stopPaymentTimer();updateVerificationUI()}},250)}
 document.getElementById('upiPay').onclick=()=>{
   const status=deliveryPinStatus();
   if(!status.valid)return showOrderError(status.message,document.getElementById('pincode'));
@@ -983,7 +983,7 @@ document.getElementById('upiPay').onclick=()=>{
 };
 async function verifyPaymentScreenshot(file){
   paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};waSend.disabled=true;
-  if(!hasCurrentPaymentContext()){setPaymentCheck('bad','Pehle UPI payment shuru karein / Start payment first','“Pay with UPI” dabayein, 5 minutes ke andar payment karein aur current payment screenshot upload karein.');return;}
+  if(!hasCurrentPaymentContext()){setPaymentCheck('bad','Pehle UPI payment shuru karein / Start payment first','“Pay with UPI” dabayein, 15 minutes ke andar payment karein aur current payment screenshot upload karein.');return;}
   setPaymentCheck('', '🔍 Checking payment screenshot…','Amount, today’s date, payment time and order number are being checked.');
   try{
     if(!window.Tesseract)throw new Error('OCR engine unavailable');
@@ -994,7 +994,7 @@ async function verifyPaymentScreenshot(file){
     paymentVerification.time=parseTimeCandidates(text).some(x=>paymentTimeInWindow(x.h,x.mi,now));
     paymentVerification.order=orderNoMatches(text);paymentVerification.ocr=true;
     if(updateVerificationUI())setPaymentCheck('ok','✅ Payment Slip Verified','Amount, today’s date, payment time and order number match this order. WhatsApp order can now be sent.');
-    else setPaymentCheck('bad','Payment Slip Verification pura nahi hua','Screenshot mein exact total, aaj ki date, 5-minute payment window aur Order No. '+currentOrderNo+' clearly dikhna chahiye.');
+    else setPaymentCheck('bad','Payment Slip Verification pura nahi hua','Screenshot mein exact total, aaj ki date, 15-minute payment window aur Order No. '+currentOrderNo+' clearly dikhna chahiye.');
   }catch(e){paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot verify nahi ho saka','Clear screenshot upload karein. Amount, date, time aur Order No. '+currentOrderNo+' visible hona chahiye.');updateVerificationUI()}
 }
 paymentScreenshot.addEventListener('change',()=>{const f=paymentScreenshot.files&&paymentScreenshot.files[0];if(f)verifyPaymentScreenshot(f);else{paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot required hai','WhatsApp order bhejne se pehle verified payment screenshot upload karein.');updateVerificationUI()}});
