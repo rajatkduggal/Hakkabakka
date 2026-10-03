@@ -459,7 +459,7 @@ body{background:var(--hb-cream)}
         <div id="paymentCheck" class="payment-check" aria-live="polite"><b>🔒 Payment verification required</b><span>Upload the payment screenshot. The website will check the paid amount, payment date, payment time and order number before WhatsApp order can be sent.</span></div>
       </div>
 
-      <button class="drawer-action billing-wa" id="waSend">Send Order on WhatsApp</button>
+      <button class="drawer-action billing-wa" id="waSend">Send ₹1 Test Order on WhatsApp</button>
       <button class="drawer-action" type="button" onclick="runPOSIntegrationTest()" style="background:#fff8f5;color:#7b1113;border:1px dashed #7b1113">🧪 Test POS Connection (No Real Order)</button>
       <button class="drawer-action secondary" onclick="backToCart()">← Back to Cart</button>
     </div>
@@ -967,7 +967,7 @@ function paymentTimeInWindow(h,mi,now){
 function normalizeOrderText(t){return t.toLowerCase().replace(/[^a-z0-9]/g,'')}
 function orderNoMatches(text){const expected=normalizeOrderText(currentOrderNo);if(!expected)return false;const n=normalizeOrderText(text);return n.includes(expected)}
 function hasCurrentPaymentContext(){const expected=paymentTestMode?1:expectedTotal();return !!paymentContext&&paymentContext.orderNo===currentOrderNo&&Math.abs(paymentContext.total-expected)<0.01&&Date.now()-paymentContext.startedAt<=PAYMENT_WINDOW_MS}
-function updateVerificationUI(){const verified=paymentVerification.file&&paymentVerification.amount&&paymentVerification.date&&paymentVerification.time&&paymentVerification.order&&paymentVerification.ocr&&hasCurrentPaymentContext();const ok=verified&&!paymentTestMode;waSend.disabled=!ok;return verified}
+function updateVerificationUI(){const orderOk=paymentTestMode?true:paymentVerification.order;const verified=paymentVerification.file&&paymentVerification.amount&&paymentVerification.date&&paymentVerification.time&&orderOk&&paymentVerification.ocr&&hasCurrentPaymentContext();waSend.disabled=!verified;return verified}
 function stopPaymentTimer(){if(paymentTimerId){clearInterval(paymentTimerId);paymentTimerId=null}paymentTimer.style.display='none'}
 function startPaymentTimer(testMode=false){stopPaymentTimer();paymentTestMode=!!testMode;paymentStartedAt=Date.now();paymentContext={startedAt:paymentStartedAt,total:paymentTestMode?1:expectedTotal(),orderNo:currentOrderNo};paymentTimer.style.display='block';paymentCountdown.textContent='05:00';paymentTimerId=setInterval(()=>{const left=Math.max(0,Math.ceil((PAYMENT_WINDOW_MS-(Date.now()-paymentStartedAt))/1000));const mm=String(Math.floor(left/60)).padStart(2,'0'),ss=String(left%60).padStart(2,'0');paymentCountdown.textContent=mm+':'+ss;if(left===0){stopPaymentTimer();updateVerificationUI()}},250)}
 document.getElementById('upiPay').onclick=()=>{
@@ -1033,7 +1033,23 @@ async function runPOSIntegrationTest(){
 }
 async function sendOrderToPOS(){
   const type=document.getElementById('orderType').value;
-  const payload={
+  const isTest=paymentTestMode;
+  const testItem=cart[0];
+  const payload=isTest?{
+    order_no:'TEST-ONLINE-'+currentOrderNo,
+    source:'TEST',
+    order_type:type,
+    customer_name:document.getElementById('customerName').value.trim()||'HakkaBakka Test Customer',
+    customer_phone:normalizePhone(document.getElementById('customerPhone').value)||'9999999999',
+    address:null,
+    pincode:null,
+    food_total:1,
+    delivery_charges:0,
+    total_amount:1,
+    payment_status:'TEST_PAYMENT_VERIFIED',
+    special_instructions:'₹1 end-to-end test; no real order saved',
+    items:[{name:'₹1 TEST PAYMENT',price:1,qty:1}]
+  }:{
     order_no:currentOrderNo,
     source:'ONLINE',
     order_type:type,
@@ -1048,11 +1064,8 @@ async function sendOrderToPOS(){
     special_instructions:null,
     items:cart.map(x=>({name:x.name,price:Number(x.price),qty:1}))
   };
-  const res=await fetch(POS_API_URL+'/orders/online',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify(payload)
-  });
+  const endpoint=isTest?'/orders/test':'/orders/online';
+  const res=await fetch(POS_API_URL+endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
   const data=await res.json().catch(()=>null);
   if(!res.ok||!data?.success)throw new Error(data?.message||'POS order sync failed');
   return data;
@@ -1063,10 +1076,15 @@ document.getElementById('waSend').onclick=async()=>{
   const name=document.getElementById('customerName').value.trim(),phone=document.getElementById('customerPhone').value.trim(),type=document.getElementById('orderType').value;
   if(!name)return showOrderError('Customer name likhein. / Please enter your name.',document.getElementById('customerName'));
   if(!/^\d{10}$/.test(phone))return showOrderError('10-digit mobile number zaroori hai. / Please enter a valid 10-digit mobile number.',document.getElementById('customerPhone'));
-  if(!updateVerificationUI()){setPaymentCheck('bad','Payment verification required hai','WhatsApp order se pehle exact total, aaj ki date, 5-minute payment window aur Order No. '+currentOrderNo+' wala screenshot verify hona zaroori hai.');return showOrderError('Verified payment screenshot required hai. / Please complete payment verification first.',paymentScreenshot);}
-  let extra='';if(type==='Home Delivery'){const p=pin(),a=document.getElementById('address').value.trim();if(!a)return showOrderError('Delivery address likhein. / Please enter the delivery address.',document.getElementById('address'));const deliveryStatus=deliveryPinStatus();if(!deliveryStatus.valid)return showOrderError(deliveryStatus.message,document.getElementById('pincode'));extra='\nPincode: '+p+'\nAddress: '+a}
-  if(supabaseClient&&currentUser){const saved=await saveOrderToSupabase();if(!saved){return showOrderError('Order database mein save nahi ho saka. / Your order could not be saved; please try again.')}}
+  if(!updateVerificationUI()){setPaymentCheck('bad','Payment verification required hai','Payment screenshot verify hona zaroori hai.');return showOrderError('Verified payment screenshot required hai. / Please complete payment verification first.',paymentScreenshot);}
+  let extra='';if(type==='Home Delivery'&&!paymentTestMode){const p=pin(),a=document.getElementById('address').value.trim();if(!a)return showOrderError('Delivery address likhein. / Please enter the delivery address.',document.getElementById('address'));const deliveryStatus=deliveryPinStatus();if(!deliveryStatus.valid)return showOrderError(deliveryStatus.message,document.getElementById('pincode'));extra='\nPincode: '+p+'\nAddress: '+a}
+  if(!paymentTestMode&&supabaseClient&&currentUser){const saved=await saveOrderToSupabase();if(!saved){return showOrderError('Order database mein save nahi ho saka. / Your order could not be saved; please try again.')}}
   try{await sendOrderToPOS()}catch(error){console.error('POS sync:',error);return showOrderError('POS se connection nahi ho saka. / Order POS mein save nahi hua, isliye WhatsApp order send nahi kiya gaya. Please try again.');}
+  if(paymentTestMode){
+    const msg='*HAKKA BAKKA ₹1 PAYMENT TEST*\n*TEST ORDER: '+currentOrderNo+'*\n\n₹1 payment screenshot verified.\nPOS test endpoint validated and rolled back.\n\nName: '+name+'\nMobile: '+phone+'\n\nPlease confirm receipt of this ₹1 test.';
+    window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
+    return;
+  }
   const lines=cart.map(x=>'• '+x.name+' - ₹'+x.price).join('\n'),total=expectedTotal();
   const msg='*HAKKA BAKKA ONLINE ORDER*\n*ORDER NO: '+currentOrderNo+'*\n\n'+lines+'\n\nFood Total: ₹'+foodTotal()+'\nDelivery Charges: ₹'+deliveryCharge()+'\n*TOTAL: ₹'+total+'*\n\nPayment Slip Verified: Order No + Amount + Date + Time\n\nName: '+name+'\nMobile: '+phone+'\nType: '+type+extra+'\n\nPlease confirm my order.';
   window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg)
