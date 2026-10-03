@@ -32,6 +32,40 @@
 @media(max-width:600px){.cart-summary-total{gap:5px}.cart-summary-total b{font-size:14px}.cart-pay{font-size:9px;padding:6px 7px}.hero{height:590px;min-height:0;border-radius:0 0 25px 25px}.hero-top{top:13px;left:13px;right:13px}.brand img{width:55px;height:55px}.brand span{font-size:12px}.hero-copy{bottom:48px;left:18px;right:18px}.hero h1{font-size:48px}.hero-copy p{font-size:17px}.hero-order-mini{padding:9px 12px;font-size:13px}.quick{margin-top:-20px;gap:8px}.quick-card{padding:11px 7px}.quick-card b{font-size:11px}.quick-card .qicon{font-size:21px}.wrap{padding:0 12px}.section{padding-top:32px}.feature-grid{grid-template-columns:1fr 1fr;gap:9px}.feature-media{height:145px}.feature-body{padding:11px}.feature-body h3{font-size:15px}.feature-body p{font-size:11px}.story-band{grid-template-columns:1fr;padding:21px}.story-band h2{font-size:25px}.story-points{grid-template-columns:1fr 1fr}.order-block{padding:22px 15px}.menu-grid{grid-template-columns:1fr 1fr;gap:9px}.menu-card img{height:135px}.menu-content{padding:14px 10px 100px}.menu-bar{gap:7px}.menu-title b{font-size:16px}.searchbox{margin-top:8px;gap:7px}.searchbox input{padding:12px 11px;font-size:14px}.cart-summary{flex-basis:46%;padding:9px 9px;font-size:13px;max-height:190px}.modal{padding:10px}.modal-card{border-radius:22px;padding:18px}.order-choice{padding:13px}.order-choice .icon{width:39px;height:39px}.footer{padding-bottom:30px}}
 @media(max-width:380px){.feature-grid{grid-template-columns:1fr}.feature-media{height:180px}.quick{grid-template-columns:repeat(2,1fr)}}
 
+
+/* V42 — modern mobile-first checkout + explicit delivery availability */
+.billing-shell{padding-top:4px}
+.billing-intro{margin:0 0 14px;padding:18px;border-radius:20px;background:linear-gradient(135deg,#7b1113,#4b080a);color:#fff;box-shadow:0 10px 28px #7b111333}
+.billing-intro .kicker{font-size:11px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;opacity:.78}
+.billing-intro h3{margin:5px 0 4px;font-size:25px;line-height:1.1}
+.billing-intro p{margin:0;color:#fff9;line-height:1.45;font-size:13px}
+.billing-section{margin:12px 0;padding:15px;border:1px solid #eadfd4;border-radius:18px;background:#fff;box-shadow:0 5px 18px #0000000a}
+.billing-section-title{display:flex;align-items:center;gap:8px;margin:0 0 10px;color:var(--red);font-size:15px;font-weight:900}
+.billing-section-title span{font-size:19px}
+.field.billing-field{margin-top:8px;background:#fcfaf7;border-color:#ded5cc;border-radius:12px;padding:13px 14px}
+.billing-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.delivery-status{display:none;margin-top:9px;padding:11px 12px;border-radius:12px;font-size:12px;font-weight:800;line-height:1.4}
+.delivery-status.show{display:block}
+.delivery-status.ok{background:#effaf3;color:#176d3d;border:1px solid #b9dfc6}
+.delivery-status.bad{background:#fff2f2;color:#9b1016;border:1px solid #e4aaaa}
+.order-no.billing-order-no{margin:0;background:linear-gradient(135deg,#fff8ea,#f8efe1);border-radius:14px}
+.billing-total{margin-top:0;background:#faf6f0;border:1px solid #eadfd4;border-radius:14px;padding:12px}
+.billing-total div{display:flex;justify-content:space-between;padding:5px 0}
+.billing-total .grand{border-top:1px solid #ddd;margin-top:5px;padding-top:10px;font-size:19px}
+.pay.billing-payment{margin:0;border:1px solid #eadfd4;border-radius:18px;padding:15px;background:#fff}
+.pay.billing-payment h3{font-size:20px;margin:0 0 3px}
+.pay.billing-payment .upi-note{color:#777;font-size:12px}
+.billing-payment .drawer-action{margin-top:10px}
+#upiPay:disabled{opacity:.45;cursor:not-allowed}
+.billing-wa{margin-top:12px}
+@media(max-width:600px){
+  .billing-grid{grid-template-columns:1fr}
+  .billing-intro{padding:16px}
+  .billing-intro h3{font-size:23px}
+  .billing-section{padding:13px}
+  .billing-shell{padding-bottom:10px}
+}
+
 .payment-check{margin:10px 0 0;padding:12px 14px;border:1px solid #eadfd4;border-radius:12px;background:#faf7f2;color:#5f5a55;font-size:13px;line-height:1.45}.payment-check b{display:block;color:var(--red);margin-bottom:4px}.payment-check.ok{border-color:#86c99e;background:#f1fbf4}.payment-check.ok b{color:#147a3e}.payment-check.bad{border-color:#e6a0a0;background:#fff5f5}.payment-check.bad b{color:#a10f16}.payment-check small{display:block;margin-top:5px;color:#777}
 #waSend:disabled{opacity:.48;cursor:not-allowed;filter:grayscale(.2)}
 /* V38 — absolute screen isolation: Home and Online Menu can never appear together */
@@ -276,20 +310,71 @@ body:not(.hb-menu-open) .cart-fab{display:none!important;}
   <div class="drawer-head"><h2 id="cartHeading">Your Order</h2><button class="drawer-close" onclick="closeCart()">✕</button></div>
   <div id="cartView"><div id="items"></div><div class="bill"><div>Food Total <b>₹<span id="cartSubtotal">0</span></b></div></div><button class="drawer-action" onclick="proceedBilling()">Proceed to Billing</button><button class="drawer-action secondary" onclick="clearCart()">Clear Cart</button></div>
   <div id="billingView" style="display:none">
-    <div id="customerAccountHint" class="account-hint">
-      <b>👤 Customer Account</b>
-      <span id="customerAccountStatus">Login to save your details and order history.</span>
-      <button type="button" class="mini-account-btn" onclick="openAuth()">Login / Create Account</button>
+    <div class="billing-shell">
+      <div class="billing-intro">
+        <div class="kicker">HakkaBakka • Secure Checkout</div>
+        <h3>Complete your order</h3>
+        <p>Enter your details, choose Pickup or Home Delivery, then pay securely with UPI.</p>
+      </div>
+
+      <div id="customerAccountHint" class="account-hint">
+        <b>👤 Customer Account</b>
+        <span id="customerAccountStatus">Login to save your details and order history.</span>
+        <button type="button" class="mini-account-btn" onclick="openAuth()">Login / Create Account</button>
+      </div>
+
+      <div class="billing-section">
+        <div class="billing-section-title"><span>🧾</span> Order details</div>
+        <div class="order-no billing-order-no"><span>Your Order Number</span><strong id="orderNumber">—</strong></div>
+      </div>
+
+      <div class="billing-section">
+        <div class="billing-section-title"><span>👤</span> Customer details</div>
+        <input class="field billing-field" id="customerName" placeholder="Customer Name" autocomplete="name">
+        <input class="field billing-field" id="customerPhone" placeholder="10-digit Mobile Number" type="tel" inputmode="numeric" maxlength="10" autocomplete="tel">
+      </div>
+
+      <div class="billing-section">
+        <div class="billing-section-title"><span>📍</span> Delivery / Pickup</div>
+        <label class="label" style="margin-top:0">Order Type</label>
+        <select class="field billing-field" id="orderType">
+          <option value="Pickup">Pickup</option>
+          <option value="Home Delivery">Home Delivery</option>
+        </select>
+        <div id="deliveryFields" style="display:none">
+          <textarea class="field billing-field" id="address" rows="3" placeholder="Delivery Address" autocomplete="street-address"></textarea>
+          <input class="field billing-field" id="pincode" placeholder="6-digit Pincode" maxlength="6" inputmode="numeric" autocomplete="postal-code">
+          <div id="deliveryStatus" class="delivery-status" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="billing-section">
+        <div class="billing-section-title"><span>💰</span> Order summary</div>
+        <div class="billing-total">
+          <div>Food Total <span>₹<b id="billFood">0</b></span></div>
+          <div>Delivery Charges <span>₹<b id="billDelivery">0</b></span></div>
+          <div class="grand"><strong>Total</strong><strong>₹<span id="billTotal">0</span></strong></div>
+        </div>
+      </div>
+
+      <div class="billing-section billing-payment">
+        <div class="billing-section-title"><span>💳</span> UPI Payment</div>
+        <h3>Pay securely with UPI</h3>
+        <div class="upi-note">UPI ID: 9713545556@pthdfc</div>
+        <div id="qr"></div>
+        <button class="drawer-action" id="upiPay">Pay with UPI</button>
+        <small id="paymentStatus"></small>
+        <div id="paymentTimer" style="display:none;margin:8px 0 0;padding:9px 12px;border-radius:10px;background:#fff7e6;color:#8a5a00;font-weight:800;text-align:center">⏱️ Payment window: <span id="paymentCountdown">05:00</span></div>
+        <label class="label">Payment Screenshot <strong style="color:#8b1118">(Required)</strong></label>
+        <div style="font-size:13px;color:#666;margin:-4px 0 8px">Payment screenshot ke bina order WhatsApp par send nahi hoga.</div>
+        <input class="field billing-field" id="paymentScreenshot" type="file" accept="image/*" aria-describedby="paymentCheck">
+        <div id="paymentCheck" class="payment-check" aria-live="polite"><b>🔒 Payment verification required</b><span>Upload the payment screenshot. The website will check the paid amount, payment date, payment time and order number before WhatsApp order can be sent.</span></div>
+      </div>
+
+      <button class="drawer-action billing-wa" id="waSend">Send Order on WhatsApp</button>
+      <button class="drawer-action secondary" onclick="backToCart()">← Back to Cart</button>
     </div>
-    
-    <div class="order-no"><span>Your Order Number</span><strong id="orderNumber">—</strong></div>
-    <input class="field" id="customerName" placeholder="Customer Name">
-    <input class="field" id="customerPhone" placeholder="10-digit Mobile Number" type="tel" inputmode="numeric" maxlength="10">
-    <label class="label">Order Type</label><select class="field" id="orderType"><option value="Pickup">Pickup</option><option value="Home Delivery">Home Delivery</option></select>
-    <div id="deliveryFields" style="display:none"><textarea class="field" id="address" rows="3" placeholder="Delivery Address"></textarea><input class="field" id="pincode" placeholder="Pincode" maxlength="6" inputmode="numeric"></div>
-    <div class="bill"><div>Food Total <span>₹<b id="billFood">0</b></span></div><div>Delivery Charges <span>₹<b id="billDelivery">0</b></span></div><div class="grand"><strong>Total</strong><strong>₹<span id="billTotal">0</span></strong></div></div>
-    <div class="pay"><h3>💳 UPI Payment</h3><small>UPI ID: 9713545556@pthdfc</small><div id="qr"></div><button class="drawer-action" id="upiPay">Pay with UPI</button><small id="paymentStatus"></small><div id="paymentTimer" style="display:none;margin:8px 0 0;padding:9px 12px;border-radius:10px;background:#fff7e6;color:#8a5a00;font-weight:800;text-align:center">⏱️ Payment window: <span id="paymentCountdown">05:00</span></div><label class="label">Payment Screenshot <strong style="color:#8b1118">(Required)</strong></label><div style="font-size:13px;color:#666;margin:-4px 0 8px">Payment screenshot ke bina order WhatsApp par send nahi hoga.</div><input class="field" id="paymentScreenshot" type="file" accept="image/*" aria-describedby="paymentCheck"><div id="paymentCheck" class="payment-check" aria-live="polite"><b>🔒 Payment verification required</b><span>Upload the payment screenshot. The website will check the paid amount, payment date and payment time before WhatsApp order can be sent.</span></div></div>
-    <button class="drawer-action" id="waSend">Send Order on WhatsApp</button><button class="drawer-action secondary" onclick="backToCart()">← Back to Cart</button>
+  </div>
   </div>
 </div></div>
 
@@ -697,7 +782,15 @@ function imageTag(img,name){const candidates=[];const add=u=>{if(u&&!candidates.
 function renderMenu(){menuEl.innerHTML=data.map(([section,list])=>`<section class="menu-section"><h2>${esc(section)}</h2><div class="menu-grid">${list.map(x=>{const n=x[0],p=x[1],im=x[2];if(Array.isArray(p))return `<article class="menu-card">${imageTag(im,n)}<div class="menu-body"><h3>${esc(n)}</h3><div class="price">₹${p[0]} / ₹${p[1]}</div><div class="variant"><button class="add" data-name="${esc(n)} - Half" data-price="${p[0]}">Half ₹${p[0]}</button><button class="add" data-name="${esc(n)} - Full" data-price="${p[1]}">Full ₹${p[1]}</button></div></div></article>`;if(Number(p)===0)return `<article class="menu-card">${imageTag(im,n)}<div class="menu-body"><h3>${esc(n)}</h3><div class="price">Price not listed</div></div></article>`;return `<article class="menu-card">${imageTag(im,n)}<div class="menu-body"><h3>${esc(n)}</h3><div class="price">₹${p}</div><button class="add" data-name="${esc(n)}" data-price="${p}">Add to Order</button></div></article>`}).join('')}</div></section>`).join('')}
 function foodTotal(){return cart.reduce((s,x)=>s+x.price,0)}
 function pin(){return /^144\d{3}$/.test(pincode.value)?Number(pincode.value):null}
-function deliveryCharge(){if(orderType.value!=='Home Delivery')return 0;const p=pin();return p!==null&&p>=PIN_MIN&&p<=PIN_MAX?(p<=PIN_CUTOFF?100:200):0}
+function deliveryPinStatus(){
+  if(orderType.value!=='Home Delivery')return {valid:true,charge:0,message:''};
+  const p=pin();
+  if(p===null)return {valid:false,charge:0,message:'Enter a valid 6-digit pincode.'};
+  if(p<PIN_MIN||p>PIN_MAX)return {valid:false,charge:0,message:'Home Delivery is available only for pincodes 144001–144030.'};
+  const charge=p<=PIN_CUTOFF?100:200;
+  return {valid:true,charge,message:'Delivery available for pincode '+p+' • Delivery charge ₹'+charge};
+}
+function deliveryCharge(){return deliveryPinStatus().charge}
 function refreshButtons(){document.querySelectorAll('.add').forEach(b=>{const n=b.dataset.name,p=Number(b.dataset.price),q=cart.filter(x=>x.name===n&&x.price===p).length;if(q){b.classList.add('selected');b.innerHTML=`<span class="qty-control"><button class="minus">−</button><span>${q}</span><button class="plus">+</button></span>`}else{b.classList.remove('selected');b.textContent=b.dataset.original||b.textContent;if(!b.dataset.original)b.dataset.original=b.textContent}})}
 function renderCart(){const groups=[];cart.forEach(x=>{let g=groups.find(y=>y.name===x.name&&y.price===x.price);if(g)g.q++;else groups.push({name:x.name,price:x.price,q:1})});document.getElementById('cartSubtotal').textContent=foodTotal();document.getElementById('fabCount').textContent=cart.length;updateCartSummary(groups);document.getElementById('items').innerHTML=groups.length?groups.map(g=>`<div class="cart-item"><div class="top">${esc(g.name)}</div><div class="bottom"><b style="color:var(--red)">₹${g.price*g.q}</b><div class="qty"><button onclick="changeQty('${esc(g.name).replace(/'/g,"\\'")}',${g.price},-1)">−</button><span>${g.q}</span><button onclick="changeQty('${esc(g.name).replace(/'/g,"\\'")}',${g.price},1)">+</button></div></div></div>`).join(''):'<div class="menu-empty">Your cart is empty.<br>Add items from the menu.</div>';refreshButtons();updateBilling()}
 function updateCartSummary(groups){const el=document.getElementById('cartSummaryText'),list=document.getElementById('cartSummaryList'),tot=document.getElementById('cartSummaryTotal');if(!el||!list)return;if(!groups.length){el.textContent='Cart is empty';list.innerHTML='';if(tot)tot.textContent='0';return}el.textContent=`${cart.length} item${cart.length===1?'':'s'} selected`;list.innerHTML=groups.map(g=>`<div class="cart-summary-row"><span>• ${esc(g.name)}${g.q>1?' ×'+g.q:''}</span><b>₹${g.price*g.q}</b></div>`).join('');if(tot)tot.textContent=expectedTotal();}
@@ -710,7 +803,34 @@ function invalidatePaymentVerification(){
 function syncCart(){saveCart();saveCheckout();invalidatePaymentVerification();renderCart()}
 function changeQty(n,p,d){if(d>0)cart.push({name:n,price:p});else{const i=cart.findIndex(x=>x.name===n&&x.price===p);if(i>=0)cart.splice(i,1)}syncCart()}
 function clearCart(){cart=[];resetOrderNumber();saveCart();renderCart()}
-function updateBilling(){const home=orderType.value==='Home Delivery';document.getElementById('deliveryFields').style.display=home?'block':'none';const f=foodTotal(),c=deliveryCharge(),grand=f+c;document.getElementById('billFood').textContent=f;document.getElementById('billDelivery').textContent=c;document.getElementById('billTotal').textContent=grand;document.getElementById('cartSummaryTotal').textContent=grand;if(paymentVerification&&paymentVerification.file&&paymentContext&&paymentContext.total!==grand)invalidatePaymentVerification();makeUPI()}
+function updateBilling(){
+  const home=orderType.value==='Home Delivery';
+  document.getElementById('deliveryFields').style.display=home?'block':'none';
+  const ds=document.getElementById('deliveryStatus');
+  const status=deliveryPinStatus();
+  if(ds){
+    if(home){
+      ds.className='delivery-status show '+(status.valid?'ok':'bad');
+      ds.textContent=status.valid?'✅ '+status.message:'❌ '+status.message;
+    }else{
+      ds.className='delivery-status';
+      ds.textContent='';
+    }
+  }
+  const f=foodTotal(),c=status.charge,grand=f+c;
+  document.getElementById('billFood').textContent=f;
+  document.getElementById('billDelivery').textContent=status.valid?c:'—';
+  document.getElementById('billTotal').textContent=status.valid?grand:f;
+  document.getElementById('cartSummaryTotal').textContent=status.valid?grand:f;
+  const payBtn=document.getElementById('upiPay');
+  if(payBtn){
+    payBtn.disabled=home&&!status.valid;
+    payBtn.title=home&&!status.valid?'Delivery is not available for this pincode':'';
+  }
+  if(paymentVerification&&paymentVerification.file&&paymentContext&&paymentContext.total!==grand)invalidatePaymentVerification();
+  if(home&&!status.valid){document.getElementById('qr').innerHTML='';}
+  else makeUPI();
+}
 function makeUPI(){const q=document.getElementById('qr'),amt=foodTotal()+deliveryCharge();q.innerHTML='';if(!amt)return;const ref=currentOrderNo||'ORDER';const upi='upi://pay?pa='+encodeURIComponent(UPI_ID)+'&pn='+encodeURIComponent('Hakka Bakka Punjabi Dhaba')+'&am='+encodeURIComponent(amt.toFixed(2))+'&cu=INR&tn='+encodeURIComponent('HAKKA BAKKA '+ref);const wrap=document.createElement('div');wrap.style.cssText='width:230px;margin:12px auto;text-align:center';const img=document.createElement('img');img.alt='UPI QR Code';img.width=220;img.height=220;img.style.cssText='display:block;width:220px;height:220px;margin:auto;border-radius:8px;background:#fff';img.src='https://quickchart.io/qr?text='+encodeURIComponent(upi)+'&size=220&margin=2';img.onerror=()=>{wrap.innerHTML='<div style="padding:24px;border:1px solid #ddd;border-radius:12px;background:#fafafa"><b>QR could not load</b><br><small>UPI ID: '+UPI_ID+'<br>Amount: ₹'+amt+'</small></div>'};wrap.appendChild(img);const cap=document.createElement('div');cap.style.cssText='font-size:13px;color:#666;margin-top:8px';cap.innerHTML='Scan & pay <b>₹'+amt+'</b><br>UPI ID: '+UPI_ID;wrap.appendChild(cap);const refBox=document.createElement('div');refBox.style.cssText='font-size:12px;color:#777;margin-top:5px';refBox.textContent='Payment slip should show Order No: '+ref+' and payment date/time';wrap.appendChild(refBox);q.appendChild(wrap)}
 function setHomeState(){const home=document.getElementById('home'),menuScreen=document.getElementById('menuScreen');if(!home||!menuScreen)return;document.body.classList.remove('hb-menu-open');home.classList.remove('menu-hidden');menuScreen.classList.remove('menu-visible');home.style.setProperty('display','block','important');home.style.setProperty('visibility','visible','important');menuScreen.style.setProperty('display','none','important');menuScreen.style.setProperty('visibility','hidden','important');const fab=document.getElementById('cartFab');if(fab)fab.style.display='none';}
 function setMenuState(){const home=document.getElementById('home'),menuScreen=document.getElementById('menuScreen');if(!home||!menuScreen)return;document.body.classList.add('hb-menu-open');home.classList.add('menu-hidden');menuScreen.classList.add('menu-visible');home.style.setProperty('display','none','important');home.style.setProperty('visibility','hidden','important');menuScreen.style.setProperty('display','block','important');menuScreen.style.setProperty('visibility','visible','important');window.scrollTo({top:0,left:0,behavior:'instant'});const fab=document.getElementById('cartFab');if(fab)fab.style.display='block';renderMenu();renderCart()}
@@ -761,7 +881,16 @@ function hasCurrentPaymentContext(){return !!paymentContext&&paymentContext.orde
 function updateVerificationUI(){const ok=paymentVerification.file&&paymentVerification.amount&&paymentVerification.date&&paymentVerification.time&&paymentVerification.order&&paymentVerification.ocr&&hasCurrentPaymentContext();waSend.disabled=!ok;return ok}
 function stopPaymentTimer(){if(paymentTimerId){clearInterval(paymentTimerId);paymentTimerId=null}paymentTimer.style.display='none'}
 function startPaymentTimer(){stopPaymentTimer();paymentStartedAt=Date.now();paymentContext={startedAt:paymentStartedAt,total:expectedTotal(),orderNo:currentOrderNo};paymentTimer.style.display='block';paymentCountdown.textContent='05:00';paymentTimerId=setInterval(()=>{const left=Math.max(0,Math.ceil((PAYMENT_WINDOW_MS-(Date.now()-paymentStartedAt))/1000));const mm=String(Math.floor(left/60)).padStart(2,'0'),ss=String(left%60).padStart(2,'0');paymentCountdown.textContent=mm+':'+ss;if(left===0){stopPaymentTimer();updateVerificationUI()}},250)}
-document.getElementById('upiPay').onclick=()=>{const amt=expectedTotal();if(!amt)return showOrderError('Cart khaali hai. / Please add items before making payment.');if(!currentOrderNo)ensureOrderNumber();startPaymentTimer();const upi='upi://pay?pa='+encodeURIComponent(UPI_ID)+'&pn='+encodeURIComponent('Hakka Bakka Punjabi Dhaba')+'&am='+amt.toFixed(2)+'&cu=INR&tn='+encodeURIComponent('HAKKA BAKKA '+currentOrderNo);window.location.href=upi};
+document.getElementById('upiPay').onclick=()=>{
+  const status=deliveryPinStatus();
+  if(!status.valid)return showOrderError(status.message,document.getElementById('pincode'));
+  const amt=expectedTotal();
+  if(!amt)return showOrderError('Cart khaali hai. / Please add items before making payment.');
+  if(!currentOrderNo)ensureOrderNumber();
+  startPaymentTimer();
+  const upi='upi://pay?pa='+encodeURIComponent(UPI_ID)+'&pn='+encodeURIComponent('Hakka Bakka Punjabi Dhaba')+'&am='+amt.toFixed(2)+'&cu=INR&tn='+encodeURIComponent('HAKKA BAKKA '+currentOrderNo);
+  window.location.href=upi
+};
 async function verifyPaymentScreenshot(file){
   paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};waSend.disabled=true;
   if(!hasCurrentPaymentContext()){setPaymentCheck('bad','Pehle UPI payment shuru karein / Start payment first','“Pay with UPI” dabayein, 5 minutes ke andar payment karein aur current payment screenshot upload karein.');return;}
@@ -786,7 +915,7 @@ document.getElementById('waSend').onclick=async()=>{
   if(!name)return showOrderError('Customer name likhein. / Please enter your name.',document.getElementById('customerName'));
   if(!/^\d{10}$/.test(phone))return showOrderError('10-digit mobile number zaroori hai. / Please enter a valid 10-digit mobile number.',document.getElementById('customerPhone'));
   if(!updateVerificationUI()){setPaymentCheck('bad','Payment verification required hai','WhatsApp order se pehle exact total, aaj ki date, 5-minute payment window aur Order No. '+currentOrderNo+' wala screenshot verify hona zaroori hai.');return showOrderError('Verified payment screenshot required hai. / Please complete payment verification first.',paymentScreenshot);}
-  let extra='';if(type==='Home Delivery'){const p=pin(),a=document.getElementById('address').value.trim();if(!a)return showOrderError('Delivery address likhein. / Please enter the delivery address.',document.getElementById('address'));if(p===null||p<PIN_MIN||p>PIN_MAX)return showOrderError('Home Delivery sirf pincode 144001 se 144030 tak available hai. / Delivery is available only for pincodes 144001–144030.',document.getElementById('pincode'));extra='\nPincode: '+p+'\nAddress: '+a}
+  let extra='';if(type==='Home Delivery'){const p=pin(),a=document.getElementById('address').value.trim();if(!a)return showOrderError('Delivery address likhein. / Please enter the delivery address.',document.getElementById('address'));const deliveryStatus=deliveryPinStatus();if(!deliveryStatus.valid)return showOrderError(deliveryStatus.message,document.getElementById('pincode'));extra='\nPincode: '+p+'\nAddress: '+a}
   if(supabaseClient&&currentUser){const saved=await saveOrderToSupabase();if(!saved){return showOrderError('Order database mein save nahi ho saka. / Your order could not be saved; please try again.')}}
   const lines=cart.map(x=>'• '+x.name+' - ₹'+x.price).join('\n'),total=expectedTotal();
   const msg='*HAKKA BAKKA ONLINE ORDER*\n*ORDER NO: '+currentOrderNo+'*\n\n'+lines+'\n\nFood Total: ₹'+foodTotal()+'\nDelivery Charges: ₹'+deliveryCharge()+'\n*TOTAL: ₹'+total+'*\n\nPayment Slip Verified: Order No + Amount + Date + Time\n\nName: '+name+'\nMobile: '+phone+'\nType: '+type+extra+'\n\nPlease confirm my order.';
