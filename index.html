@@ -454,7 +454,7 @@ body{background:var(--hb-cream)}
         <small id="paymentStatus"></small>
         <div id="paymentTimer" style="display:none;margin:8px 0 0;padding:9px 12px;border-radius:10px;background:#fff7e6;color:#8a5a00;font-weight:800;text-align:center">⏱️ Payment window: <span id="paymentCountdown">05:00</span></div>
         <label class="label">Payment Screenshot <strong style="color:#8b1118">(Required)</strong></label>
-        <div style="font-size:13px;color:#666;margin:-4px 0 8px">Payment screenshot ke bina order WhatsApp par send nahi hoga.</div>
+        <div style="font-size:13px;color:#666;margin:-4px 0 8px">Payment screenshot ke bina order WhatsApp par send nahi hoga. Order No. UPI receipt par mandatory nahi hai.</div>
         <input class="field billing-field" id="paymentScreenshot" type="file" accept="image/*" aria-describedby="paymentCheck">
         <div id="paymentCheck" class="payment-check" aria-live="polite"><b>🔒 Payment verification required</b><span>Upload the payment screenshot. The website will check the paid amount, payment date, payment time and order number before WhatsApp order can be sent.</span></div>
       </div>
@@ -992,9 +992,10 @@ async function verifyPaymentScreenshot(file){
     paymentVerification.amount=findAmounts(text).some(n=>Math.abs(n-total)<0.01);
     paymentVerification.date=parseDateCandidates(text).some(d=>sameLocalDay(d,now));
     paymentVerification.time=parseTimeCandidates(text).some(x=>paymentTimeInWindow(x.h,x.mi,now));
-    paymentVerification.order=orderNoMatches(text);paymentVerification.ocr=true;
-    if(updateVerificationUI())setPaymentCheck('ok','✅ Payment Slip Verified','Amount, today’s date, payment time and order number match this order. WhatsApp order can now be sent.');
-    else setPaymentCheck('bad','Payment Slip Verification pura nahi hua','Screenshot mein exact total, aaj ki date, 15-minute payment window aur Order No. '+currentOrderNo+' clearly dikhna chahiye.');
+    paymentVerification.order=true;
+    paymentVerification.ocr=true;
+    if(updateVerificationUI())setPaymentCheck('ok','✅ Payment Slip Verified','Amount, today’s date and payment time match this payment. Order No. is not required on the bank/UPI receipt.');
+    else setPaymentCheck('bad','Payment Slip Verification pura nahi hua','Screenshot mein exact total, aaj ki date aur 15-minute payment window match hona chahiye. Order No. receipt par mandatory nahi hai.');
   }catch(e){paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot verify nahi ho saka','Clear screenshot upload karein. Amount, date, time aur Order No. '+currentOrderNo+' visible hona chahiye.');updateVerificationUI()}
 }
 paymentScreenshot.addEventListener('change',()=>{const f=paymentScreenshot.files&&paymentScreenshot.files[0];if(f)verifyPaymentScreenshot(f);else{paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot required hai','WhatsApp order bhejne se pehle verified payment screenshot upload karein.');updateVerificationUI()}});
