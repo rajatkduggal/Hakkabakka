@@ -56,7 +56,7 @@
 .pay.billing-payment h3{font-size:20px;margin:0 0 3px}
 .pay.billing-payment .upi-note{color:#777;font-size:12px}
 .billing-payment .drawer-action{margin-top:10px}
-#upiPay:disabled{opacity:.45;cursor:not-allowed}
+#upiPay:disabled,.cart-pay:disabled,.drawer-action:disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.15)}
 .billing-wa{margin-top:12px}
 @media(max-width:600px){
   .billing-grid{grid-template-columns:1fr}
@@ -387,14 +387,14 @@ body{background:var(--hb-cream)}
 
 <!-- SEPARATE ONLINE MENU SCREEN -->
 <div id="menuScreen">
-  <div class="menu-header"><div class="menu-bar"><button class="back" onclick="closeMenu()">← Back</button><div class="menu-title"><b>Hakka Bakka Online Menu</b><span>Punjabi Dhaba • Desi Swad • Modern Vibe</span></div><button class="account-btn" id="accountBtn" type="button" onclick="openAuth()">👤 Login</button></div><div class="searchbox"><input id="search" type="search" placeholder="Search menu…" autocomplete="off"><div class="cart-summary" id="cartSummary" role="button" tabindex="0" aria-label="Open cart" onclick="openCart()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCart()}"><div class="cart-summary-head">🛒 <span id="cartSummaryText">Cart is empty</span></div><div id="cartSummaryList" class="cart-summary-list"></div><div class="cart-summary-total"><span>Total</span><b>₹<span id="cartSummaryTotal">0</span></b><button type="button" class="cart-pay" onclick="event.stopPropagation();proceedBilling()">💳 Pay / Checkout →</button></div></div></div></div>
+  <div class="menu-header"><div class="menu-bar"><button class="back" onclick="closeMenu()">← Back</button><div class="menu-title"><b>Hakka Bakka Online Menu</b><span>Punjabi Dhaba • Desi Swad • Modern Vibe</span></div><button class="account-btn" id="accountBtn" type="button" onclick="openAuth()">👤 Login</button></div><div class="searchbox"><input id="search" type="search" placeholder="Search menu…" autocomplete="off"><div class="cart-summary" id="cartSummary" role="button" tabindex="0" aria-label="Open cart" onclick="openCart()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCart()}"><div class="cart-summary-head">🛒 <span id="cartSummaryText">Cart is empty</span></div><div id="cartSummaryList" class="cart-summary-list"></div><div class="cart-summary-total"><span>Total</span><b>₹<span id="cartSummaryTotal">0</span></b><button type="button" class="cart-pay" id="cartPay" onclick="event.stopPropagation();proceedBilling()" disabled>💳 Pay / Checkout →</button></div></div></div></div>
   <main class="menu-content" id="menu"></main>
 </div>
 <button class="cart-fab" id="cartFab" onclick="openCart()" style="display:none">🛒 Cart <span class="count" id="fabCount">0</span></button>
 
 <div class="drawer" id="drawer" onclick="if(event.target===this)closeCart()"><div class="drawer-card" id="drawerCard">
   <div class="drawer-head"><h2 id="cartHeading">Your Order</h2><button class="drawer-close" onclick="closeCart()">✕</button></div>
-  <div id="cartView"><div id="items"></div><div class="bill"><div>Food Total <b>₹<span id="cartSubtotal">0</span></b></div></div><button class="drawer-action" onclick="proceedBilling()">Proceed to Billing</button><button class="drawer-action secondary" onclick="clearCart()">Clear Cart</button></div>
+  <div id="cartView"><div id="items"></div><div class="bill"><div>Food Total <b>₹<span id="cartSubtotal">0</span></b></div></div><button class="drawer-action" id="drawerCheckout" onclick="proceedBilling()" disabled>Proceed to Billing</button><button class="drawer-action secondary" onclick="clearCart()">Clear Cart</button></div>
   <div id="billingView" style="display:none">
     <div class="billing-shell">
       <div class="billing-intro">
@@ -879,7 +879,7 @@ function deliveryPinStatus(){
 function deliveryCharge(){return deliveryPinStatus().charge}
 function refreshButtons(){document.querySelectorAll('.add').forEach(b=>{const n=b.dataset.name,p=Number(b.dataset.price),q=cart.filter(x=>x.name===n&&x.price===p).length;if(q){b.classList.add('selected');b.innerHTML=`<span class="qty-control"><button class="minus">−</button><span>${q}</span><button class="plus">+</button></span>`}else{b.classList.remove('selected');b.textContent=b.dataset.original||b.textContent;if(!b.dataset.original)b.dataset.original=b.textContent}})}
 function renderCart(){const groups=[];cart.forEach(x=>{let g=groups.find(y=>y.name===x.name&&y.price===x.price);if(g)g.q++;else groups.push({name:x.name,price:x.price,q:1})});document.getElementById('cartSubtotal').textContent=foodTotal();document.getElementById('fabCount').textContent=cart.length;updateCartSummary(groups);document.getElementById('items').innerHTML=groups.length?groups.map(g=>`<div class="cart-item"><div class="top">${esc(g.name)}</div><div class="bottom"><b style="color:var(--red)">₹${g.price*g.q}</b><div class="qty"><button onclick="changeQty('${esc(g.name).replace(/'/g,"\\'")}',${g.price},-1)">−</button><span>${g.q}</span><button onclick="changeQty('${esc(g.name).replace(/'/g,"\\'")}',${g.price},1)">+</button></div></div></div>`).join(''):'<div class="menu-empty">Your cart is empty.<br>Add items from the menu.</div>';refreshButtons();updateBilling()}
-function updateCartSummary(groups){const el=document.getElementById('cartSummaryText'),list=document.getElementById('cartSummaryList'),tot=document.getElementById('cartSummaryTotal');if(!el||!list)return;if(!groups.length){el.textContent='Cart is empty';list.innerHTML='';if(tot)tot.textContent='0';return}el.textContent=`${cart.length} item${cart.length===1?'':'s'} selected`;list.innerHTML=groups.map(g=>`<div class="cart-summary-row"><span>• ${esc(g.name)}${g.q>1?' ×'+g.q:''}</span><b>₹${g.price*g.q}</b></div>`).join('');if(tot)tot.textContent=expectedTotal();}
+function updateCartSummary(groups){const el=document.getElementById('cartSummaryText'),list=document.getElementById('cartSummaryList'),tot=document.getElementById('cartSummaryTotal'),pay=document.getElementById('cartPay'),drawerCheckout=document.getElementById('drawerCheckout');if(!el||!list)return;const hasItems=groups.length>0;if(!hasItems){el.textContent='Cart is empty';list.innerHTML='';if(tot)tot.textContent='0';if(pay){pay.disabled=true;pay.setAttribute('aria-disabled','true')}if(drawerCheckout)drawerCheckout.disabled=true;return}el.textContent=cart.length+' item'+(cart.length===1?'':'s')+' selected';list.innerHTML=groups.map(g=>'<div class="cart-summary-row"><span>• '+esc(g.name)+(g.q>1?' ×'+g.q:'')+'</span><b>₹'+(g.price*g.q)+'</b></div>').join('');if(tot)tot.textContent=expectedTotal();if(pay){pay.disabled=false;pay.removeAttribute('aria-disabled')}if(drawerCheckout)drawerCheckout.disabled=false;}
 function invalidatePaymentVerification(){
   if(!paymentVerification.file)return;
   paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};
