@@ -994,7 +994,7 @@ async function verifyPaymentScreenshot(file){
   }catch(e){paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot verify nahi ho saka','Clear screenshot upload karein. Amount, date, time aur Order No. '+currentOrderNo+' visible hona chahiye.');updateVerificationUI()}
 }
 paymentScreenshot.addEventListener('change',()=>{const f=paymentScreenshot.files&&paymentScreenshot.files[0];if(f)verifyPaymentScreenshot(f);else{paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot required hai','WhatsApp order bhejne se pehle verified payment screenshot upload karein.');updateVerificationUI()}});
-const POS_API_URL='https://utrdl70wqz.c36.airoapp.ai';
+const POS_API_URL='https://hakkabakka-pos-backend-production.up.railway.app';
 async function sendOrderToPOS(){
   const type=document.getElementById('orderType').value;
   const payload={
