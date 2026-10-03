@@ -276,32 +276,6 @@ body{background:var(--hb-cream)}
     <div class="hero-dots" id="heroDots"></div>
   </section>
 
-  <script>
-  // Fallback handler for the hero Online Order button.
-  // Keeps the menu opening even if the main menu handler has a runtime issue.
-  (function(){
-    const b=document.querySelector('.hero-actions .btn-primary');
-    if(!b)return;
-    b.addEventListener('click',function(e){
-      e.preventDefault();
-      const home=document.getElementById('home');
-      const menuScreen=document.getElementById('menuScreen');
-      if(!home||!menuScreen)return;
-      document.body.classList.add('hb-menu-open');
-      home.classList.add('menu-hidden');
-      menuScreen.classList.add('menu-visible');
-      home.style.setProperty('display','none','important');
-      home.style.setProperty('visibility','hidden','important');
-      menuScreen.style.setProperty('display','block','important');
-      menuScreen.style.setProperty('visibility','visible','important');
-      const fab=document.getElementById('cartFab');
-      if(fab)fab.style.display='block';
-      window.scrollTo({top:0,left:0,behavior:'instant'});
-      try{if(typeof renderMenu==='function')renderMenu();}catch(err){console.error('Menu render failed',err);}
-      try{if(typeof renderCart==='function')renderCart();}catch(err){console.error('Cart render failed',err);}
-    },true);
-  })();
-  </script>
 
   <div class="wrap">
     <div class="quick">
@@ -670,7 +644,7 @@ async function saveOrderToSupabase(){
   if(error){console.error('Order save:',error);return false}
   return true;
 }
-async async function initCustomerAuth(){
+async function initCustomerAuth(){
   if(!supabaseClient)return;
   const {data}=await supabaseClient.auth.getSession();
   currentUser=data.session?.user||null;
@@ -1089,7 +1063,8 @@ document.getElementById('waSend').onclick=async()=>{
   if(!/^\d{10}$/.test(phone))return showOrderError('10-digit mobile number zaroori hai. / Please enter a valid 10-digit mobile number.',document.getElementById('customerPhone'));
   if(!updateVerificationUI()){setPaymentCheck('bad','Payment verification required hai','WhatsApp order se pehle exact total, aaj ki date, 5-minute payment window aur Order No. '+currentOrderNo+' wala screenshot verify hona zaroori hai.');return showOrderError('Verified payment screenshot required hai. / Please complete payment verification first.',paymentScreenshot);}
   let extra='';if(type==='Home Delivery'){const p=pin(),a=document.getElementById('address').value.trim();if(!a)return showOrderError('Delivery address likhein. / Please enter the delivery address.',document.getElementById('address'));const deliveryStatus=deliveryPinStatus();if(!deliveryStatus.valid)return showOrderError(deliveryStatus.message,document.getElementById('pincode'));extra='\nPincode: '+p+'\nAddress: '+a}
-  if(supabaseClient&&currentUser){const saved=await saveOrderToSupabase();if(!saved){return showOrderError('Order database mein save nahi ho saka. / Your order could not be saved; please try again.')}}\n  try{await sendOrderToPOS()}catch(error){console.error('POS sync:',error);return showOrderError('POS se connection nahi ho saka. / Order POS mein save nahi hua, isliye WhatsApp order send nahi kiya gaya. Please try again.');}
+  if(supabaseClient&&currentUser){const saved=await saveOrderToSupabase();if(!saved){return showOrderError('Order database mein save nahi ho saka. / Your order could not be saved; please try again.')}}
+  try{await sendOrderToPOS()}catch(error){console.error('POS sync:',error);return showOrderError('POS se connection nahi ho saka. / Order POS mein save nahi hua, isliye WhatsApp order send nahi kiya gaya. Please try again.');}
   const lines=cart.map(x=>'• '+x.name+' - ₹'+x.price).join('\n'),total=expectedTotal();
   const msg='*HAKKA BAKKA ONLINE ORDER*\n*ORDER NO: '+currentOrderNo+'*\n\n'+lines+'\n\nFood Total: ₹'+foodTotal()+'\nDelivery Charges: ₹'+deliveryCharge()+'\n*TOTAL: ₹'+total+'*\n\nPayment Slip Verified: Order No + Amount + Date + Time\n\nName: '+name+'\nMobile: '+phone+'\nType: '+type+extra+'\n\nPlease confirm my order.';
   window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg)
