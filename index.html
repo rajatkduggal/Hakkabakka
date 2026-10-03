@@ -276,6 +276,33 @@ body{background:var(--hb-cream)}
     <div class="hero-dots" id="heroDots"></div>
   </section>
 
+  <script>
+  // Fallback handler for the hero Online Order button.
+  // Keeps the menu opening even if the main menu handler has a runtime issue.
+  (function(){
+    const b=document.querySelector('.hero-actions .btn-primary');
+    if(!b)return;
+    b.addEventListener('click',function(e){
+      e.preventDefault();
+      const home=document.getElementById('home');
+      const menuScreen=document.getElementById('menuScreen');
+      if(!home||!menuScreen)return;
+      document.body.classList.add('hb-menu-open');
+      home.classList.add('menu-hidden');
+      menuScreen.classList.add('menu-visible');
+      home.style.setProperty('display','none','important');
+      home.style.setProperty('visibility','hidden','important');
+      menuScreen.style.setProperty('display','block','important');
+      menuScreen.style.setProperty('visibility','visible','important');
+      const fab=document.getElementById('cartFab');
+      if(fab)fab.style.display='block';
+      window.scrollTo({top:0,left:0,behavior:'instant'});
+      try{if(typeof renderMenu==='function')renderMenu();}catch(err){console.error('Menu render failed',err);}
+      try{if(typeof renderCart==='function')renderCart();}catch(err){console.error('Cart render failed',err);}
+    },true);
+  })();
+  </script>
+
   <div class="wrap">
     <div class="quick">
       <div class="quick-card"><div class="qicon">🥘</div><b>Punjabi Veg</b></div>
