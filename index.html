@@ -104,23 +104,8 @@ body:not(.hb-menu-open) .cart-fab{display:none!important;}
   #menuScreen .menu-header{position:sticky!important;top:0!important;}
 }
 
-/* V43 — Instagram Updates */
-.instagram-updates{padding:38px 0 8px}
-.ig-wrap{background:#fff;border:1px solid #eadfd4;border-radius:25px;padding:22px;box-shadow:0 8px 25px #0001}
-.ig-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:16px}
-.ig-title{display:flex;align-items:center;gap:11px}
-.ig-logo{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,#833ab4,#e1306c,#f77737);color:#fff;font-size:23px;font-weight:900}
-.ig-title h2{margin:0;color:var(--red);font-size:25px}
-.ig-title p{margin:3px 0 0;color:var(--muted);font-size:12px}
-.ig-follow{border:0;background:var(--red);color:#fff;text-decoration:none;border-radius:10px;padding:10px 13px;font-weight:900;white-space:nowrap}
-.ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.ig-card{display:block;position:relative;aspect-ratio:1/1;overflow:hidden;border-radius:15px;background:#f3eee8;text-decoration:none;color:#fff}
-.ig-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
-.ig-card:hover img{transform:scale(1.04)}
-.ig-overlay{position:absolute;inset:auto 0 0;padding:28px 10px 10px;background:linear-gradient(transparent,#000b);font-size:12px;font-weight:800}
-.ig-placeholder{grid-column:1/-1;border:1px dashed #d8cfc5;border-radius:15px;padding:22px;text-align:center;color:#777;background:#faf7f2}
-.ig-placeholder b{display:block;color:var(--red);margin-bottom:5px}
-.ig-note{margin-top:12px;text-align:center;color:#888;font-size:11px;line-height:1.45}
+/* Latest content — data is loaded asynchronously and remains useful offline. */
+.instagram-updates{padding:42px 0 8px}.ig-wrap{background:#fff;border:1px solid #eadfd4;border-radius:25px;padding:24px;box-shadow:0 8px 25px #0001}.ig-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:18px}.ig-title{display:flex;align-items:center;gap:11px}.ig-logo{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,#833ab4,#e1306c,#f77737);color:#fff;font-size:23px;font-weight:900}.ig-title h2{margin:0;color:var(--red);font-size:25px}.ig-title p{margin:3px 0 0;color:var(--muted);font-size:12px}.ig-follow{border:0;background:var(--red);color:#fff;text-decoration:none;border-radius:10px;padding:10px 13px;font-weight:900;white-space:nowrap}.ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.ig-card{display:flex;flex-direction:column;position:relative;min-width:0;overflow:hidden;border:1px solid #eee3d8;border-radius:16px;background:#fff;color:var(--ink);text-decoration:none;box-shadow:0 4px 13px #0000000d}.ig-card img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;transition:transform .3s}.ig-card:hover img{transform:scale(1.04)}.ig-card-body{padding:11px 12px 13px}.ig-card-type{display:inline-flex;gap:4px;align-items:center;color:var(--red);font-size:10px;font-weight:900;letter-spacing:.7px;text-transform:uppercase}.ig-card-caption{margin:5px 0 0;font-size:13px;line-height:1.35;font-weight:700}.ig-card-date{margin-top:7px;color:#867e76;font-size:11px}.ig-fallback-label{grid-column:1/-1;margin:2px 0 -2px;color:#7b1113;font-size:11px;font-weight:900;letter-spacing:1px;text-transform:uppercase}.ig-status{margin-top:14px;text-align:center;color:#888;font-size:11px;line-height:1.45}.ig-status[data-state="live"]{color:#277449}
 @media(max-width:600px){
   .instagram-updates{padding:30px 0 5px}
   .ig-wrap{padding:16px;border-radius:21px}
@@ -129,9 +114,9 @@ body:not(.hb-menu-open) .cart-fab{display:none!important;}
   .ig-title p{font-size:11px}
   .ig-logo{width:40px;height:40px}
   .ig-follow{padding:9px 10px;font-size:12px}
-  .ig-grid{gap:7px}
-  .ig-card{border-radius:11px}
+  .ig-grid{grid-template-columns:repeat(2,1fr);gap:8px}.ig-card{border-radius:11px}.ig-card-body{padding:9px}.ig-card-caption{font-size:12px}
 }
+@media(max-width:370px){.ig-grid{grid-template-columns:1fr}}
 
 </style>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
@@ -201,7 +186,6 @@ body:not(.hb-menu-open) .cart-fab{display:none!important;}
     </section>
 
     
-<!-- V43 — INSTAGRAM UPDATES -->
 <section class="instagram-updates">
   <div class="wrap">
     <div class="ig-wrap">
@@ -209,23 +193,16 @@ body:not(.hb-menu-open) .cart-fab{display:none!important;}
         <div class="ig-title">
           <div class="ig-logo">◎</div>
           <div>
-            <h2>Instagram Updates</h2>
-            <p>Latest food, offers &amp; restaurant updates</p>
+            <h2>Latest from HakkaBakka</h2>
+            <p>Fresh updates from @hakka_bakka.in</p>
           </div>
         </div>
-        <a class="ig-follow" href="https://www.instagram.com/" target="_blank" rel="noopener">Follow us</a>
+        <a class="ig-follow" href="https://www.instagram.com/hakka_bakka.in/" target="_blank" rel="noopener noreferrer">Follow us on Instagram</a>
       </div>
 
-      <div class="ig-grid" id="instagramUpdates">
-        <div class="ig-placeholder">
-          <b>📸 Latest Instagram Updates</b>
-          <span>Instagram posts will appear here after the official Instagram feed is connected.</span>
-        </div>
-      </div>
+      <div class="ig-grid" id="instagramUpdates" aria-live="polite" aria-busy="true"></div>
 
-      <div class="ig-note">
-        Follow Hakka Bakka on Instagram for new dishes, offers, reels and restaurant updates.
-      </div>
+      <p class="ig-status" id="instagramStatus">Loading the latest available content…</p>
     </div>
   </div>
 </section>
@@ -835,21 +812,8 @@ window.addEventListener('storage',e=>{if(e.key===CART_STORAGE_KEY){cart=loadStor
 renderMenu();renderCart();initCustomerAuth();
 </script>
 
-<script>
-/* V43 — Instagram Updates
-   Set INSTAGRAM_PROFILE to the restaurant's real Instagram profile.
-   Automatic post loading requires a supported Instagram/Meta feed connection;
-   this UI is ready for that connection without changing the existing menu/cart.
-*/
-const INSTAGRAM_PROFILE = 'https://www.instagram.com/';
-
-(function initInstagramUpdates(){
-  const follow = document.querySelector('.ig-follow');
-  if (follow && INSTAGRAM_PROFILE && INSTAGRAM_PROFILE !== 'https://www.instagram.com/') {
-    follow.href = INSTAGRAM_PROFILE;
-  }
-})();
-</script>
+<script src="content-config.js"></script>
+<script src="content-feed.js"></script>
 
 </body>
 </html>
