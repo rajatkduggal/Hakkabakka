@@ -271,7 +271,7 @@ body{background:var(--hb-cream)}
       <span class="eyebrow">🔥 Desi Swad • Modern Vibe</span>
       <h1>Hakka Bakka</h1>
       <p>Authentic Punjabi taste, tandoori favourites & hearty family meals.</p>
-      <div class="hero-actions"><button class="btn btn-primary" type="button" onclick="openMenu()">🛍️ Online Order</button></div>
+      <div class="hero-actions"><button class="btn btn-primary" type="button" onclick="openOrderModal()">🛍️ Online Order</button></div>
     </div>
     <div class="hero-dots" id="heroDots"></div>
   </section>
@@ -670,7 +670,7 @@ async function saveOrderToSupabase(){
   if(error){console.error('Order save:',error);return false}
   return true;
 }
-async function initCustomerAuth(){
+async async function initCustomerAuth(){
   if(!supabaseClient)return;
   const {data}=await supabaseClient.auth.getSession();
   currentUser=data.session?.user||null;
