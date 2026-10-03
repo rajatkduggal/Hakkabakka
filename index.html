@@ -987,9 +987,10 @@ document.getElementById('upiTest1').onclick=()=>{
   if(!currentOrderNo)ensureOrderNumber();
   paymentTestMode=true;
   startPaymentTimer(true);
+  const upi='upi://pay?pa='+encodeURIComponent(UPI_ID)+'&pn='+encodeURIComponent('Hakka Bakka Punjabi Dhaba')+'&am=1.00&cu=INR&tn='+encodeURIComponent('HAKKA BAKKA TEST '+currentOrderNo);
   makeUPI();
   setPaymentCheck('', '🧪 ₹1 Test Payment Started','₹1 pay karein. Screenshot mein ₹1, aaj ki date/time aur Order No. '+currentOrderNo+' clearly dikhna chahiye. Verification ke baad real WhatsApp order disabled rahega.');
-  window.scrollTo({top:document.getElementById('qr').getBoundingClientRect().top+window.scrollY-20,behavior:'smooth'});
+  window.location.href=upi;
 };
 async function verifyPaymentScreenshot(file){
   paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};waSend.disabled=true;
