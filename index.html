@@ -152,6 +152,92 @@ body:not(.hb-menu-open) .cart-fab{display:none!important;}
 }
 @media(max-width:370px){.ig-grid{grid-template-columns:1fr}}
 
+
+/* V43 — HakkaBakka premium creative home refresh */
+:root{--hb-maroon:#741015;--hb-deep:#3b0709;--hb-cream:#fbf5eb;--hb-paper:#fffdf9;--hb-gold:#c99a45;--hb-brown:#2b211b}
+body{background:var(--hb-cream)}
+.home{background:radial-gradient(circle at 8% 8%,#fff 0,#fffaf3 28%,#fbf4e9 62%,#f2e8dc 100%)}
+.hero{height:min(78vh,690px);min-height:520px;border-radius:0 0 42px 42px;box-shadow:0 22px 55px #3b070933}
+.hero:before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(circle at 72% 30%,#fff2 0,transparent 28%),linear-gradient(90deg,#18030466 0%,transparent 55%,#18030422 100%)}
+.hero-top{top:18px;left:clamp(18px,5vw,70px);right:clamp(18px,5vw,70px)}
+.brand{padding:7px 13px 7px 7px;border:1px solid #fff4;border-radius:999px;background:#1b08084d;backdrop-filter:blur(12px);box-shadow:0 8px 28px #0003}
+.brand img{width:58px;height:58px;border:2px solid #fff;box-shadow:0 5px 20px #0006}
+.brand span{font-family:Georgia,"Times New Roman",serif;font-size:13px;letter-spacing:.5px;text-transform:none;line-height:1.15}
+.hero-order-mini{border:1px solid #fff7;background:#7b1113e6;padding:12px 18px;border-radius:999px;box-shadow:0 7px 22px #0004}
+.hero-copy{left:clamp(20px,8vw,110px);right:clamp(20px,8vw,110px);bottom:64px}
+.eyebrow{background:#17100c99;border-color:#ffffff33;letter-spacing:1.8px}
+.hero h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(54px,8vw,92px);font-weight:700;letter-spacing:-3px;text-shadow:0 5px 24px #0007}
+.hero-copy p{max-width:620px;font-weight:500;line-height:1.45;color:#fffdf8}
+.btn{border-radius:999px;padding:14px 22px;letter-spacing:.2px}
+.btn-primary{box-shadow:0 10px 28px #0005}
+.btn-glass{backdrop-filter:blur(10px)}
+.quick{margin-top:-35px;grid-template-columns:repeat(6,1fr);gap:12px}
+.quick-card{border:1px solid #ead8c5;background:#fffffff2;border-radius:20px;padding:15px 9px;box-shadow:0 12px 30px #5b271414;transition:transform .25s,box-shadow .25s}
+.quick-card:hover{transform:translateY(-6px);box-shadow:0 18px 35px #5b271422}
+.quick-card .qicon{filter:saturate(.9)}
+.quick-card b{color:var(--hb-brown);font-size:12px}
+.section{padding:55px 0 8px}
+.section-head{margin-bottom:26px}
+.section-head .label{letter-spacing:2px}
+.section-head h2{font-family:Georgia,"Times New Roman",serif;font-weight:700;font-size:clamp(32px,5vw,48px);color:var(--hb-brown)}
+.section-head p{font-size:14px}
+.feature-grid{grid-template-columns:repeat(12,1fr);gap:16px}
+.feature{grid-column:span 3;border-radius:24px;box-shadow:0 10px 28px #4a2a1710;transition:transform .3s,box-shadow .3s}
+.feature:nth-child(1),.feature:nth-child(6){grid-column:span 6}
+.feature:nth-child(1) .feature-media,.feature:nth-child(6) .feature-media{height:270px}
+.feature-media{height:215px}
+.feature-media img{transition:transform .7s ease}
+.feature:hover .feature-media img{transform:scale(1.06)}
+.feature-badge{background:#fffdf6ed;border:1px solid #ead8c5}
+.feature-body h3{font-family:Georgia,"Times New Roman",serif;font-size:20px}
+.story-band{margin-top:48px;border-radius:32px;padding:34px;background:linear-gradient(125deg,#741015,#3b0709 72%);position:relative;overflow:hidden}
+.story-band:after{content:"✦";position:absolute;right:-8px;top:-38px;font:180px/1 Georgia;color:#fff1;transform:rotate(12deg)}
+.story-band h2{font-family:Georgia,"Times New Roman",serif;font-size:38px}
+.point{background:#ffffff0d;backdrop-filter:blur(5px);border-color:#fff2}
+.instagram-updates{padding:46px 0 8px}
+.ig-wrap{border:1px solid #ead8c5;background:#fffaf4;border-radius:30px;padding:25px;box-shadow:0 12px 34px #4a2a1710}
+.ig-head{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.ig-title h2{font-family:Georgia,"Times New Roman",serif;color:var(--hb-brown)}
+.ig-follow{background:var(--hb-maroon);color:#fff;border-radius:999px;padding:11px 16px;font-weight:900;text-decoration:none}
+.order-block{display:block!important;margin:48px 0 24px;background:linear-gradient(135deg,#fffdf9,#f7ead9);border-radius:30px;border:1px solid #ead8c5;padding:34px;position:relative;overflow:hidden}
+.order-block:before{content:"";position:absolute;width:170px;height:170px;border-radius:50%;right:-55px;top:-70px;background:#c99a4522}
+.order-block h2{font-family:Georgia,"Times New Roman",serif;color:var(--hb-brown);font-size:34px}
+.online-btn{border-radius:999px;padding:16px 30px;background:var(--hb-maroon)}
+.footer{padding-top:28px}
+@media(max-width:900px){
+ .feature-grid{grid-template-columns:repeat(2,1fr)}
+ .feature,.feature:nth-child(1),.feature:nth-child(6){grid-column:auto}
+ .feature:nth-child(1) .feature-media,.feature:nth-child(6) .feature-media{height:210px}
+ .quick{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:600px){
+ .hero{height:650px;border-radius:0 0 30px 30px}
+ .hero-top{top:12px}
+ .brand{padding:5px 10px 5px 5px}
+ .brand img{width:52px;height:52px}
+ .brand span{font-size:11px}
+ .hero-copy{bottom:56px}
+ .hero h1{font-size:54px;letter-spacing:-2px}
+ .hero-copy p{font-size:16px;max-width:360px}
+ .hero-actions .btn{width:100%;text-align:center}
+ .quick{margin-top:-26px;grid-template-columns:repeat(3,1fr);gap:8px}
+ .quick-card{padding:12px 6px;border-radius:17px}
+ .section{padding-top:42px}
+ .section-head h2{font-size:34px}
+ .feature-grid{gap:10px}
+ .feature-media,.feature:nth-child(1) .feature-media,.feature:nth-child(6) .feature-media{height:160px}
+ .feature-body h3{font-size:17px}
+ .story-band{padding:24px;border-radius:26px}
+ .story-band h2{font-size:30px}
+ .ig-wrap{padding:18px;border-radius:24px}
+ .ig-head{align-items:flex-start;flex-direction:column}
+ .ig-follow{width:100%;text-align:center}
+ .order-block{padding:28px 18px;border-radius:25px}
+ .order-block h2{font-size:29px}
+}
+@media(prefers-reduced-motion:reduce){
+ .feature,.feature-media img,.hero-slides img{transition:none!important}
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
