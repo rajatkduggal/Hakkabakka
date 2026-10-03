@@ -458,6 +458,7 @@ body{background:var(--hb-cream)}
       </div>
 
       <button class="drawer-action billing-wa" id="waSend">Send Order on WhatsApp</button>
+      <button class="drawer-action" type="button" onclick="runPOSIntegrationTest()" style="background:#fff8f5;color:#7b1113;border:1px dashed #7b1113">🧪 Test POS Connection (No Real Order)</button>
       <button class="drawer-action secondary" onclick="backToCart()">← Back to Cart</button>
     </div>
   </div>
@@ -995,6 +996,38 @@ async function verifyPaymentScreenshot(file){
 }
 paymentScreenshot.addEventListener('change',()=>{const f=paymentScreenshot.files&&paymentScreenshot.files[0];if(f)verifyPaymentScreenshot(f);else{paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot required hai','WhatsApp order bhejne se pehle verified payment screenshot upload karein.');updateVerificationUI()}});
 const POS_API_URL='https://hakkabakka-pos-backend-production.up.railway.app';
+async function runPOSIntegrationTest(){
+  if(!cart.length)return showOrderError('Cart khaali hai. Test ke liye pehle koi item add karein.');
+  const name=document.getElementById('customerName').value.trim()||'HakkaBakka Test Customer';
+  const phone=normalizePhone(document.getElementById('customerPhone').value);
+  const type=document.getElementById('orderType').value||'Pickup';
+  const delivery=type==='Home Delivery'?deliveryCharge():0;
+  const total=foodTotal()+delivery;
+  const payload={
+    order_no:'TEST-'+Date.now(),
+    source:'TEST',
+    order_type:type,
+    customer_name:name,
+    customer_phone:/^\d{10}$/.test(phone)?phone:'9999999999',
+    address:type==='Home Delivery'?document.getElementById('address').value.trim():null,
+    pincode:type==='Home Delivery'?pin():null,
+    food_total:foodTotal(),
+    delivery_charges:delivery,
+    total_amount:total,
+    payment_status:'TEST_NOT_CHARGED',
+    special_instructions:null,
+    items:cart.map(x=>({name:x.name,price:Number(x.price),qty:1}))
+  };
+  try{
+    const res=await fetch(POS_API_URL+'/orders/test',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const data=await res.json().catch(()=>null);
+    if(!res.ok||!data?.success)throw new Error(data?.message||'POS integration test failed');
+    setPaymentCheck('ok','✅ POS Integration Test Passed','Railway POS + MySQL transaction validated. Test order was rolled back; no real order was saved and WhatsApp was not opened.');
+  }catch(error){
+    console.error('POS test:',error);
+    setPaymentCheck('bad','❌ POS Integration Test Failed',error.message||'POS test failed.');
+  }
+}
 async function sendOrderToPOS(){
   const type=document.getElementById('orderType').value;
   const payload={
