@@ -449,9 +449,8 @@ body{background:var(--hb-cream)}
         <h3>Pay securely with UPI</h3>
         <div class="upi-note">UPI ID: 9713545556@pthdfc</div>
         <div id="qr"></div>
-        <button class="drawer-action" id="upiPay">Pay with UPI</button>
-        <button class="drawer-action" id="upiTest1" type="button" style="background:#fff8f5;color:#7b1113;border:1px dashed #7b1113">🧪 Pay ₹1 Test Amount</button>
-        <div style="font-size:12px;color:#7b1113;margin:6px 0 0;text-align:center">₹1 test payment sirf payment + screenshot verification check karega. Isse real WhatsApp order send nahi hoga.</div>
+        <button class="drawer-action" id="upiPay">Pay ₹1 with UPI</button>
+        <div style="font-size:12px;color:#7b1113;margin:6px 0 0;text-align:center">🧪 Test payment: ₹1. Real order amount temporarily disabled for testing.</div>
         <small id="paymentStatus"></small>
         <div id="paymentTimer" style="display:none;margin:8px 0 0;padding:9px 12px;border-radius:10px;background:#fff7e6;color:#8a5a00;font-weight:800;text-align:center">⏱️ Payment window: <span id="paymentCountdown">05:00</span></div>
         <label class="label">Payment Screenshot <strong style="color:#8b1118">(Required)</strong></label>
@@ -974,23 +973,13 @@ function startPaymentTimer(testMode=false){stopPaymentTimer();paymentTestMode=!!
 document.getElementById('upiPay').onclick=()=>{
   const status=deliveryPinStatus();
   if(!status.valid)return showOrderError(status.message,document.getElementById('pincode'));
-  const amt=expectedTotal();
-  if(!amt)return showOrderError('Cart khaali hai. / Please add items before making payment.');
-  if(!currentOrderNo)ensureOrderNumber();
-  paymentTestMode=false;
-  startPaymentTimer(false);
-  const upi='upi://pay?pa='+encodeURIComponent(UPI_ID)+'&pn='+encodeURIComponent('Hakka Bakka Punjabi Dhaba')+'&am='+amt.toFixed(2)+'&cu=INR&tn='+encodeURIComponent('HAKKA BAKKA '+currentOrderNo);
-  window.location.href=upi
-};
-document.getElementById('upiTest1').onclick=()=>{
-  if(!cart.length)return showOrderError('Cart khaali hai. Test ke liye pehle koi item add karein.');
+  const amt=1;
+  if(!foodTotal())return showOrderError('Cart khaali hai. / Please add items before making payment.');
   if(!currentOrderNo)ensureOrderNumber();
   paymentTestMode=true;
   startPaymentTimer(true);
   const upi='upi://pay?pa='+encodeURIComponent(UPI_ID)+'&pn='+encodeURIComponent('Hakka Bakka Punjabi Dhaba')+'&am=1.00&cu=INR&tn='+encodeURIComponent('HAKKA BAKKA TEST '+currentOrderNo);
-  makeUPI();
-  setPaymentCheck('', '🧪 ₹1 Test Payment Started','₹1 pay karein. Screenshot mein ₹1, aaj ki date/time aur Order No. '+currentOrderNo+' clearly dikhna chahiye. Verification ke baad real WhatsApp order disabled rahega.');
-  window.location.href=upi;
+  window.location.href=upi
 };
 async function verifyPaymentScreenshot(file){
   paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};waSend.disabled=true;
