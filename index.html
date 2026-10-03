@@ -311,7 +311,7 @@ body:not(.hb-menu-open) .cart-fab{display:none!important;}
     <label class="label">Order Type</label><select class="field" id="orderType"><option value="Pickup">Pickup</option><option value="Home Delivery">Home Delivery</option></select>
     <div id="deliveryFields" style="display:none"><textarea class="field" id="address" rows="3" placeholder="Delivery Address"></textarea><input class="field" id="pincode" placeholder="Pincode" maxlength="6" inputmode="numeric"></div>
     <div class="bill"><div>Food Total <span>₹<b id="billFood">0</b></span></div><div>Delivery Charges <span>₹<b id="billDelivery">0</b></span></div><div class="grand"><strong>Total</strong><strong>₹<span id="billTotal">0</span></strong></div></div>
-    <div class="pay"><h3>💳 UPI Payment</h3><small>UPI ID: 9713545556@pthdfc</small><div id="qr"></div><button class="drawer-action" id="upiPay">Pay with UPI</button><small id="paymentStatus"></small><div id="paymentTimer" style="display:none;margin:8px 0 0;padding:9px 12px;border-radius:10px;background:#fff7e6;color:#8a5a00;font-weight:800;text-align:center">⏱️ Payment window: <span id="paymentCountdown">05:00</span></div><input class="field" id="utr" placeholder="UPI UTR / Transaction ID (optional)"><label class="label">Payment Screenshot <strong style="color:#8b1118">(Required)</strong></label><div style="font-size:13px;color:#666;margin:-4px 0 8px">Payment screenshot ke bina order WhatsApp par send nahi hoga.</div><input class="field" id="paymentScreenshot" type="file" accept="image/*" required><div id="paymentCheck" class="payment-check" aria-live="polite"><b>🔒 Payment verification required</b><span>Upload the payment screenshot. The website will check the paid amount, payment date and payment time before WhatsApp order can be sent.</span></div></div>
+    <div class="pay"><h3>💳 UPI Payment</h3><small>UPI ID: 9713545556@pthdfc</small><div id="qr"></div><button class="drawer-action" id="upiPay">Pay with UPI</button><small id="paymentStatus"></small><div id="paymentTimer" style="display:none;margin:8px 0 0;padding:9px 12px;border-radius:10px;background:#fff7e6;color:#8a5a00;font-weight:800;text-align:center">⏱️ Payment window: <span id="paymentCountdown">05:00</span></div><label class="label">Payment Screenshot <strong style="color:#8b1118">(Required)</strong></label><div style="font-size:13px;color:#666;margin:-4px 0 8px">Payment screenshot ke bina order WhatsApp par send nahi hoga.</div><input class="field" id="paymentScreenshot" type="file" accept="image/*" aria-describedby="paymentCheck"><div id="paymentCheck" class="payment-check" aria-live="polite"><b>🔒 Payment verification required</b><span>Upload the payment screenshot. The website will check the paid amount, payment date and payment time before WhatsApp order can be sent.</span></div></div>
     <button class="drawer-action" id="waSend">Send Order on WhatsApp</button><button class="drawer-action secondary" onclick="backToCart()">← Back to Cart</button>
   </div>
 </div></div>
@@ -507,10 +507,46 @@ async function initCustomerAuth(){
   });
 }
 
-let currentOrderNo='';
+const CART_STORAGE_KEY='hb_cart_v1';
+const CHECKOUT_STORAGE_KEY='hb_checkout_v1';
+function loadStoredCart(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(CART_STORAGE_KEY)||'[]');
+    return Array.isArray(saved)?saved.filter(item=>item&&typeof item.name==='string'&&Number.isFinite(Number(item.price))&&Number(item.price)>0).map(item=>({name:item.name,price:Number(item.price)})):[];
+  }catch(e){return []}
+}
+function saveCart(){
+  localStorage.setItem(CART_STORAGE_KEY,JSON.stringify(cart));
+  if(!cart.length)localStorage.removeItem(CHECKOUT_STORAGE_KEY);
+}
+function saveCheckout(){
+  if(!cart.length)return;
+  localStorage.setItem(CHECKOUT_STORAGE_KEY,JSON.stringify({
+    orderNo:currentOrderNo,
+    customerName:document.getElementById('customerName').value,
+    customerPhone:document.getElementById('customerPhone').value,
+    orderType:document.getElementById('orderType').value,
+    address:document.getElementById('address').value,
+    pincode:document.getElementById('pincode').value
+  }));
+}
+function restoreCheckout(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(CHECKOUT_STORAGE_KEY)||'null');
+    if(!saved)return;
+    currentOrderNo=typeof saved.orderNo==='string'?saved.orderNo:'';
+    document.getElementById('customerName').value=saved.customerName||'';
+    document.getElementById('customerPhone').value=saved.customerPhone||'';
+    document.getElementById('orderType').value=saved.orderType==='Home Delivery'?'Home Delivery':'Pickup';
+    document.getElementById('address').value=saved.address||'';
+    document.getElementById('pincode').value=String(saved.pincode||'').replace(/\D/g,'').slice(0,6);
+  }catch(e){localStorage.removeItem(CHECKOUT_STORAGE_KEY)}
+}
 const ZOMATO='https://zomato.onelink.me/xqzv/7948ndtj', SWIGGY='https://www.swiggy.com/menu/1400828?source=sharing';
 const PIN_MIN=144001,PIN_MAX=144030,PIN_CUTOFF=144015;
-let cart=[];
+let currentOrderNo='';
+let cart=loadStoredCart();
+restoreCheckout();
 const data=[
 ["Tandoori Veg",[
 ["Paneer Tikka","280","paneertikka.png"],
@@ -687,13 +723,20 @@ function pin(){return /^144\d{3}$/.test(pincode.value)?Number(pincode.value):nul
 function deliveryCharge(){if(orderType.value!=='Home Delivery')return 0;const p=pin();return p!==null&&p>=PIN_MIN&&p<=PIN_MAX?(p<=PIN_CUTOFF?100:200):0}
 function refreshButtons(){document.querySelectorAll('.add').forEach(b=>{const n=b.dataset.name,p=Number(b.dataset.price),q=cart.filter(x=>x.name===n&&x.price===p).length;if(q){b.classList.add('selected');b.innerHTML=`<span class="qty-control"><button class="minus">−</button><span>${q}</span><button class="plus">+</button></span>`}else{b.classList.remove('selected');b.textContent=b.dataset.original||b.textContent;if(!b.dataset.original)b.dataset.original=b.textContent}})}
 function renderCart(){const groups=[];cart.forEach(x=>{let g=groups.find(y=>y.name===x.name&&y.price===x.price);if(g)g.q++;else groups.push({name:x.name,price:x.price,q:1})});document.getElementById('cartSubtotal').textContent=foodTotal();document.getElementById('fabCount').textContent=cart.length;updateCartSummary(groups);document.getElementById('items').innerHTML=groups.length?groups.map(g=>`<div class="cart-item"><div class="top">${esc(g.name)}</div><div class="bottom"><b style="color:var(--red)">₹${g.price*g.q}</b><div class="qty"><button onclick="changeQty('${esc(g.name).replace(/'/g,"\\'")}',${g.price},-1)">−</button><span>${g.q}</span><button onclick="changeQty('${esc(g.name).replace(/'/g,"\\'")}',${g.price},1)">+</button></div></div></div>`).join(''):'<div class="menu-empty">Your cart is empty.<br>Add items from the menu.</div>';refreshButtons();updateBilling()}
-function updateCartSummary(groups){const el=document.getElementById('cartSummaryText'),list=document.getElementById('cartSummaryList'),tot=document.getElementById('cartSummaryTotal');if(!el||!list)return;if(!groups.length){el.textContent='Cart is empty';list.innerHTML='';if(tot)tot.textContent='0';return}el.textContent=`${cart.length} item${cart.length===1?'':'s'} selected`;list.innerHTML=groups.map(g=>`<div class="cart-summary-row"><span>• ${esc(g.name)}${g.q>1?' ×'+g.q:''}</span><b>₹${g.price*g.q}</b></div>`).join('');if(tot)tot.textContent=foodTotal();}
-function changeQty(n,p,d){if(d>0)cart.push({name:n,price:p});else{const i=cart.findIndex(x=>x.name===n&&x.price===p);if(i>=0)cart.splice(i,1)}renderCart()}
-function clearCart(){cart=[];resetOrderNumber();renderCart()}
-function updateBilling(){const home=orderType.value==='Home Delivery';document.getElementById('deliveryFields').style.display=home?'block':'none';const f=foodTotal(),c=deliveryCharge();document.getElementById('billFood').textContent=f;document.getElementById('billDelivery').textContent=c;document.getElementById('billTotal').textContent=f+c;makeUPI()}
+function updateCartSummary(groups){const el=document.getElementById('cartSummaryText'),list=document.getElementById('cartSummaryList'),tot=document.getElementById('cartSummaryTotal');if(!el||!list)return;if(!groups.length){el.textContent='Cart is empty';list.innerHTML='';if(tot)tot.textContent='0';return}el.textContent=`${cart.length} item${cart.length===1?'':'s'} selected`;list.innerHTML=groups.map(g=>`<div class="cart-summary-row"><span>• ${esc(g.name)}${g.q>1?' ×'+g.q:''}</span><b>₹${g.price*g.q}</b></div>`).join('');if(tot)tot.textContent=expectedTotal();}
+function invalidatePaymentVerification(){
+  if(!paymentVerification.file)return;
+  paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};
+  paymentScreenshot.value='';
+  setPaymentCheck('bad','Payment verification dobara karein','Cart ya billing total badal gaya hai. Naye total ke liye UPI payment aur screenshot verify karein.');
+}
+function syncCart(){saveCart();saveCheckout();invalidatePaymentVerification();renderCart()}
+function changeQty(n,p,d){if(d>0)cart.push({name:n,price:p});else{const i=cart.findIndex(x=>x.name===n&&x.price===p);if(i>=0)cart.splice(i,1)}syncCart()}
+function clearCart(){cart=[];resetOrderNumber();saveCart();renderCart()}
+function updateBilling(){const home=orderType.value==='Home Delivery';document.getElementById('deliveryFields').style.display=home?'block':'none';const f=foodTotal(),c=deliveryCharge(),grand=f+c;document.getElementById('billFood').textContent=f;document.getElementById('billDelivery').textContent=c;document.getElementById('billTotal').textContent=grand;document.getElementById('cartSummaryTotal').textContent=grand;if(paymentVerification&&paymentVerification.file&&paymentContext&&paymentContext.total!==grand)invalidatePaymentVerification();makeUPI()}
 function makeUPI(){const q=document.getElementById('qr'),amt=foodTotal()+deliveryCharge();q.innerHTML='';if(!amt)return;const ref=currentOrderNo||'ORDER';const upi='upi://pay?pa='+encodeURIComponent(UPI_ID)+'&pn='+encodeURIComponent('Hakka Bakka Punjabi Dhaba')+'&am='+encodeURIComponent(amt.toFixed(2))+'&cu=INR&tn='+encodeURIComponent('HAKKA BAKKA '+ref);const wrap=document.createElement('div');wrap.style.cssText='width:230px;margin:12px auto;text-align:center';const img=document.createElement('img');img.alt='UPI QR Code';img.width=220;img.height=220;img.style.cssText='display:block;width:220px;height:220px;margin:auto;border-radius:8px;background:#fff';img.src='https://quickchart.io/qr?text='+encodeURIComponent(upi)+'&size=220&margin=2';img.onerror=()=>{wrap.innerHTML='<div style="padding:24px;border:1px solid #ddd;border-radius:12px;background:#fafafa"><b>QR could not load</b><br><small>UPI ID: '+UPI_ID+'<br>Amount: ₹'+amt+'</small></div>'};wrap.appendChild(img);const cap=document.createElement('div');cap.style.cssText='font-size:13px;color:#666;margin-top:8px';cap.innerHTML='Scan & pay <b>₹'+amt+'</b><br>UPI ID: '+UPI_ID;wrap.appendChild(cap);const refBox=document.createElement('div');refBox.style.cssText='font-size:12px;color:#777;margin-top:5px';refBox.textContent='Payment slip should show Order No: '+ref+' and payment date/time';wrap.appendChild(refBox);q.appendChild(wrap)}
 function setHomeState(){const home=document.getElementById('home'),menuScreen=document.getElementById('menuScreen');if(!home||!menuScreen)return;document.body.classList.remove('hb-menu-open');home.classList.remove('menu-hidden');menuScreen.classList.remove('menu-visible');home.style.setProperty('display','block','important');home.style.setProperty('visibility','visible','important');menuScreen.style.setProperty('display','none','important');menuScreen.style.setProperty('visibility','hidden','important');const fab=document.getElementById('cartFab');if(fab)fab.style.display='none';}
-function setMenuState(){const home=document.getElementById('home'),menuScreen=document.getElementById('menuScreen');if(!home||!menuScreen)return;document.body.classList.add('hb-menu-open');home.classList.add('menu-hidden');menuScreen.classList.add('menu-visible');home.style.setProperty('display','none','important');home.style.setProperty('visibility','hidden','important');menuScreen.style.setProperty('display','block','important');menuScreen.style.setProperty('visibility','visible','important');window.scrollTo({top:0,left:0,behavior:'instant'});renderMenu();renderCart()}
+function setMenuState(){const home=document.getElementById('home'),menuScreen=document.getElementById('menuScreen');if(!home||!menuScreen)return;document.body.classList.add('hb-menu-open');home.classList.add('menu-hidden');menuScreen.classList.add('menu-visible');home.style.setProperty('display','none','important');home.style.setProperty('visibility','hidden','important');menuScreen.style.setProperty('display','block','important');menuScreen.style.setProperty('visibility','visible','important');window.scrollTo({top:0,left:0,behavior:'instant'});const fab=document.getElementById('cartFab');if(fab)fab.style.display='block';renderMenu();renderCart()}
 function openMenu(){closeOrderModal();setMenuState()}
 function closeMenu(){closeCart();setHomeState();window.scrollTo({top:0,left:0,behavior:'instant'})}
 
@@ -705,37 +748,74 @@ function openCart(){document.body.classList.remove('hb-billing-open');document.g
 function closeCart(){document.body.classList.remove('hb-billing-open');document.getElementById('drawer').classList.remove('show')}
 function monthCode(){return ['JA','FE','MA','AP','MA','JU','JU','AU','SE','OC','NO','DE'][new Date().getMonth()]}
 function nextOrderNumber(){const now=new Date(),key='hb_order_counter_'+now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');let n=parseInt(localStorage.getItem(key)||'0',10)+1;localStorage.setItem(key,String(n));return monthCode().toLowerCase()+n}
-function ensureOrderNumber(){if(!currentOrderNo){currentOrderNo=nextOrderNumber()}document.getElementById('orderNumber').textContent=currentOrderNo}
+function ensureOrderNumber(){if(!currentOrderNo){currentOrderNo=nextOrderNumber()}document.getElementById('orderNumber').textContent=currentOrderNo;saveCheckout()}
 function resetOrderNumber(){currentOrderNo='';document.getElementById('orderNumber').textContent='—'}
 async function proceedBilling(){if(!cart.length){alert('Cart is empty.');return}if(!(await requireCustomerLogin()))return;ensureOrderNumber();document.body.classList.add('hb-billing-open');const drawer=document.getElementById('drawer'),card=document.getElementById('drawerCard');drawer.classList.add('show');document.getElementById('cartView').style.display='none';document.getElementById('billingView').style.display='block';if(card)card.scrollTop=0;updateBilling()}
 function backToCart(){document.body.classList.remove('hb-billing-open');document.getElementById('billingView').style.display='none';document.getElementById('cartView').style.display='block'}
 
-document.getElementById('menu').addEventListener('click',e=>{const b=e.target.closest('.add');if(!b)return;const n=b.dataset.name,p=Number(b.dataset.price);if(e.target.closest('.minus')){const i=cart.findIndex(x=>x.name===n&&x.price===p);if(i>=0)cart.splice(i,1)}else if(e.target.closest('.plus'))cart.push({name:n,price:p});else{cart.push({name:n,price:p});b.dataset.original=b.textContent}renderCart()});
+document.getElementById('menu').addEventListener('click',e=>{const b=e.target.closest('.add');if(!b)return;const n=b.dataset.name,p=Number(b.dataset.price);if(e.target.closest('.minus')){const i=cart.findIndex(x=>x.name===n&&x.price===p);if(i>=0)cart.splice(i,1)}else if(e.target.closest('.plus'))cart.push({name:n,price:p});else{cart.push({name:n,price:p});b.dataset.original=b.textContent}syncCart()});
 document.getElementById('search').addEventListener('input',e=>{const q=e.target.value.toLowerCase().trim();document.querySelectorAll('.menu-section').forEach(sec=>{let any=false;sec.querySelectorAll('.menu-card').forEach(card=>{const ok=card.textContent.toLowerCase().includes(q);card.style.display=ok?'':'none';if(ok)any=true});sec.style.display=any?'':'none'})});
-document.getElementById('orderType').addEventListener('change',updateBilling);document.getElementById('pincode').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,6);updateBilling()});document.getElementById('customerPhone').addEventListener('input',e=>e.target.value=e.target.value.replace(/\D/g,'').slice(0,10));
+document.getElementById('orderType').addEventListener('change',()=>{saveCheckout();updateBilling()});document.getElementById('pincode').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,6);saveCheckout();updateBilling()});['customerName','customerPhone','address'].forEach(id=>document.getElementById(id).addEventListener('input',e=>{if(id==='customerPhone')e.target.value=e.target.value.replace(/\D/g,'').slice(0,10);saveCheckout()}));
 let paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};
 const paymentScreenshot=document.getElementById('paymentScreenshot'), paymentCheck=document.getElementById('paymentCheck'), waSend=document.getElementById('waSend');
 const paymentTimer=document.getElementById('paymentTimer'), paymentCountdown=document.getElementById('paymentCountdown');
-let paymentStartedAt=0, paymentTimerId=null;
+const PAYMENT_WINDOW_MS=5*60*1000;
+let paymentStartedAt=0, paymentTimerId=null, paymentContext=null;
 waSend.disabled=true;
 function expectedTotal(){return foodTotal()+deliveryCharge()}
+function showOrderError(message,field){
+  alert(message);
+  if(field){field.focus();field.scrollIntoView({behavior:'smooth',block:'center'});}
+}
 function setPaymentCheck(kind,title,detail){paymentCheck.className='payment-check '+kind;paymentCheck.innerHTML='<b>'+title+'</b><span>'+detail+'</span>'}
 function normalizeMoneyText(t){return t.replace(/[₹RsI|]/gi,' ').replace(/,/g,'').replace(/\s+/g,' ')}
 function findAmounts(text){const t=normalizeMoneyText(text);const out=[];const re=/(?:rs\.?\s*)?(\d{2,6}(?:\.\d{1,2})?)/gi;let m;while((m=re.exec(t))){const n=Number(m[1]);if(n>=1&&n<=200000)out.push(n)}return [...new Set(out)]}
 function parseDateCandidates(text){const t=text.replace(/\s+/g,' ');const out=[];let m;const patterns=[/(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})/g,/(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})/g,/(\d{1,2})\s+(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+(\d{4})/gi];for(const re of patterns){while((m=re.exec(t))){let d,y,mo;if(re===patterns[1]){y=+m[1];mo=+m[2];d=+m[3]}else if(re===patterns[2]){d=+m[1];const months=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];mo=months.findIndex(x=>m[2].toLowerCase().startsWith(x))+1;y=+m[3]}else{d=+m[1];mo=+m[2];y=+m[3];if(y<100)y+=2000}if(mo>=1&&mo<=12&&d>=1&&d<=31){const dt=new Date(y,mo-1,d);if(dt.getFullYear()===y&&dt.getMonth()===mo-1&&dt.getDate()===d)out.push(dt)}}}return out}
 function parseTimeCandidates(text){const t=text.replace(/\s+/g,' ');const out=[];let m;const re=/(\d{1,2})[:.](\d{2})(?:[:.](\d{2}))?\s*(AM|PM)?/gi;while((m=re.exec(t))){let h=+m[1],mi=+m[2];if(h>23||mi>59)continue;const ap=(m[4]||'').toUpperCase();if(ap==='PM'&&h<12)h+=12;if(ap==='AM'&&h===12)h=0;out.push({h,mi})}return out}
 function sameLocalDay(d,now){return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth()&&d.getDate()===now.getDate()}
-function timeDistanceMinutes(h,mi,now){let a=h*60+mi,b=now.getHours()*60+now.getMinutes(),diff=Math.abs(a-b);return Math.min(diff,1440-diff)}
+function paymentTimeInWindow(h,mi,now){
+  if(!paymentContext)return false;
+  const shown=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,mi).getTime();
+  return shown>=paymentContext.startedAt-60*1000&&shown<=now.getTime()+60*1000;
+}
 function normalizeOrderText(t){return t.toLowerCase().replace(/[^a-z0-9]/g,'')}
 function orderNoMatches(text){const expected=normalizeOrderText(currentOrderNo);if(!expected)return false;const n=normalizeOrderText(text);return n.includes(expected)}
-function updateVerificationUI(){const ok=paymentVerification.file&&paymentVerification.amount&&paymentVerification.date&&paymentVerification.time&&paymentVerification.order&&paymentVerification.ocr;waSend.disabled=!ok;return ok}
+function hasCurrentPaymentContext(){return !!paymentContext&&paymentContext.orderNo===currentOrderNo&&paymentContext.total===expectedTotal()&&Date.now()-paymentContext.startedAt<=PAYMENT_WINDOW_MS}
+function updateVerificationUI(){const ok=paymentVerification.file&&paymentVerification.amount&&paymentVerification.date&&paymentVerification.time&&paymentVerification.order&&paymentVerification.ocr&&hasCurrentPaymentContext();waSend.disabled=!ok;return ok}
 function stopPaymentTimer(){if(paymentTimerId){clearInterval(paymentTimerId);paymentTimerId=null}paymentTimer.style.display='none'}
-function startPaymentTimer(){stopPaymentTimer();paymentStartedAt=Date.now();paymentTimer.style.display='block';paymentCountdown.textContent='05:00';paymentTimerId=setInterval(()=>{const left=Math.max(0,300-Math.floor((Date.now()-paymentStartedAt)/1000));const mm=String(Math.floor(left/60)).padStart(2,'0'),ss=String(left%60).padStart(2,'0');paymentCountdown.textContent=mm+':'+ss;if(left===0)stopPaymentTimer()},250)}
-document.getElementById('upiPay').onclick=()=>{const amt=foodTotal()+deliveryCharge();if(!amt)return alert('Cart is empty.');startPaymentTimer();const upi='upi://pay?pa='+encodeURIComponent(UPI_ID)+'&pn='+encodeURIComponent('Hakka Bakka Punjabi Dhaba')+'&am='+amt.toFixed(2)+'&cu=INR&tn='+encodeURIComponent('HAKKA BAKKA '+currentOrderNo);window.location.href=upi};
-async function verifyPaymentScreenshot(file){stopPaymentTimer();paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};waSend.disabled=true;setPaymentCheck('', '🔍 Checking payment screenshot…','');try{if(!window.Tesseract)throw new Error('OCR engine unavailable');const result=await Tesseract.recognize(file,'eng',{logger:m=>{if(m.status==='recognizing text'&&m.progress)paymentCheck.innerHTML='<b>🔍 Checking payment screenshot…</b><span>Reading screenshot… '+Math.round(m.progress*100)+'%</span>'}});const text=result.data.text||'';const total=expectedTotal();const amounts=findAmounts(text);paymentVerification.amount=amounts.some(n=>Math.abs(n-total)<0.01);const dates=parseDateCandidates(text);const now=new Date();paymentVerification.date=dates.some(d=>sameLocalDay(d,now));const times=parseTimeCandidates(text);paymentVerification.time=times.some(x=>timeDistanceMinutes(x.h,x.mi,now)<=5);paymentVerification.order=orderNoMatches(text);paymentVerification.ocr=true;if(updateVerificationUI()){setPaymentCheck('ok','✅ Payment Slip Verified','');}else{setPaymentCheck('bad','Payment Slip Verification pura nahi hua','Kripya issi ORDER ka bhugtan kiya slip attach kare.')}}catch(e){paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment Slip Verification pura nahi hua','Kripya issi ORDER ka bhugtan kiya slip attach kare.');updateVerificationUI()}}
-paymentScreenshot.addEventListener('change',()=>{const f=paymentScreenshot.files&&paymentScreenshot.files[0];if(f)verifyPaymentScreenshot(f);else{stopPaymentTimer();paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment Slip Verification pura nahi hua','Kripya issi ORDER ka bhugtan kiya slip attach kare.');updateVerificationUI()}});
-document.getElementById('waSend').onclick=async()=>{if(!cart.length)return alert('Cart is empty.');if(!(await requireCustomerLogin()))return;if(!updateVerificationUI()){setPaymentCheck('bad','Payment Slip Verification pura nahi hua','Kripya issi ORDER ka bhugtan kiya slip attach kare.');paymentScreenshot.scrollIntoView({behavior:'smooth',block:'center'});return;}const name=document.getElementById('customerName').value.trim(),phone=document.getElementById('customerPhone').value.trim(),type=document.getElementById('orderType').value;if(!name)return alert('Customer name enter karein.');if(!/^\d{10}$/.test(phone))return alert('10-digit mobile number enter karein.');let extra='';if(type==='Home Delivery'){const p=pin(),a=document.getElementById('address').value.trim();if(!a)return alert('Delivery address enter karein.');if(p===null||p<PIN_MIN||p>PIN_MAX)return alert('Home Delivery sirf pincode 144001 se 144030 tak available hai.');extra='\nPincode: '+p+'\nAddress: '+a}if(supabaseClient&&currentUser){const saved=await saveOrderToSupabase();if(!saved){return alert('Order database mein save nahi ho saka. Please try again.')}}const lines=cart.map(x=>'• '+x.name+' - ₹'+x.price).join('\n');const total=foodTotal()+deliveryCharge();const msg='*HAKKA BAKKA ONLINE ORDER*\n*ORDER NO: '+currentOrderNo+'*\n\n'+lines+'\n\nFood Total: ₹'+foodTotal()+'\nDelivery Charges: ₹'+deliveryCharge()+'\n*TOTAL: ₹'+total+'*\n\nPayment Slip Verified: Order No + Amount + Date + Time\n\nName: '+name+'\nMobile: '+phone+'\nType: '+type+extra+'\n\nPlease confirm my order.';window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg)};
-
+function startPaymentTimer(){stopPaymentTimer();paymentStartedAt=Date.now();paymentContext={startedAt:paymentStartedAt,total:expectedTotal(),orderNo:currentOrderNo};paymentTimer.style.display='block';paymentCountdown.textContent='05:00';paymentTimerId=setInterval(()=>{const left=Math.max(0,Math.ceil((PAYMENT_WINDOW_MS-(Date.now()-paymentStartedAt))/1000));const mm=String(Math.floor(left/60)).padStart(2,'0'),ss=String(left%60).padStart(2,'0');paymentCountdown.textContent=mm+':'+ss;if(left===0){stopPaymentTimer();updateVerificationUI()}},250)}
+document.getElementById('upiPay').onclick=()=>{const amt=expectedTotal();if(!amt)return showOrderError('Cart khaali hai. / Please add items before making payment.');if(!currentOrderNo)ensureOrderNumber();startPaymentTimer();const upi='upi://pay?pa='+encodeURIComponent(UPI_ID)+'&pn='+encodeURIComponent('Hakka Bakka Punjabi Dhaba')+'&am='+amt.toFixed(2)+'&cu=INR&tn='+encodeURIComponent('HAKKA BAKKA '+currentOrderNo);window.location.href=upi};
+async function verifyPaymentScreenshot(file){
+  paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};waSend.disabled=true;
+  if(!hasCurrentPaymentContext()){setPaymentCheck('bad','Pehle UPI payment shuru karein / Start payment first','“Pay with UPI” dabayein, 5 minutes ke andar payment karein aur current payment screenshot upload karein.');return;}
+  setPaymentCheck('', '🔍 Checking payment screenshot…','Amount, today’s date, payment time and order number are being checked.');
+  try{
+    if(!window.Tesseract)throw new Error('OCR engine unavailable');
+    const result=await Tesseract.recognize(file,'eng',{logger:m=>{if(m.status==='recognizing text'&&m.progress)paymentCheck.innerHTML='<b>🔍 Checking payment screenshot…</b><span>Reading screenshot… '+Math.round(m.progress*100)+'%</span>'}});
+    const text=result.data.text||'', now=new Date(), total=paymentContext.total;
+    paymentVerification.amount=findAmounts(text).some(n=>Math.abs(n-total)<0.01);
+    paymentVerification.date=parseDateCandidates(text).some(d=>sameLocalDay(d,now));
+    paymentVerification.time=parseTimeCandidates(text).some(x=>paymentTimeInWindow(x.h,x.mi,now));
+    paymentVerification.order=orderNoMatches(text);paymentVerification.ocr=true;
+    if(updateVerificationUI())setPaymentCheck('ok','✅ Payment Slip Verified','Amount, today’s date, payment time and order number match this order. WhatsApp order can now be sent.');
+    else setPaymentCheck('bad','Payment Slip Verification pura nahi hua','Screenshot mein exact total, aaj ki date, 5-minute payment window aur Order No. '+currentOrderNo+' clearly dikhna chahiye.');
+  }catch(e){paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot verify nahi ho saka','Clear screenshot upload karein. Amount, date, time aur Order No. '+currentOrderNo+' visible hona chahiye.');updateVerificationUI()}
+}
+paymentScreenshot.addEventListener('change',()=>{const f=paymentScreenshot.files&&paymentScreenshot.files[0];if(f)verifyPaymentScreenshot(f);else{paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot required hai','WhatsApp order bhejne se pehle verified payment screenshot upload karein.');updateVerificationUI()}});
+document.getElementById('waSend').onclick=async()=>{
+  if(!cart.length)return showOrderError('Cart khaali hai. / Please add items first.');
+  if(!(await requireCustomerLogin()))return;
+  const name=document.getElementById('customerName').value.trim(),phone=document.getElementById('customerPhone').value.trim(),type=document.getElementById('orderType').value;
+  if(!name)return showOrderError('Customer name likhein. / Please enter your name.',document.getElementById('customerName'));
+  if(!/^\d{10}$/.test(phone))return showOrderError('10-digit mobile number zaroori hai. / Please enter a valid 10-digit mobile number.',document.getElementById('customerPhone'));
+  if(!updateVerificationUI()){setPaymentCheck('bad','Payment verification required hai','WhatsApp order se pehle exact total, aaj ki date, 5-minute payment window aur Order No. '+currentOrderNo+' wala screenshot verify hona zaroori hai.');return showOrderError('Verified payment screenshot required hai. / Please complete payment verification first.',paymentScreenshot);}
+  let extra='';if(type==='Home Delivery'){const p=pin(),a=document.getElementById('address').value.trim();if(!a)return showOrderError('Delivery address likhein. / Please enter the delivery address.',document.getElementById('address'));if(p===null||p<PIN_MIN||p>PIN_MAX)return showOrderError('Home Delivery sirf pincode 144001 se 144030 tak available hai. / Delivery is available only for pincodes 144001–144030.',document.getElementById('pincode'));extra='\nPincode: '+p+'\nAddress: '+a}
+  if(supabaseClient&&currentUser){const saved=await saveOrderToSupabase();if(!saved){return showOrderError('Order database mein save nahi ho saka. / Your order could not be saved; please try again.')}}
+  const lines=cart.map(x=>'• '+x.name+' - ₹'+x.price).join('\n'),total=expectedTotal();
+  const msg='*HAKKA BAKKA ONLINE ORDER*\n*ORDER NO: '+currentOrderNo+'*\n\n'+lines+'\n\nFood Total: ₹'+foodTotal()+'\nDelivery Charges: ₹'+deliveryCharge()+'\n*TOTAL: ₹'+total+'*\n\nPayment Slip Verified: Order No + Amount + Date + Time\n\nName: '+name+'\nMobile: '+phone+'\nType: '+type+extra+'\n\nPlease confirm my order.';
+  window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg)
+};
+window.addEventListener('storage',e=>{if(e.key===CART_STORAGE_KEY){cart=loadStoredCart();renderCart()}});
 // HERO FOOD SLIDESHOW — resolve the exact uploaded filenames from GitHub, then rotate.
 (async function(){
   const repo='rajatkduggal/Hakkabakka', api='https://api.github.com/repos/'+repo+'/contents/';
