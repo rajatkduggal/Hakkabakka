@@ -994,6 +994,33 @@ async function verifyPaymentScreenshot(file){
   }catch(e){paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot verify nahi ho saka','Clear screenshot upload karein. Amount, date, time aur Order No. '+currentOrderNo+' visible hona chahiye.');updateVerificationUI()}
 }
 paymentScreenshot.addEventListener('change',()=>{const f=paymentScreenshot.files&&paymentScreenshot.files[0];if(f)verifyPaymentScreenshot(f);else{paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot required hai','WhatsApp order bhejne se pehle verified payment screenshot upload karein.');updateVerificationUI()}});
+const POS_API_URL='https://utrdl70wqz.c36.airoapp.ai';
+async function sendOrderToPOS(){
+  const type=document.getElementById('orderType').value;
+  const payload={
+    order_no:currentOrderNo,
+    source:'ONLINE',
+    order_type:type,
+    customer_name:document.getElementById('customerName').value.trim(),
+    customer_phone:normalizePhone(document.getElementById('customerPhone').value),
+    address:type==='Home Delivery'?document.getElementById('address').value.trim():null,
+    pincode:type==='Home Delivery'?pin():null,
+    food_total:foodTotal(),
+    delivery_charges:deliveryCharge(),
+    total_amount:expectedTotal(),
+    payment_status:'PAYMENT_VERIFIED_SCREENSHOT',
+    special_instructions:null,
+    items:cart.map(x=>({name:x.name,price:Number(x.price),qty:1}))
+  };
+  const res=await fetch(POS_API_URL+'/orders/online',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(payload)
+  });
+  const data=await res.json().catch(()=>null);
+  if(!res.ok||!data?.success)throw new Error(data?.message||'POS order sync failed');
+  return data;
+}
 document.getElementById('waSend').onclick=async()=>{
   if(!cart.length)return showOrderError('Cart khaali hai. / Please add items first.');
   if(!(await requireCustomerLogin()))return;
@@ -1002,7 +1029,7 @@ document.getElementById('waSend').onclick=async()=>{
   if(!/^\d{10}$/.test(phone))return showOrderError('10-digit mobile number zaroori hai. / Please enter a valid 10-digit mobile number.',document.getElementById('customerPhone'));
   if(!updateVerificationUI()){setPaymentCheck('bad','Payment verification required hai','WhatsApp order se pehle exact total, aaj ki date, 5-minute payment window aur Order No. '+currentOrderNo+' wala screenshot verify hona zaroori hai.');return showOrderError('Verified payment screenshot required hai. / Please complete payment verification first.',paymentScreenshot);}
   let extra='';if(type==='Home Delivery'){const p=pin(),a=document.getElementById('address').value.trim();if(!a)return showOrderError('Delivery address likhein. / Please enter the delivery address.',document.getElementById('address'));const deliveryStatus=deliveryPinStatus();if(!deliveryStatus.valid)return showOrderError(deliveryStatus.message,document.getElementById('pincode'));extra='\nPincode: '+p+'\nAddress: '+a}
-  if(supabaseClient&&currentUser){const saved=await saveOrderToSupabase();if(!saved){return showOrderError('Order database mein save nahi ho saka. / Your order could not be saved; please try again.')}}
+  if(supabaseClient&&currentUser){const saved=await saveOrderToSupabase();if(!saved){return showOrderError('Order database mein save nahi ho saka. / Your order could not be saved; please try again.')}}\n  try{await sendOrderToPOS()}catch(error){console.error('POS sync:',error);return showOrderError('POS se connection nahi ho saka. / Order POS mein save nahi hua, isliye WhatsApp order send nahi kiya gaya. Please try again.');}
   const lines=cart.map(x=>'• '+x.name+' - ₹'+x.price).join('\n'),total=expectedTotal();
   const msg='*HAKKA BAKKA ONLINE ORDER*\n*ORDER NO: '+currentOrderNo+'*\n\n'+lines+'\n\nFood Total: ₹'+foodTotal()+'\nDelivery Charges: ₹'+deliveryCharge()+'\n*TOTAL: ₹'+total+'*\n\nPayment Slip Verified: Order No + Amount + Date + Time\n\nName: '+name+'\nMobile: '+phone+'\nType: '+type+extra+'\n\nPlease confirm my order.';
   window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg)
