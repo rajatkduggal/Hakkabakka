@@ -449,7 +449,7 @@ body{background:var(--hb-cream)}
         <h3>Pay securely with UPI</h3>
         <div class="upi-note">UPI ID: 9713545556@pthdfc</div>
         <div id="qr"></div>
-        <button class="drawer-action" id="upiPay">Pay ₹1 with UPI</button>
+        <button class="drawer-action" id="upiPay">Pay ₹2 with UPI</button>
         <div style="font-size:12px;color:#7b1113;margin:6px 0 0;text-align:center">🧪 Test payment: ₹1. Real order amount temporarily disabled for testing.</div>
         <small id="paymentStatus"></small>
         <div id="paymentTimer" style="display:none;margin:8px 0 0;padding:9px 12px;border-radius:10px;background:#fff7e6;color:#8a5a00;font-weight:800;text-align:center">⏱️ Payment window: <span id="paymentCountdown">05:00</span></div>
@@ -966,19 +966,19 @@ function paymentTimeInWindow(h,mi,now){
 }
 function normalizeOrderText(t){return t.toLowerCase().replace(/[^a-z0-9]/g,'')}
 function orderNoMatches(text){const expected=normalizeOrderText(currentOrderNo);if(!expected)return false;const n=normalizeOrderText(text);return n.includes(expected)}
-function hasCurrentPaymentContext(){const expected=paymentTestMode?1:expectedTotal();return !!paymentContext&&paymentContext.orderNo===currentOrderNo&&Math.abs(paymentContext.total-expected)<0.01&&Date.now()-paymentContext.startedAt<=PAYMENT_WINDOW_MS}
+function hasCurrentPaymentContext(){const expected=paymentTestMode?2:expectedTotal();return !!paymentContext&&paymentContext.orderNo===currentOrderNo&&Math.abs(paymentContext.total-expected)<0.01&&Date.now()-paymentContext.startedAt<=PAYMENT_WINDOW_MS}
 function updateVerificationUI(){const orderOk=paymentTestMode?true:paymentVerification.order;const verified=paymentVerification.file&&paymentVerification.amount&&paymentVerification.date&&paymentVerification.time&&orderOk&&paymentVerification.ocr&&hasCurrentPaymentContext();waSend.disabled=!verified;return verified}
 function stopPaymentTimer(){if(paymentTimerId){clearInterval(paymentTimerId);paymentTimerId=null}paymentTimer.style.display='none'}
-function startPaymentTimer(testMode=false){stopPaymentTimer();paymentTestMode=!!testMode;paymentStartedAt=Date.now();paymentContext={startedAt:paymentStartedAt,total:paymentTestMode?1:expectedTotal(),orderNo:currentOrderNo};paymentTimer.style.display='block';paymentCountdown.textContent='15:00';paymentTimerId=setInterval(()=>{const left=Math.max(0,Math.ceil((PAYMENT_WINDOW_MS-(Date.now()-paymentStartedAt))/1000));const mm=String(Math.floor(left/60)).padStart(2,'0'),ss=String(left%60).padStart(2,'0');paymentCountdown.textContent=mm+':'+ss;if(left===0){stopPaymentTimer();updateVerificationUI()}},250)}
+function startPaymentTimer(testMode=false){stopPaymentTimer();paymentTestMode=!!testMode;paymentStartedAt=Date.now();paymentContext={startedAt:paymentStartedAt,total:paymentTestMode?2:expectedTotal(),orderNo:currentOrderNo};paymentTimer.style.display='block';paymentCountdown.textContent='15:00';paymentTimerId=setInterval(()=>{const left=Math.max(0,Math.ceil((PAYMENT_WINDOW_MS-(Date.now()-paymentStartedAt))/1000));const mm=String(Math.floor(left/60)).padStart(2,'0'),ss=String(left%60).padStart(2,'0');paymentCountdown.textContent=mm+':'+ss;if(left===0){stopPaymentTimer();updateVerificationUI()}},250)}
 document.getElementById('upiPay').onclick=()=>{
   const status=deliveryPinStatus();
   if(!status.valid)return showOrderError(status.message,document.getElementById('pincode'));
-  const amt=1;
+  const amt=2;
   if(!foodTotal())return showOrderError('Cart khaali hai. / Please add items before making payment.');
   if(!currentOrderNo)ensureOrderNumber();
   paymentTestMode=true;
   startPaymentTimer(true);
-  const upi='upi://pay?pa='+encodeURIComponent(UPI_ID)+'&pn='+encodeURIComponent('Hakka Bakka Punjabi Dhaba')+'&am=1.00&cu=INR&tn='+encodeURIComponent('HAKKA BAKKA TEST '+currentOrderNo);
+  const upi='upi://pay?pa='+encodeURIComponent(UPI_ID)+'&pn='+encodeURIComponent('Hakka Bakka Punjabi Dhaba')+'&am=2.00&cu=INR&tn='+encodeURIComponent('HAKKA BAKKA TEST 2 '+currentOrderNo);
   window.location.href=upi
 };
 async function verifyPaymentScreenshot(file){
@@ -1044,12 +1044,12 @@ async function sendOrderToPOS(){
     customer_phone:normalizePhone(document.getElementById('customerPhone').value)||'9999999999',
     address:null,
     pincode:null,
-    food_total:1,
+    food_total:2,
     delivery_charges:0,
-    total_amount:1,
+    total_amount:2,
     payment_status:'TEST_PAYMENT_VERIFIED',
-    special_instructions:'₹1 end-to-end test; no real order saved',
-    items:[{name:'₹1 TEST PAYMENT',price:1,qty:1}]
+    special_instructions:'₹2 end-to-end test; no real order saved',
+    items:[{name:'₹2 TEST PAYMENT',price:2,qty:1}]
   }:{
     order_no:currentOrderNo,
     source:'ONLINE',
@@ -1082,7 +1082,7 @@ document.getElementById('waSend').onclick=async()=>{
   if(!paymentTestMode&&supabaseClient&&currentUser){const saved=await saveOrderToSupabase();if(!saved){return showOrderError('Order database mein save nahi ho saka. / Your order could not be saved; please try again.')}}
   try{await sendOrderToPOS()}catch(error){console.error('POS sync:',error);return showOrderError('POS se connection nahi ho saka. / Order POS mein save nahi hua, isliye WhatsApp order send nahi kiya gaya. Please try again.');}
   if(paymentTestMode){
-    const msg='*HAKKA BAKKA ₹1 PAYMENT TEST*\n*TEST ORDER: '+currentOrderNo+'*\n\n₹1 payment screenshot verified.\nPOS test endpoint validated and rolled back.\n\nName: '+name+'\nMobile: '+phone+'\n\nPlease confirm receipt of this ₹1 test.';
+    const msg='*HAKKA BAKKA ₹2 PAYMENT TEST*\n*TEST ORDER: '+currentOrderNo+'*\n\n₹1 payment screenshot verified.\nPOS test endpoint validated and rolled back.\n\nName: '+name+'\nMobile: '+phone+'\n\nPlease confirm receipt of this ₹1 test.';
     window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
     return;
   }
