@@ -1082,7 +1082,7 @@ document.getElementById('waSend').onclick=async()=>{
   if(!paymentTestMode&&supabaseClient&&currentUser){const saved=await saveOrderToSupabase();if(!saved){return showOrderError('Order database mein save nahi ho saka. / Your order could not be saved; please try again.')}}
   try{await sendOrderToPOS()}catch(error){console.error('POS sync:',error);return showOrderError('POS se connection nahi ho saka. / Order POS mein save nahi hua, isliye WhatsApp order send nahi kiya gaya. Please try again.');}
   if(paymentTestMode){
-    const msg='*HAKKA BAKKA ₹2 PAYMENT TEST*\n*TEST ORDER: '+currentOrderNo+'*\n\n₹1 payment screenshot verified.\nPOS test endpoint validated and rolled back.\n\nName: '+name+'\nMobile: '+phone+'\n\nPlease confirm receipt of this ₹1 test.';
+    const msg='*HAKKA BAKKA ₹2 PAYMENT TEST*\n*TEST ORDER: '+currentOrderNo+'*\n\n₹2 payment screenshot verified.\nPOS test endpoint validated and rolled back.\n\nName: '+name+'\nMobile: '+phone+'\n\nPlease confirm receipt of this ₹2 test.';
     window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
     return;
   }
