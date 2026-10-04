@@ -450,7 +450,7 @@ body{background:var(--hb-cream)}
         <div class="upi-note">UPI ID: 9713545556@pthdfc</div>
         <div id="qr"></div>
         <button class="drawer-action" id="upiPay">Pay ₹2 with UPI</button>
-        <div style="font-size:12px;color:#7b1113;margin:6px 0 0;text-align:center">🧪 Test payment: ₹1. Real order amount temporarily disabled for testing.</div>
+        <div style="font-size:12px;color:#7b1113;margin:6px 0 0;text-align:center">🧪 Test payment: ₹2. Real order amount temporarily disabled for testing.</div>
         <small id="paymentStatus"></small>
         <div id="paymentTimer" style="display:none;margin:8px 0 0;padding:9px 12px;border-radius:10px;background:#fff7e6;color:#8a5a00;font-weight:800;text-align:center">⏱️ Payment window: <span id="paymentCountdown">05:00</span></div>
         <label class="label">Payment Screenshot <strong style="color:#8b1118">(Required)</strong></label>
@@ -459,7 +459,7 @@ body{background:var(--hb-cream)}
         <div id="paymentCheck" class="payment-check" aria-live="polite"><b>🔒 Payment verification required</b><span>Upload the payment screenshot. The website will check the paid amount, payment date, payment time and order number before WhatsApp order can be sent.</span></div>
       </div>
 
-      <button class="drawer-action billing-wa" id="waSend">Send ₹1 Test Order on WhatsApp</button>
+      <button class="drawer-action billing-wa" id="waSend">Send ₹2 Test Order on WhatsApp</button>
       <button class="drawer-action" type="button" onclick="runPOSIntegrationTest()" style="background:#fff8f5;color:#7b1113;border:1px dashed #7b1113">🧪 Test POS Connection (No Real Order)</button>
       <button class="drawer-action secondary" onclick="backToCart()">← Back to Cart</button>
     </div>
@@ -955,7 +955,7 @@ function showOrderError(message,field){
 }
 function setPaymentCheck(kind,title,detail){paymentCheck.className='payment-check '+kind;paymentCheck.innerHTML='<b>'+title+'</b><span>'+detail+'</span>'}
 function normalizeMoneyText(t){return t.replace(/[₹RsI|]/gi,' ').replace(/,/g,'').replace(/\s+/g,' ')}
-function findAmounts(text){const t=normalizeMoneyText(text);const out=[];const re=/(?:rs\.?\s*)?(\d{2,6}(?:\.\d{1,2})?)/gi;let m;while((m=re.exec(t))){const n=Number(m[1]);if(n>=1&&n<=200000)out.push(n)}return [...new Set(out)]}
+function findAmounts(text){const t=normalizeMoneyText(text);const out=[];const re=/(?:rs\.?\s*)?(\d{1,6}(?:\.\d{1,2})?)/gi;let m;while((m=re.exec(t))){const n=Number(m[1]);if(n>=1&&n<=200000)out.push(n)}return [...new Set(out)]}
 function parseDateCandidates(text){const t=text.replace(/\s+/g,' ');const out=[];let m;const patterns=[/(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})/g,/(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})/g,/(\d{1,2})\s+(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+(\d{4})/gi];for(const re of patterns){while((m=re.exec(t))){let d,y,mo;if(re===patterns[1]){y=+m[1];mo=+m[2];d=+m[3]}else if(re===patterns[2]){d=+m[1];const months=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];mo=months.findIndex(x=>m[2].toLowerCase().startsWith(x))+1;y=+m[3]}else{d=+m[1];mo=+m[2];y=+m[3];if(y<100)y+=2000}if(mo>=1&&mo<=12&&d>=1&&d<=31){const dt=new Date(y,mo-1,d);if(dt.getFullYear()===y&&dt.getMonth()===mo-1&&dt.getDate()===d)out.push(dt)}}}return out}
 function parseTimeCandidates(text){const t=text.replace(/\s+/g,' ');const out=[];let m;const re=/(\d{1,2})[:.](\d{2})(?:[:.](\d{2}))?\s*(AM|PM)?/gi;while((m=re.exec(t))){let h=+m[1],mi=+m[2];if(h>23||mi>59)continue;const ap=(m[4]||'').toUpperCase();if(ap==='PM'&&h<12)h+=12;if(ap==='AM'&&h===12)h=0;out.push({h,mi})}return out}
 function sameLocalDay(d,now){return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth()&&d.getDate()===now.getDate()}
