@@ -1,4 +1,4 @@
-const CACHE_NAME = "hakkabakka-v13";
+const CACHE_NAME = "hakkabakka-v14";
 
 const APP_SHELL = [
   "/",
