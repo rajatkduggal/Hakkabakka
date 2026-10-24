@@ -627,7 +627,7 @@ async function requireCustomerLogin(){
   // Customer login is OPTIONAL. Ordering is allowed with name + mandatory mobile number.
   return true;
 }
-async async function saveOrderToSupabase(){
+async function saveOrderToSupabase(){
   if(!supabaseClient||!currentUser)return false;
   const name=document.getElementById('customerName').value.trim();
   const phone=normalizePhone(document.getElementById('customerPhone').value);
