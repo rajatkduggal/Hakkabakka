@@ -963,7 +963,7 @@ function closeOrderModal(){document.getElementById('orderModal').classList.remov
 function openCart(){document.body.classList.remove('hb-billing-open');document.getElementById('drawer').classList.add('show');document.getElementById('cartView').style.display='block';document.getElementById('billingView').style.display='none';renderCart()}
 function closeCart(){document.body.classList.remove('hb-billing-open');document.getElementById('drawer').classList.remove('show')}
 function monthCode(){return ['JA','FE','MA','AP','MA','JU','JU','AU','SE','OC','NO','DE'][new Date().getMonth()]}
-function nextOrderNumber(){const now=new Date(),key='hb_order_counter_'+now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');let n=parseInt(localStorage.getItem(key)||'0',10)+1;localStorage.setItem(key,String(n));return (monthCode()+n).toUpperCase()}
+function nextOrderNumber(){const now=new Date();const y=now.getFullYear(),m=String(now.getMonth()+1).padStart(2,'0'),d=String(now.getDate()).padStart(2,'0');const random=(crypto.randomUUID?crypto.randomUUID().replace(/-/g,''):Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)).slice(0,8).toUpperCase();return ('HB-'+y+m+d+'-'+random).toUpperCase()}
 function ensureOrderNumber(){if(!currentOrderNo){currentOrderNo=nextOrderNumber()}currentOrderNo=String(currentOrderNo).toUpperCase();document.getElementById('orderNumber').textContent=currentOrderNo;saveCheckout()}
 function resetOrderNumber(){currentOrderNo='';document.getElementById('orderNumber').textContent='—'}
 async function proceedBilling(){if(!cart.length){alert('Cart is empty.');return}if(!(await requireCustomerLogin()))return;ensureOrderNumber();document.body.classList.add('hb-billing-open');const drawer=document.getElementById('drawer'),card=document.getElementById('drawerCard');drawer.classList.add('show');document.getElementById('cartView').style.display='none';document.getElementById('billingView').style.display='block';if(card)card.scrollTop=0;updateBilling()}
@@ -1195,6 +1195,7 @@ async function verifyPaymentScreenshot(file){
 document.getElementById('chooseScreenshot').addEventListener('click',()=>{if(!paymentScreenshot.disabled)paymentScreenshot.click()});
 paymentScreenshot.addEventListener('change',()=>{const f=paymentScreenshot.files&&paymentScreenshot.files[0];if(f)verifyPaymentScreenshot(f);else{paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot required hai','WhatsApp order bhejne se pehle verified payment screenshot upload karein.');updateVerificationUI()}});
 const POS_API_URL='https://hakkabakka-pos-backend-production.up.railway.app';
+const D1_API_URL='https://hb-orders-api.mail-marvelgroup.workers.dev';
 async function runPOSIntegrationTest(){
   if(!cart.length)return showOrderError('Cart khaali hai. Test ke liye pehle koi item add karein.');
   const name=document.getElementById('customerName').value.trim()||'HakkaBakka Test Customer';
@@ -1261,6 +1262,18 @@ async function sendOrderToPOS(){
     special_instructions:null,
     items:cart.map(x=>({name:x.name,price:Number(x.price),qty:1}))
   };
+  if(!isTest){
+    // Archive to Cloudflare D1 first. The order number makes retries idempotent.
+    // This is an order record, not confirmation that the UPI transfer reached the bank.
+    const archivePayload={...payload,payment_status:'SCREENSHOT_REVIEW_REQUIRED'};
+    const archiveResponse=await fetch(D1_API_URL+'/orders/online',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(archivePayload)});
+    const archiveData=await archiveResponse.json().catch(()=>null);
+    if(!archiveResponse.ok||!archiveData?.success){
+      const message=archiveData?.message||'Cloudflare order archive failed';
+      if(archiveResponse.status===409&&archiveData?.used)throw new Error('Payment reference already used'+(archiveData.order_no?' by order '+String(archiveData.order_no).toUpperCase():''));
+      throw new Error(message);
+    }
+  }
   const endpoint=isTest?'/orders/test':'/orders/online';
   const res=await fetch(POS_API_URL+endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
   const data=await res.json().catch(()=>null);
