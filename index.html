@@ -1086,9 +1086,13 @@ async function verifyPaymentScreenshot(file){
       try{
         const bitmap=await createImageBitmap(file);
         const crops=[
-          // Tight amount zone for Paytm's full-screen transaction detail view.
+          // Tight amount zone for Paytm's in-app transaction detail view.
           {x:.18,y:.17,w:.64,h:.19,scale:5},
-          // Broader upper-middle zone for the separate Paytm receipt-card layout.
+          // Paytm receipt-card: black letterbox bars push the ₹ amount lower on the image.
+          {x:.20,y:.38,w:.60,h:.17,scale:6},
+          // Paytm receipt-card: include amount-in-words line ("Thirty Five Rupees").
+          {x:.20,y:.40,w:.60,h:.23,scale:5},
+          // Broad fallback for other Paytm receipt layouts.
           {x:.04,y:.10,w:.92,h:.62,scale:3}
         ];
         let extraText='';
