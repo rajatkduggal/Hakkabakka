@@ -448,8 +448,10 @@ body{background:var(--hb-cream)}
         <h3>Pay securely with UPI</h3>
         <div class="upi-note">UPI ID: hakkabakka.jalandhar@ptyes</div>
         <div id="qr"></div>
-        <button class="drawer-action" id="upiPay">Pay Full Order Amount with UPI</button>
-        <div style="font-size:12px;color:#7b1113;margin:6px 0 0;text-align:center">Pay the exact total shown on your bill. Screenshot text matching is not bank confirmation; the restaurant will confirm receipt before preparing the order.</div>
+        <div style="font-size:14px;color:#7b1113;margin:10px 0 6px;text-align:center;font-weight:800">📲 Payment ke liye upar diye gaye QR code ko apni UPI app se scan karein.</div>
+        <div style="font-size:12px;color:#666;margin:0 0 8px;text-align:center">UPI app apne phone par khud kholein aur QR scan karke exact bill amount pay karein. Website koi UPI app automatically open nahi karegi.</div>
+        <button class="drawer-action" id="upiPay">I Have Paid — Start Screenshot Verification</button>
+        <div style="font-size:12px;color:#7b1113;margin:6px 0 0;text-align:center">Payment screenshot upload karein. Screenshot matching bank credit ka proof nahi hai; restaurant bank/UPI credit confirm karega.</div>
         <small id="paymentStatus"></small>
         <div id="paymentTimer" style="display:none;margin:8px 0 0;padding:9px 12px;border-radius:10px;background:#fff7e6;color:#8a5a00;font-weight:800;text-align:center">⏱️ Payment window: <span id="paymentCountdown">15:00</span></div>
         <label class="label">Payment Screenshot <strong style="color:#8b1118">(Required)</strong></label>
@@ -1026,8 +1028,8 @@ document.getElementById('upiPay').onclick=()=>{
   if(!Number.isFinite(amt)||amt<=0)return showOrderError('Order total invalid hai. Please review your cart.');
   paymentTestMode=false;
   startPaymentTimer(false);
-  const upi='upi://pay?pa='+encodeURIComponent(UPI_ID)+'&pn='+encodeURIComponent('Hakka Bakka Punjabi Dhaba')+'&am='+encodeURIComponent(amt.toFixed(2))+'&cu=INR&tn='+encodeURIComponent('HAKKA BAKKA '+currentOrderNo);
-  window.location.href=upi
+  setPaymentCheck('', 'Payment screenshot upload karein', 'QR scan karke payment karne ke baad clear Paytm/UPI receipt upload karein. Website UPI app automatically open nahi karegi.');
+  paymentScreenshot.scrollIntoView({behavior:'smooth',block:'center'});
 };
 async function verifyPaymentScreenshot(file){
   paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};waSend.disabled=true;
@@ -1159,27 +1161,19 @@ document.getElementById('waSend').onclick=async()=>{
   try{await sendOrderToPOS()}catch(error){console.error('POS sync:',error);return showOrderError('POS se connection nahi ho saka. / Order POS mein save nahi hua, isliye WhatsApp order send nahi kiya gaya. Please try again.');}
   if(paymentTestMode){
     const msg='*HAKKA BAKKA ₹2 PAYMENT TEST*\n*TEST ORDER: '+currentOrderNo+'*\n\n₹2 payment screenshot verified.\nPOS test endpoint validated and rolled back.\n\nName: '+name+'\nMobile: '+phone+'\n\nPlease confirm receipt of this ₹2 test.';
+    clearCart();
+    closeCart();
     window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
     return;
   }
   const grouped=[];cart.forEach(x=>{const g=grouped.find(y=>y.name===x.name&&y.price===x.price);if(g)g.qty++;else grouped.push({name:x.name,price:x.price,qty:1})});const lines=grouped.map(x=>'• '+x.name+' × '+x.qty+' - ₹'+(x.price*x.qty)).join('\n'),total=expectedTotal();
   const ref=extractPaymentReference(window.hbLastPaymentOcrText||'');
   const msg='*HAKKA BAKKA ONLINE ORDER*\n*ORDER NO: '+currentOrderNo+'*'+(ref?'\n*PAYMENT REF NO: '+ref+'*':'\n*PAYMENT REF NO: Please check attached receipt*')+'\n\n'+lines+'\n\nFood Total: ₹'+foodTotal()+'\nDelivery Charges: ₹'+deliveryCharge()+'\n*TOTAL: ₹'+total+'*\n\nName: '+name+'\nMobile: '+phone+'\nType: '+type+extra+'\n\nPlease confirm my order.';
-  const receipt=paymentScreenshot.files&&paymentScreenshot.files[0];
-  if(receipt&&navigator.share&&navigator.canShare&&navigator.canShare({files:[receipt]})){
-    try{
-      await navigator.share({files:[receipt],text:msg,title:'Hakka Bakka Order '+currentOrderNo});
-      return;
-    }catch(shareError){
-      // Do not open wa.me as a second action after the share sheet was launched.
-      if(shareError&&shareError.name==='AbortError')return;
-      alert('Receipt share nahi ho saka. WhatsApp mein order message manually bhejein aur receipt attach karein.');
-      return;
-    }
-  }
-  // Fallback: open only the text draft. Never launch this after native file sharing.
+  // WhatsApp click-to-chat opens directly, avoiding the Android share-sheet app chooser.
+  // Browsers cannot attach a local screenshot file to a wa.me draft; customer must attach it manually.
+  clearCart();
+  closeCart();
   window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
-  if(receipt)alert('Message draft khulega. Payment screenshot ko WhatsApp mein Attach > Gallery se manually attach karein. Browser direct file attachment support nahi karta.')
 };
 window.addEventListener('storage',e=>{if(e.key===CART_STORAGE_KEY){cart=loadStoredCart();renderCart()}});
 // HERO FOOD SLIDESHOW — start rotation immediately; don't wait for GitHub API lookups.
