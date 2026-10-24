@@ -1092,22 +1092,31 @@ document.getElementById('waSend').onclick=async()=>{
   window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg)
 };
 window.addEventListener('storage',e=>{if(e.key===CART_STORAGE_KEY){cart=loadStoredCart();renderCart()}});
-// HERO FOOD SLIDESHOW — resolve the exact uploaded filenames from GitHub, then rotate.
-(async function(){
-  const repo='rajatkduggal/Hakkabakka', api='https://api.github.com/repos/'+repo+'/contents/';
-  const files=[];
-  async function list(path){try{const r=await fetch(api+path,{headers:{Accept:'application/vnd.github+json'}});if(!r.ok)return [];const j=await r.json();return Array.isArray(j)?j:[]}catch(e){return []}}
-  for(const root of ['', 'images/']){for(const f of await list(root)){if(f.type==='file')files.push(f);}}
-  const norm=x=>x.toLowerCase().replace(/%20/g,' ').replace(/[_-]+/g,' ').replace(/\s+/g,' ').trim();
-  const candidates={mojito:['guava mojito','mojito'], 'masala chach':['masala chach','masalachas','chach'], 'cold coffee':['cold coffee','cold iced coffee','cold-iced-coffee','coldcoffeewithicecream','coffee plastic glass']};
-  for(const img of document.querySelectorAll('#heroSlides img[data-image-hint]')){
-    const h=img.dataset.imageHint, hs=candidates[h].map(norm);
-    let f=files.find(x=>hs.some(v=>norm(x.name)===v));
-    if(!f) f=files.find(x=>hs.some(v=>norm(x.name).includes(v)));
-    if(f) img.src='https://raw.githubusercontent.com/'+repo+'/main/'+f.path.split('/').map(encodeURIComponent).join('/');
-  }
-  const imgs=[...document.querySelectorAll('#heroSlides img')],dots=document.getElementById('heroDots');let i=0;imgs.forEach((_,k)=>{const d=document.createElement('span');if(k===0)d.classList.add('active');dots.appendChild(d)});const ds=[...dots.children];setInterval(()=>{imgs[i].classList.remove('active');ds[i].classList.remove('active');i=(i+1)%imgs.length;imgs[i].classList.add('active');ds[i].classList.add('active')},3000);
-})();
+// HERO FOOD SLIDESHOW — start rotation immediately; don't wait for GitHub API lookups.
+(function(){
+  const imgs=Array.from(document.querySelectorAll('#heroSlides img'));
+  const dots=document.getElementById('heroDots');
+  if(!imgs.length) return;
+  let i=Math.max(0,imgs.findIndex(img=>img.classList.contains('active')));
+  if(i<0)i=0;
+  imgs.forEach((img,k)=>{
+    img.classList.toggle('active',k===i);
+    if(dots){
+      const d=document.createElement('span');
+      d.classList.toggle('active',k===i);
+      d.setAttribute('aria-label','Show food photo '+(k+1));
+      dots.appendChild(d);
+    }
+  });
+  const ds=dots?Array.from(dots.children):[];
+  window.setInterval(()=>{
+    imgs[i].classList.remove('active');
+    if(ds[i])ds[i].classList.remove('active');
+    i=(i+1)%imgs.length;
+    imgs[i].classList.add('active');
+    if(ds[i])ds[i].classList.add('active');
+  },3000);
+})();;
 renderMenu();renderCart();initCustomerAuth();
 </script>
 
