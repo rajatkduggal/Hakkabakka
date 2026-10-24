@@ -467,7 +467,7 @@ body{background:var(--hb-cream)}
         <small id="paymentStatus"></small>
         <div id="paymentTimer" style="display:none;margin:8px 0 0;padding:9px 12px;border-radius:10px;background:#fff7e6;color:#8a5a00;font-weight:800;text-align:center">⏱️ Payment window: <span id="paymentCountdown">15:00</span></div>
         
-        <input class="field billing-field" id="paymentScreenshot" type="file" accept="image/*" aria-describedby="paymentCheck" disabled>
+        <button type="button" class="drawer-action" id="chooseScreenshot" style="display:none;background:#333">📎 Choose Payment Screenshot</button><input class="field billing-field" id="paymentScreenshot" type="file" accept="image/*" aria-describedby="paymentCheck" style="display:none" disabled>
         <div id="paymentCheck" class="payment-check" aria-live="polite" hidden></div>
       </div>
 
@@ -1048,10 +1048,10 @@ document.getElementById('upiPay').onclick=()=>{
   if(!Number.isFinite(amt)||amt<=0)return showOrderError('Order total invalid hai. Please review your cart.');
   paymentTestMode=false;
   startPaymentTimer(false);
-  setPaymentCheck('', 'Payment screenshot upload karein', 'Ab Choose File par tap karke successful Paytm/UPI receipt select karein.');
+  setPaymentCheck('', 'Payment screenshot upload karein', 'Ab neeche “Choose Payment Screenshot” par tap karke successful Paytm/UPI receipt select karein.');
   paymentScreenshot.disabled=false;
-  paymentScreenshot.scrollIntoView({behavior:'smooth',block:'center'});
-  paymentScreenshot.click();
+  const chooseBtn=document.getElementById('chooseScreenshot');
+  if(chooseBtn){chooseBtn.style.display='block';chooseBtn.scrollIntoView({behavior:'smooth',block:'center'});}
 };
 async function verifyPaymentScreenshot(file){
   paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};waSend.disabled=true;
@@ -1144,11 +1144,18 @@ async function verifyPaymentScreenshot(file){
     const timeCandidates=parseTimeCandidates(text);
     const timeMatched=timeCandidates.some(x=>paymentTimeInWindow(x.h,x.mi,now));
     const receiptShowsSuccess=/paid\s*successfully|payment\s*successful|transaction\s*successful|successful\s*payment/i.test(text);
+    // Paytm's full-screen receipt sometimes shows the large amount and green success tick
+    // but OCR misses the amount. If the receipt identifies the exact HakkaBakka UPI ID/payee,
+    // is dated today, and shows a time inside the active payment window, don't fail only
+    // because OCR couldn't read the amount. This is screenshot validation, not bank confirmation.
+    const payeeMatches=/hakkabakka\.jalandhar@ptyes|mr\s*yishu\s*duggal|hakka\s*bakka/i.test(text);
+    const trustedPaytmLayout=/paytm/i.test(text)&&payeeMatches&&paymentVerification.date&&timeMatched;
+    if(!paymentVerification.amount&&trustedPaytmLayout)paymentVerification.amount=true;
     // Paytm receipts may OCR the 12-hour timestamp inconsistently; when the same-day receipt clearly says payment succeeded, don't reject solely on OCR time parsing. This is only screenshot text validation, not bank confirmation.
     paymentVerification.time=timeMatched||(receiptShowsSuccess&&paymentVerification.date);
     paymentVerification.order=true; // Order reference is optional; some valid Paytm receipt layouts omit or OCR-misread it.
     paymentVerification.ocr=true;
-    if(updateVerificationUI())setPaymentCheck('ok','✅ Screenshot details match','Amount, date, time and order reference match. This is not bank-side payment confirmation; HakkaBakka must confirm the credit in its UPI/bank account before preparing the order.');
+    if(updateVerificationUI())setPaymentCheck('ok','✅ Screenshot details match','Screenshot accepted. OCR may not read the amount on some Paytm layouts; please confirm the actual credit in HakkaBakka’s UPI/bank account before preparing the order. This is not bank-side payment confirmation.');
     else {
       const detectedAmounts=findAmounts(text);
       const problems=[];
@@ -1162,6 +1169,7 @@ async function verifyPaymentScreenshot(file){
     }
   }catch(e){paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot verify nahi ho saka','Clear screenshot upload karein. Amount, date, time aur Order No. '+currentOrderNo+' visible hona chahiye.');updateVerificationUI()}
 }
+document.getElementById('chooseScreenshot').addEventListener('click',()=>{if(!paymentScreenshot.disabled)paymentScreenshot.click()});
 paymentScreenshot.addEventListener('change',()=>{const f=paymentScreenshot.files&&paymentScreenshot.files[0];if(f)verifyPaymentScreenshot(f);else{paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot required hai','WhatsApp order bhejne se pehle verified payment screenshot upload karein.');updateVerificationUI()}});
 const POS_API_URL='https://hakkabakka-pos-backend-production.up.railway.app';
 async function runPOSIntegrationTest(){
