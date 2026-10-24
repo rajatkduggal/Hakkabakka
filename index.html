@@ -1039,7 +1039,8 @@ async function verifyPaymentScreenshot(file){
     paymentVerification.ocr=true;
     if(updateVerificationUI())setPaymentCheck('ok','✅ Screenshot details match','The screenshot text matches the order amount, date and time. This is not bank-side payment confirmation; HakkaBakka must confirm the credit in its UPI/bank account before preparing the order.');
     else {
-      const checks='Amount: '+(paymentVerification.amount?'OK':'NOT MATCHED')+' • Date: '+(paymentVerification.date?'OK':'NOT MATCHED')+' • Time: '+(paymentVerification.time?'OK':'NOT MATCHED')+' • Payment session: '+(hasCurrentPaymentContext()?'ACTIVE':'EXPIRED');
+      const detectedAmounts=findAmounts(text);
+      const checks='Expected amount: ₹'+Number(total).toFixed(2)+' • OCR amounts: '+(detectedAmounts.length?detectedAmounts.map(n=>'₹'+Number(n).toFixed(2)).join(', '):'none detected')+' • Amount: '+(paymentVerification.amount?'OK':'NOT MATCHED')+' • Date: '+(paymentVerification.date?'OK':'NOT MATCHED')+' • Time: '+(paymentVerification.time?'OK':'NOT MATCHED')+' • Payment session: '+(hasCurrentPaymentContext()?'ACTIVE':'EXPIRED');
       setPaymentCheck('bad','Screenshot details match nahi hue',checks+'. Clear Paytm receipt upload karein. If the amount/date are not matched, OCR cannot read those fields clearly; if session expired, press “Pay Full Order Amount with UPI” again before uploading.'); 
     }
   }catch(e){paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot verify nahi ho saka','Clear screenshot upload karein. Amount, date, time aur Order No. '+currentOrderNo+' visible hona chahiye.');updateVerificationUI()}
