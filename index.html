@@ -1249,58 +1249,22 @@ async function verifyPaymentReference(reference){
 }
 document.getElementById('chooseScreenshot').addEventListener('click',()=>{if(!paymentScreenshot.disabled)paymentScreenshot.click()});
 paymentScreenshot.addEventListener('change',()=>{const f=paymentScreenshot.files&&paymentScreenshot.files[0];if(f)verifyPaymentScreenshot(f);else{paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot required hai','WhatsApp order bhejne se pehle verified payment screenshot upload karein.');updateVerificationUI()}});
-const POS_API_URL='https://hakkabakka-pos-backend-production.up.railway.app';
+const CLOUDFLARE_ORDERS_API='https://hb-orders-api.mail-marvelgroup.workers.dev';
 async function runPOSIntegrationTest(){
-  if(!cart.length)return showOrderError('Cart khaali hai. Test ke liye pehle koi item add karein.');
-  const name=document.getElementById('customerName').value.trim()||'HakkaBakka Test Customer';
-  const phone=normalizePhone(document.getElementById('customerPhone').value);
-  const type=document.getElementById('orderType').value||'Pickup';
-  const delivery=type==='Home Delivery'?deliveryCharge():0;
-  const total=foodTotal()+delivery;
-  const payload={
-    order_no:'TEST-'+Date.now(),
-    source:'TEST',
-    order_type:type,
-    customer_name:name,
-    customer_phone:/^\d{10}$/.test(phone)?phone:'9999999999',
-    address:type==='Home Delivery'?document.getElementById('address').value.trim():null,
-    pincode:type==='Home Delivery'?pin():null,
-    food_total:foodTotal(),
-    delivery_charges:delivery,
-    total_amount:total,
-    payment_status:'TEST_NOT_CHARGED',
-    special_instructions:null,
-    items:cart.map(x=>({name:x.name,price:Number(x.price),qty:1}))
-  };
   try{
-    const res=await fetch(POS_API_URL+'/orders/test',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const res=await fetch(CLOUDFLARE_ORDERS_API+'/health',{method:'GET',cache:'no-store'});
     const data=await res.json().catch(()=>null);
-    if(!res.ok||!data?.success)throw new Error(data?.message||'POS integration test failed');
-    setPaymentCheck('ok','✅ POS Integration Test Passed','Railway POS + MySQL transaction validated. Test order was rolled back; no real order was saved and WhatsApp was not opened.');
+    if(!res.ok||!data?.success||data.database!=='connected')throw new Error(data?.message||'Cloudflare order database unavailable');
+    setPaymentCheck('ok','✅ Order database connected','Cloudflare D1 is reachable. No test order was created.');
   }catch(error){
-    console.error('POS test:',error);
-    setPaymentCheck('bad','❌ POS Integration Test Failed',error.message||'POS test failed.');
+    console.error('Order database health:',error);
+    setPaymentCheck('bad','❌ Order database unavailable',error.message||'Cloudflare order database check failed.');
   }
 }
 async function sendOrderToPOS(){
   const type=document.getElementById('orderType').value;
-  const isTest=paymentTestMode;
-  const testItem=cart[0];
-  const payload=isTest?{
-    order_no:'TEST-ONLINE-'+currentOrderNo,
-    source:'TEST',
-    order_type:type,
-    customer_name:document.getElementById('customerName').value.trim()||'HakkaBakka Test Customer',
-    customer_phone:normalizePhone(document.getElementById('customerPhone').value)||'9999999999',
-    address:null,
-    pincode:null,
-    food_total:2,
-    delivery_charges:0,
-    total_amount:2,
-    payment_status:'TEST_PAYMENT_VERIFIED',
-    special_instructions:'₹2 end-to-end test; no real order saved',
-    items:[{name:'₹2 TEST PAYMENT',price:2,qty:1}]
-  }:{
+  const paymentReference=extractPaymentReference(window.hbLastPaymentOcrText||'');
+  const payload={
     order_no:currentOrderNo,
     source:'ONLINE',
     order_type:type,
@@ -1311,15 +1275,15 @@ async function sendOrderToPOS(){
     food_total:foodTotal(),
     delivery_charges:deliveryCharge(),
     total_amount:expectedTotal(),
-    payment_status:'PAYMENT_VERIFIED_SCREENSHOT',
-    payment_reference:extractPaymentReference(window.hbLastPaymentOcrText||''),
+    payment_status:'SCREENSHOT_REVIEW_REQUIRED',
+    payment_reference:paymentReference,
     special_instructions:null,
     items:cart.map(x=>({name:x.name,price:Number(x.price),qty:1}))
   };
-  const endpoint=isTest?'/orders/test':'/orders/online';
-  const res=await fetch(POS_API_URL+endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  if(!paymentReference||paymentReference.replace(/\\D/g,'').length<8)throw new Error('UPI payment reference could not be read. Please upload the receipt again.');
+  const res=await fetch(CLOUDFLARE_ORDERS_API+'/orders/online',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),cache:'no-store'});
   const data=await res.json().catch(()=>null);
-  if(!res.ok||!data?.success)throw new Error(data?.message||'POS order sync failed');
+  if(!res.ok||!data?.success)throw new Error(data?.message||'Order could not be saved in Cloudflare database');
   return data;
 }
 document.getElementById('waSend').onclick=async()=>{
