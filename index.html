@@ -1067,10 +1067,14 @@ async function verifyPaymentScreenshot(file){
       try{
         const bitmap=await createImageBitmap(file);
         const crop=document.createElement('canvas');
-        const sx=Math.round(bitmap.width*0.08), sy=Math.round(bitmap.height*0.25);
-        const sw=Math.round(bitmap.width*0.84), sh=Math.round(bitmap.height*0.42);
-        crop.width=sw*2; crop.height=sh*2;
+        // Paytm receipt's large amount can sit above the old crop's starting point.
+        // OCR the upper/central receipt area at 3x scale, including amount and order-note lines.
+        const sx=Math.round(bitmap.width*0.04), sy=Math.round(bitmap.height*0.10);
+        const sw=Math.round(bitmap.width*0.92), sh=Math.round(bitmap.height*0.62);
+        crop.width=sw*3; crop.height=sh*3;
         const ctx=crop.getContext('2d',{willReadFrequently:true});
+        ctx.imageSmoothingEnabled=true;
+        ctx.imageSmoothingQuality='high';
         ctx.drawImage(bitmap,sx,sy,sw,sh,0,0,crop.width,crop.height);
         bitmap.close();
         const cropResult=await Tesseract.recognize(crop,'eng');
