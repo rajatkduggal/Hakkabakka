@@ -867,7 +867,27 @@ const data=[
 const menuEl=document.getElementById('menu');
 const esc=s=>String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
 function imageTag(img,name){img=String(img||'');name=String(name||'');const candidates=[];const add=u=>{if(u&&!candidates.includes(u))candidates.push(u)};if(img)add(img);if(img&&!img.startsWith('images/'))add('images/'+img);if(img)add('https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/'+img);if(img&&!img.startsWith('images/'))add('https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/'+img);if(!candidates.length)candidates.push('https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/food-placeholder.jpg');const enc=u=>encodeURI(u).replace(/'/g,'%27');const list=JSON.stringify(candidates.map(enc)).replace(/'/g,'&#39;');return `<img src="${enc(candidates[0])}" alt="${esc(name)}" loading="lazy" data-candidates='${list}' data-try="0" onerror="const a=JSON.parse(this.dataset.candidates),i=+this.dataset.try+1;this.dataset.try=i;if(i<a.length)this.src=a[i];else this.style.visibility='hidden';">`}
-function renderMenu(){menuEl.innerHTML=data.map(([section,list])=>`<section class="menu-section"><h2>${esc(section)}</h2><div class="menu-grid">${list.map(x=>{const n=x[0],p=x[1],im=x[2];if(Array.isArray(p))return `<article class="menu-card">${imageTag(im,n)}<div class="menu-body"><h3>${esc(n)}</h3><div class="price">₹${p[0]} / ₹${p[1]}</div><div class="variant"><button class="add" data-name="${esc(n)} - Half" data-price="${p[0]}">Half ₹${p[0]}</button><button class="add" data-name="${esc(n)} - Full" data-price="${p[1]}">Full ₹${p[1]}</button></div></div></article>`;if(Number(p)===0)return `<article class="menu-card">${imageTag(im,n)}<div class="menu-body"><h3>${esc(n)}</h3><div class="price">Price not listed</div></div></article>`;return `<article class="menu-card">${imageTag(im,n)}<div class="menu-body"><h3>${esc(n)}</h3><div class="price">₹${p}</div><button class="add" data-name="${esc(n)}" data-price="${p}">Add to Order</button></div></article>`}).join('')}</div></section>`).join('')}
+function renderMenu(){
+  try {
+    if(!menuEl){console.error('HakkaBakka menu container #menu missing');return;}
+    if(!Array.isArray(data)||!data.length){menuEl.innerHTML='<p style="padding:20px;text-align:center">Menu is temporarily unavailable. Please refresh the page.</p>';return;}
+    const sections=data.filter(row=>Array.isArray(row)&&row.length>=2&&Array.isArray(row[1]));
+    const html=sections.map(([section,list])=>{
+      const cards=list.filter(x=>Array.isArray(x)&&x.length>=2).map(x=>{
+        const n=x[0],p=x[1],im=x[2];
+        if(Array.isArray(p))return `<article class="menu-card">${imageTag(im,n)}<div class="menu-body"><h3>${esc(n)}</h3><div class="price">₹${p[0]} / ₹${p[1]}</div><div class="variant"><button class="add" data-name="${esc(n)} - Half" data-price="${p[0]}">Half ₹${p[0]}</button><button class="add" data-name="${esc(n)} - Full" data-price="${p[1]}">Full ₹${p[1]}</button></div></div></article>`;
+        if(Number(p)===0)return `<article class="menu-card">${imageTag(im,n)}<div class="menu-body"><h3>${esc(n)}</h3><div class="price">Price not listed</div></div></article>`;
+        return `<article class="menu-card">${imageTag(im,n)}<div class="menu-body"><h3>${esc(n)}</h3><div class="price">₹${p}</div><button class="add" data-name="${esc(n)}" data-price="${p}">Add to Order</button></div></article>`;
+      }).join('');
+      return cards ? `<section class="menu-section"><h2>${esc(section)}</h2><div class="menu-grid">${cards}</div></section>` : '';
+    }).join('');
+    menuEl.innerHTML=html || '<p style="padding:20px;text-align:center">Menu items could not be loaded. Please refresh the page.</p>';
+    refreshButtons();
+  } catch(err) {
+    console.error('HakkaBakka renderMenu failed:',err);
+    if(menuEl) menuEl.innerHTML='<p style="padding:20px;text-align:center;color:#8b1118">Menu load error. Please refresh this page. If the problem continues, contact HakkaBakka.</p>';
+  }
+}
 function foodTotal(){return cart.reduce((s,x)=>s+x.price,0)}
 function pin(){return /^144\d{3}$/.test(pincode.value)?Number(pincode.value):null}
 function deliveryPinStatus(){
@@ -1222,6 +1242,22 @@ renderMenu();renderCart();initCustomerAuth();
     var button = event.target && event.target.closest ? event.target.closest('#whatsappOrderChoice') : null;
     if (button) window.hbForceOpenMenu(event);
   }, true);
+})();
+</script>
+
+
+<!-- MENU RENDER RETRY SAFETY -->
+<script>
+(function(){
+  function retryMenuRender(){
+    var menu=document.getElementById('menu');
+    if(!menu)return;
+    if(!menu.children.length && typeof window.renderMenu==='function'){
+      try{window.renderMenu()}catch(e){console.error('Menu retry failed',e)}
+    }
+  }
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(retryMenuRender,250)});
+  window.addEventListener('pageshow',function(){setTimeout(retryMenuRender,250)});
 })();
 </script>
 
