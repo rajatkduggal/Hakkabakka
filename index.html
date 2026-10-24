@@ -1168,15 +1168,27 @@ async function verifyPaymentScreenshot(file){
     if(!paymentVerification.amount&&trustedPaytmLayout)paymentVerification.amount=true;
     // Paytm receipts may OCR the 12-hour timestamp inconsistently; when the same-day receipt clearly says payment succeeded, don't reject solely on OCR time parsing. This is only screenshot text validation, not bank confirmation.
     paymentVerification.time=timeMatched||(receiptShowsSuccess&&paymentVerification.date);
-    const paymentRef=extractPaymentReference(text);
+    let paymentRef=extractPaymentReference(text);
     if(!paymentRef){
       paymentVerification.order=false;
-      setPaymentCheck('bad','Payment reference read nahi hua','Paytm receipt par Ref. No./UPI reference clearly dikhna chahiye. Fresh receipt upload karein.');
+      paymentCheck.innerHTML='<b>UPI reference auto-read nahi hua</b><span>Paytm receipt par “Ref No” ke saamne ka 12-digit number daalein. Example: 317609760844</span><input id="manualPaymentRef" inputmode="numeric" autocomplete="off" maxlength="20" placeholder="UPI Ref. No. (digits only)" style="display:block;width:100%;box-sizing:border-box;margin:10px 0;padding:12px;border:1px solid #c88;border-radius:8px;font-size:16px"><button type="button" id="verifyManualPaymentRef" style="display:block;width:100%;padding:12px;border:0;border-radius:8px;background:#7b1113;color:white;font-weight:800">Verify UPI Reference</button>';
+      paymentCheck.hidden=false;paymentCheck.className='payment-check bad';
+      document.getElementById('verifyManualPaymentRef').onclick=async()=>{
+        const manual=document.getElementById('manualPaymentRef').value.replace(/\\D/g,'');
+        if(manual.length<10||manual.length>20){setPaymentCheck('bad','Reference number galat hai','Receipt se poora UPI Ref. No. daalein (10–20 digits).');return;}
+        await verifyManualPaymentReference(manual);
+      };
       updateVerificationUI();
       return;
     }
+    await verifyManualPaymentReference(paymentRef);
+    return;
+  }catch(e){paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot verify nahi ho saka','Clear screenshot upload karein. Amount, date, time aur Order No. '+currentOrderNo+' visible hona chahiye.');updateVerificationUI()}
+}
+async function verifyManualPaymentReference(reference){
+    const paymentRef=String(reference||'').replace(/\\D/g,'');
     try{
-      const refResponse=await fetch(POS_API_URL+'/orders/payment-reference/'+encodeURIComponent(paymentRef.replace(/\\D/g,'')));
+      const refResponse=await fetch(POS_API_URL+'/orders/payment-reference/'+encodeURIComponent(paymentRef));
       const refData=await refResponse.json().catch(()=>null);
       if(!refResponse.ok||!refData?.success)throw new Error(refData?.message||'Payment reference lookup failed');
       if(refData.used){
@@ -1193,19 +1205,16 @@ async function verifyPaymentScreenshot(file){
       return;
     }
     paymentVerification.ocr=true;
-    if(updateVerificationUI())setPaymentCheck('ok','✅ Screenshot details match','Screenshot accepted and payment reference is not already recorded. Please still confirm actual credit in HakkaBakka’s UPI/bank account before preparing the order. This is not bank-side payment confirmation.');
+    if(updateVerificationUI())setPaymentCheck('ok','✅ Screenshot details match','Screenshot details accepted and reference is not already recorded. Confirm actual credit in HakkaBakka’s UPI/bank account before preparing the order. This is not bank-side payment confirmation.');
     else {
-      const detectedAmounts=findAmounts(text);
       const problems=[];
-      if(!paymentVerification.amount)problems.push('Amount match nahi hua. Expected ₹'+Number(total).toFixed(2)+(detectedAmounts.length?'; screenshot mein '+detectedAmounts.map(n=>'₹'+Number(n).toFixed(2)).join(', ')+' mila.':'; screenshot mein amount read nahi hua.'));
+      if(!paymentVerification.amount)problems.push('Amount match nahi hua. Expected ₹'+Number(paymentContext?.total||expectedTotal()).toFixed(2)+'.');
       if(!paymentVerification.date)problems.push('Payment date aaj ki date se match nahi hui ya read nahi hui.');
       if(!paymentVerification.time)problems.push('Payment time current payment window se match nahi hua ya read nahi hua.');
-      if(!paymentVerification.order)problems.push('Order reference match nahi hua. Is order ke QR se payment karein aur isi order ka fresh receipt upload karein.');
-      if(!hasCurrentPaymentContext())problems.push('Payment session expire ho gaya. QR dobara generate karke screenshot upload karein.');
-      if(!problems.length)problems.push('Screenshot clear nahi hai. Paytm/UPI ka original successful payment receipt upload karein.');
-      setPaymentCheck('bad','Screenshot details match nahi hue',problems.join(' ')); 
+      if(!hasCurrentPaymentContext())problems.push('Payment session expire ho gaya. QR dobara generate karein.');
+      if(!problems.length)problems.push('Screenshot details match nahi hue.');
+      setPaymentCheck('bad','Screenshot details match nahi hue',problems.join(' '));
     }
-  }catch(e){paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot verify nahi ho saka','Clear screenshot upload karein. Amount, date, time aur Order No. '+currentOrderNo+' visible hona chahiye.');updateVerificationUI()}
 }
 document.getElementById('chooseScreenshot').addEventListener('click',()=>{if(!paymentScreenshot.disabled)paymentScreenshot.click()});
 paymentScreenshot.addEventListener('change',()=>{const f=paymentScreenshot.files&&paymentScreenshot.files[0];if(f)verifyPaymentScreenshot(f);else{paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot required hai','WhatsApp order bhejne se pehle verified payment screenshot upload karein.');updateVerificationUI()}});
