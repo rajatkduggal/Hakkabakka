@@ -1241,11 +1241,11 @@ async function verifyPaymentReference(reference){
       if(!refResponse.ok||!refData?.success)throw new Error(refData?.message||'Payment reference lookup failed');
       if(refData.used){
         paymentVerification.order=false;
-        setPaymentCheck('bad','⚠️ THIS PAYMENT ALREADY USED, PLEASE ATTACH NEW RECEIPT','');
-        const usedBox=document.getElementById('paymentCheckMessage')||document.querySelector('[id*="paymentCheck"] .message');
-        if(usedBox){usedBox.textContent='';}
-        const usedTitle=document.querySelector('.payment-check-title');
-        if(usedTitle){usedTitle.textContent='THIS PAYMENT ALREADY USED, PLEASE ATTACH NEW RECEIPT';usedTitle.style.cssText='color:#b00020;font-weight:900;font-size:20px;animation:hbPaymentFlash .8s steps(2,start) infinite';}
+        setPaymentCheck('bad','THIS PAYMENT ALREADY USED, PLEASE ATTACH NEW RECEIPT','');
+        const usedTitle=paymentCheck.querySelector('b');
+        const usedDetail=paymentCheck.querySelector('span');
+        if(usedTitle){usedTitle.style.cssText='display:block;color:#b00020;font-weight:900;font-size:20px;line-height:1.4;animation:hbPaymentFlash .8s steps(2,start) infinite';}
+        if(usedDetail){usedDetail.style.display='none';}
         updateVerificationUI();
         return;
       }
