@@ -1076,15 +1076,16 @@ async function verifyPaymentScreenshot(file){
     const receiptShowsSuccess=/paid\s*successfully|payment\s*successful|transaction\s*successful|successful\s*payment/i.test(text);
     // Paytm receipts may OCR the 12-hour timestamp inconsistently; when the same-day receipt clearly says payment succeeded, don't reject solely on OCR time parsing. This is only screenshot text validation, not bank confirmation.
     paymentVerification.time=timeMatched||(receiptShowsSuccess&&paymentVerification.date);
-    paymentVerification.order=true;
+    paymentVerification.order=orderNoMatches(text);
     paymentVerification.ocr=true;
-    if(updateVerificationUI())setPaymentCheck('ok','✅ Screenshot details match','The screenshot text matches the order amount, date and time. This is not bank-side payment confirmation; HakkaBakka must confirm the credit in its UPI/bank account before preparing the order.');
+    if(updateVerificationUI())setPaymentCheck('ok','✅ Screenshot details match','Amount, date, time and order reference match. This is not bank-side payment confirmation; HakkaBakka must confirm the credit in its UPI/bank account before preparing the order.');
     else {
       const detectedAmounts=findAmounts(text);
       const problems=[];
       if(!paymentVerification.amount)problems.push('Amount match nahi hua. Expected ₹'+Number(total).toFixed(2)+(detectedAmounts.length?'; screenshot mein '+detectedAmounts.map(n=>'₹'+Number(n).toFixed(2)).join(', ')+' mila.':'; screenshot mein amount read nahi hua.'));
       if(!paymentVerification.date)problems.push('Payment date aaj ki date se match nahi hui ya read nahi hui.');
       if(!paymentVerification.time)problems.push('Payment time current payment window se match nahi hua ya read nahi hua.');
+      if(!paymentVerification.order)problems.push('Order reference match nahi hua. Is order ke QR se payment karein aur isi order ka fresh receipt upload karein.');
       if(!hasCurrentPaymentContext())problems.push('Payment session expire ho gaya. QR dobara generate karke screenshot upload karein.');
       if(!problems.length)problems.push('Screenshot clear nahi hai. Paytm/UPI ka original successful payment receipt upload karein.');
       setPaymentCheck('bad','Screenshot details match nahi hue',problems.join(' ')); 
