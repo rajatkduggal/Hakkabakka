@@ -335,7 +335,7 @@ body{background:var(--hb-cream)}
 <div class="modal" id="orderModal" onclick="if(event.target===this)closeOrderModal()">
   <div class="modal-card">
     <div class="modal-head"><h2>Choose how to order</h2><button class="close" onclick="closeOrderModal()">✕</button></div>
-    <button id="whatsappOrderChoice" class="order-choice wa" type="button" onclick="openMenu()"><span class="icon">W</span><span class="choice-copy">WhatsApp Order<small>Open Online Menu &amp; send your order directly to WhatsApp</small></span></button>
+    <button id="whatsappOrderChoice" class="order-choice wa" type="button" onclick="return window.hbForceOpenMenu ? window.hbForceOpenMenu(event) : openMenu()"><span class="icon">W</span><span class="choice-copy">WhatsApp Order<small>Open Online Menu &amp; send your order directly to WhatsApp</small></span></button>
     <a class="order-choice zo" href="https://zomato.onelink.me/xqzv/7948ndtj" target="_blank" rel="noopener"><span class="icon">Z</span><span class="choice-copy">Order on Zomato<small>Open Hakka Bakka on Zomato</small></span></a>
     <a class="order-choice sw" href="https://www.swiggy.com/menu/1400828?source=sharing" target="_blank" rel="noopener"><span class="icon">S</span><span class="choice-copy">Order on Swiggy<small>Open Hakka Bakka on Swiggy</small></span></a>
   </div>
@@ -1190,5 +1190,40 @@ renderMenu();renderCart();initCustomerAuth();
 
 
 
-\n</body>
+\n
+<!-- WHATSAPP MENU BUTTON HARD FIX -->
+<script>
+(function () {
+  window.hbForceOpenMenu = function (event) {
+    if (event) { event.preventDefault(); event.stopPropagation(); }
+    var modal = document.getElementById('orderModal');
+    var home = document.getElementById('home');
+    var menu = document.getElementById('menuScreen');
+    if (modal) modal.classList.remove('show');
+    document.body.classList.add('hb-menu-open');
+    if (home) {
+      home.classList.add('menu-hidden');
+      home.style.setProperty('display', 'none', 'important');
+      home.style.setProperty('visibility', 'hidden', 'important');
+    }
+    if (menu) {
+      menu.classList.add('menu-visible');
+      menu.style.setProperty('display', 'block', 'important');
+      menu.style.setProperty('visibility', 'visible', 'important');
+    }
+    var fab = document.getElementById('cartFab');
+    if (fab) fab.style.display = 'block';
+    try { if (typeof renderMenu === 'function') renderMenu(); } catch (err) { console.error('Menu render issue:', err); }
+    try { if (typeof renderCart === 'function') renderCart(); } catch (err) { console.error('Cart render issue:', err); }
+    window.scrollTo(0, 0);
+    return false;
+  };
+  document.addEventListener('click', function (event) {
+    var button = event.target && event.target.closest ? event.target.closest('#whatsappOrderChoice') : null;
+    if (button) window.hbForceOpenMenu(event);
+  }, true);
+})();
+</script>
+
+</body>
 </html>
