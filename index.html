@@ -1219,7 +1219,7 @@ async function verifyPaymentScreenshot(file){
 async function verifyPaymentReference(reference){
     const paymentRef=String(reference||'').replace(/\D/g,'');
     try{
-      const refResponse=await fetch(POS_API_URL+'/orders/payment-reference/'+encodeURIComponent(paymentRef));
+      const refResponse=await fetch('https://hb-orders-api.mail-marvelgroup.workers.dev/orders/payment-reference/'+encodeURIComponent(paymentRef),{method:'GET',cache:'no-store'});
       const refData=await refResponse.json().catch(()=>null);
       if(!refResponse.ok||!refData?.success)throw new Error(refData?.message||'Payment reference lookup failed');
       if(refData.used){
@@ -1231,7 +1231,7 @@ async function verifyPaymentReference(reference){
       paymentVerification.order=true;
     }catch(refError){
       paymentVerification.order=false;
-      setPaymentCheck('bad','Payment reference check nahi ho saka','Internet/POS server check karke dobara screenshot upload karein. Duplicate payment rokne ke liye order abhi send nahi kiya ja sakta.');
+      setPaymentCheck('bad','Payment reference check nahi ho saka','Cloudflare payment-check service se connection nahi hua. Internet check karke dobara screenshot upload karein. Duplicate payment rokne ke liye order abhi send nahi kiya ja sakta.');
       updateVerificationUI();
       return;
     }
