@@ -1088,10 +1088,19 @@ async function verifyPaymentScreenshot(file){
           extraText+='\n'+(cropResult.data.text||'');
           text+='\n'+(cropResult.data.text||'');
           detectedAmounts=findAmounts(text);
-          // Tight amount crop: permit the expected whole-number amount even if OCR misses ₹
-          // and the success phrase, but only when the exact amount appears as a standalone token.
+          // Paytm's prominent amount is sometimes missed by normal OCR (₹ symbol/font/layout).
+          // Re-read the same enlarged amount crop with a digits-only whitelist and single-line mode.
+          let numericCropText='';
+          try{
+            const numericResult=await Tesseract.recognize(crop,'eng',{
+              tessedit_pageseg_mode:'7',
+              tessedit_char_whitelist:'0123456789.,'
+            });
+            numericCropText=String(numericResult.data.text||'').replace(/,/g,'');
+            text+='\n'+numericCropText;
+          }catch(numericOcrError){}
           const expectedWhole=Number(total).toFixed(2).replace(/\.00$/,'');
-          const amountZone=String(cropResult.data.text||'').replace(/,/g,'');
+          const amountZone=(String(cropResult.data.text||'')+'\n'+numericCropText).replace(/,/g,'');
           const exactWhole=new RegExp('(?:^|[^\\d.])'+expectedWhole+'(?:\\.0{1,2})?(?![\\d.])').test(amountZone);
           const exactDecimal=new RegExp('(?:^|[^\\d.])'+Number(total).toFixed(2).replace('.','\\.')+'(?!\\d)').test(amountZone);
           if(exactWhole||exactDecimal){
