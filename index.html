@@ -963,7 +963,7 @@ function closeOrderModal(){document.getElementById('orderModal').classList.remov
 function openCart(){document.body.classList.remove('hb-billing-open');document.getElementById('drawer').classList.add('show');document.getElementById('cartView').style.display='block';document.getElementById('billingView').style.display='none';renderCart()}
 function closeCart(){document.body.classList.remove('hb-billing-open');document.getElementById('drawer').classList.remove('show')}
 function monthCode(){return ['JA','FE','MA','AP','MA','JU','JU','AU','SE','OC','NO','DE'][new Date().getMonth()]}
-function nextOrderNumber(){const now=new Date(),key='hb_order_counter_'+now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');let n=parseInt(localStorage.getItem(key)||'0',10)+1;localStorage.setItem(key,String(n));return monthCode().toLowerCase()+n}
+function nextOrderNumber(){const now=new Date(),key='hb_order_counter_'+now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');let n=parseInt(localStorage.getItem(key)||'0',10)+1;localStorage.setItem(key,String(n));return (monthCode()+n).toUpperCase()}
 function ensureOrderNumber(){if(!currentOrderNo){currentOrderNo=nextOrderNumber()}document.getElementById('orderNumber').textContent=currentOrderNo;saveCheckout()}
 function resetOrderNumber(){currentOrderNo='';document.getElementById('orderNumber').textContent='—'}
 async function proceedBilling(){if(!cart.length){alert('Cart is empty.');return}if(!(await requireCustomerLogin()))return;ensureOrderNumber();document.body.classList.add('hb-billing-open');const drawer=document.getElementById('drawer'),card=document.getElementById('drawerCard');drawer.classList.add('show');document.getElementById('cartView').style.display='none';document.getElementById('billingView').style.display='block';if(card)card.scrollTop=0;updateBilling()}
@@ -1153,9 +1153,32 @@ async function verifyPaymentScreenshot(file){
     if(!paymentVerification.amount&&trustedPaytmLayout)paymentVerification.amount=true;
     // Paytm receipts may OCR the 12-hour timestamp inconsistently; when the same-day receipt clearly says payment succeeded, don't reject solely on OCR time parsing. This is only screenshot text validation, not bank confirmation.
     paymentVerification.time=timeMatched||(receiptShowsSuccess&&paymentVerification.date);
-    paymentVerification.order=true; // Order reference is optional; some valid Paytm receipt layouts omit or OCR-misread it.
+    const paymentRef=extractPaymentReference(text);
+    if(!paymentRef){
+      paymentVerification.order=false;
+      setPaymentCheck('bad','Payment reference read nahi hua','Paytm receipt par Ref. No./UPI reference clearly dikhna chahiye. Fresh receipt upload karein.');
+      updateVerificationUI();
+      return;
+    }
+    try{
+      const refResponse=await fetch(POS_API_URL+'/orders/payment-reference/'+encodeURIComponent(paymentRef.replace(/\\D/g,'')));
+      const refData=await refResponse.json().catch(()=>null);
+      if(!refResponse.ok||!refData?.success)throw new Error(refData?.message||'Payment reference lookup failed');
+      if(refData.used){
+        paymentVerification.order=false;
+        setPaymentCheck('bad','⚠️ Payment already used','Yeh payment reference pehle Order '+String(refData.order_no||'').toUpperCase()+' ke liye use ho chuka hai. Nayi payment karein ya fresh unused receipt upload karein.');
+        updateVerificationUI();
+        return;
+      }
+      paymentVerification.order=true;
+    }catch(refError){
+      paymentVerification.order=false;
+      setPaymentCheck('bad','Payment reference check nahi ho saka','Internet/POS server check karke dobara screenshot upload karein. Duplicate payment rokne ke liye order abhi send nahi kiya ja sakta.');
+      updateVerificationUI();
+      return;
+    }
     paymentVerification.ocr=true;
-    if(updateVerificationUI())setPaymentCheck('ok','✅ Screenshot details match','Screenshot accepted. OCR may not read the amount on some Paytm layouts; please confirm the actual credit in HakkaBakka’s UPI/bank account before preparing the order. This is not bank-side payment confirmation.');
+    if(updateVerificationUI())setPaymentCheck('ok','✅ Screenshot details match','Screenshot accepted and payment reference is not already recorded. Please still confirm actual credit in HakkaBakka’s UPI/bank account before preparing the order. This is not bank-side payment confirmation.');
     else {
       const detectedAmounts=findAmounts(text);
       const problems=[];
@@ -1234,6 +1257,7 @@ async function sendOrderToPOS(){
     delivery_charges:deliveryCharge(),
     total_amount:expectedTotal(),
     payment_status:'PAYMENT_VERIFIED_SCREENSHOT',
+    payment_reference:extractPaymentReference(window.hbLastPaymentOcrText||''),
     special_instructions:null,
     items:cart.map(x=>({name:x.name,price:Number(x.price),qty:1}))
   };
