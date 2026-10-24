@@ -1262,6 +1262,7 @@ async function sendOrderToPOS(){
     special_instructions:null,
     items:cart.map(x=>({name:x.name,price:Number(x.price),qty:1}))
   };
+  let archivedInD1=false;
   if(!isTest){
     // Archive to Cloudflare D1 first. The order number makes retries idempotent.
     // This is an order record, not confirmation that the UPI transfer reached the bank.
@@ -1273,11 +1274,21 @@ async function sendOrderToPOS(){
       if(archiveResponse.status===409&&archiveData?.used)throw new Error('Payment reference already used'+(archiveData.order_no?' by order '+String(archiveData.order_no).toUpperCase():''));
       throw new Error(message);
     }
+    archivedInD1=true;
   }
   const endpoint=isTest?'/orders/test':'/orders/online';
-  const res=await fetch(POS_API_URL+endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-  const data=await res.json().catch(()=>null);
-  if(!res.ok||!data?.success)throw new Error(data?.message||'POS order sync failed');
+  let res,data;
+  try{
+    res=await fetch(POS_API_URL+endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    data=await res.json().catch(()=>null);
+  }catch(error){
+    if(archivedInD1)throw new Error('Order is saved in Cloudflare D1, but POS sync could not be confirmed. Retry using the SAME order number; do not make another payment. '+(error?.message||'Network error'));
+    throw error;
+  }
+  if(!res.ok||!data?.success){
+    if(archivedInD1)throw new Error('Order is saved in Cloudflare D1, but POS sync failed. Retry using the SAME order number; do not make another payment. '+(data?.message||'POS order sync failed'));
+    throw new Error(data?.message||'POS order sync failed');
+  }
   return data;
 }
 document.getElementById('waSend').onclick=async()=>{
