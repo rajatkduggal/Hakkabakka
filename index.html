@@ -981,7 +981,8 @@ function sameLocalDay(d,now){return d.getFullYear()===now.getFullYear()&&d.getMo
 function paymentTimeInWindow(h,mi,now){
   if(!paymentContext)return false;
   const shown=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,mi).getTime();
-  return shown>=paymentContext.startedAt-60*1000&&shown<=now.getTime()+60*1000;
+  // Receipt time is compared with the current 15-minute payment window, not only the moment the browser launched the UPI app. This tolerates returning to the site after paying.
+  return shown>=now.getTime()-PAYMENT_WINDOW_MS-60*1000&&shown<=now.getTime()+60*1000;
 }
 function normalizeOrderText(t){return t.toLowerCase().replace(/[^a-z0-9]/g,'')}
 function orderNoMatches(text){const expected=normalizeOrderText(currentOrderNo);if(!expected)return false;const n=normalizeOrderText(text);return n.includes(expected)}
