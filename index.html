@@ -1025,13 +1025,28 @@ function paymentTimeInWindow(h,mi,now){
   return shown>=now.getTime()-PAYMENT_WINDOW_MS-60*1000&&shown<=now.getTime()+60*1000;
 }
 function extractPaymentReference(text){
-  const t=String(text||'').replace(/[\u00a0]/g,' ');
-  const patterns=[
-    /(?:ref(?:erence)?\s*(?:no\.?|number|#)?|upi\s*(?:ref|reference)\s*(?:no\.?|number)?|txn\s*(?:id|no\.?|number)?|transaction\s*(?:id|no\.?|number)?)\s*[:#-]?\s*([0-9][0-9\s-]{6,24})/i,
-    /\b([0-9]{4}\s+[0-9]{4}\s+[0-9]{4})\b/
+  const t=String(text||'').replace(/[\u00a0]/g,' ').replace(/[|]/g,' ');
+  // Paytm receipts commonly print the UPI reference as "Ref No: 3176 0976 0844".
+  // OCR may remove spaces, insert line breaks, or misread punctuation around the label.
+  const labelPatterns=[
+    /(?:ref(?:erence)?\s*(?:no\.?|number|#)?|upi\s*(?:ref|reference)\s*(?:no\.?|number)?|txn\s*(?:id|no\.?|number)?|transaction\s*(?:id|no\.?|number)?)\s*[:#-]?\s*([0-9][0-9\s-]{7,30})/i,
+    /(?:ref(?:erence)?|upi\s*ref(?:erence)?|txn|transaction)[^0-9]{0,24}((?:[0-9][\s-]*){10,20})/i
   ];
-  for(const re of patterns){const m=t.match(re);if(m){const v=m[1].replace(/\s+/g,' ').trim();if(v.replace(/\D/g,'').length>=8)return v}}
-  return ''
+  for(const re of labelPatterns){
+    const m=t.match(re);
+    if(m){
+      const digits=m[1].replace(/\D/g,'');
+      if(digits.length>=10&&digits.length<=20)return digits;
+    }
+  }
+  // Fallback for OCR that drops "Ref No" but still reads the standard 12-digit
+  // Paytm reference, whether spaced, hyphenated, or contiguous.
+  const groups=t.match(/(?:^|\D)((?:\d[\s-]*){11}\d)(?=\D|$)/g)||[];
+  for(const group of groups){
+    const digits=group.replace(/\D/g,'');
+    if(digits.length===12)return digits;
+  }
+  return '';
 }
 function normalizeOrderText(t){return t.toLowerCase().replace(/[^a-z0-9]/g,'')}
 function orderNoMatches(text){const expected=normalizeOrderText(currentOrderNo);if(!expected)return false;const n=normalizeOrderText(text);return n.includes(expected)}
