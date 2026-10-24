@@ -9,7 +9,7 @@ function reply(request, data, status = 200) {
   return new Response(JSON.stringify(data), { status, headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", ...cors(request) } });
 }
 const digits = value => String(value || "").replace(/\D/g, "");
-const validOrderNo = value => typeof value === "string" && value.length >= 3 && value.length <= 64 && /^[A-Z0-9-]+$/.test(value);
+const validOrderNo = value => typeof value === "string" && /^HB-\d{8}-[A-Z0-9]{8}$/.test(value); // HB-DDMMYYYY-XXXXXXXX
 export default {
   async fetch(request, env) {
     const url = new URL(request.url), origin = request.headers.get("Origin") || "";
