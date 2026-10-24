@@ -1167,11 +1167,19 @@ document.getElementById('waSend').onclick=async()=>{
   const msg='*HAKKA BAKKA ONLINE ORDER*\n*ORDER NO: '+currentOrderNo+'*'+(ref?'\n*PAYMENT REF NO: '+ref+'*':'\n*PAYMENT REF NO: Please check attached receipt*')+'\n\n'+lines+'\n\nFood Total: ₹'+foodTotal()+'\nDelivery Charges: ₹'+deliveryCharge()+'\n*TOTAL: ₹'+total+'*\n\nName: '+name+'\nMobile: '+phone+'\nType: '+type+extra+'\n\nPlease confirm my order.';
   const receipt=paymentScreenshot.files&&paymentScreenshot.files[0];
   if(receipt&&navigator.share&&navigator.canShare&&navigator.canShare({files:[receipt]})){
-    try{await navigator.share({files:[receipt],text:msg,title:'Hakka Bakka Order '+currentOrderNo});return}
-    catch(shareError){if(shareError&&shareError.name==='AbortError')return}
+    try{
+      await navigator.share({files:[receipt],text:msg,title:'Hakka Bakka Order '+currentOrderNo});
+      return;
+    }catch(shareError){
+      // Do not open wa.me as a second action after the share sheet was launched.
+      if(shareError&&shareError.name==='AbortError')return;
+      alert('Receipt share nahi ho saka. WhatsApp mein order message manually bhejein aur receipt attach karein.');
+      return;
+    }
   }
+  // Fallback: open only the text draft. Never launch this after native file sharing.
   window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
-  if(receipt)alert('WhatsApp message khulne ke baad payment screenshot ko chat mein Attach > Gallery se manually attach karke send karein. Is browser mein file direct attach available nahi hai.')
+  if(receipt)alert('Message draft khulega. Payment screenshot ko WhatsApp mein Attach > Gallery se manually attach karein. Browser direct file attachment support nahi karta.')
 };
 window.addEventListener('storage',e=>{if(e.key===CART_STORAGE_KEY){cart=loadStoredCart();renderCart()}});
 // HERO FOOD SLIDESHOW — start rotation immediately; don't wait for GitHub API lookups.
