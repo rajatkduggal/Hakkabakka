@@ -1158,5 +1158,35 @@ renderMenu();renderCart();initCustomerAuth();
 })();
 </script>
 
+
+<!-- ONLINE ORDER CLICK SAFETY PATCH -->
+<style>
+#orderModal{z-index:99999!important;pointer-events:auto}
+#orderModal .modal-card{position:relative;z-index:1;max-height:85vh;overflow-y:auto}
+.hero-order-mini,.hero-actions .btn{position:relative;z-index:6;pointer-events:auto;cursor:pointer}
+</style>
+<script>
+(function(){
+  function bindOrderButtons(){
+    var modal=document.getElementById('orderModal');
+    if(!modal)return;
+    ['.hero-order-mini','.hero-actions button'].forEach(function(selector){
+      document.querySelectorAll(selector).forEach(function(button){
+        if(button.dataset.orderSafetyBound==='true')return;
+        button.dataset.orderSafetyBound='true';
+        button.addEventListener('click',function(event){
+          event.preventDefault();
+          event.stopPropagation();
+          modal.classList.add('show');
+        });
+      });
+    });
+    modal.querySelectorAll('.order-choice').forEach(function(choice){choice.style.cursor='pointer'});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindOrderButtons);
+  else bindOrderButtons();
+})();
+</script>
+
 </body>
 </html>
