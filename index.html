@@ -1174,7 +1174,7 @@ async function verifyPaymentScreenshot(file){
       paymentCheck.innerHTML='<b>UPI reference auto-read nahi hua</b><span>Paytm receipt par “Ref No” ke saamne ka 12-digit number daalein. Example: 317609760844</span><input id="manualPaymentRef" inputmode="numeric" autocomplete="off" maxlength="20" placeholder="UPI Ref. No. (digits only)" style="display:block;width:100%;box-sizing:border-box;margin:10px 0;padding:12px;border:1px solid #c88;border-radius:8px;font-size:16px"><button type="button" id="verifyManualPaymentRef" style="display:block;width:100%;padding:12px;border:0;border-radius:8px;background:#7b1113;color:white;font-weight:800">Verify UPI Reference</button>';
       paymentCheck.hidden=false;paymentCheck.className='payment-check bad';
       document.getElementById('verifyManualPaymentRef').onclick=async()=>{
-        const manual=document.getElementById('manualPaymentRef').value.replace(/\\D/g,'');
+        const manual=document.getElementById('manualPaymentRef').value.replace(/\D/g,'');
         if(manual.length<10||manual.length>20){setPaymentCheck('bad','Reference number galat hai','Receipt se poora UPI Ref. No. daalein (10–20 digits).');return;}
         await verifyManualPaymentReference(manual);
       };
@@ -1186,7 +1186,7 @@ async function verifyPaymentScreenshot(file){
   }catch(e){paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot verify nahi ho saka','Clear screenshot upload karein. Amount, date, time aur Order No. '+currentOrderNo+' visible hona chahiye.');updateVerificationUI()}
 }
 async function verifyManualPaymentReference(reference){
-    const paymentRef=String(reference||'').replace(/\\D/g,'');
+    const paymentRef=String(reference||'').replace(/\D/g,'');
     try{
       const refResponse=await fetch(POS_API_URL+'/orders/payment-reference/'+encodeURIComponent(paymentRef));
       const refData=await refResponse.json().catch(()=>null);
