@@ -1122,5 +1122,41 @@ renderMenu();renderCart();initCustomerAuth();
 <script src="content-config.js"></script>
 <script src="content-feed.js"></script>
 
+
+<!-- HERO SLIDESHOW ROTATION PATCH -->
+<script>
+(function () {
+  function startHakkaHeroSlideshow() {
+    var root = document.getElementById('heroSlides');
+    if (!root || root.dataset.slideshowReady === 'true') return;
+    var imgs = Array.prototype.slice.call(root.querySelectorAll('img'));
+    var dots = document.getElementById('heroDots');
+    if (imgs.length < 2) return;
+    root.dataset.slideshowReady = 'true';
+    var current = imgs.findIndex(function (img) { return img.classList.contains('active'); });
+    if (current < 0) current = 0;
+    if (dots) {
+      dots.innerHTML = '';
+      imgs.forEach(function (_, index) {
+        var dot = document.createElement('span');
+        dot.setAttribute('aria-label', 'Show food photo ' + (index + 1));
+        dot.style.cursor = 'pointer';
+        dot.addEventListener('click', function () { show(index); });
+        dots.appendChild(dot);
+      });
+    }
+    function show(index) {
+      current = index;
+      imgs.forEach(function (img, k) { img.classList.toggle('active', k === current); });
+      if (dots) Array.prototype.forEach.call(dots.children, function (dot, k) { dot.classList.toggle('active', k === current); });
+    }
+    show(current);
+    window.setInterval(function () { show((current + 1) % imgs.length); }, 3500);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startHakkaHeroSlideshow);
+  else startHakkaHeroSlideshow();
+})();
+</script>
+
 </body>
 </html>
