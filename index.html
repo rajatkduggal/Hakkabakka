@@ -335,7 +335,7 @@ body{background:var(--hb-cream)}
 <div class="modal" id="orderModal" onclick="if(event.target===this)closeOrderModal()">
   <div class="modal-card">
     <div class="modal-head"><h2>Choose how to order</h2><button class="close" onclick="closeOrderModal()">✕</button></div>
-    <button class="order-choice wa" type="button" onclick="closeOrderModal();openMenu()"><span class="icon">W</span><span class="choice-copy">WhatsApp Order<small>Open Online Menu &amp; send your order directly to WhatsApp</small></span></button>
+    <button id="whatsappOrderChoice" class="order-choice wa" type="button"><span class="icon">W</span><span class="choice-copy">WhatsApp Order<small>Open Online Menu &amp; send your order directly to WhatsApp</small></span></button>
     <a class="order-choice zo" href="https://zomato.onelink.me/xqzv/7948ndtj" target="_blank" rel="noopener"><span class="icon">Z</span><span class="choice-copy">Order on Zomato<small>Open Hakka Bakka on Zomato</small></span></a>
     <a class="order-choice sw" href="https://www.swiggy.com/menu/1400828?source=sharing" target="_blank" rel="noopener"><span class="icon">S</span><span class="choice-copy">Order on Swiggy<small>Open Hakka Bakka on Swiggy</small></span></a>
   </div>
@@ -1188,5 +1188,29 @@ renderMenu();renderCart();initCustomerAuth();
 })();
 </script>
 
-</body>
+
+<!-- WHATSAPP ORDER CHOICE CLICK FIX -->
+<style>
+#orderModal .order-choice{position:relative;z-index:2;width:100%;box-sizing:border-box;cursor:pointer;pointer-events:auto}
+#orderModal .order-choice.zo,#orderModal .order-choice.sw{display:flex}
+</style>
+<script>
+(function(){
+ function bindWhatsAppOrderChoice(){
+  var btn=document.getElementById('whatsappOrderChoice');
+  if(!btn||btn.dataset.fixedClick==='1')return;
+  btn.dataset.fixedClick='1';
+  btn.addEventListener('click',function(e){
+   e.preventDefault();e.stopPropagation();
+   var modal=document.getElementById('orderModal');
+   if(modal)modal.classList.remove('show');
+   if(typeof setMenuState==='function')setMenuState();
+   else if(typeof openMenu==='function')openMenu();
+  });
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindWhatsAppOrderChoice);
+ else bindWhatsAppOrderChoice();
+})();
+</script>
+\n</body>
 </html>
