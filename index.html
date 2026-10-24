@@ -695,7 +695,7 @@ function restoreCheckout(){
   try{
     const saved=JSON.parse(localStorage.getItem(CHECKOUT_STORAGE_KEY)||'null');
     if(!saved)return;
-    currentOrderNo=typeof saved.orderNo==='string'?saved.orderNo:'';
+    currentOrderNo=typeof saved.orderNo==='string'?saved.orderNo.toUpperCase():'';
     document.getElementById('customerName').value=saved.customerName||'';
     document.getElementById('customerPhone').value=saved.customerPhone||'';
     document.getElementById('orderType').value=saved.orderType==='Home Delivery'?'Home Delivery':'Pickup';
@@ -964,7 +964,7 @@ function openCart(){document.body.classList.remove('hb-billing-open');document.g
 function closeCart(){document.body.classList.remove('hb-billing-open');document.getElementById('drawer').classList.remove('show')}
 function monthCode(){return ['JA','FE','MA','AP','MA','JU','JU','AU','SE','OC','NO','DE'][new Date().getMonth()]}
 function nextOrderNumber(){const now=new Date(),key='hb_order_counter_'+now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');let n=parseInt(localStorage.getItem(key)||'0',10)+1;localStorage.setItem(key,String(n));return (monthCode()+n).toUpperCase()}
-function ensureOrderNumber(){if(!currentOrderNo){currentOrderNo=nextOrderNumber()}document.getElementById('orderNumber').textContent=currentOrderNo;saveCheckout()}
+function ensureOrderNumber(){if(!currentOrderNo){currentOrderNo=nextOrderNumber()}currentOrderNo=String(currentOrderNo).toUpperCase();document.getElementById('orderNumber').textContent=currentOrderNo;saveCheckout()}
 function resetOrderNumber(){currentOrderNo='';document.getElementById('orderNumber').textContent='—'}
 async function proceedBilling(){if(!cart.length){alert('Cart is empty.');return}if(!(await requireCustomerLogin()))return;ensureOrderNumber();document.body.classList.add('hb-billing-open');const drawer=document.getElementById('drawer'),card=document.getElementById('drawerCard');drawer.classList.add('show');document.getElementById('cartView').style.display='none';document.getElementById('billingView').style.display='block';if(card)card.scrollTop=0;updateBilling()}
 function backToCart(){document.body.classList.remove('hb-billing-open');document.getElementById('billingView').style.display='none';document.getElementById('cartView').style.display='block'}
@@ -1276,7 +1276,7 @@ document.getElementById('waSend').onclick=async()=>{
   if(!updateVerificationUI()){setPaymentCheck('bad','Payment verification required hai','Payment screenshot verify hona zaroori hai.');return showOrderError('Verified payment screenshot required hai. / Please complete payment verification first.',paymentScreenshot);}
   let extra='';if(type==='Home Delivery'&&!paymentTestMode){const p=pin(),a=document.getElementById('address').value.trim();if(!a)return showOrderError('Delivery address likhein. / Please enter the delivery address.',document.getElementById('address'));const deliveryStatus=deliveryPinStatus();if(!deliveryStatus.valid)return showOrderError(deliveryStatus.message,document.getElementById('pincode'));extra='\nPincode: '+p+'\nAddress: '+a}
   if(!paymentTestMode&&supabaseClient&&currentUser){const saved=await saveOrderToSupabase();if(!saved){return showOrderError('Order database mein save nahi ho saka. / Your order could not be saved; please try again.')}}
-  try{await sendOrderToPOS()}catch(error){console.error('POS sync:',error);return showOrderError('POS se connection nahi ho saka. / Order POS mein save nahi hua, isliye WhatsApp order send nahi kiya gaya. Please try again.');}
+  try{await sendOrderToPOS()}catch(error){console.error('POS sync:',error);return showOrderError((error&&error.message)||'POS se connection nahi ho saka. / Order POS mein save nahi hua, isliye WhatsApp order send nahi kiya gaya. Please try again.');}
   if(paymentTestMode){
     const msg='*HAKKA BAKKA ₹2 PAYMENT TEST*\n*TEST ORDER: '+currentOrderNo+'*\n\n₹2 payment screenshot verified.\nPOS test endpoint validated and rolled back.\n\nName: '+name+'\nMobile: '+phone+'\n\nPlease confirm receipt of this ₹2 test.';
     clearCart();
