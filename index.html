@@ -1061,26 +1061,46 @@ async function verifyPaymentScreenshot(file){
     let text=result.data.text||'', now=new Date(), total=paymentContext.total;
     window.hbLastPaymentOcrText=text;
     let detectedAmounts=findAmounts(text);
-    // Full-screen mobile screenshots can make OCR miss the large central amount.
-    // If needed, run a second OCR pass on a scaled crop of the receipt's central area.
+    // Paytm has multiple receipt layouts. The in-app transaction screen may show only a
+    // large ₹13/₹18 amount and a green check, without the words "Paid Successfully".
+    // OCR a tight, enlarged crop around the prominent amount before deciding it was unreadable.
     if(!detectedAmounts.some(n=>Math.abs(n-total)<0.01)){
       try{
         const bitmap=await createImageBitmap(file);
-        const crop=document.createElement('canvas');
-        // Paytm receipt's large amount can sit above the old crop's starting point.
-        // OCR the upper/central receipt area at 3x scale, including amount and order-note lines.
-        const sx=Math.round(bitmap.width*0.04), sy=Math.round(bitmap.height*0.10);
-        const sw=Math.round(bitmap.width*0.92), sh=Math.round(bitmap.height*0.62);
-        crop.width=sw*3; crop.height=sh*3;
-        const ctx=crop.getContext('2d',{willReadFrequently:true});
-        ctx.imageSmoothingEnabled=true;
-        ctx.imageSmoothingQuality='high';
-        ctx.drawImage(bitmap,sx,sy,sw,sh,0,0,crop.width,crop.height);
+        const crops=[
+          // Tight amount zone for Paytm's full-screen transaction detail view.
+          {x:.18,y:.17,w:.64,h:.19,scale:5},
+          // Broader upper-middle zone for the separate Paytm receipt-card layout.
+          {x:.04,y:.10,w:.92,h:.62,scale:3}
+        ];
+        let extraText='';
+        for(const area of crops){
+          const sx=Math.round(bitmap.width*area.x), sy=Math.round(bitmap.height*area.y);
+          const sw=Math.round(bitmap.width*area.w), sh=Math.round(bitmap.height*area.h);
+          const crop=document.createElement('canvas');
+          crop.width=sw*area.scale; crop.height=sh*area.scale;
+          const ctx=crop.getContext('2d',{willReadFrequently:true});
+          ctx.imageSmoothingEnabled=true; ctx.imageSmoothingQuality='high';
+          ctx.filter='contrast(1.25) grayscale(1)';
+          ctx.drawImage(bitmap,sx,sy,sw,sh,0,0,crop.width,crop.height);
+          ctx.filter='none';
+          const cropResult=await Tesseract.recognize(crop,'eng');
+          extraText+='\n'+(cropResult.data.text||'');
+          text+='\n'+(cropResult.data.text||'');
+          detectedAmounts=findAmounts(text);
+          // Tight amount crop: permit the expected whole-number amount even if OCR misses ₹
+          // and the success phrase, but only when the exact amount appears as a standalone token.
+          const expectedWhole=Number(total).toFixed(2).replace(/\.00$/,'');
+          const amountZone=String(cropResult.data.text||'').replace(/,/g,'');
+          const exactWhole=new RegExp('(?:^|[^\\d.])'+expectedWhole+'(?:\\.0{1,2})?(?![\\d.])').test(amountZone);
+          const exactDecimal=new RegExp('(?:^|[^\\d.])'+Number(total).toFixed(2).replace('.','\\.')+'(?!\\d)').test(amountZone);
+          if(exactWhole||exactDecimal){
+            detectedAmounts.push(Number(total));
+            break;
+          }
+          if(detectedAmounts.some(n=>Math.abs(n-total)<0.01))break;
+        }
         bitmap.close();
-        const cropResult=await Tesseract.recognize(crop,'eng');
-        const cropText=cropResult.data.text||'';
-        text+='\n'+cropText;
-        detectedAmounts=findAmounts(text);
       }catch(cropError){/* Keep the original OCR result if crop OCR is unavailable. */}
     }
     paymentVerification.amount=detectedAmounts.some(n=>Math.abs(n-total)<0.01);
