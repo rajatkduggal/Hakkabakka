@@ -467,7 +467,7 @@ body{background:var(--hb-cream)}
         <small id="paymentStatus"></small>
         <div id="paymentTimer" style="display:none;margin:8px 0 0;padding:9px 12px;border-radius:10px;background:#fff7e6;color:#8a5a00;font-weight:800;text-align:center">⏱️ Payment window: <span id="paymentCountdown">15:00</span></div>
         
-        <input class="field billing-field" id="paymentScreenshot" type="file" accept="image/*" aria-describedby="paymentCheck">
+        <input class="field billing-field" id="paymentScreenshot" type="file" accept="image/*" aria-describedby="paymentCheck" disabled>
         <div id="paymentCheck" class="payment-check" aria-live="polite" hidden></div>
       </div>
 
@@ -1048,8 +1048,10 @@ document.getElementById('upiPay').onclick=()=>{
   if(!Number.isFinite(amt)||amt<=0)return showOrderError('Order total invalid hai. Please review your cart.');
   paymentTestMode=false;
   startPaymentTimer(false);
-  setPaymentCheck('', 'Payment screenshot upload karein', 'QR scan karke payment karne ke baad clear Paytm/UPI receipt upload karein. Website UPI app automatically open nahi karegi.');
+  setPaymentCheck('', 'Payment screenshot upload karein', 'Ab Choose File par tap karke successful Paytm/UPI receipt select karein.');
+  paymentScreenshot.disabled=false;
   paymentScreenshot.scrollIntoView({behavior:'smooth',block:'center'});
+  paymentScreenshot.click();
 };
 async function verifyPaymentScreenshot(file){
   paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};waSend.disabled=true;
@@ -1088,17 +1090,42 @@ async function verifyPaymentScreenshot(file){
           extraText+='\n'+(cropResult.data.text||'');
           text+='\n'+(cropResult.data.text||'');
           detectedAmounts=findAmounts(text);
-          // Paytm's prominent amount is sometimes missed by normal OCR (₹ symbol/font/layout).
-          // Re-read the same enlarged amount crop with a digits-only whitelist and single-line mode.
+          // Try several contrast/threshold variants; Paytm's large amount can be missed
+          // when the receipt is a compressed screenshot or has a pale blue background.
           let numericCropText='';
-          try{
-            const numericResult=await Tesseract.recognize(crop,'eng',{
-              tessedit_pageseg_mode:'7',
-              tessedit_char_whitelist:'0123456789.,'
-            });
-            numericCropText=String(numericResult.data.text||'').replace(/,/g,'');
-            text+='\n'+numericCropText;
-          }catch(numericOcrError){}
+          const amountOcrPasses=[
+            {psm:'7',whitelist:'0123456789.,'},
+            {psm:'6',whitelist:'0123456789.,'},
+            {psm:'7',whitelist:'0123456789₹Rs. ' }
+          ];
+          for(const pass of amountOcrPasses){
+            try{
+              const variant=document.createElement('canvas');
+              variant.width=crop.width; variant.height=crop.height;
+              const vctx=variant.getContext('2d',{willReadFrequently:true});
+              vctx.drawImage(crop,0,0);
+              const pixels=vctx.getImageData(0,0,variant.width,variant.height);
+              for(let i=0;i<pixels.data.length;i+=4){
+                const gray=(pixels.data[i]*0.299+pixels.data[i+1]*0.587+pixels.data[i+2]*0.114);
+                const value=gray>145?255:0;
+                pixels.data[i]=pixels.data[i+1]=pixels.data[i+2]=value;
+              }
+              vctx.putImageData(pixels,0,0);
+              const nr=await Tesseract.recognize(variant,'eng',{
+                tessedit_pageseg_mode:pass.psm,
+                tessedit_char_whitelist:pass.whitelist
+              });
+              const got=String(nr.data.text||'').replace(/,/g,'');
+              numericCropText+='\n'+got;
+              text+='\n'+got;
+              detectedAmounts=findAmounts(text);
+              const expectedWhole=Number(total).toFixed(2).replace(/\.00$/,'');
+              const amountZone=(String(cropResult.data.text||'')+'\n'+numericCropText).replace(/,/g,'');
+              const exactWhole=new RegExp('(?:^|[^\\d.])'+expectedWhole+'(?:\\.0{1,2})?(?![\\d.])').test(amountZone);
+              const exactDecimal=new RegExp('(?:^|[^\\d.])'+Number(total).toFixed(2).replace('.','\\.')+'(?!\\d)').test(amountZone);
+              if(exactWhole||exactDecimal||detectedAmounts.some(n=>Math.abs(n-total)<0.01))break;
+            }catch(numericOcrError){}
+          }
           const expectedWhole=Number(total).toFixed(2).replace(/\.00$/,'');
           const amountZone=(String(cropResult.data.text||'')+'\n'+numericCropText).replace(/,/g,'');
           const exactWhole=new RegExp('(?:^|[^\\d.])'+expectedWhole+'(?:\\.0{1,2})?(?![\\d.])').test(amountZone);
