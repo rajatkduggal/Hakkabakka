@@ -989,13 +989,23 @@ function findAmounts(text){
   const out=[], seen=new Set(), raw=String(text||''), t=raw.replace(/,/g,'');
   const add=v=>{const n=Number(v);if(Number.isFinite(n)&&n>=1&&n<=200000){const cents=Math.round(n*100)/100;if(!seen.has(cents)){seen.add(cents);out.push(cents)}}};
   let m;
-  // Currency symbols may be separated from the number by OCR-added spaces.
+  // Currency symbols and decimal points are often missed by mobile screenshot OCR.
   const labelled=/(?:₹|rs\.?|inr)\s*(\d{1,6}(?:\.\s*\d{1,2})?)/gi;
   while((m=labelled.exec(t)))add(m[1].replace(/\s/g,''));
-  // Paytm receipt OCR often reads the large amount as a standalone token without its currency symbol.
-  // Match exact amount-shaped tokens, not digits embedded in timestamps, dates, or reference numbers.
+  // First try exact decimal amounts (e.g. 18.00).
   const tokens=/(?:^|[^\d.])(\d{1,6}\.\s*\d{2})(?!\d)/g;
   while((m=tokens.exec(t)))add(m[1].replace(/\s/g,''));
+  // Some Paytm layouts show the paid amount as a large whole number (₹18) with no decimal.
+  // Only use this fallback when the OCR also identifies a successful-payment receipt, and
+  // only accept a standalone integer token; this avoids matching digits inside UPI refs.
+  if(/paid\s*successfully|payment\s*successful|transaction\s*successful|successful\s*payment/i.test(raw)){
+    const whole=/(?:^|[^\d.])(\d{1,5})(?![\d.]|\s*[:/])/g;
+    while((m=whole.exec(t))){
+      const n=Number(m[1]);
+      const around=t.slice(Math.max(0,m.index-28),Math.min(t.length,m.index+40));
+      if(n>=1&&n<=200000&&!/(?:ref\.?\s*(?:no|number)?|txn|transaction\s*id|\b(?:am|pm)\b)/i.test(around))add(n);
+    }
+  }
   const words=raw.toLowerCase();
   // Paytm's receipt layouts vary: some OCR passes read the amount in words
   // ("Eighteen Rupees") but fail to recognize the large ₹18 numeral.
