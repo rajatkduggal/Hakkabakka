@@ -1013,7 +1013,7 @@ async function verifyPaymentScreenshot(file){
     paymentVerification.date=parseDateCandidates(text).some(d=>sameLocalDay(d,now));
     const timeCandidates=parseTimeCandidates(text);
     const timeMatched=timeCandidates.some(x=>paymentTimeInWindow(x.h,x.mi,now));
-    const receiptShowsSuccess=/paid\\s*successfully|payment\\s*successful|transaction\\s*successful|successful\\s*payment/i.test(text);
+    const receiptShowsSuccess=/paid\s*successfully|payment\s*successful|transaction\s*successful|successful\s*payment/i.test(text);
     // Paytm receipts may OCR the 12-hour timestamp inconsistently; when the same-day receipt clearly says payment succeeded, don't reject solely on OCR time parsing. This is only screenshot text validation, not bank confirmation.
     paymentVerification.time=timeMatched||(receiptShowsSuccess&&paymentVerification.date);
     paymentVerification.order=true;
