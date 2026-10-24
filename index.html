@@ -1169,23 +1169,54 @@ async function verifyPaymentScreenshot(file){
     // Paytm receipts may OCR the 12-hour timestamp inconsistently; when the same-day receipt clearly says payment succeeded, don't reject solely on OCR time parsing. This is only screenshot text validation, not bank confirmation.
     paymentVerification.time=timeMatched||(receiptShowsSuccess&&paymentVerification.date);
     let paymentRef=extractPaymentReference(text);
+    // Paytm places "Ref No" near the bottom of the receipt; OCR the lower section
+    // separately at high scale because the full screenshot may include black bars.
+    if(!paymentRef){
+      try{
+        const bitmap=await createImageBitmap(file);
+        const areas=[
+          {x:.03,y:.62,w:.94,h:.34,scale:4},
+          {x:.05,y:.68,w:.90,h:.28,scale:5},
+          {x:.02,y:.48,w:.96,h:.48,scale:3}
+        ];
+        for(const area of areas){
+          const sx=Math.round(bitmap.width*area.x), sy=Math.round(bitmap.height*area.y);
+          const sw=Math.round(bitmap.width*area.w), sh=Math.round(bitmap.height*area.h);
+          const crop=document.createElement('canvas');
+          crop.width=sw*area.scale; crop.height=sh*area.scale;
+          const ctx=crop.getContext('2d',{willReadFrequently:true});
+          ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+          ctx.filter='grayscale(1) contrast(1.5)';
+          ctx.drawImage(bitmap,sx,sy,sw,sh,0,0,crop.width,crop.height);ctx.filter='none';
+          const variants=[crop];
+          const bw=document.createElement('canvas');bw.width=crop.width;bw.height=crop.height;
+          const bctx=bw.getContext('2d',{willReadFrequently:true});bctx.drawImage(crop,0,0);
+          const px=bctx.getImageData(0,0,bw.width,bw.height);
+          for(let k=0;k<px.data.length;k+=4){const g=(px.data[k]*.299+px.data[k+1]*.587+px.data[k+2]*.114);const v=g>155?255:0;px.data[k]=px.data[k+1]=px.data[k+2]=v;}
+          bctx.putImageData(px,0,0);variants.push(bw);
+          for(const variant of variants){
+            const rr=await Tesseract.recognize(variant,'eng',{tessedit_pageseg_mode:'6'});
+            const rt=String(rr.data.text||'');
+            text+='\\n'+rt;
+            paymentRef=extractPaymentReference(text);
+            if(paymentRef)break;
+          }
+          if(paymentRef)break;
+        }
+        bitmap.close();
+      }catch(referenceCropError){}
+    }
     if(!paymentRef){
       paymentVerification.order=false;
-      paymentCheck.innerHTML='<b>UPI reference auto-read nahi hua</b><span>Paytm receipt par “Ref No” ke saamne ka 12-digit number daalein. Example: 317609760844</span><input id="manualPaymentRef" inputmode="numeric" autocomplete="off" maxlength="20" placeholder="UPI Ref. No. (digits only)" style="display:block;width:100%;box-sizing:border-box;margin:10px 0;padding:12px;border:1px solid #c88;border-radius:8px;font-size:16px"><button type="button" id="verifyManualPaymentRef" style="display:block;width:100%;padding:12px;border:0;border-radius:8px;background:#7b1113;color:white;font-weight:800">Verify UPI Reference</button>';
-      paymentCheck.hidden=false;paymentCheck.className='payment-check bad';
-      document.getElementById('verifyManualPaymentRef').onclick=async()=>{
-        const manual=document.getElementById('manualPaymentRef').value.replace(/\D/g,'');
-        if(manual.length<10||manual.length>20){setPaymentCheck('bad','Reference number galat hai','Receipt se poora UPI Ref. No. daalein (10–20 digits).');return;}
-        await verifyManualPaymentReference(manual);
-      };
+      setPaymentCheck('bad','UPI reference auto-read nahi ho saka','Receipt ke neeche “Ref No” wala hissa clear dikhna chahiye. Original Paytm receipt ka full screenshot upload karein.');
       updateVerificationUI();
       return;
     }
-    await verifyManualPaymentReference(paymentRef);
+    await verifyPaymentReference(paymentRef);
     return;
   }catch(e){paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot verify nahi ho saka','Clear screenshot upload karein. Amount, date, time aur Order No. '+currentOrderNo+' visible hona chahiye.');updateVerificationUI()}
 }
-async function verifyManualPaymentReference(reference){
+async function verifyPaymentReference(reference){
     const paymentRef=String(reference||'').replace(/\D/g,'');
     try{
       const refResponse=await fetch(POS_API_URL+'/orders/payment-reference/'+encodeURIComponent(paymentRef));
