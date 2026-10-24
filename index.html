@@ -962,11 +962,9 @@ function openOrderModal(){document.getElementById('orderModal').classList.add('s
 function closeOrderModal(){document.getElementById('orderModal').classList.remove('show')}
 function openCart(){document.body.classList.remove('hb-billing-open');document.getElementById('drawer').classList.add('show');document.getElementById('cartView').style.display='block';document.getElementById('billingView').style.display='none';renderCart()}
 function closeCart(){document.body.classList.remove('hb-billing-open');document.getElementById('drawer').classList.remove('show')}
-function monthCode(date=new Date()){return ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'][date.getMonth()]}
-function nextOrderNumber(){const now=new Date(),year=now.getFullYear(),month=String(now.getMonth()+1).padStart(2,'0'),key='hb_order_counter_'+year+'-'+month;let n=parseInt(localStorage.getItem(key)||'0',10)+1;localStorage.setItem(key,String(n));return String(year)+'/'+monthCode(now)+'/'+String(n).padStart(4,'0')}
-function ensureOrderNumber(){if(!currentOrderNo){currentOrderNo=nextOrderNumber()}currentOrderNo=String(currentOrderNo).toUpperCase();document.getElementById('orderNumber').textContent=currentOrderNo;saveCheckout()}
+async function ensureOrderNumber(){if(!currentOrderNo){const res=await fetch(CLOUDFLARE_ORDERS_API+'/orders/next-number',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}',cache:'no-store'});const data=await res.json().catch(()=>null);if(!res.ok||!data?.success||!data.order_no)throw new Error(data?.message||'Cloudflare could not allocate an order number');currentOrderNo=String(data.order_no).toUpperCase()}currentOrderNo=String(currentOrderNo).toUpperCase();document.getElementById('orderNumber').textContent=currentOrderNo;saveCheckout()}
 function resetOrderNumber(){currentOrderNo='';document.getElementById('orderNumber').textContent='—'}
-async function proceedBilling(){if(!cart.length){alert('Cart is empty.');return}if(!(await requireCustomerLogin()))return;ensureOrderNumber();document.body.classList.add('hb-billing-open');const drawer=document.getElementById('drawer'),card=document.getElementById('drawerCard');drawer.classList.add('show');document.getElementById('cartView').style.display='none';document.getElementById('billingView').style.display='block';if(card)card.scrollTop=0;updateBilling()}
+async function proceedBilling(){if(!cart.length){alert('Cart is empty.');return}if(!(await requireCustomerLogin()))return;try{await ensureOrderNumber()}catch(error){console.error('Order number allocation failed:',error);alert('Order number nahi ban saka. Internet check karke dobara try karein.');return}document.body.classList.add('hb-billing-open');const drawer=document.getElementById('drawer'),card=document.getElementById('drawerCard');drawer.classList.add('show');document.getElementById('cartView').style.display='none';document.getElementById('billingView').style.display='block';if(card)card.scrollTop=0;updateBilling()}
 function backToCart(){document.body.classList.remove('hb-billing-open');document.getElementById('billingView').style.display='none';document.getElementById('cartView').style.display='block'}
 
 document.getElementById('menu').addEventListener('click',e=>{const b=e.target.closest('.add');if(!b)return;const n=b.dataset.name,p=Number(b.dataset.price);if(e.target.closest('.minus')){const i=cart.findIndex(x=>x.name===n&&x.price===p);if(i>=0)cart.splice(i,1)}else if(e.target.closest('.plus'))cart.push({name:n,price:p});else{cart.push({name:n,price:p});b.dataset.original=b.textContent}syncCart()});
@@ -1058,7 +1056,7 @@ document.getElementById('upiPay').onclick=()=>{
   const status=deliveryPinStatus();
   if(!status.valid)return showOrderError(status.message,document.getElementById('pincode'));
   if(!foodTotal())return showOrderError('Cart khaali hai. / Please add items before making payment.');
-  if(!currentOrderNo)ensureOrderNumber();
+  if(!currentOrderNo)return showOrderError('Order number abhi allocate nahi hua. Cart se dobara billing kholein.');
   const amt=expectedTotal();
   if(!Number.isFinite(amt)||amt<=0)return showOrderError('Order total invalid hai. Please review your cart.');
   paymentTestMode=false;
