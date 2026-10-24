@@ -1027,8 +1027,27 @@ async function verifyPaymentScreenshot(file){
   try{
     if(!window.Tesseract)throw new Error('OCR engine unavailable');
     const result=await Tesseract.recognize(file,'eng',{logger:m=>{if(m.status==='recognizing text'&&m.progress)paymentCheck.innerHTML='<b>🔍 Checking payment screenshot…</b><span>Reading screenshot… '+Math.round(m.progress*100)+'%</span>'}});
-    const text=result.data.text||'', now=new Date(), total=paymentContext.total;
-    paymentVerification.amount=findAmounts(text).some(n=>Math.abs(n-total)<0.01);
+    let text=result.data.text||'', now=new Date(), total=paymentContext.total;
+    let detectedAmounts=findAmounts(text);
+    // Full-screen mobile screenshots can make OCR miss the large central amount.
+    // If needed, run a second OCR pass on a scaled crop of the receipt's central area.
+    if(!detectedAmounts.some(n=>Math.abs(n-total)<0.01)){
+      try{
+        const bitmap=await createImageBitmap(file);
+        const crop=document.createElement('canvas');
+        const sx=Math.round(bitmap.width*0.08), sy=Math.round(bitmap.height*0.25);
+        const sw=Math.round(bitmap.width*0.84), sh=Math.round(bitmap.height*0.42);
+        crop.width=sw*2; crop.height=sh*2;
+        const ctx=crop.getContext('2d',{willReadFrequently:true});
+        ctx.drawImage(bitmap,sx,sy,sw,sh,0,0,crop.width,crop.height);
+        bitmap.close();
+        const cropResult=await Tesseract.recognize(crop,'eng');
+        const cropText=cropResult.data.text||'';
+        text+='\n'+cropText;
+        detectedAmounts=findAmounts(text);
+      }catch(cropError){/* Keep the original OCR result if crop OCR is unavailable. */}
+    }
+    paymentVerification.amount=detectedAmounts.some(n=>Math.abs(n-total)<0.01);
     paymentVerification.date=parseDateCandidates(text).some(d=>sameLocalDay(d,now));
     const timeCandidates=parseTimeCandidates(text);
     const timeMatched=timeCandidates.some(x=>paymentTimeInWindow(x.h,x.mi,now));
