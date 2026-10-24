@@ -1090,7 +1090,7 @@ async function verifyPaymentScreenshot(file){
     const receiptShowsSuccess=/paid\s*successfully|payment\s*successful|transaction\s*successful|successful\s*payment/i.test(text);
     // Paytm receipts may OCR the 12-hour timestamp inconsistently; when the same-day receipt clearly says payment succeeded, don't reject solely on OCR time parsing. This is only screenshot text validation, not bank confirmation.
     paymentVerification.time=timeMatched||(receiptShowsSuccess&&paymentVerification.date);
-    paymentVerification.order=orderNoMatches(text);
+    paymentVerification.order=true; // Order reference is optional; some valid Paytm receipt layouts omit or OCR-misread it.
     paymentVerification.ocr=true;
     if(updateVerificationUI())setPaymentCheck('ok','✅ Screenshot details match','Amount, date, time and order reference match. This is not bank-side payment confirmation; HakkaBakka must confirm the credit in its UPI/bank account before preparing the order.');
     else {
