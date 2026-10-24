@@ -68,6 +68,10 @@
 
 .payment-check{margin:10px 0 0;padding:12px 14px;border:1px solid #eadfd4;border-radius:12px;background:#faf7f2;color:#5f5a55;font-size:13px;line-height:1.45}.payment-check b{display:block;color:var(--red);margin-bottom:4px}.payment-check.ok{border-color:#86c99e;background:#f1fbf4}.payment-check.ok b{color:#147a3e}.payment-check.bad{border-color:#e6a0a0;background:#fff5f5}.payment-check.bad b{color:#a10f16}.payment-check small{display:block;margin-top:5px;color:#777}
 #waSend:disabled{opacity:.48;cursor:not-allowed;filter:grayscale(.2)}
+/* Checkout payment UI refinements */
+#qr > div > div { font-size:20px !important; }
+#qr > div > div b { font-size:26px !important; }
+#paymentCheck[hidden] { display:none !important; }
 /* Green CTA only after screenshot checks pass */
 #waSend:not(:disabled){background:#159447!important;color:#fff!important;border-color:#159447!important;}
 #waSend:disabled{background:#b8aaa8!important;color:#fff!important;}
@@ -449,18 +453,17 @@ body{background:var(--hb-cream)}
       <div class="billing-section billing-payment">
         <div class="billing-section-title"><span>💳</span> UPI Payment</div>
         <h3>Pay securely with UPI</h3>
-        <div class="upi-note">UPI ID: hakkabakka.jalandhar@ptyes</div>
+        
         <div id="qr"></div>
         <div style="font-size:14px;color:#7b1113;margin:10px 0 6px;text-align:center;font-weight:800">SCAN QR FOR PAYMENT</div>
         
         <button class="drawer-action" id="upiPay">Payment done? Please Attach Screenshot</button>
-        <div style="font-size:12px;color:#7b1113;margin:6px 0 0;text-align:center">Payment screenshot upload karein. Screenshot matching bank credit ka proof nahi hai; restaurant bank/UPI credit confirm karega.</div>
+        
         <small id="paymentStatus"></small>
         <div id="paymentTimer" style="display:none;margin:8px 0 0;padding:9px 12px;border-radius:10px;background:#fff7e6;color:#8a5a00;font-weight:800;text-align:center">⏱️ Payment window: <span id="paymentCountdown">15:00</span></div>
-        <label class="label">Payment Screenshot <strong style="color:#8b1118">(Required)</strong></label>
-        <div style="font-size:13px;color:#666;margin:-4px 0 8px">Payment screenshot ke bina order WhatsApp par send nahi hoga. Order No. UPI receipt par mandatory nahi hai.</div>
+        
         <input class="field billing-field" id="paymentScreenshot" type="file" accept="image/*" aria-describedby="paymentCheck">
-        <div id="paymentCheck" class="payment-check" aria-live="polite"><b>🔒 Payment verification required</b><span>Upload the payment screenshot. The website will check the paid amount, payment date, payment time and order number before WhatsApp order can be sent.</span></div>
+        <div id="paymentCheck" class="payment-check" aria-live="polite" hidden></div>
       </div>
 
       <button class="drawer-action billing-wa" id="waSend">Send Order on WhatsApp</button>
