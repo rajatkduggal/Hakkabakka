@@ -465,7 +465,7 @@ body{background:var(--hb-cream)}
         <button class="drawer-action" id="upiPay">Payment done? Please Attach Screenshot</button>
         
         <small id="paymentStatus"></small>
-        <div id="paymentTimer" style="display:none;margin:8px 0 0;padding:9px 12px;border-radius:10px;background:#fff7e6;color:#8a5a00;font-weight:800;text-align:center">⏱️ Payment window: <span id="paymentCountdown">15:00</span></div>
+        <div id="paymentTimer" style="display:none;margin:8px 0 0;padding:9px 12px;border-radius:10px;background:#fff7e6;color:#8a5a00;font-weight:800;text-align:center">⏱️ Payment window: <span id="paymentCountdown">02:00</span></div>
         
         <button type="button" class="drawer-action" id="chooseScreenshot" style="display:none;background:#333">📎 Choose Payment Screenshot</button><input class="field billing-field" id="paymentScreenshot" type="file" accept="image/*" aria-describedby="paymentCheck" style="display:none" disabled>
         <div id="paymentCheck" class="payment-check" aria-live="polite" hidden></div>
@@ -973,7 +973,7 @@ document.getElementById('orderType').addEventListener('change',()=>{saveCheckout
 let paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};
 const paymentScreenshot=document.getElementById('paymentScreenshot'), paymentCheck=document.getElementById('paymentCheck'), waSend=document.getElementById('waSend');
 const paymentTimer=document.getElementById('paymentTimer'), paymentCountdown=document.getElementById('paymentCountdown');
-const PAYMENT_WINDOW_MS=15*60*1000;
+const PAYMENT_WINDOW_MS=2*60*1000;
 let paymentStartedAt=0, paymentTimerId=null, paymentContext=null, paymentTestMode=false;
 waSend.disabled=true;
 function expectedTotal(){return foodTotal()+deliveryCharge()}
@@ -1022,7 +1022,7 @@ function sameLocalDay(d,now){return d.getFullYear()===now.getFullYear()&&d.getMo
 function paymentTimeInWindow(h,mi,now){
   if(!paymentContext)return false;
   const shown=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,mi).getTime();
-  // Receipt time is compared with the current 15-minute payment window, not only the moment the browser launched the UPI app. This tolerates returning to the site after paying.
+  // Receipt time is checked against the fixed 2-minute payment window. Re-clicking the screenshot button must not restart this window.
   return shown>=now.getTime()-PAYMENT_WINDOW_MS-60*1000&&shown<=now.getTime()+60*1000;
 }
 function extractPaymentReference(text){
@@ -1054,7 +1054,7 @@ function orderNoMatches(text){const expected=normalizeOrderText(currentOrderNo);
 function hasCurrentPaymentContext(){const expected=paymentTestMode?2:expectedTotal();return !!paymentContext&&paymentContext.orderNo===currentOrderNo&&Math.abs(paymentContext.total-expected)<0.01&&Date.now()-paymentContext.startedAt<=PAYMENT_WINDOW_MS}
 function updateVerificationUI(){const orderOk=paymentTestMode?true:paymentVerification.order;const verified=paymentVerification.file&&paymentVerification.amount&&paymentVerification.date&&paymentVerification.time&&orderOk&&paymentVerification.ocr&&hasCurrentPaymentContext();waSend.disabled=!verified;return verified}
 function stopPaymentTimer(){if(paymentTimerId){clearInterval(paymentTimerId);paymentTimerId=null}paymentTimer.style.display='none'}
-function startPaymentTimer(testMode=false){stopPaymentTimer();paymentTestMode=!!testMode;paymentStartedAt=Date.now();paymentContext={startedAt:paymentStartedAt,total:paymentTestMode?2:expectedTotal(),orderNo:currentOrderNo};paymentTimer.style.display='block';paymentCountdown.textContent='15:00';paymentTimerId=setInterval(()=>{const left=Math.max(0,Math.ceil((PAYMENT_WINDOW_MS-(Date.now()-paymentStartedAt))/1000));const mm=String(Math.floor(left/60)).padStart(2,'0'),ss=String(left%60).padStart(2,'0');paymentCountdown.textContent=mm+':'+ss;if(left===0){stopPaymentTimer();updateVerificationUI()}},250)}
+function startPaymentTimer(testMode=false){paymentTestMode=!!testMode;paymentStartedAt=Date.now();paymentContext={startedAt:paymentStartedAt,total:paymentTestMode?2:expectedTotal(),orderNo:currentOrderNo};paymentTimer.style.display='block';paymentCountdown.textContent='02:00';if(paymentTimerId)clearInterval(paymentTimerId);paymentTimerId=setInterval(()=>{const left=Math.max(0,Math.ceil((PAYMENT_WINDOW_MS-(Date.now()-paymentStartedAt))/1000));const mm=String(Math.floor(left/60)).padStart(2,'0'),ss=String(left%60).padStart(2,'0');paymentCountdown.textContent=mm+':'+ss;if(left===0){clearInterval(paymentTimerId);paymentTimerId=null;updateVerificationUI();setPaymentCheck('bad','Payment time expired','2-minute payment window khatam ho gaya. Nayi payment ke liye billing dobara shuru karein.')}},250)}
 document.getElementById('upiPay').onclick=()=>{
   const status=deliveryPinStatus();
   if(!status.valid)return showOrderError(status.message,document.getElementById('pincode'));
@@ -1063,7 +1063,9 @@ document.getElementById('upiPay').onclick=()=>{
   const amt=expectedTotal();
   if(!Number.isFinite(amt)||amt<=0)return showOrderError('Order total invalid hai. Please review your cart.');
   paymentTestMode=false;
-  startPaymentTimer(false);
+  const samePayment=paymentContext&&paymentContext.orderNo===currentOrderNo&&Math.abs(paymentContext.total-amt)<0.01;
+  if(samePayment&&Date.now()-paymentContext.startedAt>PAYMENT_WINDOW_MS){setPaymentCheck('bad','Payment time expired','2-minute payment window khatam ho gaya. Nayi payment ke liye billing dobara shuru karein.');return;}
+  if(!samePayment)startPaymentTimer(false);
   setPaymentCheck('', 'Payment screenshot upload karein', 'Ab neeche “Choose Payment Screenshot” par tap karke successful Paytm/UPI receipt select karein.');
   paymentScreenshot.disabled=false;
   const chooseBtn=document.getElementById('chooseScreenshot');
