@@ -1156,6 +1156,18 @@ async function verifyPaymentScreenshot(file){
       }catch(cropError){/* Keep the original OCR result if crop OCR is unavailable. */}
     }
     paymentVerification.amount=detectedAmounts.some(n=>Math.abs(n-total)<0.01);
+    // Independent Paytm amount-in-words check. This is needed when OCR reads
+    // "Thirty Five Rupees" but misses the large ₹35 numeral on the receipt.
+    if(!paymentVerification.amount){
+      const amountWords=String(text||'').toLowerCase().replace(/[’']/g,' ').replace(/[\r\n\t-]+/g,' ').replace(/\s+/g,' ');
+      const wordValues={zero:0,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,eighteen:18,nineteen:19,twenty:20,thirty:30,forty:40,fifty:50,sixty:60,seventy:70,eighty:80,ninety:90};
+      const wordRe=/\b(zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)(?:\s+(one|two|three|four|five|six|seven|eight|nine))?\s+rupees?\b/g;
+      let wordMatch;
+      while((wordMatch=wordRe.exec(amountWords))){
+        const value=(wordValues[wordMatch[1]]||0)+(wordMatch[2]?wordValues[wordMatch[2]]:0);
+        if(value>0&&Math.abs(value-total)<0.01){paymentVerification.amount=true;break;}
+      }
+    }
     paymentVerification.date=parseDateCandidates(text).some(d=>sameLocalDay(d,now));
     const timeCandidates=parseTimeCandidates(text);
     const timeMatched=timeCandidates.some(x=>paymentTimeInWindow(x.h,x.mi,now));
