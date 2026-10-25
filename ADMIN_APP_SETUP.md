@@ -1,30 +1,33 @@
-# HakkaBakka Admin App — safe prototype
+# HakkaBakka Admin App — build status and deployment
 
 ## Preview
-After this branch is published through GitHub Pages, open `/admin/` on the same site and use the browser's **Add to Home screen / Install app** option.
+The mobile-first PWA dashboard is at `/admin/`. The prototype has local-only draft saves, a demo menu list, and JSON export helpers. It does not alter the customer website, live menu, cart, payment code, or orders.
 
-## Current scope
-This is a mobile-first installable PWA shell on a separate `/admin/` path. It does not modify the existing customer website, menu, cart, payment code, or live orders. Local draft buttons only save draft text to the current device. No data is published and no real payment/order actions are performed.
+## Included in this branch
+- `admin/index.html`: mobile-first dashboard for Website/Banner, Menu/Pricing, Orders/Payments, POS/Kitchen, Social, Offers, Security, and integration status.
+- `admin/manifest.webmanifest` and `admin/sw.js`: installable PWA shell.
+- `admin-api/src/index.js`: Cloudflare Worker API source for password login, server-side sessions, menu CRUD, offers, homepage content and read-only orders list.
+- `admin-api/schema.sql`: D1 tables for sessions, menu, offers, homepage content and orders.
+- `admin-api/wrangler.toml`: Worker deployment template.
 
-## Security boundary
-This is **not production-secure admin access yet**. Do not add a password to frontend HTML or store credentials in localStorage. A static GitHub Pages site cannot protect admin data or safely hold API tokens. Before real use, add server-side authentication and authorization, secure session cookies, audit logs, rate limiting, and server-side validation.
+## Important: not production-live yet
+This is not yet a complete live production system. The API source is prepared but has not been deployed or security-tested; the D1 database has not been created/bound; no admin password secret is configured; and the static PWA UI is not yet wired to the API. Therefore, don't use this for real orders, live menu changes, payments, or admin credentials yet.
 
-## Recommended production architecture (Railway not used)
-- **Frontend/PWA:** existing GitHub Pages domain, isolated under `/admin/`.
-- **Backend/API:** Cloudflare Workers with server-side authentication and protected secrets.
-- **Data:** Cloudflare D1 for menu, offers, orders, staff roles, and audit history.
-- **Image uploads:** Cloudflare R2 with content type/size validation.
-- **Payments:** verified provider webhook and server-side transaction verification; never trust screenshots alone.
-- **POS/KOT:** authenticated API, order state machine, and printer support validated against the actual device.
-- **Social:** manual website-feed editor first. Metricool API sync only after API entitlement and credentials are configured; tokens remain server-side.
+## Secure backend setup (Railway is not used)
+1. Create a Cloudflare D1 database named `hakkabakka-admin` in your Cloudflare account.
+2. Replace `REPLACE_WITH_D1_DATABASE_ID` in `admin-api/wrangler.toml` with that database ID.
+3. Apply `admin-api/schema.sql` to the D1 database using Wrangler.
+4. Set a strong secret with `npx wrangler secret put ADMIN_PASSWORD`; do not commit it to GitHub or put it in browser JavaScript.
+5. Deploy the Worker using Wrangler and attach the D1 binding named `DB`.
+6. Configure the API hostname and restrictive CORS to the admin origin. Use HTTPS.
+7. Wire the admin UI to the API and test login/session expiry, invalid credentials, menu CRUD, audit logging, and recovery before live use.
 
-## Production implementation order
-1. Verify this prototype in preview without changing main.
-2. Add secure backend and login before exposing management data.
-3. Add menu/offers and banner publishing with version history and rollback.
-4. Connect order intake and payment verification.
-5. Add POS/KOT after confirming printer/browser requirements.
-6. Add social publishing and optional scheduled sync.
-
-## Publish safely
-The prototype is on branch `feature/hakkabakka-admin-pwa`. Review the proposed changes and merge only after approval. It has intentionally not been merged to `main`.
+## Security boundary and remaining production work
+- Add rate limiting and audit log records for all writes.
+- Add session cleanup and CSRF protection suitable to the final origin arrangement.
+- Add staff roles only if needed; currently the API assumes one admin secret.
+- Payment status must only come from verified payment-provider webhooks/reconciliation, never customer screenshots.
+- Orders are read-only in this initial API scaffold. Secure order creation/status transitions and validation are still needed.
+- POS/KOT needs the exact printer/browser setup validated; this branch does not print.
+- Social posting and Metricool sync require separate API entitlement and credentials, stored server-side.
+- Before merging to `main`, complete deployment and security review. The PR is intentionally a draft and does not change the live customer website.
