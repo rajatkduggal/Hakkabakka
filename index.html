@@ -451,6 +451,7 @@ body{background:var(--hb-cream)}
         <div class="billing-total">
           <div>Food Total <span>₹<b id="billFood">0</b></span></div>
           <div>Delivery Charges <span>₹<b id="billDelivery">0</b></span></div>
+          <div id="billDiscountRow" style="display:none;color:#16803c;font-weight:800">Pickup Discount <span>−₹<b id="billDiscount">0</b></span></div>
           <div class="grand"><strong>Total</strong><strong>₹<span id="billTotal">0</span></strong></div>
         </div>
       </div>
@@ -900,6 +901,20 @@ function renderMenu(){
   }
 }
 function foodTotal(){return cart.reduce((s,x)=>s+x.price,0)}
+function pickupDiscountRate(){
+  if(orderType.value!=='Pickup')return 0;
+  const f=foodTotal();
+  if(f>2500)return 0.20;
+  if(f>2000)return 0.17;
+  if(f>1500)return 0.15;
+  if(f>1100)return 0.10;
+  if(f>900)return 0.09;
+  if(f>700)return 0.07;
+  if(f>500)return 0.05;
+  return 0;
+}
+function pickupDiscount(){return Math.round(foodTotal()*pickupDiscountRate()*100)/100}
+function orderDiscount(){return orderType.value==='Pickup'?pickupDiscount():0}
 function pin(){return /^144\d{3}$/.test(pincode.value)?Number(pincode.value):null}
 function deliveryPinStatus(){
   if(orderType.value!=='Home Delivery')return {valid:true,charge:0,message:''};
@@ -936,11 +951,16 @@ function updateBilling(){
       ds.textContent='';
     }
   }
-  const f=foodTotal(),c=status.charge,grand=f+c;
+  const f=foodTotal(),c=status.charge,d=orderDiscount(),grand=Math.max(0,f-d+c);
   document.getElementById('billFood').textContent=f;
   document.getElementById('billDelivery').textContent=status.valid?c:'—';
-  document.getElementById('billTotal').textContent=status.valid?grand:f;
-  document.getElementById('cartSummaryTotal').textContent=status.valid?grand:f;
+  const discountRow=document.getElementById('billDiscountRow');
+  if(discountRow)discountRow.style.display=d>0?'flex':'none';
+  const discountLabel=document.getElementById('billDiscount');
+  if(discountLabel)discountLabel.textContent=d.toFixed(2).replace(/\.00$/,'');
+  if(discountRow&&d>0)discountRow.innerHTML='Pickup Discount ('+Math.round(pickupDiscountRate()*100)+'%) <span>−₹<b id="billDiscount">'+d.toFixed(2).replace(/\.00$/,'')+'</b></span>';
+  document.getElementById('billTotal').textContent=status.valid?grand:f-d;
+  document.getElementById('cartSummaryTotal').textContent=status.valid?grand:f-d;
   const payBtn=document.getElementById('upiPay');
   if(payBtn){
     payBtn.disabled=home&&!status.valid;
@@ -976,7 +996,7 @@ const paymentTimer=document.getElementById('paymentTimer'), paymentCountdown=doc
 const PAYMENT_WINDOW_MS=2*60*1000;
 let paymentStartedAt=0, paymentTimerId=null, paymentContext=null, paymentTestMode=false;
 waSend.disabled=true;
-function expectedTotal(){return foodTotal()+deliveryCharge()}
+function expectedTotal(){return Math.max(0,foodTotal()-orderDiscount()+deliveryCharge())}
 function showOrderError(message,field){
   alert(message);
   if(field){field.focus();field.scrollIntoView({behavior:'smooth',block:'center'});}
@@ -1298,6 +1318,7 @@ async function sendOrderToPOS(){
     address:type==='Home Delivery'?document.getElementById('address').value.trim():null,
     pincode:type==='Home Delivery'?pin():null,
     food_total:foodTotal(),
+    discount_amount:orderDiscount(),
     delivery_charges:deliveryCharge(),
     total_amount:expectedTotal(),
     payment_status:'SCREENSHOT_REVIEW_REQUIRED',
@@ -1330,7 +1351,7 @@ document.getElementById('waSend').onclick=async()=>{
   }
   const grouped=[];cart.forEach(x=>{const g=grouped.find(y=>y.name===x.name&&y.price===x.price);if(g)g.qty++;else grouped.push({name:x.name,price:x.price,qty:1})});const lines=grouped.map(x=>'• '+x.name+' × '+x.qty+' - ₹'+(x.price*x.qty)).join('\n'),total=expectedTotal();
   const ref=extractPaymentReference(window.hbLastPaymentOcrText||'');
-  const msg='*HAKKA BAKKA ONLINE ORDER*\n*ORDER NO: '+currentOrderNo+'*'+(ref?'\n*PAYMENT REF NO: '+ref+'*':'\n*PAYMENT REF NO: Please check attached receipt*')+'\n\n'+lines+'\n\nFood Total: ₹'+foodTotal()+'\nDelivery Charges: ₹'+deliveryCharge()+'\n*TOTAL: ₹'+total+'*\n\nName: '+name+'\nMobile: '+phone+'\nType: '+type+extra+'\n\nPlease confirm my order.';
+  const msg='*HAKKA BAKKA ONLINE ORDER*\n*ORDER NO: '+currentOrderNo+'*'+(ref?'\n*PAYMENT REF NO: '+ref+'*':'\n*PAYMENT REF NO: Please check attached receipt*')+'\n\n'+lines+'\n\nFood Total: ₹'+foodTotal()+(orderDiscount()>0?'\nPickup Discount ('+Math.round(pickupDiscountRate()*100)+'%): -₹'+orderDiscount():'')+'\nDelivery Charges: ₹'+deliveryCharge()+'\n*TOTAL: ₹'+total+'*\n\nName: '+name+'\nMobile: '+phone+'\nType: '+type+extra+'\n\nPlease confirm my order.';
   // WhatsApp click-to-chat opens directly, avoiding the Android share-sheet app chooser.
   // Browsers cannot attach a local screenshot file to a wa.me draft; customer must attach it manually.
   clearCart();
