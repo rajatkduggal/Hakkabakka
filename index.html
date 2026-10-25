@@ -981,6 +981,7 @@ function syncCart(){saveCart();saveCheckout();invalidatePaymentVerification();re
 function changeQty(n,p,d){if(d>0)cart.push({name:n,price:p});else{const i=cart.findIndex(x=>x.name===n&&x.price===p);if(i>=0)cart.splice(i,1)}syncCart()}
 function clearCart(){cart=[];resetOrderNumber();saveCart();renderCart()}
 function updateBilling(){
+  updatePickupDiscountBadge();
   const home=orderType.value==='Home Delivery';
   document.getElementById('deliveryFields').style.display=home?'block':'none';
   const ds=document.getElementById('deliveryStatus');
