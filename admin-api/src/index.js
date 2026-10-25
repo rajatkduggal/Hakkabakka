@@ -28,7 +28,7 @@ async function handle(req,env){
    await env.DB.prepare("INSERT INTO admin_sessions(token_hash,expires_at,created_at) VALUES(?,?,?)").bind(await sha(token),expires,Date.now()).run();
    return new Response(JSON.stringify({ok:true,expiresAt:expires}),{status:200,headers:{"Content-Type":"application/json","Cache-Control":"no-store",...corsHeaders,"Set-Cookie":setCookie(token,28800)}});
  }
- if(p==="/api/logout"&&req.method==="POST"){const token=parseCookie(req,cookieName);if(token)await env.DB.prepare("DELETE FROM admin_sessions WHERE token_hash=?").bind(await sha(token)).run();return new Response(JSON.stringify({ok:true}),{status:200,headers:{"Content-Type":"application/json","Cache-Control":"no-store",...corsHeaders,"Set-Cookie":setCookie("",0)});}
+ if(p==="/api/logout"&&req.method==="POST"){const token=parseCookie(req,cookieName);if(token)await env.DB.prepare("DELETE FROM admin_sessions WHERE token_hash=?").bind(await sha(token)).run();return new Response(JSON.stringify({ok:true}),{status:200,headers:{"Content-Type":"application/json","Cache-Control":"no-store",...corsHeaders,"Set-Cookie":setCookie("",0)}});}
  if(!await session(req,env))return json({error:"Authentication required"},401);
  if(p==="/api/menu"&&req.method==="GET"){const {results=[]}=await env.DB.prepare("SELECT id,name,category,price,available,updated_at FROM menu_items ORDER BY category,name").all();return json({items:results});}
  if(p==="/api/menu"&&req.method==="POST"){
