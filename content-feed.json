@@ -1,5 +1,14 @@
 {
-  "latestPosts": [],
+  "latestPosts": [
+    {
+      "image": "https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/hakkabakka_website_launch_instagram_3x4.png",
+      "permalink": "https://www.instagram.com/hakka_bakka.in/",
+      "mediaType": "IMAGE",
+      "caption": "Diwali ki shubhkamnayein! HakkaBakka ki online ordering ab www.hakkabakka.in par.",
+      "timestamp": "2026-10-25T15:19:00+05:30",
+      "alt": "HakkaBakka Punjabi Dhaba Diwali poster promoting online ordering and pickup offers"
+    }
+  ],
   "todaysSpecial": null,
   "chefSpecial": null,
   "offers": [],
