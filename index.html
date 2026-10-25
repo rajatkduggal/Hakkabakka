@@ -911,9 +911,9 @@ const data=[
 ]],
 
 ["Soda, Water & Cold Drinks",[
-["Soda","50","https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/cold_drink.png"],
+["Soda","50","https://www.vishalmegamart.com/dw/image/v2/BGHT_PRD/on/demandware.static/-/Sites-vmm-fmcg-master-catalog/default/dw985a42c6/images/large/1310011732.jpg?sh=900&sw=900"],
 ["Water","30","https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/water.png"],
-["Cold Drinks","50","https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/cold_drink.png"]
+["Cold Drinks","50","https://instamart-media-assets.swiggy.com/swiggy/image/upload/fl_lossy%2Cf_auto%2Cq_auto/NI_CATALOG/IMAGES/ciw/2025/8/13/b2c124db-9e1d-4102-aab1-9cf2c7df45ce_NPIC-001120_20250813_065442.png"]
 ]]
 ];
 function goToMenuCategory(category){const sections=[...document.querySelectorAll('#menu .menu-section')];const target=sections.find(section=>{const h=section.querySelector('h2');return h&&h.textContent.trim()===category});if(target){target.scrollIntoView({behavior:'smooth',block:'start'});target.classList.add('quick-highlight');setTimeout(()=>target.classList.remove('quick-highlight'),1300)}else{const menu=document.getElementById('menu');if(menu)menu.scrollIntoView({behavior:'smooth',block:'start'});}}
