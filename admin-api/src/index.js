@@ -2,7 +2,8 @@ const allowedOrigins = new Set([
   "https://www.hakkabakka.in",
   "https://hakkabakka.in",
   "https://hakkabakka-admin-dashboard.pages.dev",
-  "https://2153dc98.hakkabakka-admin-dashboard.pages.dev"
+  "https://2153dc98.hakkabakka-admin-dashboard.pages.dev",
+  "https://b062c4b0.hakkabakka-admin-dashboard.pages.dev"
 ]);
 function corsHeaders(req) {
   const origin = req.headers.get("Origin");
@@ -75,7 +76,20 @@ async function handle(req,env){
    if(["unpaid","paid","refunded"].includes(b.payment_status))await env.DB.prepare("UPDATE orders SET payment_status=?,updated_at=? WHERE id=?").bind(b.payment_status,Date.now(),orderMatch[1]).run();
    return json(req,{ok:true});
  }
- if(p==="/api/orders"&&req.method==="GET"){const {results=[]}=await env.DB.prepare("SELECT id,order_ref,status,total,payment_status,payload,created_at,updated_at FROM orders ORDER BY created_at DESC LIMIT 100").all();return json(req,{items:results});}
+ if(p==="/api/orders"&&req.method==="GET"){
+   const {results=[]}=await env.DB.prepare("SELECT id,order_ref,status,total,payment_status,payload,created_at,updated_at FROM orders ORDER BY created_at DESC LIMIT 100").all();
+   let customerOrders=[], customerOrdersConfigured=!!(env.SUPABASE_URL&&env.SUPABASE_SERVICE_ROLE_KEY);
+   if(customerOrdersConfigured){
+     try{
+       const base=String(env.SUPABASE_URL).replace(/\/$/,"");
+       const response=await fetch(base+"/rest/v1/customer_orders?select=*&order=created_at.desc&limit=100",{headers:{"apikey":env.SUPABASE_SERVICE_ROLE_KEY,"Authorization":"Bearer "+env.SUPABASE_SERVICE_ROLE_KEY,"Accept":"application/json"}});
+       if(!response.ok)throw new Error("Supabase customer_orders returned "+response.status);
+       const rows=await response.json();
+       customerOrders=rows.map((x)=>({id:"supabase:"+String(x.id||x.order_no||crypto.randomUUID()),order_ref:String(x.order_no||x.id||"Customer order"),status:String(x.status||"received"),total:Number(x.total_amount??x.total??0),payment_status:String(x.status||"check payment"),payload:JSON.stringify({source:"customer-website",orderType:x.order_type||"Online",customer_name:x.customer_name||"",phone:x.phone||"",address:x.address||"",items:Array.isArray(x.items)?x.items:[]}),created_at:x.created_at?new Date(x.created_at).getTime():0,source:"customer-website",read_only:true}));
+     }catch(e){return json(req,{items:results,customerOrdersConfigured:true,customerOrdersError:"Customer orders could not be fetched. Check Supabase table/secret configuration."});}
+   }
+   return json(req,{items:[...customerOrders,...results].sort((a,b)=>Number(b.created_at||0)-Number(a.created_at||0)).slice(0,100),customerOrdersConfigured,customerOrdersCount:customerOrders.length});
+ }
  return json(req,{error:"Not found"},404);
 }
 export default {async fetch(req,env){try{return await handle(req,env)}catch(e){return json(req,{error:"Server error"},500)}}};
