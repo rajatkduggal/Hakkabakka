@@ -10,7 +10,7 @@ const cookieName = "hb_admin_session";
 function b64(bytes){return btoa(String.fromCharCode(...new Uint8Array(bytes))).replace(/=/g,"").replace(/\+/g,"-").replace(/\//g,"_");}
 async function sha(text){const d=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(text));return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,"0")).join("");}
 function parseCookie(req,name){const s=req.headers.get("Cookie")||"";const m=s.split(";").map(x=>x.trim()).find(x=>x.startsWith(name+"="));return m?decodeURIComponent(m.slice(name.length+1)):"";}
-function setCookie(token,maxAge){return cookieName+"="+encodeURIComponent(token)+"; Path=/api; HttpOnly; Secure; SameSite=Strict; Max-Age="+maxAge;}
+function setCookie(token,maxAge){return cookieName+"="+encodeURIComponent(token)+"; Path=/api; HttpOnly; Secure; SameSite=None; Max-Age="+maxAge;}
 async function session(req,env){const token=parseCookie(req,cookieName);if(!token)return false;const h=await sha(token);const row=await env.DB.prepare("SELECT token_hash, expires_at FROM admin_sessions WHERE token_hash=?").bind(h).first();if(!row||row.expires_at<Date.now())return false;return true;}
 function validOrigin(req){const origin=req.headers.get("Origin");return !origin||origin==="https://www.hakkabakka.in"||origin==="https://hakkabakka.in";}
 async function handle(req,env){
