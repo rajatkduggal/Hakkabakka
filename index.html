@@ -902,18 +902,18 @@ const data=[
 ]],
 
 ["Egg Special",[
-["Egg Omelette","100","https://images.unsplash.com/photo-1563690449029-d6e1b8d6003d?auto=format&fit=crop&fm=jpg&q=80&w=1200"],
-["Egg Bhurji","150","https://commons.wikimedia.org/wiki/Special:FilePath/Anda%20bujiya.jpg"]
+["Egg Omelette","100","https://assets.limetray.com/assets/image_manager/uploads/21848/00AAB0DSCF5255.jpeg"],
+["Egg Bhurji","150","https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy%2Cf_auto%2Cq_auto/FOOD_CATALOG/IMAGES/CMS/2026/2/5/39c391dd-a7e4-46cd-9e69-23e77e3d3539_dace572f-8158-4d2e-a00f-f2c7b740e089.jpg"]
 ]],
 
 ["Egg Main Course",[
-["Egg Curry","250","https://images.unsplash.com/photo-1764315197254-94385571df22?auto=format&fit=crop&fm=jpg&q=80&w=1200"]
+["Egg Curry","250","https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy%2Cf_auto%2Cq_auto%2Cw_300%2Ch_300%2Ce_grayscale%2Cc_fit/FOOD_CATALOG/IMAGES/CMS/2024/9/10/23da3ec2-c50c-4060-919e-22b49b9078e8_4330f2de-11c4-475e-96fc-6f460da022ce.png"]
 ]],
 
 ["Soda, Water & Cold Drinks",[
-["Soda","50","https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/cold_drink.png"],
+["Soda","50","https://www.vishalmegamart.com/dw/image/v2/BGHT_PRD/on/demandware.static/-/Sites-vmm-fmcg-master-catalog/default/dw985a42c6/images/large/1310011732.jpg?sh=900&sw=900"],
 ["Water","30","https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/water.png"],
-["Cold Drinks","50","https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/cold_drink.png"]
+["Cold Drinks","50","https://instamart-media-assets.swiggy.com/swiggy/image/upload/fl_lossy%2Cf_auto%2Cq_auto/NI_CATALOG/IMAGES/ciw/2025/8/13/b2c124db-9e1d-4102-aab1-9cf2c7df45ce_NPIC-001120_20250813_065442.png"]
 ]]
 ];
 function goToMenuCategory(category){const sections=[...document.querySelectorAll('#menu .menu-section')];const target=sections.find(section=>{const h=section.querySelector('h2');return h&&h.textContent.trim()===category});if(target){target.scrollIntoView({behavior:'smooth',block:'start'});target.classList.add('quick-highlight');setTimeout(()=>target.classList.remove('quick-highlight'),1300)}else{const menu=document.getElementById('menu');if(menu)menu.scrollIntoView({behavior:'smooth',block:'start'});}}
