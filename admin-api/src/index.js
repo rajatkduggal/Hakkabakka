@@ -57,6 +57,14 @@ async function handle(req,env){
  if(p==="/api/offers"&&req.method==="POST"){const b=await req.json().catch(()=>null);if(!b||typeof b.title!=="string"||!b.title.trim()||b.title.length>120)return json(req,{error:"Invalid offer"},400);const id=crypto.randomUUID();await env.DB.prepare("INSERT INTO offers(id,title,details,active,updated_at) VALUES(?,?,?,1,?)").bind(id,b.title.trim(),String(b.details||"").slice(0,1000),Date.now()).run();return json(req,{ok:true,id},201);}
  if(p==="/api/content"&&req.method==="GET"){const row=await env.DB.prepare("SELECT value,updated_at FROM app_content WHERE key='homepage'").first();return json(req,{content:row?JSON.parse(row.value):{latestPosts:[],announcements:[]},updatedAt:row?.updated_at||null});}
  if(p==="/api/content"&&req.method==="PUT"){const b=await req.json().catch(()=>null);if(!b||typeof b!=="object"||JSON.stringify(b).length>100000)return json(req,{error:"Invalid or oversized content"},400);const now=Date.now();await env.DB.prepare("INSERT INTO app_content(key,value,updated_at) VALUES('homepage',?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value,updated_at=excluded.updated_at").bind(JSON.stringify(b),now).run();return json(req,{ok:true,updatedAt:now});}
+ if(p==="/api/orders"&&req.method==="POST"){
+   const b=await req.json().catch(()=>null);
+   if(!b||!Array.isArray(b.items)||b.items.length<1||b.items.length>100||!Number.isFinite(Number(b.total))||Number(b.total)<0||typeof b.orderType!=="string")return json(req,{error:"Invalid POS order"},400);
+   const id=crypto.randomUUID(), orderRef="HB-"+Date.now().toString(36).toUpperCase();
+   const now=Date.now(), payload=JSON.stringify({source:"admin-pos",orderType:b.orderType,notes:String(b.notes||"").slice(0,1000),items:b.items.map(x=>({name:String(x.name||"").slice(0,120),price:Number(x.price),qty:Math.max(1,Math.min(99,Number(x.qty)||1))}))});
+   await env.DB.prepare("INSERT INTO orders(id,order_ref,status,total,payment_status,payload,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)").bind(id,orderRef,"open",""+Number(b.total),"unpaid",payload,now,now).run();
+   return json(req,{ok:true,id,orderRef,status:"open",payment_status:"unpaid",total:Number(b.total),created_at:now},201);
+ }
  if(p==="/api/orders"&&req.method==="GET"){const {results=[]}=await env.DB.prepare("SELECT id,order_ref,status,total,payment_status,created_at FROM orders ORDER BY created_at DESC LIMIT 100").all();return json(req,{items:results});}
  return json(req,{error:"Not found"},404);
 }
