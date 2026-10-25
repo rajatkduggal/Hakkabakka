@@ -1588,5 +1588,34 @@ renderMenu();renderCart();initCustomerAuth();
 })();
 </script>
 
+
+<!-- CUSTOMER AUTH MODAL CLICK / STACKING FIX -->
+<style>
+#authModal{position:fixed!important;inset:0!important;z-index:100000!important;pointer-events:none;isolation:isolate}
+#authModal.show{display:flex!important;pointer-events:auto!important}
+#authModal .modal-card{position:relative;z-index:1;pointer-events:auto;max-height:calc(100dvh - 36px);overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y}
+#authModal .modal-card button,#authModal .modal-card input{position:relative;z-index:2;pointer-events:auto;touch-action:manipulation}
+</style>
+<script>
+(function(){
+  function bindAuthModalSafety(){
+    var modal=document.getElementById('authModal');
+    var card=modal&&modal.querySelector('.modal-card');
+    if(!modal||!card||modal.dataset.authClickFix==='true')return;
+    modal.dataset.authClickFix='true';
+    // Keep taps inside the login/signup panel from reaching unrelated page handlers.
+    card.addEventListener('click',function(event){event.stopPropagation()},true);
+    card.addEventListener('pointerdown',function(event){event.stopPropagation()},true);
+    // Make the account mode switches explicit and reliable on mobile browsers.
+    var loginSwitch=modal.querySelector('#loginForm button[onclick*="showSignup"]');
+    var signupSwitch=modal.querySelector('#signupForm button[onclick*="showLogin"]');
+    if(loginSwitch){loginSwitch.type='button';loginSwitch.addEventListener('click',function(event){event.preventDefault();event.stopPropagation();showSignup()})}
+    if(signupSwitch){signupSwitch.type='button';signupSwitch.addEventListener('click',function(event){event.preventDefault();event.stopPropagation();showLogin()})}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindAuthModalSafety);
+  else bindAuthModalSafety();
+})();
+</script>
+
 </body>
 </html>
