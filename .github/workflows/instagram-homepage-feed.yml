@@ -1,0 +1,37 @@
+name: Refresh Instagram homepage feed
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: instagram-homepage-feed
+  cancel-in-progress: false
+
+jobs:
+  refresh-feed:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out website
+        uses: actions/checkout@v4
+      - name: Refresh feed from Instagram Graph API
+        env:
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+          INSTAGRAM_ACCOUNT_ID: ${{ secrets.INSTAGRAM_ACCOUNT_ID }}
+          META_GRAPH_VERSION: v23.0
+        run: python3 scripts/update_instagram_feed.py
+      - name: Commit updated feed
+        run: |
+          if git diff --quiet -- content-feed.json; then
+            echo "No feed changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content-feed.json
+          git commit -m "Refresh Instagram homepage feed"
+          git push
