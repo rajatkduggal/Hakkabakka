@@ -397,6 +397,42 @@ body{background:var(--hb-cream)}
   </div>
 </div>
 
+<!-- PICKUP DISCOUNT FLASH — shown on every fresh website visit -->
+<div id="pickupDiscountFlash" role="dialog" aria-modal="true" aria-labelledby="pickupDiscountTitle" style="position:fixed;inset:0;z-index:1000000;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(22,4,5,.82);backdrop-filter:blur(5px)">
+  <div style="position:relative;width:min(440px,100%);max-height:90vh;overflow:auto;border-radius:24px;background:linear-gradient(145deg,#fffaf0,#fff);border:2px solid #e1b34f;box-shadow:0 24px 80px #0008;padding:25px 20px 22px;text-align:center">
+    <button type="button" id="closePickupDiscountFlash" aria-label="Close discount offer" style="position:absolute;top:10px;right:11px;width:38px;height:38px;border:0;border-radius:50%;background:#7b1113;color:#fff;font-size:25px;line-height:1;font-weight:900;cursor:pointer">×</button>
+    <div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#7b1113;font-weight:900">HAKKA BAKKA • SPECIAL OFFER</div>
+    <div style="font-size:54px;line-height:1;margin:12px 0 5px">🎉</div>
+    <h2 id="pickupDiscountTitle" style="margin:0;color:#7b1113;font-size:clamp(27px,7vw,36px);line-height:1.1">PICKUP & SAVE MORE!</h2>
+    <p style="margin:9px 0 17px;color:#51443c;font-size:14px">Order more, save more on Pickup orders.</p>
+    <div style="display:grid;gap:7px;text-align:left;max-width:300px;margin:0 auto 18px">
+      <div style="display:flex;justify-content:space-between;padding:9px 12px;border-radius:10px;background:#fff0d2"><b>Above ₹500</b><strong style="color:#16803c">5% OFF</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:9px 12px;border-radius:10px;background:#fff0d2"><b>Above ₹700</b><strong style="color:#16803c">7% OFF</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:9px 12px;border-radius:10px;background:#fff0d2"><b>Above ₹900</b><strong style="color:#16803c">9% OFF</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:9px 12px;border-radius:10px;background:#fff0d2"><b>Above ₹1,100</b><strong style="color:#16803c">10% OFF</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:9px 12px;border-radius:10px;background:#fff0d2"><b>Above ₹1,500</b><strong style="color:#16803c">15% OFF</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:9px 12px;border-radius:10px;background:#fff0d2"><b>Above ₹2,000</b><strong style="color:#16803c">17% OFF</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:9px 12px;border-radius:10px;background:#fff0d2"><b>Above ₹2,500</b><strong style="color:#16803c">20% OFF</strong></div>
+    </div>
+    <p style="margin:0 0 15px;color:#7b1113;font-size:12px;font-weight:700">Offer applies to Pickup orders only.</p>
+    <button type="button" id="continuePickupDiscount" style="width:100%;border:0;border-radius:13px;padding:14px;background:#7b1113;color:#fff;font-size:16px;font-weight:900;cursor:pointer">Continue to Website →</button>
+  </div>
+</div>
+<script>
+(function(){
+  var overlay=document.getElementById('pickupDiscountFlash');
+  if(!overlay)return;
+  function closeOffer(){overlay.style.display='none';document.body.style.overflow='';}
+  document.body.style.overflow='hidden';
+  var close=document.getElementById('closePickupDiscountFlash');
+  var proceed=document.getElementById('continuePickupDiscount');
+  if(close)close.addEventListener('click',closeOffer);
+  if(proceed)proceed.addEventListener('click',closeOffer);
+  overlay.addEventListener('click',function(event){if(event.target===overlay)closeOffer();});
+  document.addEventListener('keydown',function(event){if(event.key==='Escape'&&overlay.style.display!=='none')closeOffer();});
+})();
+</script>
+
 <!-- SEPARATE ONLINE MENU SCREEN -->
 <div id="menuScreen">
   <div class="menu-header"><div class="menu-bar"><button class="back" onclick="closeMenu()">← Back</button><div class="menu-title"><b>Hakka Bakka Online Menu</b><span>Punjabi Dhaba • Desi Swad • Modern Vibe</span></div><button class="account-btn" id="accountBtn" type="button" onclick="openAuth()">👤 Login</button></div><div class="searchbox"><input id="search" type="search" placeholder="Search menu…" autocomplete="off"><div class="cart-summary" id="cartSummary" role="button" tabindex="0" aria-label="Open cart" onclick="openCart()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCart()}"><div class="cart-summary-head">🛒 <span id="cartSummaryText">Cart is empty</span></div><div id="cartSummaryList" class="cart-summary-list"></div><div class="cart-summary-total"><span>Total</span><b>₹<span id="cartSummaryTotal">0</span></b><button type="button" class="cart-pay" id="cartPay" onclick="event.stopPropagation();proceedBilling()" disabled>💳 Pay / Checkout →</button></div></div></div></div>
