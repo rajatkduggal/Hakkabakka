@@ -448,7 +448,7 @@ body{background:var(--hb-cream)}
 
 <div class="drawer" id="drawer" onclick="if(event.target===this)closeCart()"><div class="drawer-card" id="drawerCard">
   <div class="drawer-head"><h2 id="cartHeading">Your Order</h2><button class="drawer-close" onclick="closeCart()">✕</button></div>
-  <div id="cartView"><div id="cartPickupDiscountBadge" class="cart-pickup-discount" aria-live="polite"></div><div id="items"></div><div class="cart-footer"><div class="bill"><div>Food Total <b>₹<span id="cartSubtotal">0</span></b></div></div><button class="drawer-action" id="drawerCheckout" onclick="proceedBilling()" disabled>Proceed to Billing</button><button class="drawer-action secondary" onclick="continueShopping()">＋ Add More Items</button><button class="drawer-action secondary" onclick="clearCart()">Clear Cart</button></div></div>
+  <div id="cartView"><div id="cartPickupDiscountBadge" class="cart-pickup-discount" aria-live="polite"></div><div id="items"></div><div class="cart-footer"><div class="bill"><div>Food Total <b>₹<span id="cartSubtotal">0</span></b></div></div><div class="cart-footer-actions"><button class="drawer-action" id="drawerCheckout" onclick="proceedBilling()" disabled>Proceed to Billing</button><button class="drawer-action secondary" onclick="continueShopping()">＋ Add More Items</button></div></div></div>
   <div id="billingView" style="display:none">
     <div class="billing-shell">
       <div class="billing-intro">
@@ -1671,6 +1671,20 @@ renderMenu();renderCart();initCustomerAuth();
 .cart-pickup-discount{flex:0 0 auto;margin:8px 0 6px;padding:10px 12px;border:1px solid #b9dfc6;border-radius:12px;background:#effaf2;color:#21663a;font-size:clamp(12px,3.5vw,14px);line-height:1.4;font-weight:650}
 .cart-pickup-discount:empty{display:none}
 .cart-pickup-discount strong{font-size:1.12em;font-weight:900}
+</style>
+
+
+<!-- COMPACT CART LIST AND SIDE-BY-SIDE ACTION BUTTONS -->
+<style>
+#items .cart-item{padding:7px 4px!important;column-gap:8px!important}
+#items .cart-item .top{font-size:clamp(12px,3.5vw,15px)!important;line-height:1.15!important}
+#items .cart-item .bottom>b{font-size:clamp(12px,3.4vw,14px)!important}
+#items .cart-item .qty button{height:32px!important;width:clamp(24px,6.7vw,31px)!important;min-width:clamp(24px,6.7vw,31px)!important}
+#items .cart-item .qty span{min-width:18px!important;font-size:13px!important}
+#cartView>.cart-footer{padding:7px 0 calc(7px + env(safe-area-inset-bottom))!important}
+#cartView>.cart-footer .cart-footer-actions{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:8px!important;width:100%!important;align-items:stretch!important}
+#cartView>.cart-footer .cart-footer-actions .drawer-action{width:100%!important;min-width:0!important;min-height:48px!important;height:auto!important;margin:8px 0 0!important;padding:8px 5px!important;font-size:clamp(11px,3.1vw,14px)!important;line-height:1.15!important;white-space:normal!important;overflow-wrap:anywhere!important}
+@media(max-width:360px){#cartView>.cart-footer .cart-footer-actions{gap:5px!important}#cartView>.cart-footer .cart-footer-actions .drawer-action{font-size:11px!important;padding:7px 3px!important}#items .cart-item{padding:6px 2px!important;column-gap:5px!important}}
 </style>
 
 </body>
