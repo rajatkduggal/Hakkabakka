@@ -1,0 +1,65 @@
+name: Publish Instagram post to homepage
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_url:
+        description: "Direct public HTTPS image URL (not the Instagram page URL)"
+        required: true
+        type: string
+      instagram_url:
+        description: "Public Instagram post or Reel URL"
+        required: true
+        type: string
+      caption:
+        description: "Short caption to show on the homepage (max 120 characters)"
+        required: true
+        type: string
+      media_type:
+        description: "Post type"
+        required: true
+        type: choice
+        options:
+          - IMAGE
+          - CAROUSEL_ALBUM
+          - REEL
+      alt_text:
+        description: "Short image description (optional)"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manual-instagram-homepage-feed
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out website repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Update only content-feed.json
+        env:
+          POST_IMAGE_URL: ${{ inputs.image_url }}
+          POST_PERMALINK: ${{ inputs.instagram_url }}
+          POST_CAPTION: ${{ inputs.caption }}
+          POST_MEDIA_TYPE: ${{ inputs.media_type }}
+          POST_ALT: ${{ inputs.alt_text }}
+        run: python scripts/publish_manual_instagram_post.py
+
+      - name: Commit feed update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content-feed.json
+          git diff --cached --quiet || git commit -m "Publish manual Instagram homepage post"
+          git push
