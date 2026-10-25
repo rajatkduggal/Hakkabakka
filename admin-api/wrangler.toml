@@ -1,0 +1,12 @@
+name = "hakkabakka-admin-api"
+main = "src/index.js"
+compatibility_date = "2026-10-25"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "hakkabakka-admin"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+
+[vars]
+# Set ADMIN_PASSWORD with: npx wrangler secret put ADMIN_PASSWORD
+# Never commit admin passwords, tokens, or payment credentials.
