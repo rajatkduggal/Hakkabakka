@@ -1,56 +1,31 @@
-# HakkaBakka: Manual Instagram website updates (mobile-friendly)
+# HakkaBakka: Manual Instagram homepage update (phone-friendly)
 
-This workflow updates **only** `content-feed.json`. It does not change the website design, menu, prices, cart, payment code, or Instagram account.
+Use this publishing form on your phone. It updates **only** `content-feed.json`; it does not change the menu, design, prices, cart, or payment code.
 
-## Every time you want to add Instagram posts
+## Open the update form
 
-1. Publish the post on Instagram (or use a post that is already published).
-2. Copy the public Instagram post/reel link. It should start with `https://www.instagram.com/`.
-3. Get the image's direct HTTPS URL. It must be a direct image URL, not a normal Instagram page URL. If you do not have one, send the image in ChatGPT and ask for help preparing a hosted image link; do not use a temporary/private link.
-4. Open this file on your phone: https://github.com/rajatkduggal/Hakkabakka/blob/main/content-feed.json
-5. Tap the pencil **Edit this file** (sign in to GitHub if asked).
-6. Replace the JSON content with the template below, filling in the values. Keep the JSON punctuation and double quotes.
-7. Scroll down to **Commit changes**, enter a short message such as `Add latest Instagram post`, and commit directly to `main`.
-8. Wait for GitHub Pages to publish, then open https://www.hakkabakka.in/ and refresh. Check **Latest from HakkaBakka**.
+1. Open this link while signed in to GitHub: https://github.com/rajatkduggal/Hakkabakka/actions/workflows/publish-manual-instagram-post.yml
+2. Tap **Run workflow**. If you do not see it immediately, open the workflow page and look for the **Run workflow** button.
+3. Fill the four required fields:
+   - **Image URL:** a direct, public HTTPS image URL. It must open the image itself, not an Instagram post page.
+   - **Instagram URL:** the published post/Reel link, such as `https://www.instagram.com/p/POSTCODE/`.
+   - **Caption:** short text to display on the homepage (up to 120 characters).
+   - **Post type:** choose IMAGE, CAROUSEL_ALBUM, or REEL.
+   - **Alt text:** optional short image description.
+4. Tap **Run workflow** to publish.
+5. Open the **Actions** tab and check the latest run. When it shows a green check, open https://www.hakkabakka.in/ and refresh. The website may take a few minutes to update; browser cache can last up to 15 minutes.
 
-## One-post template
+## Important image URL note
 
-Replace the example values; do not leave placeholders:
+The image URL and Instagram post URL are different. Pasting the Instagram post URL into the Image URL field will not work. Use a stable, public direct image URL ending in an image format (for example .jpg or .png), or a public image-host URL that serves the image directly. Do not use temporary/private links.
 
-```json
-{
-  "latestPosts": [
-    {
-      "image": "https://YOUR-DIRECT-IMAGE-URL.jpg",
-      "permalink": "https://www.instagram.com/p/YOUR_POST_CODE/",
-      "mediaType": "IMAGE",
-      "caption": "Your approved caption excerpt",
-      "timestamp": "2026-10-25T10:00:00Z",
-      "alt": "Short description of the Instagram post"
-    }
-  ],
-  "todaysSpecial": null,
-  "chefSpecial": null,
-  "offers": [],
-  "announcements": [],
-  "reels": []
-}
-```
+## What this does
 
-- `image`: direct HTTPS image URL. The homepage will not show a regular Instagram page URL as an image.
-- `permalink`: the real published Instagram post/reel URL.
-- `mediaType`: use `IMAGE`, `CAROUSEL_ALBUM`, or `REEL`.
-- `caption`: short excerpt (the website displays up to 120 characters).
-- `timestamp`: use the actual post date/time in ISO format.
-- `alt`: short accessible image description.
+- Adds the new post to the top of `latestPosts`.
+- Keeps up to the six newest posts.
+- Prevents the same Instagram permalink from being duplicated.
+- Preserves the other content-feed fields.
+- Commits only `content-feed.json`; no site design, menu, prices, cart, or payment files are changed.
+- Uses GitHub Actions permissions, so no GitHub token or Instagram API secret is placed in the public website.
 
-## Multiple posts
-
-Add more objects inside the `latestPosts` array separated by commas. Keep the newest post first. The homepage shows up to six.
-
-## Safety notes
-
-- Never put passwords, access tokens, private customer information, or payment details in this file.
-- Do not change other website files for a routine post update.
-- If you cannot obtain a direct image URL, do not guess one. Send the post image and its public Instagram link for help.
-- If the page shows old content, refresh after a few minutes; browser cache can last up to 15 minutes.
+If you have trouble finding a direct image URL, send the image and Instagram post link for help before publishing.
