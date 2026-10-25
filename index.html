@@ -1714,5 +1714,15 @@ renderMenu();renderCart();initCustomerAuth();
 #cartView>.cart-footer{padding-top:5px!important}
 </style>
 
+
+<!-- SHOW BILLING AS THE NEXT SCREEN, NOT BELOW THE CART -->
+<style>
+/* The compact-cart rules use !important; explicitly switch views in billing mode. */
+body.hb-billing-open #cartView{display:none!important}
+body.hb-billing-open #billingView{display:block!important;flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important;padding-bottom:calc(18px + env(safe-area-inset-bottom))!important}
+body.hb-billing-open #drawerCard{overflow:hidden!important}
+body.hb-billing-open #drawerCard>.drawer-head{flex:0 0 auto!important}
+</style>
+
 </body>
 </html>
