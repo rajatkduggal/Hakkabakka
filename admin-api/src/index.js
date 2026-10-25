@@ -65,7 +65,17 @@ async function handle(req,env){
    await env.DB.prepare("INSERT INTO orders(id,order_ref,status,total,payment_status,payload,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)").bind(id,orderRef,"open",""+Number(b.total),"unpaid",payload,now,now).run();
    return json(req,{ok:true,id,orderRef,status:"open",payment_status:"unpaid",total:Number(b.total),created_at:now},201);
  }
- if(p==="/api/orders"&&req.method==="GET"){const {results=[]}=await env.DB.prepare("SELECT id,order_ref,status,total,payment_status,created_at FROM orders ORDER BY created_at DESC LIMIT 100").all();return json(req,{items:results});}
+ const orderMatch=p.match(/^\/api\/orders\/([a-f0-9-]+)$/i);
+ if(orderMatch&&req.method==="PUT"){
+   const b=await req.json().catch(()=>null);
+   if(!b||(!["open","completed","cancelled"].includes(b.status)&&!["unpaid","paid","refunded"].includes(b.payment_status)))return json(req,{error:"Invalid order update"},400);
+   const row=await env.DB.prepare("SELECT id FROM orders WHERE id=?").bind(orderMatch[1]).first();
+   if(!row)return json(req,{error:"Order not found"},404);
+   if(["open","completed","cancelled"].includes(b.status))await env.DB.prepare("UPDATE orders SET status=?,updated_at=? WHERE id=?").bind(b.status,Date.now(),orderMatch[1]).run();
+   if(["unpaid","paid","refunded"].includes(b.payment_status))await env.DB.prepare("UPDATE orders SET payment_status=?,updated_at=? WHERE id=?").bind(b.payment_status,Date.now(),orderMatch[1]).run();
+   return json(req,{ok:true});
+ }
+ if(p==="/api/orders"&&req.method==="GET"){const {results=[]}=await env.DB.prepare("SELECT id,order_ref,status,total,payment_status,payload,created_at,updated_at FROM orders ORDER BY created_at DESC LIMIT 100").all();return json(req,{items:results});}
  return json(req,{error:"Not found"},404);
 }
 export default {async fetch(req,env){try{return await handle(req,env)}catch(e){return json(req,{error:"Server error"},500)}}};
