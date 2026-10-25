@@ -902,22 +902,18 @@ const data=[
 ]],
 
 ["Egg Special",[
-["Egg Omelette","100","images/egg omelette.jpg"],
-["Egg Bhurji","150","images/egg bhurji.jpg"]
+["Egg Omelette","100","https://images.unsplash.com/photo-1563690449029-d6e1b8d6003d?auto=format&fit=crop&fm=jpg&q=80&w=1200"],
+["Egg Bhurji","150","https://commons.wikimedia.org/wiki/Special:FilePath/Anda%20bujiya.jpg"]
 ]],
 
 ["Egg Main Course",[
-["Egg Curry","250","images/egg curry.jpg"]
+["Egg Curry","250","https://images.unsplash.com/photo-1764315197254-94385571df22?auto=format&fit=crop&fm=jpg&q=80&w=1200"]
 ]],
 
 ["Soda, Water & Cold Drinks",[
-["Pepsi","0","images/cold_drink.png"],
-["7UP","0","images/cold_drink.png"],
-["Mountain Dew","0","images/cold_drink.png"],
-["Bottled Water","0","images/water.png"],
-["Coca-Cola","0","images/cold_drink.png"],
-["Fanta","0","images/cold_drink.png"],
-["Other Soft Drinks","0","images/cold_drink.png"]
+["Soda","50","https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/cold_drink.png"],
+["Water","30","https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/water.png"],
+["Cold Drinks","50","https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/cold_drink.png"]
 ]]
 ];
 function goToMenuCategory(category){const sections=[...document.querySelectorAll('#menu .menu-section')];const target=sections.find(section=>{const h=section.querySelector('h2');return h&&h.textContent.trim()===category});if(target){target.scrollIntoView({behavior:'smooth',block:'start'});target.classList.add('quick-highlight');setTimeout(()=>target.classList.remove('quick-highlight'),1300)}else{const menu=document.getElementById('menu');if(menu)menu.scrollIntoView({behavior:'smooth',block:'start'});}}
