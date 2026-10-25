@@ -1603,14 +1603,25 @@ renderMenu();renderCart();initCustomerAuth();
     var card=modal&&modal.querySelector('.modal-card');
     if(!modal||!card||modal.dataset.authClickFix==='true')return;
     modal.dataset.authClickFix='true';
-    // Keep taps inside the login/signup panel from reaching unrelated page handlers.
-    card.addEventListener('click',function(event){event.stopPropagation()},true);
-    card.addEventListener('pointerdown',function(event){event.stopPropagation()},true);
-    // Make the account mode switches explicit and reliable on mobile browsers.
+    // Let each button's own click handler run first; stop bubbling only afterwards.
+    // A capture-phase stopPropagation here would block X, Login, and Create Account.
+    card.addEventListener('click',function(event){event.stopPropagation()});
+    // Ensure account-mode buttons stay ordinary buttons and invoke the correct view.
     var loginSwitch=modal.querySelector('#loginForm button[onclick*="showSignup"]');
     var signupSwitch=modal.querySelector('#signupForm button[onclick*="showLogin"]');
-    if(loginSwitch){loginSwitch.type='button';loginSwitch.addEventListener('click',function(event){event.preventDefault();event.stopPropagation();showSignup()})}
-    if(signupSwitch){signupSwitch.type='button';signupSwitch.addEventListener('click',function(event){event.preventDefault();event.stopPropagation();showLogin()})}
+    if(loginSwitch){
+      loginSwitch.type='button';
+      loginSwitch.addEventListener('click',function(event){event.preventDefault();showSignup()});
+    }
+    if(signupSwitch){
+      signupSwitch.type='button';
+      signupSwitch.addEventListener('click',function(event){event.preventDefault();showLogin()});
+    }
+    var closeButton=modal.querySelector('.modal-head .close');
+    if(closeButton){
+      closeButton.type='button';
+      closeButton.addEventListener('click',function(event){event.preventDefault();event.stopPropagation();closeAuth()});
+    }
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindAuthModalSafety);
   else bindAuthModalSafety();
