@@ -1700,5 +1700,19 @@ renderMenu();renderCart();initCustomerAuth();
 @media(max-width:380px){#items .cart-item{padding:3px 2px!important;column-gap:4px!important}#items .cart-item .top{font-size:11px!important}#items .cart-item .bottom>b{font-size:11px!important}#items .cart-item .qty button{height:26px!important;width:22px!important;min-width:22px!important}}
 </style>
 
+
+<!-- TIGHTER YOUR ORDER HEADER, TOTAL AND DISCOUNT MESSAGE -->
+<style>
+/* Recover vertical space while keeping the savings amount prominent. */
+#drawerCard>.drawer-head{padding-bottom:5px!important;min-height:0!important}
+#drawerCard>.drawer-head h2{font-size:clamp(18px,5vw,22px)!important;line-height:1.1!important;margin:0!important}
+#drawerCard>.drawer-head .drawer-close{width:34px!important;height:34px!important;min-width:34px!important;font-size:18px!important}
+#cartView>.cart-pickup-discount{font-size:11px!important;line-height:1.25!important;padding:6px 9px!important;margin:5px 0 4px!important}
+#cartView>.cart-pickup-discount strong{font-size:16px!important;font-weight:900!important}
+#cartView>.cart-footer .bill{padding:8px 12px!important;min-height:0!important;font-size:13px!important}
+#cartView>.cart-footer .bill b{font-size:15px!important}
+#cartView>.cart-footer{padding-top:5px!important}
+</style>
+
 </body>
 </html>
