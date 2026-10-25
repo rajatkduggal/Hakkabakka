@@ -6,7 +6,7 @@
 window.HAKKABAKKA_CONTENT_CONFIG = Object.freeze({
   feedUrl: './content-feed.json',
   instagramProfileUrl: 'https://www.instagram.com/hakka_bakka.in/',
-  cacheKey: 'hb_home_content_v1',
+  cacheKey: 'hb_home_content_v2',
   cacheTtlMs: 15 * 60 * 1000,
   requestTimeoutMs: 3500
 });
