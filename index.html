@@ -1687,5 +1687,18 @@ renderMenu();renderCart();initCustomerAuth();
 @media(max-width:360px){#cartView>.cart-footer .cart-footer-actions{gap:5px!important}#cartView>.cart-footer .cart-footer-actions .drawer-action{font-size:11px!important;padding:7px 3px!important}#items .cart-item{padding:6px 2px!important;column-gap:5px!important}}
 </style>
 
+
+<!-- EXTRA COMPACT YOUR ORDER ITEM SPACING -->
+<style>
+#cartView>#items{padding-top:2px!important;padding-bottom:4px!important}
+#items .cart-item{padding:4px 3px!important;column-gap:6px!important;min-height:0!important}
+#items .cart-item .top{line-height:1.05!important;font-size:clamp(11px,3.25vw,14px)!important}
+#items .cart-item .bottom>b{font-size:clamp(11px,3.2vw,13px)!important;line-height:1.05!important}
+#items .cart-item .qty{margin:0!important;gap:0!important}
+#items .cart-item .qty button{height:28px!important;width:clamp(23px,6.2vw,28px)!important;min-width:clamp(23px,6.2vw,28px)!important;padding:0!important;font-size:16px!important;line-height:1!important}
+#items .cart-item .qty span{min-width:17px!important;font-size:12px!important;line-height:1!important}
+@media(max-width:380px){#items .cart-item{padding:3px 2px!important;column-gap:4px!important}#items .cart-item .top{font-size:11px!important}#items .cart-item .bottom>b{font-size:11px!important}#items .cart-item .qty button{height:26px!important;width:22px!important;min-width:22px!important}}
+</style>
+
 </body>
 </html>
