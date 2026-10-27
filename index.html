@@ -759,6 +759,8 @@ function restoreCheckout(){
 const ZOMATO='https://zomato.onelink.me/xqzv/7948ndtj', SWIGGY='https://www.swiggy.com/menu/1400828?source=sharing';
 const PIN_MIN=144001,PIN_MAX=144030,PIN_CUTOFF=144015;
 let currentOrderNo='';
+const CHECKOUT_SESSION_KEY='hb_checkout_session_v1';
+let currentCheckoutKey='';
 let cart=loadStoredCart();
 restoreCheckout();
 const data=[
@@ -1067,8 +1069,6 @@ function closeOrderModal(){document.getElementById('orderModal').classList.remov
 function openCart(){document.body.classList.remove('hb-billing-open');document.getElementById('drawer').classList.add('show');document.getElementById('cartView').style.display='block';document.getElementById('billingView').style.display='none';renderCart()}
 function closeCart(){document.body.classList.remove('hb-billing-open');document.getElementById('drawer').classList.remove('show')}
 function continueShopping(){closeCart();const search=document.getElementById('search');if(search)search.blur();const menu=document.getElementById('menuScreen');if(menu)window.scrollTo({top:menu.offsetTop||0,behavior:'smooth'});}
-const CHECKOUT_SESSION_KEY='hb_checkout_session_v1';
-let currentCheckoutKey='';
 function makeCheckoutKey(){if(window.crypto&&typeof window.crypto.randomUUID==='function')return window.crypto.randomUUID().replace(/-/g,'');return 'hb'+Date.now().toString(36)+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)}
 async function ensureOrderNumber(){
   if(!currentCheckoutKey){try{currentCheckoutKey=localStorage.getItem(CHECKOUT_SESSION_KEY)||''}catch(e){}}
