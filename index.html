@@ -976,6 +976,8 @@ async function loadPublishedAdminMenu(){
       const name=both?g.name:g.items.length===1?g.items[0].originalName:g.name;
       const price=both?[String(half.price),String(full.price)]:String(g.items[0].price);
       let image=g.image;
+      // Plain Naan: use the verified live D1-backed image endpoint, bypassing stale embedded/static photos.
+      if(String(g.name).trim().toLowerCase()==='plain naan') image='https://hakkabakka-menu-images.mail-marvelgroup.workers.dev/?name=Plain%20Naan&v=1793279697362';
       if(image&&!/^data:image\//i.test(image)&&!/^https?:\/\//i.test(image)){
         image='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/'+image.split('/').map(part=>encodeURIComponent(part)).join('/');
       }
