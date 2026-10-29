@@ -964,7 +964,7 @@ async function loadPublishedAdminMenu(){
       let name=item.name,variant='';
       const match=name.match(/^(.*) - (Half|Full)$/i);
       if(match){name=match[1];variant=match[2].toLowerCase();}
-      const key=String(item.category)+'\\u0000'+name;
+      const key=String(item.category)+'|'+name;
       if(!groups.has(key))groups.set(key,{category:String(item.category),name,items:[],image:item.image_url||''});
       const g=groups.get(key);
       if(!g.image&&item.image_url)g.image=item.image_url;
@@ -977,7 +977,7 @@ async function loadPublishedAdminMenu(){
       const name=both?g.name:g.items.length===1?g.items[0].originalName:g.name;
       const price=both?[String(half.price),String(full.price)]:String(g.items[0].price);
       let image=g.image;
-      if(image&&!/^https?:\\/\\//i.test(image)){
+      if(image&&!/^https?:\/\//i.test(image)){
         image='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/'+image.split('/').map(part=>encodeURIComponent(part)).join('/');
       }
       if(!grouped.has(g.category))grouped.set(g.category,[]);
