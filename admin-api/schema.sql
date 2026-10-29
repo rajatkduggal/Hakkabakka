@@ -10,7 +10,9 @@ CREATE TABLE IF NOT EXISTS menu_items (
  category TEXT NOT NULL,
  price REAL NOT NULL CHECK(price >= 0),
  available INTEGER NOT NULL DEFAULT 1,
- updated_at INTEGER NOT NULL
+ updated_at INTEGER NOT NULL,
+ image_url TEXT NOT NULL DEFAULT '',
+ is_published INTEGER NOT NULL DEFAULT 0
 );
 CREATE TABLE IF NOT EXISTS offers (
  id TEXT PRIMARY KEY,
