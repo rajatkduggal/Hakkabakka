@@ -977,7 +977,7 @@ async function loadPublishedAdminMenu(){
       const name=both?g.name:g.items.length===1?g.items[0].originalName:g.name;
       const price=both?[String(half.price),String(full.price)]:String(g.items[0].price);
       let image=g.image;
-      if(image&&!/^https?:\/\//i.test(image)){
+      if(image&&!/^https?:\/\//i.test(image))&&!/^data:image\\//i.test(image)){
         image='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/'+image.split('/').map(part=>encodeURIComponent(part)).join('/');
       }
       if(!grouped.has(g.category))grouped.set(g.category,[]);
