@@ -1,0 +1,34 @@
+name: Service Worker Regression Tests
+
+on:
+  pull_request:
+    paths:
+      - "sw.js"
+      - "tests/sw.test.js"
+      - ".github/workflows/sw-tests.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "sw.js"
+      - "tests/sw.test.js"
+      - ".github/workflows/sw-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  service-worker-tests:
+    name: Run offline regression tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Run regression tests
+        run: node --test tests/sw.test.js
