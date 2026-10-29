@@ -5,6 +5,13 @@ const allowedOrigins = new Set([
   "https://2153dc98.hakkabakka-admin-dashboard.pages.dev",
   "https://b062c4b0.hakkabakka-admin-dashboard.pages.dev"
 ]);
+function isAllowedOrigin(origin) {
+  if (!origin) return false;
+  if (allowedOrigins.has(origin)) return true;
+  // Cloudflare Pages preview deployment IDs change on each deployment.
+  // Allow only HTTPS previews belonging to this exact Pages project.
+  return /^https:\/\/[a-z0-9-]+\.hakkabakka-admin-dashboard\.pages\.dev$/.test(origin);
+}
 function corsHeaders(req) {
   const origin = req.headers.get("Origin");
   const h = new Headers({
@@ -13,7 +20,7 @@ function corsHeaders(req) {
     "Access-Control-Allow-Headers": "Content-Type",
     "Vary": "Origin"
   });
-  if (origin && allowedOrigins.has(origin)) h.set("Access-Control-Allow-Origin", origin);
+  if (isAllowedOrigin(origin)) h.set("Access-Control-Allow-Origin", origin);
   return h;
 }
 const json = (req, data, status=200) => {
@@ -28,7 +35,7 @@ async function sha(text){const d=await crypto.subtle.digest("SHA-256",new TextEn
 function parseCookie(req,name){const s=req.headers.get("Cookie")||"";const m=s.split(";").map(x=>x.trim()).find(x=>x.startsWith(name+"="));return m?decodeURIComponent(m.slice(name.length+1)):"";}
 function setCookie(token,maxAge){return cookieName+"="+encodeURIComponent(token)+"; Path=/api; HttpOnly; Secure; SameSite=None; Max-Age="+maxAge;}
 async function session(req,env){const token=parseCookie(req,cookieName);if(!token)return false;const h=await sha(token);const row=await env.DB.prepare("SELECT token_hash, expires_at FROM admin_sessions WHERE token_hash=?").bind(h).first();if(!row||row.expires_at<Date.now())return false;return true;}
-function validOrigin(req){const origin=req.headers.get("Origin");return !origin||allowedOrigins.has(origin);}
+function validOrigin(req){const origin=req.headers.get("Origin");return !origin||isAllowedOrigin(origin);}
 async function handle(req,env){
  if(req.method==="OPTIONS")return new Response(null,{status:204,headers:corsHeaders(req)});
  if(!validOrigin(req))return json(req,{error:"Origin not allowed"},403);
