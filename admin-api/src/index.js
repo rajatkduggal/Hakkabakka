@@ -42,7 +42,7 @@ async function handle(req,env){
  const url=new URL(req.url), p=url.pathname;
  if(p==="/api/health"&&req.method==="GET")return json(req,{ok:true,app:"HakkaBakka Admin API",mode:"protected"});
  if(p==="/api/public/menu"&&req.method==="GET"){
-   const {results=[]}=await env.DB.prepare("SELECT name,category,price,image_url FROM menu_items WHERE is_published=1 AND available=1 ORDER BY category,name").all();
+   const {results=[]}=await env.DB.prepare("SELECT name,category,price,image_url FROM menu_items WHERE is_published=1 AND available=1 ORDER BY sort_order,category,name").all();
    return json(req,{items:results,source:"admin-published-menu"});
  }
  if(p==="/api/login"&&req.method==="POST"){
