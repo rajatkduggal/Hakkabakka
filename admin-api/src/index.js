@@ -41,6 +41,10 @@ async function handle(req,env){
  if(!validOrigin(req))return json(req,{error:"Origin not allowed"},403);
  const url=new URL(req.url), p=url.pathname;
  if(p==="/api/health"&&req.method==="GET")return json(req,{ok:true,app:"HakkaBakka Admin API",mode:"protected"});
+ if(p==="/api/public/menu"&&req.method==="GET"){
+   const {results=[]}=await env.DB.prepare("SELECT name,category,price,image_url FROM menu_items WHERE is_published=1 AND available=1 ORDER BY category,name").all();
+   return json(req,{items:results,source:"admin-published-menu"});
+ }
  if(p==="/api/login"&&req.method==="POST"){
    const body=await req.json().catch(()=>null);if(!body||typeof body.password!=="string"||body.password.length>200)return json(req,{error:"Invalid request"},400);
    if(!env.ADMIN_PASSWORD)return json(req,{error:"Admin password secret is not configured"},503);
@@ -53,13 +57,13 @@ async function handle(req,env){
  }
  if(p==="/api/logout"&&req.method==="POST"){const token=parseCookie(req,cookieName);if(token)await env.DB.prepare("DELETE FROM admin_sessions WHERE token_hash=?").bind(await sha(token)).run();return new Response(JSON.stringify({ok:true}),{status:200,headers:{"Content-Type":"application/json","Cache-Control":"no-store",...Object.fromEntries(corsHeaders(req)),"Set-Cookie":setCookie("",0)}});}
  if(!await session(req,env))return json(req,{error:"Authentication required"},401);
- if(p==="/api/menu"&&req.method==="GET"){const {results=[]}=await env.DB.prepare("SELECT id,name,category,price,available,updated_at FROM menu_items ORDER BY category,name").all();return json(req,{items:results});}
+ if(p==="/api/menu"&&req.method==="GET"){const {results=[]}=await env.DB.prepare("SELECT id,name,category,price,available,updated_at,image_url,is_published FROM menu_items ORDER BY category,name").all();return json(req,{items:results});}
  if(p==="/api/menu"&&req.method==="POST"){
    const b=await req.json().catch(()=>null);if(!b||typeof b.name!=="string"||!b.name.trim()||b.name.length>120||!Number.isFinite(Number(b.price))||Number(b.price)<0||typeof b.category!=="string"||b.category.length>60)return json(req,{error:"Invalid menu item"},400);
-   const id=crypto.randomUUID();await env.DB.prepare("INSERT INTO menu_items(id,name,category,price,available,updated_at) VALUES(?,?,?,?,1,?)").bind(id,b.name.trim(),b.category,Number(b.price),Date.now()).run();return json(req,{ok:true,id},201);
+   const id=crypto.randomUUID();await env.DB.prepare("INSERT INTO menu_items(id,name,category,price,available,updated_at,image_url,is_published) VALUES(?,?,?,?,1,?,?,0)").bind(id,b.name.trim(),b.category,Number(b.price),Date.now(),String(b.image_url||"").slice(0,1000)).run();return json(req,{ok:true,id,is_published:0},201);
  }
  const menuMatch=p.match(/^\/api\/menu\/([a-f0-9-]+)$/i);
- if(menuMatch&&req.method==="PUT"){const b=await req.json().catch(()=>null);if(!b||typeof b.name!=="string"||!b.name.trim()||!Number.isFinite(Number(b.price))||Number(b.price)<0)return json(req,{error:"Invalid menu item"},400);await env.DB.prepare("UPDATE menu_items SET name=?,category=?,price=?,available=?,updated_at=? WHERE id=?").bind(b.name.trim(),String(b.category||"General"),Number(b.price),b.available===false?0:1,Date.now(),menuMatch[1]).run();return json(req,{ok:true});}
+ if(menuMatch&&req.method==="PUT"){const b=await req.json().catch(()=>null);if(!b||typeof b.name!=="string"||!b.name.trim()||!Number.isFinite(Number(b.price))||Number(b.price)<0)return json(req,{error:"Invalid menu item"},400);await env.DB.prepare("UPDATE menu_items SET name=?,category=?,price=?,available=?,updated_at=?,image_url=COALESCE(?,image_url),is_published=COALESCE(?,is_published) WHERE id=?").bind(b.name.trim(),String(b.category||"General"),Number(b.price),b.available===false?0:1,Date.now(),typeof b.image_url==="string"?b.image_url.slice(0,1000):null,(b.is_published===true||b.is_published===1)?1:(b.is_published===false||b.is_published===0)?0:null,menuMatch[1]).run();return json(req,{ok:true});}
  if(menuMatch&&req.method==="DELETE"){await env.DB.prepare("DELETE FROM menu_items WHERE id=?").bind(menuMatch[1]).run();return json(req,{ok:true});}
  if(p==="/api/offers"&&req.method==="GET"){const {results=[]}=await env.DB.prepare("SELECT id,title,details,active,updated_at FROM offers ORDER BY updated_at DESC").all();return json(req,{items:results});}
  if(p==="/api/offers"&&req.method==="POST"){const b=await req.json().catch(()=>null);if(!b||typeof b.title!=="string"||!b.title.trim()||b.title.length>120)return json(req,{error:"Invalid offer"},400);const id=crypto.randomUUID();await env.DB.prepare("INSERT INTO offers(id,title,details,active,updated_at) VALUES(?,?,?,1,?)").bind(id,b.title.trim(),String(b.details||"").slice(0,1000),Date.now()).run();return json(req,{ok:true,id},201);}
