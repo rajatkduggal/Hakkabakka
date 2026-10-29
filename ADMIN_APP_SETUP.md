@@ -1,26 +1,20 @@
 # HakkaBakka Admin App — build status and deployment
 
 ## Preview
-The mobile-first PWA dashboard is at `/admin/`. The prototype has local-only draft saves, a demo menu list, and JSON export helpers. It does not alter the customer website, live menu, cart, payment code, or orders.
+The mobile-first PWA dashboard is deployed at `/admin/` on Cloudflare Pages. It calls the Cloudflare Worker API at `https://hakkabakka-admin-api.mail-marvelgroup.workers.dev/api`. Admin menu, offers, homepage content and POS orders use the separate `hakkabakka-admin` D1 database; these changes do not automatically publish to the customer website.
 
 ## Included in this branch
 - `admin/index.html`: mobile-first dashboard for Website/Banner, Menu/Pricing, Orders/Payments, POS/Kitchen, Social, Offers, Security, and integration status.
 - `admin/manifest.webmanifest` and `admin/sw.js`: installable PWA shell.
 - `admin-api/src/index.js`: Cloudflare Worker API source for password login, server-side sessions, menu CRUD, offers, homepage content and read-only orders list.
 - `admin-api/schema.sql`: D1 tables for sessions, menu, offers, homepage content and orders.
-- `admin-api/wrangler.toml`: Worker deployment template.
+- `admin-api/wrangler.toml`: Worker deployment configuration with the existing D1 database ID.
 
-## Important: not production-live yet
-This is not yet a complete live production system. The API source is prepared but has not been deployed or security-tested; the D1 database has not been created/bound; no admin password secret is configured; and the static PWA UI is not yet wired to the API. Therefore, don't use this for real orders, live menu changes, payments, or admin credentials yet.
+## Current status (2026-10-29)
+The Worker `hakkabakka-admin-api` and D1 database `hakkabakka-admin` are deployed. The `DB` binding and `ADMIN_PASSWORD` secret are present, and the schema has been applied. The Worker health endpoint returns `{\"ok\":true,\"app\":\"HakkaBakka Admin API\",\"mode\":\"protected\"}`. A CORS fix was deployed to allow HTTPS preview URLs belonging to this exact Cloudflare Pages project. End-to-end browser login and all admin workflows still require live verification. This is not yet a fully production-validated system; do not treat admin payment status as a payment-provider verification.
 
 ## Secure backend setup (Railway is not used)
-1. Create a Cloudflare D1 database named `hakkabakka-admin` in your Cloudflare account.
-2. Replace `REPLACE_WITH_D1_DATABASE_ID` in `admin-api/wrangler.toml` with that database ID.
-3. Apply `admin-api/schema.sql` to the D1 database using Wrangler.
-4. Set a strong secret with `npx wrangler secret put ADMIN_PASSWORD`; do not commit it to GitHub or put it in browser JavaScript.
-5. Deploy the Worker using Wrangler and attach the D1 binding named `DB`.
-6. Configure the API hostname and restrictive CORS to the admin origin. Use HTTPS.
-7. Wire the admin UI to the API and test login/session expiry, invalid credentials, menu CRUD, audit logging, and recovery before live use.
+The current D1 database ID is recorded in `admin-api/wrangler.toml`. The database schema and `DB` binding have been applied in Cloudflare. `ADMIN_PASSWORD` is configured as a Cloudflare secret and must not be committed to GitHub or put in browser JavaScript. To redeploy after code changes, deploy the Worker with Wrangler and preserve the existing secret and D1 binding. Test login/session expiry, invalid credentials, menu CRUD, order read/write behavior, CORS, and recovery before live use.
 
 ## Security boundary and remaining production work
 - Add rate limiting and audit log records for all writes.
