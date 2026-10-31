@@ -1324,7 +1324,7 @@ async function verifyPaymentScreenshot(file){
     // but OCR misses the amount. If the receipt identifies the exact HakkaBakka UPI ID/payee,
     // is dated today, and shows a time inside the active payment window, don't fail only
     // because OCR couldn't read the amount. This is screenshot validation, not bank confirmation.
-    const payeeMatches=/hakkabakka\.jalandhar@ptyes|mr\s*yishu\s*duggal|hakka\s*bakka/i.test(text);
+    const payeeMatches=/9713545556\s*@\s*pthdfc|9713545556|mr\s*yishu\s*duggal/i.test(text);
     const trustedPaytmLayout=/paytm/i.test(text)&&payeeMatches&&paymentVerification.date&&timeMatched;
     if(!paymentVerification.amount&&trustedPaytmLayout)paymentVerification.amount=true;
     // Paytm receipts may OCR the 12-hour timestamp inconsistently; when the same-day receipt clearly says payment succeeded, don't reject solely on OCR time parsing. This is only screenshot text validation, not bank confirmation.
@@ -1419,8 +1419,8 @@ async function runPOSIntegrationTest(){
   try{
     const res=await fetch(CLOUDFLARE_ORDERS_API+'/health',{method:'GET',cache:'no-store'});
     const data=await res.json().catch(()=>null);
-    if(!res.ok||!data?.success||data.database!=='connected')throw new Error(data?.message||'Cloudflare order database unavailable');
-    setPaymentCheck('ok','✅ Order database connected','Cloudflare D1 is reachable. No test order was created.');
+    if(!res.ok||!data?.success||data.database!=='connected'||data.menu_database!=='connected'||!Number(data.published_menu_count))throw new Error(data?.message||'Cloudflare order or live menu database unavailable');
+    setPaymentCheck('ok','✅ Order and menu databases connected','Cloudflare D1 is reachable and '+data.published_menu_count+' published menu items are available for live price validation. No test order was created.');
   }catch(error){
     console.error('Order database health:',error);
     setPaymentCheck('bad','❌ Order database unavailable',error.message||'Cloudflare order database check failed.');
