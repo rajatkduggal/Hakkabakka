@@ -517,7 +517,13 @@ body{background:var(--hb-cream)}
         <small id="paymentStatus"></small>
         <div id="paymentTimer" style="display:none;margin:8px 0 0;padding:9px 12px;border-radius:10px;background:#fff7e6;color:#8a5a00;font-weight:800;text-align:center">⏱️ Payment window: <span id="paymentCountdown">02:00</span></div>
         
-        <button type="button" class="drawer-action" id="chooseScreenshot" style="display:none;background:#333">📎 Choose Payment Screenshot</button><input class="field billing-field" id="paymentScreenshot" type="file" accept="image/*" aria-describedby="paymentCheck" style="display:none" disabled>
+        <button type="button" class="drawer-action" id="chooseScreenshot" style="display:none;background:#333">📎 Choose Payment Screenshot</button><input class="field billing-field" id="paymentScreenshot" type="file" accept="image/*" aria-describedby="paymentHelp paymentCheck" style="display:none" disabled>
+        <div id="paymentHelp" style="margin:12px 0;padding:15px 13px;border:2px solid #d97706;border-radius:13px;background:#fff7e6;text-align:left;line-height:1.45;box-shadow:0 3px 10px #d977061c">
+          <div style="font-size:17px;font-weight:1000;color:#9a3412;text-align:center;letter-spacing:.3px">⚠️ IMPORTANT: UPI TRANSACTION ID REQUIRED</div>
+          <div style="margin-top:9px;font-size:14px;font-weight:800;color:#292524">Payment screenshot must clearly show the <span style="display:inline-block;background:#14532d;color:#fff;padding:3px 7px;border-radius:6px;font-size:15px">UPI TRANSACTION ID / UPI REF. NO.</span></div>
+          <div style="margin-top:8px;font-size:13px;color:#444">Google Pay customers: after payment, open the transaction details and take a screenshot showing the UPI transaction ID (usually a 12-digit number). The simple “Payment successful” screen alone is NOT sufficient.</div>
+          <div style="margin-top:7px;font-size:13px;color:#444">Google Pay par payment ke baad transaction kholkar details wala screenshot bhejein, jisme <b style="color:#166534">UPI Transaction ID / UPI Reference Number</b> saaf dikh raha ho. Sirf green tick / Payment Successful wala screenshot mat bhejein.</div>
+        </div>
         <div id="paymentCheck" class="payment-check" aria-live="polite" hidden></div>
       </div>
 
