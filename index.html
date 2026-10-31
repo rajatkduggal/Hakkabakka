@@ -1426,6 +1426,7 @@ async function runPOSIntegrationTest(){
     setPaymentCheck('bad','❌ Order database unavailable',error.message||'Cloudflare order database check failed.');
   }
 }
+runPOSIntegrationTest();
 async function sendOrderToPOS(){
   if(paymentTestMode)return {success:true,test:true};
   const type=document.getElementById('orderType').value;
