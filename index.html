@@ -515,7 +515,7 @@ body{background:var(--hb-cream)}
         <small id="paymentStatus"></small>
         <div id="paymentTimer" style="display:none;margin:8px 0 0;padding:9px 12px;border-radius:10px;background:#fff7e6;color:#8a5a00;font-weight:800;text-align:center">⏱️ Payment window: <span id="paymentCountdown">02:00</span></div>
         
-        <button type="button" class="drawer-action" id="chooseScreenshot" style="display:none;background:#333">📎 Choose Payment Screenshot</button><input class="field billing-field" id="paymentScreenshot" type="file" accept="image/*" aria-describedby="paymentHelp paymentCheck" style="display:none" disabled>
+        <button type="button" class="drawer-action" id="chooseScreenshot" style="display:none;background:#333">📎 Choose Payment Screenshot</button><div id="paymentFileName" style="display:none;margin:7px 2px;color:#555;font-size:12px;text-align:center"></div><input class="field billing-field" id="paymentScreenshot" type="file" accept="image/*,.jpg,.jpeg,.png,.webp" aria-describedby="paymentHelp paymentCheck" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none" disabled>
         <div id="paymentHelp" style="display:none;margin:12px 0;padding:15px 13px;border:2px solid #d97706;border-radius:13px;background:#fff7e6;text-align:left;line-height:1.45;box-shadow:0 3px 10px #d977061c">
           <div style="font-size:17px;font-weight:1000;color:#9a3412;text-align:center;letter-spacing:.3px">⚠️ IMPORTANT: UPI TRANSACTION ID REQUIRED</div>
           <div style="margin-top:9px;font-size:14px;font-weight:800;color:#292524">Payment screenshot must clearly show the <span style="display:inline-block;background:#14532d;color:#fff;padding:3px 7px;border-radius:6px;font-size:15px">UPI TRANSACTION ID / UPI REF. NO.</span></div>
@@ -1133,7 +1133,7 @@ function showOrderError(message,field){
   alert(message);
   if(field){field.focus();field.scrollIntoView({behavior:'smooth',block:'center'});}
 }
-function setPaymentCheck(kind,title,detail){const help=document.getElementById('paymentHelp');if(kind!=='bad'){if(help)help.style.setProperty('display','none','important');paymentCheck.hidden=true;paymentCheck.style.setProperty('display','none','important');return}if(help)help.style.setProperty('display','block','important');if(paymentContext&&currentOrderNo&&foodTotal()>0)startPaymentTimer(paymentTestMode);paymentCheck.hidden=false;paymentCheck.style.setProperty('display','block','important');paymentCheck.className='payment-check bad';paymentCheck.setAttribute('role','alert');paymentCheck.innerHTML='<b>'+title+'</b><span>'+detail+'</span>'}
+function setPaymentCheck(kind,title,detail){const help=document.getElementById('paymentHelp');if(help)help.style.setProperty('display',kind==='bad'?'block':'none','important');if(!title){paymentCheck.hidden=true;paymentCheck.style.setProperty('display','none','important');return}if(kind==='bad'&&paymentContext&&currentOrderNo&&foodTotal()>0)startPaymentTimer(paymentTestMode);paymentCheck.hidden=false;paymentCheck.style.setProperty('display','block','important');paymentCheck.className='payment-check '+(kind==='bad'?'bad':'');paymentCheck.setAttribute('role',kind==='bad'?'alert':'status');paymentCheck.innerHTML='<b>'+title+'</b><span>'+String(detail||'')+'</span>'}
 function normalizeMoneyText(t){return t.replace(/[₹RsI|]/gi,' ').replace(/,/g,'').replace(/\s+/g,' ')}
 function findAmounts(text){
   const out=[], seen=new Set(), raw=String(text||''), t=raw.replace(/,/g,'');
@@ -1423,8 +1423,8 @@ async function verifyPaymentReference(reference){
       setPaymentCheck('bad','Screenshot details match nahi hue',problems.join(' '));
     }
 }
-document.getElementById('chooseScreenshot').addEventListener('click',()=>{if(!paymentScreenshot.disabled)paymentScreenshot.click()});
-paymentScreenshot.addEventListener('change',()=>{const f=paymentScreenshot.files&&paymentScreenshot.files[0];if(f)verifyPaymentScreenshot(f);else{paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot required hai','WhatsApp order bhejne se pehle verified payment screenshot upload karein.');updateVerificationUI()}});
+document.getElementById('chooseScreenshot').addEventListener('click',()=>{if(paymentScreenshot.disabled){setPaymentCheck('bad','Pehle “Payment done?” dabayein','UPI payment start karne ke baad hi receipt attach kar sakte hain.');return;}try{if(typeof paymentScreenshot.showPicker==='function')paymentScreenshot.showPicker();else paymentScreenshot.click();}catch(e){paymentScreenshot.click();}});
+paymentScreenshot.addEventListener('change',()=>{const f=paymentScreenshot.files&&paymentScreenshot.files[0],name=document.getElementById('paymentFileName');if(!f){paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};waSend.disabled=true;setPaymentCheck('bad','Payment screenshot select nahi hui','Gallery se original payment receipt image select karein.');updateVerificationUI();return;}if(!/^image\\//i.test(f.type)||f.size>12*1024*1024){paymentScreenshot.value='';if(name)name.style.display='none';paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};waSend.disabled=true;setPaymentCheck('bad','Image file valid nahi hai','JPG, PNG ya WebP image select karein. Maximum size 12 MB hai.');return;}if(name){name.textContent='📎 Selected: '+f.name+' ('+(f.size/1024/1024).toFixed(1)+' MB)';name.style.display='block';}setPaymentCheck('','🔍 Screenshot received','Image attach ho gayi hai. Payment details verify ho rahi hain; please wait.');verifyPaymentScreenshot(f);});
 const CLOUDFLARE_ORDERS_API='https://hb-orders-api.mail-marvelgroup.workers.dev';
 async function runPOSIntegrationTest(){
   try{
