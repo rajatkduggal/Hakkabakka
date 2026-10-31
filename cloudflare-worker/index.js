@@ -102,9 +102,14 @@ export default {
       if (type === "Pickup" && delivery !== 0) return reply(request, { success: false, message: "Pickup cannot include delivery charges" }, 400);
       if (type !== "Pickup" && discount !== 0) return reply(request, { success: false, message: "Discount is only available for pickup orders" }, 400);
       const discountRate = food > 2500 ? .20 : food > 2000 ? .17 : food > 1500 ? .15 : food > 1100 ? .10 : food > 900 ? .09 : food > 700 ? .07 : food > 500 ? .05 : 0;
-      const allowedDiscount = Math.round(food * discountRate * 100) / 100;
+      const allowedDiscount = type === "Pickup" ? Math.round(food * discountRate * 100) / 100 : 0;
       if (Math.abs(discount - allowedDiscount) > .01) return reply(request, { success: false, message: "Pickup discount does not match the current offer" }, 400);
-      if (type === "Home Delivery" && (!String(p?.address || "").trim() || !/^\d{6}$/.test(String(p?.pincode || "")))) return reply(request, { success: false, message: "Delivery address and 6-digit pincode required" }, 400);
+      if (type === "Home Delivery") {
+        const deliveryPin = Number(String(p?.pincode || ""));
+        if (!String(p?.address || "").trim() || !/^\\d{6}$/.test(String(p?.pincode || "")) || deliveryPin < 144001 || deliveryPin > 144030) return reply(request, { success: false, message: "Delivery is available only with an address and pincode 144001–144030" }, 400);
+        const expectedDelivery = deliveryPin <= 144015 ? 100 : 200;
+        if (Math.abs(delivery - expectedDelivery) > 0.01) return reply(request, { success: false, message: "Delivery charge does not match the serviceable pincode" }, 400);
+      }
       if (ref.length < 8 || ref.length > 30) return reply(request, { success: false, message: "Payment reference required" }, 400);
       try {
         const oldOrder = await env.DB.prepare("SELECT order_number, upi_reference FROM orders WHERE order_number = ? LIMIT 1").bind(orderNo).first();
