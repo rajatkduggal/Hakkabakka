@@ -518,7 +518,7 @@ body{background:var(--hb-cream)}
         <div id="paymentTimer" style="display:none;margin:8px 0 0;padding:9px 12px;border-radius:10px;background:#fff7e6;color:#8a5a00;font-weight:800;text-align:center">⏱️ Payment window: <span id="paymentCountdown">02:00</span></div>
         
         <button type="button" class="drawer-action" id="chooseScreenshot" style="display:none;background:#333">📎 Choose Payment Screenshot</button><input class="field billing-field" id="paymentScreenshot" type="file" accept="image/*" aria-describedby="paymentHelp paymentCheck" style="display:none" disabled>
-        <div id="paymentHelp" style="margin:12px 0;padding:15px 13px;border:2px solid #d97706;border-radius:13px;background:#fff7e6;text-align:left;line-height:1.45;box-shadow:0 3px 10px #d977061c">
+        <div id="paymentHelp" style="display:none;margin:12px 0;padding:15px 13px;border:2px solid #d97706;border-radius:13px;background:#fff7e6;text-align:left;line-height:1.45;box-shadow:0 3px 10px #d977061c">
           <div style="font-size:17px;font-weight:1000;color:#9a3412;text-align:center;letter-spacing:.3px">⚠️ IMPORTANT: UPI TRANSACTION ID REQUIRED</div>
           <div style="margin-top:9px;font-size:14px;font-weight:800;color:#292524">Payment screenshot must clearly show the <span style="display:inline-block;background:#14532d;color:#fff;padding:3px 7px;border-radius:6px;font-size:15px">UPI TRANSACTION ID / UPI REF. NO.</span></div>
           <div style="margin-top:8px;font-size:13px;color:#444">Google Pay customers: after payment, open the transaction details and take a screenshot showing the UPI transaction ID (usually a 12-digit number). The simple “Payment successful” screen alone is NOT sufficient.</div>
@@ -1113,7 +1113,7 @@ function showOrderError(message,field){
   alert(message);
   if(field){field.focus();field.scrollIntoView({behavior:'smooth',block:'center'});}
 }
-function setPaymentCheck(kind,title,detail){paymentCheck.hidden=false;paymentCheck.className='payment-check '+kind;paymentCheck.setAttribute('role',kind==='bad'?'alert':'status');paymentCheck.innerHTML='<b>'+title+'</b><span>'+detail+'</span>'}
+function setPaymentCheck(kind,title,detail){const help=document.getElementById('paymentHelp');if(help)help.style.display=kind==='bad'?'block':'none';if(kind==='bad'&&paymentVerification&&paymentVerification.file&&currentOrderNo&&foodTotal()>0){startPaymentTimer(paymentTestMode)}paymentCheck.hidden=false;paymentCheck.className='payment-check '+kind;paymentCheck.setAttribute('role',kind==='bad'?'alert':'status');paymentCheck.innerHTML='<b>'+title+'</b><span>'+detail+'</span>'}
 function normalizeMoneyText(t){return t.replace(/[₹RsI|]/gi,' ').replace(/,/g,'').replace(/\s+/g,' ')}
 function findAmounts(text){
   const out=[], seen=new Set(), raw=String(text||''), t=raw.replace(/,/g,'');
