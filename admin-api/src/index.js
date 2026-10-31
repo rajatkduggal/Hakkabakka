@@ -1,0 +1,106 @@
+const allowedOrigins = new Set([
+  "https://www.hakkabakka.in",
+  "https://hakkabakka.in",
+  "https://hakkabakka-admin-dashboard.pages.dev",
+  "https://2153dc98.hakkabakka-admin-dashboard.pages.dev",
+  "https://b062c4b0.hakkabakka-admin-dashboard.pages.dev"
+]);
+function isAllowedOrigin(origin) {
+  if (!origin) return false;
+  if (allowedOrigins.has(origin)) return true;
+  // Cloudflare Pages preview deployment IDs change on each deployment.
+  // Allow only HTTPS previews belonging to this exact Pages project.
+  return /^https:\/\/[a-z0-9-]+\.hakkabakka-admin-dashboard\.pages\.dev$/.test(origin);
+}
+function corsHeaders(req) {
+  const origin = req.headers.get("Origin");
+  const h = new Headers({
+    "Access-Control-Allow-Credentials": "true",
+    "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Vary": "Origin"
+  });
+  if (isAllowedOrigin(origin)) h.set("Access-Control-Allow-Origin", origin);
+  return h;
+}
+const json = (req, data, status=200) => {
+  const headers = corsHeaders(req);
+  headers.set("Content-Type", "application/json; charset=utf-8");
+  headers.set("Cache-Control", "no-store");
+  return new Response(JSON.stringify(data), {status, headers});
+};
+const cookieName = "hb_admin_session";
+function b64(bytes){return btoa(String.fromCharCode(...new Uint8Array(bytes))).replace(/=/g,"").replace(/\+/g,"-").replace(/\//g,"_");}
+async function sha(text){const d=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(text));return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,"0")).join("");}
+function parseCookie(req,name){const s=req.headers.get("Cookie")||"";const m=s.split(";").map(x=>x.trim()).find(x=>x.startsWith(name+"="));return m?decodeURIComponent(m.slice(name.length+1)):"";}
+function setCookie(token,maxAge){return cookieName+"="+encodeURIComponent(token)+"; Path=/api; HttpOnly; Secure; SameSite=None; Max-Age="+maxAge;}
+async function session(req,env){const token=parseCookie(req,cookieName);if(!token)return false;const h=await sha(token);const row=await env.DB.prepare("SELECT token_hash, expires_at FROM admin_sessions WHERE token_hash=?").bind(h).first();if(!row||row.expires_at<Date.now())return false;return true;}
+function validOrigin(req){const origin=req.headers.get("Origin");return !origin||isAllowedOrigin(origin);}
+async function handle(req,env){
+ if(req.method==="OPTIONS")return new Response(null,{status:204,headers:corsHeaders(req)});
+ if(!validOrigin(req))return json(req,{error:"Origin not allowed"},403);
+ const url=new URL(req.url), p=url.pathname;
+ if(p==="/api/health"&&req.method==="GET")return json(req,{ok:true,app:"HakkaBakka Admin API",mode:"protected"});
+ if(p==="/api/public/menu"&&req.method==="GET"){
+   const {results=[]}=await env.DB.prepare("SELECT name,category,price,image_url FROM menu_items WHERE is_published=1 AND available=1 ORDER BY sort_order,category,name").all();
+   return json(req,{items:results,source:"admin-published-menu"});
+ }
+ if(p==="/api/login"&&req.method==="POST"){
+   const body=await req.json().catch(()=>null);if(!body||typeof body.password!=="string"||body.password.length>200)return json(req,{error:"Invalid request"},400);
+   if(!env.ADMIN_PASSWORD)return json(req,{error:"Admin password secret is not configured"},503);
+   const expected=await sha(env.ADMIN_PASSWORD), supplied=await sha(body.password);
+   if(expected!==supplied){await new Promise(r=>setTimeout(r,500));return json(req,{error:"Invalid credentials"},401);}
+   const token=b64(crypto.getRandomValues(new Uint8Array(32)));
+   const expires=Date.now()+8*60*60*1000;
+   await env.DB.prepare("INSERT INTO admin_sessions(token_hash,expires_at,created_at) VALUES(?,?,?)").bind(await sha(token),expires,Date.now()).run();
+   return new Response(JSON.stringify({ok:true,expiresAt:expires}),{status:200,headers:{"Content-Type":"application/json","Cache-Control":"no-store",...Object.fromEntries(corsHeaders(req)),"Set-Cookie":setCookie(token,28800)}});
+ }
+ if(p==="/api/logout"&&req.method==="POST"){const token=parseCookie(req,cookieName);if(token)await env.DB.prepare("DELETE FROM admin_sessions WHERE token_hash=?").bind(await sha(token)).run();return new Response(JSON.stringify({ok:true}),{status:200,headers:{"Content-Type":"application/json","Cache-Control":"no-store",...Object.fromEntries(corsHeaders(req)),"Set-Cookie":setCookie("",0)}});}
+ if(!await session(req,env))return json(req,{error:"Authentication required"},401);
+ if(p==="/api/menu"&&req.method==="GET"){const {results=[]}=await env.DB.prepare("SELECT id,name,category,price,available,updated_at,image_url,is_published FROM menu_items ORDER BY category,name").all();return json(req,{items:results});}
+ if(p==="/api/menu"&&req.method==="POST"){
+   const b=await req.json().catch(()=>null);if(!b||typeof b.name!=="string"||!b.name.trim()||b.name.length>120||!Number.isFinite(Number(b.price))||Number(b.price)<0||typeof b.category!=="string"||b.category.length>60)return json(req,{error:"Invalid menu item"},400);
+   const id=crypto.randomUUID();await env.DB.prepare("INSERT INTO menu_items(id,name,category,price,available,updated_at,image_url,is_published) VALUES(?,?,?,?,1,?,?,0)").bind(id,b.name.trim(),b.category,Number(b.price),Date.now(),String(b.image_url||"").slice(0,1000)).run();return json(req,{ok:true,id,is_published:0},201);
+ }
+ const menuMatch=p.match(/^\/api\/menu\/([a-f0-9-]+)$/i);
+ if(menuMatch&&req.method==="PUT"){const b=await req.json().catch(()=>null);if(!b||typeof b.name!=="string"||!b.name.trim()||!Number.isFinite(Number(b.price))||Number(b.price)<0)return json(req,{error:"Invalid menu item"},400);await env.DB.prepare("UPDATE menu_items SET name=?,category=?,price=?,available=?,updated_at=?,image_url=COALESCE(?,image_url),is_published=COALESCE(?,is_published) WHERE id=?").bind(b.name.trim(),String(b.category||"General"),Number(b.price),b.available===false?0:1,Date.now(),typeof b.image_url==="string"?b.image_url.slice(0,1000):null,(b.is_published===true||b.is_published===1)?1:(b.is_published===false||b.is_published===0)?0:null,menuMatch[1]).run();return json(req,{ok:true});}
+ if(menuMatch&&req.method==="DELETE"){await env.DB.prepare("DELETE FROM menu_items WHERE id=?").bind(menuMatch[1]).run();return json(req,{ok:true});}
+ if(p==="/api/offers"&&req.method==="GET"){const {results=[]}=await env.DB.prepare("SELECT id,title,details,active,updated_at FROM offers ORDER BY updated_at DESC").all();return json(req,{items:results});}
+ if(p==="/api/offers"&&req.method==="POST"){const b=await req.json().catch(()=>null);if(!b||typeof b.title!=="string"||!b.title.trim()||b.title.length>120)return json(req,{error:"Invalid offer"},400);const id=crypto.randomUUID();await env.DB.prepare("INSERT INTO offers(id,title,details,active,updated_at) VALUES(?,?,?,1,?)").bind(id,b.title.trim(),String(b.details||"").slice(0,1000),Date.now()).run();return json(req,{ok:true,id},201);}
+ if(p==="/api/content"&&req.method==="GET"){const row=await env.DB.prepare("SELECT value,updated_at FROM app_content WHERE key='homepage'").first();return json(req,{content:row?JSON.parse(row.value):{latestPosts:[],announcements:[]},updatedAt:row?.updated_at||null});}
+ if(p==="/api/content"&&req.method==="PUT"){const b=await req.json().catch(()=>null);if(!b||typeof b!=="object"||JSON.stringify(b).length>100000)return json(req,{error:"Invalid or oversized content"},400);const now=Date.now();await env.DB.prepare("INSERT INTO app_content(key,value,updated_at) VALUES('homepage',?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value,updated_at=excluded.updated_at").bind(JSON.stringify(b),now).run();return json(req,{ok:true,updatedAt:now});}
+ if(p==="/api/orders"&&req.method==="POST"){
+   const b=await req.json().catch(()=>null);
+   if(!b||!Array.isArray(b.items)||b.items.length<1||b.items.length>100||!Number.isFinite(Number(b.total))||Number(b.total)<0||typeof b.orderType!=="string")return json(req,{error:"Invalid POS order"},400);
+   const id=crypto.randomUUID(), orderRef="HB-"+Date.now().toString(36).toUpperCase();
+   const now=Date.now(), payload=JSON.stringify({source:"admin-pos",orderType:b.orderType,notes:String(b.notes||"").slice(0,1000),items:b.items.map(x=>({name:String(x.name||"").slice(0,120),price:Number(x.price),qty:Math.max(1,Math.min(99,Number(x.qty)||1))}))});
+   await env.DB.prepare("INSERT INTO orders(id,order_ref,status,total,payment_status,payload,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)").bind(id,orderRef,"open",""+Number(b.total),"unpaid",payload,now,now).run();
+   return json(req,{ok:true,id,orderRef,status:"open",payment_status:"unpaid",total:Number(b.total),created_at:now},201);
+ }
+ const orderMatch=p.match(/^\/api\/orders\/([a-f0-9-]+)$/i);
+ if(orderMatch&&req.method==="PUT"){
+   const b=await req.json().catch(()=>null);
+   if(!b||(!["open","completed","cancelled"].includes(b.status)&&!["unpaid","paid","refunded"].includes(b.payment_status)))return json(req,{error:"Invalid order update"},400);
+   const row=await env.DB.prepare("SELECT id FROM orders WHERE id=?").bind(orderMatch[1]).first();
+   if(!row)return json(req,{error:"Order not found"},404);
+   if(["open","completed","cancelled"].includes(b.status))await env.DB.prepare("UPDATE orders SET status=?,updated_at=? WHERE id=?").bind(b.status,Date.now(),orderMatch[1]).run();
+   if(["unpaid","paid","refunded"].includes(b.payment_status))await env.DB.prepare("UPDATE orders SET payment_status=?,updated_at=? WHERE id=?").bind(b.payment_status,Date.now(),orderMatch[1]).run();
+   return json(req,{ok:true});
+ }
+ if(p==="/api/orders"&&req.method==="GET"){
+   const {results=[]}=await env.DB.prepare("SELECT id,order_ref,status,total,payment_status,payload,created_at,updated_at FROM orders ORDER BY created_at DESC LIMIT 100").all();
+   let customerOrders=[], customerOrdersConfigured=!!(env.SUPABASE_URL&&env.SUPABASE_SERVICE_ROLE_KEY);
+   if(customerOrdersConfigured){
+     try{
+       const base=String(env.SUPABASE_URL).replace(/\/$/,"");
+       const response=await fetch(base+"/rest/v1/customer_orders?select=*&order=created_at.desc&limit=100",{headers:{"apikey":env.SUPABASE_SERVICE_ROLE_KEY,"Authorization":"Bearer "+env.SUPABASE_SERVICE_ROLE_KEY,"Accept":"application/json"}});
+       if(!response.ok)throw new Error("Supabase customer_orders returned "+response.status);
+       const rows=await response.json();
+       customerOrders=rows.map((x)=>({id:"supabase:"+String(x.id||x.order_no||crypto.randomUUID()),order_ref:String(x.order_no||x.id||"Customer order"),status:String(x.status||"received"),total:Number(x.total_amount??x.total??0),payment_status:String(x.status||"check payment"),payload:JSON.stringify({source:"customer-website",orderType:x.order_type||"Online",customer_name:x.customer_name||"",phone:x.phone||"",address:x.address||"",items:Array.isArray(x.items)?x.items:[]}),created_at:x.created_at?new Date(x.created_at).getTime():0,source:"customer-website",read_only:true}));
+     }catch(e){return json(req,{items:results,customerOrdersConfigured:true,customerOrdersError:"Customer orders could not be fetched. Check Supabase table/secret configuration."});}
+   }
+   return json(req,{items:[...customerOrders,...results].sort((a,b)=>Number(b.created_at||0)-Number(a.created_at||0)).slice(0,100),customerOrdersConfigured,customerOrdersCount:customerOrders.length});
+ }
+ return json(req,{error:"Not found"},404);
+}
+export default {async fetch(req,env){try{return await handle(req,env)}catch(e){return json(req,{error:"Server error"},500)}}};

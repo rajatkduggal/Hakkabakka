@@ -2,6 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script id="HB_FORCE_HTTPS_REDIRECT">
+(function(){
+  if (window.location.protocol === 'http:') {
+    window.location.replace('https://' + window.location.host + window.location.pathname + window.location.search + window.location.hash);
+  }
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#7b1113">
 <title>Hakka Bakka | Punjabi Dhaba • V41</title>
@@ -733,6 +740,7 @@ function saveCheckout(){
   if(!cart.length)return;
   localStorage.setItem(CHECKOUT_STORAGE_KEY,JSON.stringify({
     orderNo:currentOrderNo,
+    checkoutKey:currentCheckoutKey,
     customerName:document.getElementById('customerName').value,
     customerPhone:document.getElementById('customerPhone').value,
     orderType:document.getElementById('orderType').value,
@@ -745,6 +753,8 @@ function restoreCheckout(){
     const saved=JSON.parse(localStorage.getItem(CHECKOUT_STORAGE_KEY)||'null');
     if(!saved)return;
     currentOrderNo=typeof saved.orderNo==='string'?saved.orderNo.toUpperCase():'';
+    currentCheckoutKey=typeof saved.checkoutKey==='string'?saved.checkoutKey:'';
+    if(!currentCheckoutKey){try{currentCheckoutKey=localStorage.getItem(CHECKOUT_SESSION_KEY)||''}catch(e){}}
     document.getElementById('customerName').value=saved.customerName||'';
     document.getElementById('customerPhone').value=saved.customerPhone||'';
     document.getElementById('orderType').value=saved.orderType==='Home Delivery'?'Home Delivery':'Pickup';
@@ -755,6 +765,8 @@ function restoreCheckout(){
 const ZOMATO='https://zomato.onelink.me/xqzv/7948ndtj', SWIGGY='https://www.swiggy.com/menu/1400828?source=sharing';
 const PIN_MIN=144001,PIN_MAX=144030,PIN_CUTOFF=144015;
 let currentOrderNo='';
+const CHECKOUT_SESSION_KEY='hb_checkout_session_v1';
+let currentCheckoutKey='';
 let cart=loadStoredCart();
 restoreCheckout();
 let data=[
@@ -1104,8 +1116,22 @@ function closeOrderModal(){document.getElementById('orderModal').classList.remov
 function openCart(){document.body.classList.remove('hb-billing-open');document.getElementById('drawer').classList.add('show');document.getElementById('cartView').style.display='block';document.getElementById('billingView').style.display='none';renderCart()}
 function closeCart(){document.body.classList.remove('hb-billing-open');document.getElementById('drawer').classList.remove('show')}
 function continueShopping(){closeCart();const search=document.getElementById('search');if(search)search.blur();const menu=document.getElementById('menuScreen');if(menu)window.scrollTo({top:menu.offsetTop||0,behavior:'smooth'});}
-async function ensureOrderNumber(){if(!currentOrderNo){const res=await fetch(CLOUDFLARE_ORDERS_API+'/orders/next-number',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}',cache:'no-store'});const data=await res.json().catch(()=>null);if(!res.ok||!data?.success||!data.order_no)throw new Error(data?.message||'Cloudflare could not allocate an order number');currentOrderNo=String(data.order_no).toUpperCase()}currentOrderNo=String(currentOrderNo).toUpperCase();document.getElementById('orderNumber').textContent=currentOrderNo;saveCheckout()}
-function resetOrderNumber(){currentOrderNo='';document.getElementById('orderNumber').textContent='—'}
+function makeCheckoutKey(){if(window.crypto&&typeof window.crypto.randomUUID==='function')return window.crypto.randomUUID().replace(/-/g,'');return 'hb'+Date.now().toString(36)+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)}
+async function ensureOrderNumber(){
+  if(!currentCheckoutKey){try{currentCheckoutKey=localStorage.getItem(CHECKOUT_SESSION_KEY)||''}catch(e){}}
+  if(!currentCheckoutKey){currentCheckoutKey=makeCheckoutKey();try{localStorage.setItem(CHECKOUT_SESSION_KEY,currentCheckoutKey)}catch(e){}}
+  if(!currentOrderNo){
+    saveCheckout();
+    const res=await fetch(CLOUDFLARE_ORDERS_API+'/orders/next-number',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({checkout_key:currentCheckoutKey}),cache:'no-store'});
+    const data=await res.json().catch(()=>null);
+    if(!res.ok||!data?.success||!data.order_no)throw new Error(data?.message||'Cloudflare could not allocate an order number');
+    currentOrderNo=String(data.order_no).toUpperCase();
+  }
+  currentOrderNo=String(currentOrderNo).toUpperCase();
+  document.getElementById('orderNumber').textContent=currentOrderNo;
+  saveCheckout();
+}
+function resetOrderNumber(){currentOrderNo='';currentCheckoutKey='';try{localStorage.removeItem(CHECKOUT_SESSION_KEY)}catch(e){}document.getElementById('orderNumber').textContent='—'}
 async function proceedBilling(){if(!cart.length){alert('Cart is empty.');return}if(!(await requireCustomerLogin()))return;try{await ensureOrderNumber()}catch(error){console.error('Order number allocation failed:',error);alert('Order number nahi ban saka. Internet check karke dobara try karein.');return}document.body.classList.add('hb-billing-open');const drawer=document.getElementById('drawer'),card=document.getElementById('drawerCard');drawer.classList.add('show');document.getElementById('cartView').style.display='none';document.getElementById('billingView').style.display='block';if(card)card.scrollTop=0;updateBilling()}
 function backToCart(){document.body.classList.remove('hb-billing-open');document.getElementById('billingView').style.display='none';document.getElementById('cartView').style.display='block'}
 

@@ -1,0 +1,18 @@
+{
+  "name": "HakkaBakka Admin",
+  "short_name": "HB Admin",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5eee4",
+  "theme_color": "#74131a",
+  "description": "HakkaBakka restaurant admin dashboard preview",
+  "icons": [
+    {
+      "src": "../app-icon.jpg",
+      "sizes": "any",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}
