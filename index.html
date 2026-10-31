@@ -1236,6 +1236,29 @@ async function verifyPaymentScreenshot(file){
     let text=result.data.text||'', now=new Date(), total=paymentContext.total;
     window.hbLastPaymentOcrText=text;
     let detectedAmounts=findAmounts(text);
+    // Fast targeted amount OCR for Paytm's dark transaction-detail screen.
+    // The large rupee amount sits near the upper-middle of this layout; the full-page OCR
+    // often reads it as a bare integer but the generic amount parser can miss it.
+    if(!detectedAmounts.some(n=>Math.abs(n-total)<0.01)&&/\\bcompleted\\b/i.test(text)&&orderNoMatches(text)){
+      try{
+        const amountBitmap=await createImageBitmap(file);
+        const amountCrop=document.createElement('canvas');
+        const ax=Math.round(amountBitmap.width*.30), ay=Math.round(amountBitmap.height*.19);
+        const aw=Math.round(amountBitmap.width*.40), ah=Math.round(amountBitmap.height*.14);
+        amountCrop.width=aw*4; amountCrop.height=ah*4;
+        const amountCtx=amountCrop.getContext('2d');
+        amountCtx.imageSmoothingEnabled=true; amountCtx.imageSmoothingQuality='high';
+        amountCtx.filter='grayscale(1) contrast(1.5)';
+        amountCtx.drawImage(amountBitmap,ax,ay,aw,ah,0,0,amountCrop.width,amountCrop.height);
+        amountCtx.filter='none';
+        const amountRead=await Tesseract.recognize(amountCrop,'eng',{tessedit_pageseg_mode:'7',tessedit_char_whitelist:'0123456789.'});
+        const amountText=String(amountRead.data.text||'').replace(/,/g,' ').trim();
+        const expectedWhole=Number(total).toFixed(2).replace(/\\.00$/,'');
+        const amountToken=new RegExp('(?:^|[^\\d.])'+expectedWhole+'(?:\\.0{1,2})?(?![\\d.])');
+        if(amountToken.test(amountText))detectedAmounts.push(Number(total));
+        amountBitmap.close();
+      }catch(targetedAmountError){console.warn('Targeted Paytm amount OCR:',targetedAmountError)}
+    }
     // Paytm has multiple receipt layouts. The in-app transaction screen may show only a
     // large ₹13/₹18 amount and a green check, without the words "Paid Successfully".
     // OCR a tight, enlarged crop around the prominent amount before deciding it was unreadable.
