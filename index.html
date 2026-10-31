@@ -1146,9 +1146,9 @@ function findAmounts(text){
   const tokens=/(?:^|[^\d.])(\d{1,6}\.\s*\d{2})(?!\d)/g;
   while((m=tokens.exec(t)))add(m[1].replace(/\s/g,''));
   // Some Paytm layouts show the paid amount as a large whole number (₹18) with no decimal.
-  // Only use this fallback when the OCR also identifies a successful-payment receipt, and
+  // Only use this fallback when the OCR also identifies a successful/completed-payment receipt, and
   // only accept a standalone integer token; this avoids matching digits inside UPI refs.
-  if(/paid\s*successfully|payment\s*successful|transaction\s*successful|successful\s*payment/i.test(raw)){
+  if(/paid\s*successfully|payment\s*successful|transaction\s*successful|successful\s*payment|\bcompleted\b/i.test(raw)){
     const whole=/(?:^|[^\d.])(\d{1,5})(?![\d.]|\s*[:/])/g;
     while((m=whole.exec(t))){
       const n=Number(m[1]);
