@@ -11,6 +11,18 @@ function reply(request, data, status = 200) {
 const digits = value => String(value || "").replace(/\D/g, "");
 const validOrderNo = value => typeof value === "string" && (/^\d{4}\/(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)\/\d{4,}$/.test(value) || /^HB-\d{8}-[A-Z0-9]{8}$/.test(value) || /^OC\d{1,10}$/.test(value)); // current YYYY/MMM/0001 plus legacy IDs
 // Server-side price allowlist generated from the website menu at this commit. Keep in sync with index.html.
+async function isRateLimited(env, request, bucket, limit, windowSeconds = 600) {
+  const ip = request.headers.get("CF-Connecting-IP");
+  if (!ip) throw new Error("Client IP unavailable for rate limiting");
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(ip));
+  const hash = Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, "0")).join("");
+  const key = bucket + ":" + hash;
+  const now = Math.floor(Date.now() / 1000);
+  const cutoff = now - windowSeconds;
+  const row = await env.DB.prepare("INSERT INTO api_rate_limits (rate_key, window_started_at, request_count) VALUES (?, ?, 1) ON CONFLICT(rate_key) DO UPDATE SET request_count = CASE WHEN window_started_at <= ? THEN 1 ELSE request_count + 1 END, window_started_at = CASE WHEN window_started_at <= ? THEN ? ELSE window_started_at END RETURNING request_count").bind(key, now, cutoff, cutoff, now).first();
+  return Number(row?.request_count || 0) > limit;
+}
+
 async function getCanonicalMenuPrice(env, itemName) {
   if (!env.MENU_DB) throw new Error("Menu database binding MENU_DB is missing");
   const row = await env.MENU_DB.prepare("SELECT price FROM menu_items WHERE name = ? AND is_published = 1 AND available = 1 LIMIT 1").bind(itemName).first();
@@ -28,6 +40,15 @@ export default {
     }
     if (origin && !ALLOWED_ORIGINS.has(origin)) return reply(request, { success: false, message: "Origin not allowed" }, 403);
     if (!env.DB) return reply(request, { success: false, message: "Database binding DB is missing" }, 503);
+    if (request.method === "POST" && (url.pathname === "/orders/next-number" || url.pathname === "/orders/online")) {
+      try {
+        const bucket = url.pathname === "/orders/next-number" ? "number" : "order";
+        const limit = bucket === "number" ? 30 : 10;
+        if (await isRateLimited(env, request, bucket, limit, 600)) return reply(request, { success: false, message: "Too many requests. Please wait a few minutes and try again." }, 429);
+      } catch {
+        return reply(request, { success: false, message: "Order protection is temporarily unavailable. Please try again shortly." }, 503);
+      }
+    }
     if (request.method === "GET" && url.pathname === "/health") {
       try {
         const row = await env.DB.prepare("SELECT COUNT(*) AS count FROM orders").first();
