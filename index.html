@@ -1228,7 +1228,17 @@ document.getElementById('upiPay').onclick=()=>{
 };
 async function verifyPaymentScreenshot(file){
   paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};waSend.disabled=true;
-  if(!hasCurrentPaymentContext()){setPaymentCheck('bad','Pehle UPI payment shuru karein / Start payment first','“Pay with UPI” dabayein, 15 minutes ke andar payment karein aur current payment screenshot upload karein.');return;}
+  // If the two-minute QR window elapsed before the customer could attach the receipt,
+  // recover the current order context for receipt review. The receipt must still match
+  // this exact order reference, amount, payee, date and successful-payment indicators.
+  if(!hasCurrentPaymentContext()&&currentOrderNo&&Number(expectedTotal())>0){
+    paymentContext={startedAt:Date.now(),total:Number(expectedTotal()),orderNo:currentOrderNo};
+    paymentStartedAt=paymentContext.startedAt;
+    paymentTestMode=false;
+    paymentTimer.style.display='block';
+    if(paymentCountdown)paymentCountdown.textContent='Verifying receipt…';
+  }
+  if(!hasCurrentPaymentContext()){setPaymentCheck('bad','Pehle UPI payment shuru karein / Start payment first','Current order ka payment session restore nahi ho saka. Billing mein “Pay with UPI” dabakar dobara try karein.');return;}
   setPaymentCheck('', '🔍 Checking payment screenshot…','Amount, today’s date, payment time and order number are being checked.');
   try{
     if(!window.Tesseract)throw new Error('OCR engine unavailable');
