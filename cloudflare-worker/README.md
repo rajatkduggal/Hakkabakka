@@ -21,3 +21,7 @@ The API allocates India-local monthly order numbers, validates every cart item a
 The website performs client-side OCR checks on the uploaded receipt (amount, date, time, order reference, and UPI reference). This is not bank-side confirmation. Staff must confirm the money was actually credited before treating an order as paid. The customer is asked to attach the receipt in WhatsApp; this API does not retain the screenshot file.
 
 Keep both D1 bindings configured. Menu price and availability changes made in the Admin Panel are picked up automatically at checkout.
+
+## Abuse controls
+
+The public order endpoints use D1-backed per-client rate limits keyed by a SHA-256 hash of Cloudflare's connecting IP: 10 order submissions and 30 order-number allocations per 10-minute window. Raw IP addresses are not stored in the rate-limit key.
