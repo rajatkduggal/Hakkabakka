@@ -1239,15 +1239,20 @@ async function verifyPaymentScreenshot(file){
     // Paytm dark transaction detail receipt: Tesseract often extracts the prominent
     // amount as a standalone line immediately before "HAKKA BAKKA YYYY/MMM/NNNN",
     // while the generic parser can confuse nearby date/order digits.
-    const receiptLines=String(text||'').split(/\\r?\\n/).map(line=>line.trim()).filter(Boolean);
-    const refLineIndex=receiptLines.findIndex(line=>new RegExp('HAKKA\\\\s+BAKKA\\\\s+'+String(currentOrderNo||'').replace(/[.*+?^${}()|[\\]\\\\]/g,'\\\\    let detectedAmounts=findAmounts(text);
-    // Fast targeted amount OCR for Paytm's dark transaction-detail screen.'),'i').test(line));
-    const hasCompleted=/\\bcompleted\\b/i.test(text);
-    const hasPayee=/RAJAT\\s+KUMAR\\s+DUGGAL/i.test(text);
-    const hasUpiId=/UPI\\s+transaction\\s+ID/i.test(text);
+    const receiptLines=String(text||'').split(/\r?\n/).map(line=>line.trim()).filter(Boolean);
+    const refLabel=('HAKKA BAKKA '+String(currentOrderNo||'')).toUpperCase();
+    const refLineIndex=receiptLines.findIndex(line=>line.toUpperCase().includes(refLabel));
+    const hasCompleted=/\bcompleted\b/i.test(text);
+    const hasPayee=/RAJAT\s+KUMAR\s+DUGGAL/i.test(text);
+    const hasUpiId=/UPI\s+transaction\s+ID/i.test(text);
     if(refLineIndex>0&&hasCompleted&&hasPayee&&hasUpiId){
-      const expectedWhole=String(Math.round(Number(total)));
-      const amountLine=receiptLines.slice(Math.max(0,refLineIndex-3),refLineIndex).find(line=>new RegExp('^₹?\\\\s*'+expectedWhole+'(?:\\\\.0{1,2})?
+      const expectedWhole=Math.round(Number(total));
+      const amountLine=receiptLines.slice(Math.max(0,refLineIndex-3),refLineIndex).some(line=>{
+        const match=line.replace(/,/g,'').match(/^₹?\s*(\d{1,5})(?:\.0{1,2})?$/);
+        return !!match&&Number(match[1])===expectedWhole;
+      });
+      if(amountLine&&!detectedAmounts.some(n=>Math.abs(n-total)<0.01))detectedAmounts.push(Number(total));
+    }
     // The large rupee amount sits near the upper-middle of this layout; the full-page OCR
     // often reads it as a bare integer but the generic amount parser can miss it.
     if(!detectedAmounts.some(n=>Math.abs(n-total)<0.01)&&/\\bcompleted\\b/i.test(text)&&orderNoMatches(text)){
