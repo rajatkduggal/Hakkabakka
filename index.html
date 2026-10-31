@@ -1236,6 +1236,595 @@ async function verifyPaymentScreenshot(file){
     let text=result.data.text||'', now=new Date(), total=paymentContext.total;
     window.hbLastPaymentOcrText=text;
     let detectedAmounts=findAmounts(text);
+    // Paytm dark transaction detail receipt: Tesseract often extracts the prominent
+    // amount as a standalone line immediately before "HAKKA BAKKA YYYY/MMM/NNNN",
+    // while the generic parser can confuse nearby date/order digits.
+    const receiptLines=String(text||'').split(/\\r?\\n/).map(line=>line.trim()).filter(Boolean);
+    const refLineIndex=receiptLines.findIndex(line=>new RegExp('HAKKA\\\\s+BAKKA\\\\s+'+String(currentOrderNo||'').replace(/[.*+?^${}()|[\\]\\\\]/g,'\\\\    let detectedAmounts=findAmounts(text);
+    // Fast targeted amount OCR for Paytm's dark transaction-detail screen.'),'i').test(line));
+    const hasCompleted=/\\bcompleted\\b/i.test(text);
+    const hasPayee=/RAJAT\\s+KUMAR\\s+DUGGAL/i.test(text);
+    const hasUpiId=/UPI\\s+transaction\\s+ID/i.test(text);
+    if(refLineIndex>0&&hasCompleted&&hasPayee&&hasUpiId){
+      const expectedWhole=String(Math.round(Number(total)));
+      const amountLine=receiptLines.slice(Math.max(0,refLineIndex-3),refLineIndex).find(line=>new RegExp('^₹?\\\\s*'+expectedWhole+'(?:\\\\.0{1,2})?
+    // The large rupee amount sits near the upper-middle of this layout; the full-page OCR
+    // often reads it as a bare integer but the generic amount parser can miss it.
+    if(!detectedAmounts.some(n=>Math.abs(n-total)<0.01)&&/\\bcompleted\\b/i.test(text)&&orderNoMatches(text)){
+      try{
+        const amountBitmap=await createImageBitmap(file);
+        const amountCrop=document.createElement('canvas');
+        const ax=Math.round(amountBitmap.width*.30), ay=Math.round(amountBitmap.height*.19);
+        const aw=Math.round(amountBitmap.width*.40), ah=Math.round(amountBitmap.height*.14);
+        amountCrop.width=aw*4; amountCrop.height=ah*4;
+        const amountCtx=amountCrop.getContext('2d');
+        amountCtx.imageSmoothingEnabled=true; amountCtx.imageSmoothingQuality='high';
+        amountCtx.filter='grayscale(1) contrast(1.5)';
+        amountCtx.drawImage(amountBitmap,ax,ay,aw,ah,0,0,amountCrop.width,amountCrop.height);
+        amountCtx.filter='none';
+        const amountRead=await Tesseract.recognize(amountCrop,'eng',{tessedit_pageseg_mode:'7',tessedit_char_whitelist:'0123456789.'});
+        const amountText=String(amountRead.data.text||'').replace(/,/g,' ').trim();
+        const expectedWhole=Number(total).toFixed(2).replace(/\\.00$/,'');
+        const amountToken=new RegExp('(?:^|[^\\d.])'+expectedWhole+'(?:\\.0{1,2})?(?![\\d.])');
+        if(amountToken.test(amountText))detectedAmounts.push(Number(total));
+        amountBitmap.close();
+      }catch(targetedAmountError){console.warn('Targeted Paytm amount OCR:',targetedAmountError)}
+    }
+    // Paytm has multiple receipt layouts. The in-app transaction screen may show only a
+    // large ₹13/₹18 amount and a green check, without the words "Paid Successfully".
+    // OCR a tight, enlarged crop around the prominent amount before deciding it was unreadable.
+    if(!detectedAmounts.some(n=>Math.abs(n-total)<0.01)){
+      try{
+        const bitmap=await createImageBitmap(file);
+        const crops=[
+          // Tight amount zone for Paytm's in-app transaction detail view.
+          {x:.18,y:.17,w:.64,h:.19,scale:5},
+          // Paytm receipt-card: black letterbox bars push the ₹ amount lower on the image.
+          {x:.20,y:.38,w:.60,h:.17,scale:6},
+          // Paytm receipt-card: include amount-in-words line ("Thirty Five Rupees").
+          {x:.20,y:.40,w:.60,h:.23,scale:5},
+          // Broad fallback for other Paytm receipt layouts.
+          {x:.04,y:.10,w:.92,h:.62,scale:3}
+        ];
+        let extraText='';
+        for(const area of crops){
+          const sx=Math.round(bitmap.width*area.x), sy=Math.round(bitmap.height*area.y);
+          const sw=Math.round(bitmap.width*area.w), sh=Math.round(bitmap.height*area.h);
+          const crop=document.createElement('canvas');
+          crop.width=sw*area.scale; crop.height=sh*area.scale;
+          const ctx=crop.getContext('2d',{willReadFrequently:true});
+          ctx.imageSmoothingEnabled=true; ctx.imageSmoothingQuality='high';
+          ctx.filter='contrast(1.25) grayscale(1)';
+          ctx.drawImage(bitmap,sx,sy,sw,sh,0,0,crop.width,crop.height);
+          ctx.filter='none';
+          const cropResult=await Tesseract.recognize(crop,'eng');
+          extraText+='\n'+(cropResult.data.text||'');
+          text+='\n'+(cropResult.data.text||'');
+          detectedAmounts=findAmounts(text);
+          // Try several contrast/threshold variants; Paytm's large amount can be missed
+          // when the receipt is a compressed screenshot or has a pale blue background.
+          let numericCropText='';
+          const amountOcrPasses=[
+            {psm:'7',whitelist:'0123456789.,'},
+            {psm:'6',whitelist:'0123456789.,'},
+            {psm:'7',whitelist:'0123456789₹Rs. ' }
+          ];
+          for(const pass of amountOcrPasses){
+            try{
+              const variant=document.createElement('canvas');
+              variant.width=crop.width; variant.height=crop.height;
+              const vctx=variant.getContext('2d',{willReadFrequently:true});
+              vctx.drawImage(crop,0,0);
+              const pixels=vctx.getImageData(0,0,variant.width,variant.height);
+              for(let i=0;i<pixels.data.length;i+=4){
+                const gray=(pixels.data[i]*0.299+pixels.data[i+1]*0.587+pixels.data[i+2]*0.114);
+                const value=gray>145?255:0;
+                pixels.data[i]=pixels.data[i+1]=pixels.data[i+2]=value;
+              }
+              vctx.putImageData(pixels,0,0);
+              const nr=await Tesseract.recognize(variant,'eng',{
+                tessedit_pageseg_mode:pass.psm,
+                tessedit_char_whitelist:pass.whitelist
+              });
+              const got=String(nr.data.text||'').replace(/,/g,'');
+              numericCropText+='\n'+got;
+              text+='\n'+got;
+              detectedAmounts=findAmounts(text);
+              const expectedWhole=Number(total).toFixed(2).replace(/\.00$/,'');
+              const amountZone=(String(cropResult.data.text||'')+'\n'+numericCropText).replace(/,/g,'');
+              const exactWhole=new RegExp('(?:^|[^\\d.])'+expectedWhole+'(?:\\.0{1,2})?(?![\\d.])').test(amountZone);
+              const exactDecimal=new RegExp('(?:^|[^\\d.])'+Number(total).toFixed(2).replace('.','\\.')+'(?!\\d)').test(amountZone);
+              if(exactWhole||exactDecimal||detectedAmounts.some(n=>Math.abs(n-total)<0.01))break;
+            }catch(numericOcrError){}
+          }
+          const expectedWhole=Number(total).toFixed(2).replace(/\.00$/,'');
+          const amountZone=(String(cropResult.data.text||'')+'\n'+numericCropText).replace(/,/g,'');
+          const exactWhole=new RegExp('(?:^|[^\\d.])'+expectedWhole+'(?:\\.0{1,2})?(?![\\d.])').test(amountZone);
+          const exactDecimal=new RegExp('(?:^|[^\\d.])'+Number(total).toFixed(2).replace('.','\\.')+'(?!\\d)').test(amountZone);
+          if(exactWhole||exactDecimal){
+            detectedAmounts.push(Number(total));
+            break;
+          }
+          if(detectedAmounts.some(n=>Math.abs(n-total)<0.01))break;
+        }
+        bitmap.close();
+      }catch(cropError){/* Keep the original OCR result if crop OCR is unavailable. */}
+    }
+    paymentVerification.amount=detectedAmounts.some(n=>Math.abs(n-total)<0.01);
+    // Independent Paytm amount-in-words check. This is needed when OCR reads
+    // "Thirty Five Rupees" but misses the large ₹35 numeral on the receipt.
+    if(!paymentVerification.amount){
+      const amountWords=String(text||'').toLowerCase().replace(/[’']/g,' ').replace(/[\r\n\t-]+/g,' ').replace(/\s+/g,' ');
+      const wordValues={zero:0,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,eighteen:18,nineteen:19,twenty:20,thirty:30,forty:40,fifty:50,sixty:60,seventy:70,eighty:80,ninety:90};
+      const wordRe=/\b(zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)(?:\s+(one|two|three|four|five|six|seven|eight|nine))?\s+rupees?\b/g;
+      let wordMatch;
+      while((wordMatch=wordRe.exec(amountWords))){
+        const value=(wordValues[wordMatch[1]]||0)+(wordMatch[2]?wordValues[wordMatch[2]]:0);
+        if(value>0&&Math.abs(value-total)<0.01){paymentVerification.amount=true;break;}
+      }
+    }
+    paymentVerification.date=parseDateCandidates(text).some(d=>sameLocalDay(d,now));
+    const timeCandidates=parseTimeCandidates(text);
+    const timeMatched=timeCandidates.some(x=>paymentTimeInWindow(x.h,x.mi,now));
+    const receiptShowsSuccess=/paid\s*successfully|payment\s*successful|transaction\s*successful|successful\s*payment|\bcompleted\b/i.test(text);
+    // Paytm's full-screen receipt sometimes shows the large amount and green success tick
+    // but OCR misses the amount. If the receipt identifies the exact HakkaBakka UPI ID/payee,
+    // is dated today, and shows a time inside the active payment window, don't fail only
+    // because OCR couldn't read the amount. This is screenshot validation, not bank confirmation.
+    const payeeMatches=/9713545556\s*@\s*pthdfc|9713545556|mr\s*yishu\s*duggal/i.test(text);
+    const trustedPaytmLayout=/paytm/i.test(text)&&payeeMatches&&paymentVerification.date&&timeMatched;
+    if(!paymentVerification.amount&&trustedPaytmLayout)paymentVerification.amount=true;
+    // Paytm receipts may OCR the 12-hour timestamp inconsistently; when the same-day receipt clearly says payment succeeded, don't reject solely on OCR time parsing. This is only screenshot text validation, not bank confirmation.
+    paymentVerification.time=timeMatched||(receiptShowsSuccess&&paymentVerification.date);
+    let paymentRef=extractPaymentReference(text);
+    // Paytm places "Ref No" near the bottom of the receipt; OCR the lower section
+    // separately at high scale because the full screenshot may include black bars.
+    if(!paymentRef){
+      try{
+        const bitmap=await createImageBitmap(file);
+        const areas=[
+          {x:.03,y:.62,w:.94,h:.34,scale:4},
+          {x:.05,y:.68,w:.90,h:.28,scale:5},
+          {x:.02,y:.48,w:.96,h:.48,scale:3}
+        ];
+        for(const area of areas){
+          const sx=Math.round(bitmap.width*area.x), sy=Math.round(bitmap.height*area.y);
+          const sw=Math.round(bitmap.width*area.w), sh=Math.round(bitmap.height*area.h);
+          const crop=document.createElement('canvas');
+          crop.width=sw*area.scale; crop.height=sh*area.scale;
+          const ctx=crop.getContext('2d',{willReadFrequently:true});
+          ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+          ctx.filter='grayscale(1) contrast(1.5)';
+          ctx.drawImage(bitmap,sx,sy,sw,sh,0,0,crop.width,crop.height);ctx.filter='none';
+          const variants=[crop];
+          const bw=document.createElement('canvas');bw.width=crop.width;bw.height=crop.height;
+          const bctx=bw.getContext('2d',{willReadFrequently:true});bctx.drawImage(crop,0,0);
+          const px=bctx.getImageData(0,0,bw.width,bw.height);
+          for(let k=0;k<px.data.length;k+=4){const g=(px.data[k]*.299+px.data[k+1]*.587+px.data[k+2]*.114);const v=g>155?255:0;px.data[k]=px.data[k+1]=px.data[k+2]=v;}
+          bctx.putImageData(px,0,0);variants.push(bw);
+          for(const variant of variants){
+            const rr=await Tesseract.recognize(variant,'eng',{tessedit_pageseg_mode:'6'});
+            const rt=String(rr.data.text||'');
+            text+='\\n'+rt;
+            paymentRef=extractPaymentReference(text);
+            if(paymentRef)break;
+          }
+          if(paymentRef)break;
+        }
+        bitmap.close();
+      }catch(referenceCropError){}
+    }
+    if(!orderNoMatches(text)){
+      paymentVerification.order=false;
+      paymentVerification.ocr=true;
+      setPaymentCheck('bad','Order number match nahi hua','Is receipt mein current order '+currentOrderNo+' nahi mila. Purane order ki receipt se naya order verify nahi ho sakta. Current order ke liye naya UPI payment karein ya sahi receipt upload karein.');
+      updateVerificationUI();
+      return;
+    }
+    if(!paymentRef){
+      paymentVerification.order=false;
+      setPaymentCheck('bad','UPI reference auto-read nahi ho saka','Receipt ke neeche “Ref No” wala hissa clear dikhna chahiye. Original Paytm receipt ka full screenshot upload karein.');
+      updateVerificationUI();
+      return;
+    }
+    await verifyPaymentReference(paymentRef);
+    return;
+  }catch(e){paymentVerification={file:true,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot verify nahi ho saka','Clear screenshot upload karein. Amount, date, time aur Order No. '+currentOrderNo+' visible hona chahiye.');updateVerificationUI()}
+}
+async function verifyPaymentReference(reference){
+    const paymentRef=String(reference||'').replace(/\D/g,'');
+    try{
+      const refResponse=await fetch('https://hb-orders-api.mail-marvelgroup.workers.dev/orders/payment-reference/'+encodeURIComponent(paymentRef),{method:'GET',cache:'no-store'});
+      const refData=await refResponse.json().catch(()=>null);
+      if(!refResponse.ok||!refData?.success)throw new Error(refData?.message||'Payment reference lookup failed');
+      if(refData.used){
+        paymentVerification.order=false;
+        setPaymentCheck('bad','THIS PAYMENT ALREADY USED, PLEASE ATTACH NEW RECEIPT','');
+        const usedTitle=paymentCheck.querySelector('b');
+        const usedDetail=paymentCheck.querySelector('span');
+        if(usedTitle){usedTitle.style.cssText='display:block;color:#b00020;font-weight:900;font-size:20px;line-height:1.4;animation:hbPaymentFlash .8s steps(2,start) infinite';}
+        if(usedDetail){usedDetail.style.display='none';}
+        updateVerificationUI();
+        return;
+      }
+      paymentVerification.order=true;
+    }catch(refError){
+      paymentVerification.order=false;
+      setPaymentCheck('bad','Payment reference check nahi ho saka','Cloudflare payment-check service se connection nahi hua. Internet check karke dobara screenshot upload karein. Duplicate payment rokne ke liye order abhi send nahi kiya ja sakta.');
+      updateVerificationUI();
+      return;
+    }
+    paymentVerification.ocr=true;
+    if(updateVerificationUI())setPaymentCheck('ok','✅ Screenshot details match','Screenshot details accepted and reference is not already recorded. Confirm actual credit in HakkaBakka’s UPI/bank account before preparing the order. This is not bank-side payment confirmation.');
+    else {
+      const problems=[];
+      if(!paymentVerification.amount)problems.push('Amount match nahi hua. Expected ₹'+Number(paymentContext?.total||expectedTotal()).toFixed(2)+'.');
+      if(!paymentVerification.date)problems.push('Payment date aaj ki date se match nahi hui ya read nahi hui.');
+      if(!paymentVerification.time)problems.push('Payment time current payment window se match nahi hua ya read nahi hua.');
+      if(!hasCurrentPaymentContext())problems.push('Payment session expire ho gaya. QR dobara generate karein.');
+      if(!problems.length)problems.push('Screenshot details match nahi hue.');
+      setPaymentCheck('bad','Screenshot details match nahi hue',problems.join(' '));
+    }
+}
+// Native file input overlays the visible button so Android opens the gallery directly.
+function handlePaymentScreenshotSelection(input){const f=input&&input.files&&input.files[0],name=document.getElementById('paymentFileName'),status=document.getElementById('paymentStatus');if(!f){paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};waSend.disabled=true;if(status)status.textContent='Receipt select nahi hui.';setPaymentCheck('bad','Payment screenshot select nahi hui','Gallery se original payment receipt image select karein.');updateVerificationUI();return;}if(!String(f.type||'').toLowerCase().startsWith('image/')||f.size>12*1024*1024){input.value='';if(name)name.style.display='none';paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};waSend.disabled=true;if(status)status.textContent='Invalid image. JPG/PNG/WebP, max 12 MB.';setPaymentCheck('bad','Image file valid nahi hai','JPG, PNG ya WebP image select karein. Maximum size 12 MB hai.');return;}if(name){name.textContent='📎 Selected: '+f.name+' ('+(f.size/1024/1024).toFixed(1)+' MB)';name.style.display='block';}if(status){status.style.cssText='display:block!important;color:#8a5a00;font-weight:800;padding:8px 4px';status.textContent='🔍 Receipt selected. OCR verification starting…';}setPaymentCheck('', '🔍 Checking payment screenshot…','Amount, date, time aur UPI reference check ho rahe hain.');verifyPaymentScreenshot(f).catch(error=>{console.error('Payment OCR failed:',error);if(status)status.textContent='Verification error: '+String(error&&error.message||error);setPaymentCheck('bad','Screenshot verification error',String(error&&error.message||'Dobara try karein.'));});}
+window.hbHandlePaymentScreenshotSelection=handlePaymentScreenshotSelection;
+const CLOUDFLARE_ORDERS_API='https://hb-orders-api.mail-marvelgroup.workers.dev';
+async function runPOSIntegrationTest(){
+  try{
+    const res=await fetch(CLOUDFLARE_ORDERS_API+'/health',{method:'GET',cache:'no-store'});
+    const data=await res.json().catch(()=>null);
+    if(!res.ok||!data?.success||data.database!=='connected'||data.menu_database!=='connected'||!Number(data.published_menu_count))throw new Error(data?.message||'Cloudflare order or live menu database unavailable');
+    console.info('HakkaBakka order and menu databases connected.');
+  }catch(error){
+    console.error('Order database health:',error);
+  }
+}
+runPOSIntegrationTest();
+async function sendOrderToPOS(){
+  if(paymentTestMode)return {success:true,test:true};
+  const type=document.getElementById('orderType').value;
+  const paymentReference=extractPaymentReference(window.hbLastPaymentOcrText||'');
+  const payload={
+    order_no:currentOrderNo,
+    source:'ONLINE',
+    order_type:type,
+    customer_name:document.getElementById('customerName').value.trim(),
+    customer_phone:normalizePhone(document.getElementById('customerPhone').value),
+    address:type==='Home Delivery'?document.getElementById('address').value.trim():null,
+    pincode:type==='Home Delivery'?pin():null,
+    food_total:foodTotal(),
+    discount_amount:orderDiscount(),
+    delivery_charges:deliveryCharge(),
+    total_amount:expectedTotal(),
+    payment_status:'SCREENSHOT_REVIEW_REQUIRED',
+    payment_reference:paymentReference,
+    special_instructions:null,
+    items:cart.map(x=>({name:x.name,price:Number(x.price),qty:1}))
+  };
+  if(!paymentReference||paymentReference.replace(/\\D/g,'').length<8)throw new Error('UPI payment reference could not be read. Please upload the receipt again.');
+  const res=await fetch(CLOUDFLARE_ORDERS_API+'/orders/online',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),cache:'no-store'});
+  const data=await res.json().catch(()=>null);
+  if(!res.ok||!data?.success)throw new Error(data?.message||'Order could not be saved in Cloudflare database');
+  return data;
+}
+document.getElementById('waSend').onclick=async()=>{
+  if(!cart.length)return showOrderError('Cart khaali hai. / Please add items first.');
+  if(!(await requireCustomerLogin()))return;
+  const name=document.getElementById('customerName').value.trim(),phone=document.getElementById('customerPhone').value.trim(),type=document.getElementById('orderType').value;
+  if(!name)return showOrderError('Customer name likhein. / Please enter your name.',document.getElementById('customerName'));
+  if(!/^\d{10}$/.test(phone))return showOrderError('10-digit mobile number zaroori hai. / Please enter a valid 10-digit mobile number.',document.getElementById('customerPhone'));
+  if(!updateVerificationUI()){setPaymentCheck('bad','Payment verification required hai','Payment screenshot verify hona zaroori hai.');return showOrderError('Verified payment screenshot required hai. / Please complete payment verification first.',paymentScreenshot);}
+  let extra='';if(type==='Home Delivery'&&!paymentTestMode){const p=pin(),a=document.getElementById('address').value.trim();if(!a)return showOrderError('Delivery address likhein. / Please enter the delivery address.',document.getElementById('address'));const deliveryStatus=deliveryPinStatus();if(!deliveryStatus.valid)return showOrderError(deliveryStatus.message,document.getElementById('pincode'));extra='\nPincode: '+p+'\nAddress: '+a}
+  if(!paymentTestMode&&supabaseClient&&currentUser){try{await saveOrderToSupabase()}catch(error){console.warn('Optional customer order history save failed; Cloudflare D1 remains the primary order archive.',error)}}
+  try{await sendOrderToPOS()}catch(error){console.error('POS sync:',error);return showOrderError((error&&error.message)||'POS se connection nahi ho saka. / Order POS mein save nahi hua, isliye WhatsApp order send nahi kiya gaya. Please try again.');}
+  if(paymentTestMode){
+    const msg='*HAKKA BAKKA ₹2 PAYMENT TEST*\n*TEST ORDER: '+currentOrderNo+'*\n\n₹2 payment screenshot verified.\nPOS test endpoint validated and rolled back.\n\nName: '+name+'\nMobile: '+phone+'\n\nPlease confirm receipt of this ₹2 test.';
+    clearCart();
+    closeCart();
+    window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
+    return;
+  }
+  const grouped=[];cart.forEach(x=>{const g=grouped.find(y=>y.name===x.name&&y.price===x.price);if(g)g.qty++;else grouped.push({name:x.name,price:x.price,qty:1})});const lines=grouped.map(x=>'• '+x.name+' × '+x.qty+' - ₹'+(x.price*x.qty)).join('\n'),total=expectedTotal();
+  const ref=extractPaymentReference(window.hbLastPaymentOcrText||'');
+  const msg='*HAKKA BAKKA ONLINE ORDER*\n*ORDER NO: '+currentOrderNo+'*'+(ref?'\n*PAYMENT REF NO: '+ref+'*':'\n*PAYMENT REF NO: Please check attached receipt*')+'\n\n'+lines+'\n\nFood Total: ₹'+foodTotal()+(orderDiscount()>0?'\nPickup Discount ('+Math.round(pickupDiscountRate()*100)+'%): -₹'+orderDiscount():'')+'\nDelivery Charges: ₹'+deliveryCharge()+'\n*TOTAL: ₹'+total+'*\n\nName: '+name+'\nMobile: '+phone+'\nType: '+type+extra+'\n\nPlease confirm my order.';
+  // WhatsApp click-to-chat opens directly, avoiding the Android share-sheet app chooser.
+  // Browsers cannot attach a local screenshot file to a wa.me draft; customer must attach it manually.
+  clearCart();
+  closeCart();
+  window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
+};
+window.addEventListener('storage',e=>{if(e.key===CART_STORAGE_KEY){cart=loadStoredCart();renderCart()}});
+// HERO FOOD SLIDESHOW — start rotation immediately; don't wait for GitHub API lookups.
+(function(){
+  const imgs=Array.from(document.querySelectorAll('#heroSlides img'));
+  const dots=document.getElementById('heroDots');
+  if(!imgs.length) return;
+  let i=Math.max(0,imgs.findIndex(img=>img.classList.contains('active')));
+  if(i<0)i=0;
+  imgs.forEach((img,k)=>{
+    img.classList.toggle('active',k===i);
+    if(dots){
+      const d=document.createElement('span');
+      d.classList.toggle('active',k===i);
+      d.setAttribute('aria-label','Show food photo '+(k+1));
+      dots.appendChild(d);
+    }
+  });
+  const ds=dots?Array.from(dots.children):[];
+  window.setInterval(()=>{
+    imgs[i].classList.remove('active');
+    if(ds[i])ds[i].classList.remove('active');
+    i=(i+1)%imgs.length;
+    imgs[i].classList.add('active');
+    if(ds[i])ds[i].classList.add('active');
+  },3000);
+})();;
+renderMenu();renderCart();initCustomerAuth();
+</script>
+
+<script src="content-config.js"></script>
+<script src="content-feed.js"></script>
+
+
+<!-- HERO SLIDESHOW ROTATION PATCH -->
+<script>
+(function () {
+  function startHakkaHeroSlideshow() {
+    var root = document.getElementById('heroSlides');
+    if (!root || root.dataset.slideshowReady === 'true') return;
+    var imgs = Array.prototype.slice.call(root.querySelectorAll('img'));
+    var dots = document.getElementById('heroDots');
+    if (imgs.length < 2) return;
+    root.dataset.slideshowReady = 'true';
+    var current = imgs.findIndex(function (img) { return img.classList.contains('active'); });
+    if (current < 0) current = 0;
+    if (dots) {
+      dots.innerHTML = '';
+      imgs.forEach(function (_, index) {
+        var dot = document.createElement('span');
+        dot.setAttribute('aria-label', 'Show food photo ' + (index + 1));
+        dot.style.cursor = 'pointer';
+        dot.addEventListener('click', function () { show(index); });
+        dots.appendChild(dot);
+      });
+    }
+    function show(index) {
+      current = index;
+      imgs.forEach(function (img, k) { img.classList.toggle('active', k === current); });
+      if (dots) Array.prototype.forEach.call(dots.children, function (dot, k) { dot.classList.toggle('active', k === current); });
+    }
+    show(current);
+    window.setInterval(function () { show((current + 1) % imgs.length); }, 3500);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startHakkaHeroSlideshow);
+  else startHakkaHeroSlideshow();
+})();
+</script>
+
+
+<!-- ONLINE ORDER CLICK SAFETY PATCH -->
+<style>
+#orderModal{z-index:99999!important;pointer-events:auto}
+#orderModal .modal-card{position:relative;z-index:1;max-height:85vh;overflow-y:auto}
+.hero-order-mini,.hero-actions .btn{position:relative;z-index:6;pointer-events:auto;cursor:pointer}
+</style>
+<script>
+(function(){
+  function bindOrderButtons(){
+    var modal=document.getElementById('orderModal');
+    if(!modal)return;
+    ['.hero-order-mini','.hero-actions button'].forEach(function(selector){
+      document.querySelectorAll(selector).forEach(function(button){
+        if(button.dataset.orderSafetyBound==='true')return;
+        button.dataset.orderSafetyBound='true';
+        button.addEventListener('click',function(event){
+          event.preventDefault();
+          event.stopPropagation();
+          modal.classList.add('show');
+        });
+      });
+    });
+    modal.querySelectorAll('.order-choice').forEach(function(choice){choice.style.cursor='pointer'});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindOrderButtons);
+  else bindOrderButtons();
+})();
+</script>
+
+
+
+\n
+<!-- WHATSAPP MENU BUTTON HARD FIX -->
+<script>
+(function () {
+  window.hbForceOpenMenu = function (event) {
+    if (event) { event.preventDefault(); event.stopPropagation(); }
+    var modal = document.getElementById('orderModal');
+    var home = document.getElementById('home');
+    var menu = document.getElementById('menuScreen');
+    if (modal) modal.classList.remove('show');
+    document.body.classList.add('hb-menu-open');
+    if (home) {
+      home.classList.add('menu-hidden');
+      home.style.setProperty('display', 'none', 'important');
+      home.style.setProperty('visibility', 'hidden', 'important');
+    }
+    if (menu) {
+      menu.classList.add('menu-visible');
+      menu.style.setProperty('display', 'block', 'important');
+      menu.style.setProperty('visibility', 'visible', 'important');
+    }
+    var fab = document.getElementById('cartFab');
+    if (fab) fab.style.display = 'block';
+    try { if (typeof renderMenu === 'function') renderMenu(); } catch (err) { console.error('Menu render issue:', err); }
+    try { if (typeof renderCart === 'function') renderCart(); } catch (err) { console.error('Cart render issue:', err); }
+    window.scrollTo(0, 0);
+    return false;
+  };
+  document.addEventListener('click', function (event) {
+    var button = event.target && event.target.closest ? event.target.closest('#whatsappOrderChoice') : null;
+    if (button) window.hbForceOpenMenu(event);
+  }, true);
+})();
+</script>
+
+
+<!-- MENU RENDER RETRY SAFETY -->
+<script>
+(function(){
+  function retryMenuRender(){
+    var menu=document.getElementById('menu');
+    if(!menu)return;
+    if(!menu.children.length && typeof window.renderMenu==='function'){
+      try{window.renderMenu()}catch(e){console.error('Menu retry failed',e)}
+    }
+  }
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(retryMenuRender,250)});
+  window.addEventListener('pageshow',function(){setTimeout(retryMenuRender,250)});
+})();
+</script>
+
+
+<!-- CUSTOMER AUTH MODAL CLICK / STACKING FIX -->
+<style>
+#authModal{position:fixed!important;inset:0!important;z-index:100000!important;pointer-events:none;isolation:isolate}
+#authModal.show{display:flex!important;pointer-events:auto!important}
+#authModal .modal-card{position:relative;z-index:1;pointer-events:auto;max-height:calc(100dvh - 36px);overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y}
+#authModal .modal-card button,#authModal .modal-card input{position:relative;z-index:2;pointer-events:auto;touch-action:manipulation}
+</style>
+<script>
+(function(){
+  function bindAuthModalSafety(){
+    var modal=document.getElementById('authModal');
+    var card=modal&&modal.querySelector('.modal-card');
+    if(!modal||!card||modal.dataset.authClickFix==='true')return;
+    modal.dataset.authClickFix='true';
+    // Let each button's own click handler run first; stop bubbling only afterwards.
+    // A capture-phase stopPropagation here would block X, Login, and Create Account.
+    card.addEventListener('click',function(event){event.stopPropagation()});
+    // Ensure account-mode buttons stay ordinary buttons and invoke the correct view.
+    var loginSwitch=modal.querySelector('#loginForm button[onclick*="showSignup"]');
+    var signupSwitch=modal.querySelector('#signupForm button[onclick*="showLogin"]');
+    if(loginSwitch){
+      loginSwitch.type='button';
+      loginSwitch.addEventListener('click',function(event){event.preventDefault();showSignup()});
+    }
+    if(signupSwitch){
+      signupSwitch.type='button';
+      signupSwitch.addEventListener('click',function(event){event.preventDefault();showLogin()});
+    }
+    var closeButton=modal.querySelector('.modal-head .close');
+    if(closeButton){
+      closeButton.type='button';
+      closeButton.addEventListener('click',function(event){event.preventDefault();event.stopPropagation();closeAuth()});
+    }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindAuthModalSafety);
+  else bindAuthModalSafety();
+})();
+</script>
+
+
+<!-- MOBILE MENU BUTTON LAYOUT FIX -->
+<style>
+/* Keep half/full price controls aligned and readable on narrow phone screens. */
+.menu-grid{align-items:stretch}
+.menu-card{min-width:0}
+.menu-body{min-width:0}
+.variant{display:flex;align-items:stretch;gap:6px;width:100%;min-width:0}
+.variant>.add{flex:1 1 0;width:0;min-width:0;min-height:48px;padding:7px 3px;font-size:clamp(10px,2.8vw,12px);line-height:1.2;white-space:normal;overflow-wrap:normal;word-break:normal;display:flex;align-items:center;justify-content:center;text-align:center}
+.variant>.add.selected{padding:4px 2px}
+.variant .qty-control{width:100%;min-width:0;height:38px;display:flex;align-items:center;justify-content:space-between;gap:0;overflow:hidden}
+.variant .qty-control button{flex:0 0 25px;width:25px;min-width:25px;height:36px;padding:0;font-size:20px;line-height:1}
+.variant .qty-control span{flex:1 1 auto;min-width:12px;font-size:12px;text-align:center}
+@media(max-width:380px){.variant{gap:4px}.variant>.add{font-size:10px;padding-left:2px;padding-right:2px}.variant .qty-control button{flex-basis:22px;width:22px;min-width:22px}.menu-body{padding:9px}}
+</style>
+
+
+<!-- RESPONSIVE YOUR ORDER ROWS AND STICKY CART ACTIONS -->
+<style>
+#drawerCard{display:flex!important;flex-direction:column!important;overflow:hidden!important}
+#drawerCard>.drawer-head{flex:0 0 auto!important}
+#cartView{display:flex!important;flex:1 1 auto!important;flex-direction:column!important;min-height:0!important;overflow:hidden!important}
+#cartView>#items{display:block!important;flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important;padding:4px 2px 12px!important;overscroll-behavior:contain}
+#items .cart-item{display:grid!important;grid-template-columns:minmax(0,1fr) auto auto!important;align-items:center!important;column-gap:10px!important;row-gap:0!important;padding:14px 4px!important;border-bottom:1px solid #eee!important;min-width:0!important}
+#items .cart-item .top{grid-column:1;grid-row:1;min-width:0;font-size:clamp(12px,3.7vw,16px)!important;line-height:1.25;overflow-wrap:anywhere}
+#items .cart-item .bottom{display:contents!important}
+#items .cart-item .bottom>b{grid-column:2;grid-row:1;white-space:nowrap;font-size:clamp(12px,3.6vw,15px)!important;margin:0!important}
+#items .cart-item .qty{grid-column:3;grid-row:1;display:flex!important;align-items:center;justify-content:center;flex-wrap:nowrap;white-space:nowrap;min-width:0;flex:0 0 auto}
+#items .cart-item .qty button{width:clamp(26px,7.5vw,34px)!important;min-width:clamp(26px,7.5vw,34px)!important;height:36px!important;font-size:19px!important;flex:0 0 auto;touch-action:manipulation}
+#items .cart-item .qty span{min-width:22px!important;text-align:center;font-size:14px}
+#cartView>.cart-footer{flex:0 0 auto!important;position:relative!important;z-index:2!important;background:#fff!important;padding:8px 0 calc(8px + env(safe-area-inset-bottom))!important;border-top:1px solid #eee!important;box-shadow:0 -5px 14px #00000008}
+#cartView>.cart-footer .bill{margin-top:0!important}
+#cartView>.cart-footer .drawer-action{min-height:48px;margin-top:8px!important;font-size:clamp(13px,3.8vw,16px);touch-action:manipulation}
+@media(max-width:380px){#items .cart-item{column-gap:6px!important;padding:12px 2px!important}#items .cart-item .top{font-size:12px!important}#items .cart-item .bottom>b{font-size:12px!important}#items .cart-item .qty button{width:24px!important;min-width:24px!important;height:34px!important}#items .cart-item .qty span{min-width:18px!important}}
+</style>
+
+
+<!-- SHOW PICKUP SAVINGS INSIDE YOUR ORDER -->
+<style>
+.cart-pickup-discount{flex:0 0 auto;margin:8px 0 6px;padding:10px 12px;border:1px solid #b9dfc6;border-radius:12px;background:#effaf2;color:#21663a;font-size:clamp(12px,3.5vw,14px);line-height:1.4;font-weight:650}
+.cart-pickup-discount:empty{display:none}
+.cart-pickup-discount strong{font-size:1.12em;font-weight:900}
+</style>
+
+
+<!-- COMPACT CART LIST AND SIDE-BY-SIDE ACTION BUTTONS -->
+<style>
+#items .cart-item{padding:7px 4px!important;column-gap:8px!important}
+#items .cart-item .top{font-size:clamp(12px,3.5vw,15px)!important;line-height:1.15!important}
+#items .cart-item .bottom>b{font-size:clamp(12px,3.4vw,14px)!important}
+#items .cart-item .qty button{height:32px!important;width:clamp(24px,6.7vw,31px)!important;min-width:clamp(24px,6.7vw,31px)!important}
+#items .cart-item .qty span{min-width:18px!important;font-size:13px!important}
+#cartView>.cart-footer{padding:7px 0 calc(7px + env(safe-area-inset-bottom))!important}
+#cartView>.cart-footer .cart-footer-actions{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:8px!important;width:100%!important;align-items:stretch!important}
+#cartView>.cart-footer .cart-footer-actions .drawer-action{width:100%!important;min-width:0!important;min-height:48px!important;height:auto!important;margin:8px 0 0!important;padding:8px 5px!important;font-size:clamp(11px,3.1vw,14px)!important;line-height:1.15!important;white-space:normal!important;overflow-wrap:anywhere!important}
+@media(max-width:360px){#cartView>.cart-footer .cart-footer-actions{gap:5px!important}#cartView>.cart-footer .cart-footer-actions .drawer-action{font-size:11px!important;padding:7px 3px!important}#items .cart-item{padding:6px 2px!important;column-gap:5px!important}}
+</style>
+
+
+<!-- EXTRA COMPACT YOUR ORDER ITEM SPACING -->
+<style>
+#cartView>#items{padding-top:2px!important;padding-bottom:4px!important}
+#items .cart-item{padding:4px 3px!important;column-gap:6px!important;min-height:0!important}
+#items .cart-item .top{line-height:1.05!important;font-size:clamp(11px,3.25vw,14px)!important}
+#items .cart-item .bottom>b{font-size:clamp(11px,3.2vw,13px)!important;line-height:1.05!important}
+#items .cart-item .qty{margin:0!important;gap:0!important}
+#items .cart-item .qty button{height:28px!important;width:clamp(23px,6.2vw,28px)!important;min-width:clamp(23px,6.2vw,28px)!important;padding:0!important;font-size:16px!important;line-height:1!important}
+#items .cart-item .qty span{min-width:17px!important;font-size:12px!important;line-height:1!important}
+@media(max-width:380px){#items .cart-item{padding:3px 2px!important;column-gap:4px!important}#items .cart-item .top{font-size:11px!important}#items .cart-item .bottom>b{font-size:11px!important}#items .cart-item .qty button{height:26px!important;width:22px!important;min-width:22px!important}}
+</style>
+
+
+<!-- TIGHTER YOUR ORDER HEADER, TOTAL AND DISCOUNT MESSAGE -->
+<style>
+/* Recover vertical space while keeping the savings amount prominent. */
+#drawerCard>.drawer-head{padding-bottom:5px!important;min-height:0!important}
+#drawerCard>.drawer-head h2{font-size:clamp(18px,5vw,22px)!important;line-height:1.1!important;margin:0!important}
+#drawerCard>.drawer-head .drawer-close{width:34px!important;height:34px!important;min-width:34px!important;font-size:18px!important}
+#cartView>.cart-pickup-discount{font-size:11px!important;line-height:1.25!important;padding:6px 9px!important;margin:5px 0 4px!important}
+#cartView>.cart-pickup-discount strong{font-size:16px!important;font-weight:900!important}
+#cartView>.cart-footer .bill{padding:8px 12px!important;min-height:0!important;font-size:13px!important}
+#cartView>.cart-footer .bill b{font-size:15px!important}
+#cartView>.cart-footer{padding-top:5px!important}
+</style>
+
+
+<!-- SHOW BILLING AS THE NEXT SCREEN, NOT BELOW THE CART -->
+<style>
+/* The compact-cart rules use !important; explicitly switch views in billing mode. */
+body.hb-billing-open #cartView{display:none!important}
+body.hb-billing-open #billingView{display:block!important;flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important;padding-bottom:calc(18px + env(safe-area-inset-bottom))!important}
+body.hb-billing-open #drawerCard{overflow:hidden!important}
+body.hb-billing-open #drawerCard>.drawer-head{flex:0 0 auto!important}
+</style>
+
+</body>
+</html>
+).test(line.replace(/,/g,'')));
+      if(amountLine&&!detectedAmounts.some(n=>Math.abs(n-total)<0.01))detectedAmounts.push(Number(total));
+    }
     // Fast targeted amount OCR for Paytm's dark transaction-detail screen.
     // The large rupee amount sits near the upper-middle of this layout; the full-page OCR
     // often reads it as a bare integer but the generic amount parser can miss it.
