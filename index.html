@@ -257,92 +257,51 @@ body{background:var(--hb-cream)}
 <body>
 <script>document.documentElement.classList.add("hb-v34");</script>
 
-<!-- SINGLE PROFESSIONAL WELCOME PAGE -->
-<div id="home" class="home">
-  <section class="hero">
-    <div class="hero-slides" id="heroSlides">
-      <img class="active" src="images/paneer butter masala.jpg" alt="Paneer Butter Masala" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/paneer%20butter%20masala.jpg'">
-      <img src="images/dal makhani.jpg" alt="Dal Makhani" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/dal%20makhani.jpg'">
-      <img src="sweetlassi.png" alt="Sweet Lassi" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/sweetlassi.png'">
-      <img src="mojitoo.png" alt="Refreshing Mojito" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/mojitoo.png'">
-      <img src="images/chilli mushroom.jpg" alt="Chilli Mushroom" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chilli%20mushroom.jpg'">
-      <img src="guava-mojito.jpg" alt="Guava Mojito" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/guava-mojito.jpg'">
-      <img src="images/butter chicken.jpg" alt="Butter Chicken" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20chicken.jpg'">
-      <img src="sweetlassi.jpg" alt="Sweet Lassi" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/sweetlassi.jpg'">
-      <img src="images/honey chilli potato.jpg" alt="Honey Chilli Potato" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/honey%20chilli%20potato.jpg'">
-      <img src="chach.png" alt="Masala Chach" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/chach.png'">
-      <img src="images/tari wala mutton 2pc.jpg" alt="Tari Wala Mutton" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/tari%20wala%20mutton%202pc.jpg'">
-      <img src="images/butter naan.jpg" alt="Butter Naan" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20naan.jpg'">
-    </div>
-    <div class="hero-top">
-      <div class="brand"><img src="newlogo.jpg" alt="Hakka Bakka Logo" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/newlogo.jpg'"><span>Hakka Bakka<br>Punjabi Dhaba</span></div>
-      <button class="hero-order-mini" onclick="openOrderModal()">Order Now</button>
-    </div>
-    <div class="hero-copy">
-      <span class="eyebrow">🔥 Desi Swad • Modern Vibe</span>
-      <h1>Hakka Bakka</h1>
-      <p>Authentic Punjabi taste, tandoori favourites & hearty family meals.</p>
-      <div class="hero-actions"><button class="btn btn-primary" type="button" onclick="openOrderModal()">🛍️ Online Order</button></div>
-    </div>
-    <div class="hero-dots" id="heroDots"></div>
+<!-- HAKKABAKKA THREE-EXPERIENCE HOMEPAGE REDESIGN -->
+<div id="home" class="home hb-modern-home">
+  <header class="hb-sitebar">
+    <button class="hb-menu-icon" type="button" aria-label="Open menu" onclick="openOrderModal()">☰</button>
+    <a class="hb-logo" href="#home">Hakka<span>Bakka</span><small>Desi Swad, Modern Vibe</small></a>
+    <label class="hb-search"><span>⌕</span><input type="search" placeholder="Search food, groceries & more…" onkeydown="if(event.key==='Enter'){openOrderModal()}"></label>
+    <button class="hb-account" type="button" aria-label="Customer account" onclick="openAuth()">♙</button>
+    <button class="hb-bag" type="button" aria-label="Open bag" onclick="openCart()">🛒</button>
+  </header>
+  <section class="hb-welcome">
+    <div class="hb-leaf hb-leaf-left">✦</div><div class="hb-leaf hb-leaf-right">✦</div>
+    <div class="hb-welcome-kicker">WELCOME TO</div>
+    <h1>Hakka<span>Bakka</span></h1>
+    <div class="hb-chef">♨</div>
+    <div class="hb-ribbon">ONE BRAND <i>•</i> THREE EXPERIENCES</div>
+    <p>What would you like to explore today?</p>
   </section>
-
-
-  <div class="wrap">
-    <div class="quick" aria-label="Quick menu categories">
-      <button class="quick-card" type="button" onclick="goToMenuCategory('Indian Veg Main Course')"><img class="qphoto" src="images/paneer butter masala.jpg" alt=""><b>Punjabi Veg</b></button>
-      <button class="quick-card" type="button" onclick="goToMenuCategory('Tandoori Veg')"><img class="qphoto" src="images/paneer malai tikka.jpg" alt=""><b>Tandoori</b></button>
-      <button class="quick-card" type="button" onclick="goToMenuCategory('Indian Non-Veg Main Course')"><img class="qphoto" src="muttonrogan.jpg" alt="Mutton" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/tari%20wala%20mutton.jpg'"><b>Non-Veg</b></button>
-      <button class="quick-card" type="button" onclick="goToMenuCategory('Chinese Veg & Veg Snacks')"><img class="qphoto" src="images/chilli mushroom.jpg" alt=""><b>Chinese</b></button>
-      <button class="quick-card" type="button" onclick="goToMenuCategory('Chapati / Breads / Kulcha')"><img class="qphoto" src="images/butter naan.jpg" alt="Butter Naan" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/plain%20naan.jpg'"><b>Breads</b></button>
-      <button class="quick-card" type="button" onclick="goToMenuCategory('Drinks')"><img class="qphoto" src="guava-mojito.jpg" alt="Drinks" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/sweetlassi.png'"><b>Drinks</b></button>
-    </div>
-
-    <section class="section">
-      <div class="section-head"><span class="label">From our kitchen</span><h2>Hakka Bakka Favourites</h2><p>A visual taste of the dishes customers come for — rich Punjabi gravies, tandoori favourites, Indo-Chinese bites and refreshing sides.</p></div>
-      <div class="feature-grid">
-        <article class="feature"><div class="feature-media"><img src="images/butter chicken.jpg" alt="Butter Chicken" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20chicken.jpg'"><span class="feature-badge">NON-VEG • SIGNATURE</span></div><div class="feature-body"><h3>Butter Chicken</h3><p>Rich, buttery North Indian gravy with tender chicken.</p></div></article>
-        <article class="feature"><div class="feature-media"><img src="images/chicken kali mirch.jpg" alt="Chicken Kali Mirch" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chicken%20kali%20mirch.jpg'"><span class="feature-badge">NON-VEG • FAVOURITE</span></div><div class="feature-body"><h3>Chicken Kali Mirch</h3><p>Creamy black-pepper chicken with bold aroma.</p></div></article>
-        <article class="feature"><div class="feature-media"><img src="images/chilli mushroom.jpg" alt="Chilli Mushroom" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chilli%20mushroom.jpg'"><span class="feature-badge">VEG • INDO-CHINESE</span></div><div class="feature-body"><h3>Chilli Mushroom</h3><p>Mushrooms, peppers and onion in a spicy glaze.</p></div></article>
-        <article class="feature"><div class="feature-media"><img src="images/honey chilli potato.jpg" alt="Honey Chilli Potato" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/honey%20chilli%20potato.jpg'"><span class="feature-badge">VEG • CRISPY</span></div><div class="feature-body"><h3>Honey Chilli Potato</h3><p>Crispy potato tossed in sweet-spicy honey chilli.</p></div></article>
-        <article class="feature"><div class="feature-media"><img src="images/dal makhani.jpg" alt="Dal Makhani" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/dal%20makhani.jpg'"><span class="feature-badge">VEG • PUNJABI</span></div><div class="feature-body"><h3>Dal Makhani</h3><p>Slow-cooked creamy black lentils with desi flavour.</p></div></article>
-        <article class="feature"><div class="feature-media"><img src="images/tari wala mutton 2pc.jpg" alt="Tari Wala Mutton" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/tari%20wala%20mutton%202pc.jpg'"><span class="feature-badge">NON-VEG • PUNJABI</span></div><div class="feature-body"><h3>Tari Wala Mutton</h3><p>Slow-cooked mutton in a rich Punjabi tari.</p></div></article>
-        <article class="feature"><div class="feature-media"><img src="images/butter naan.jpg" alt="Butter Naan" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20naan.jpg'"><span class="feature-badge">TANDOOR • BREAD</span></div><div class="feature-body"><h3>Butter Naan</h3><p>Soft tandoori naan finished with butter.</p></div></article>
-        <article class="feature"><div class="feature-media"><img src="fries.png" alt="Fries and Sides" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/fries.png'"><span class="feature-badge">SNACKS • SIDES</span></div><div class="feature-body"><h3>Fries & Sides</h3><p>Crispy seasoned sides made for sharing.</p></div></article>
-      </div>
-    </section>
-
-    <section class="story-band">
-      <div><h2>Punjabi heart. Modern vibe.</h2><p>Hakka Bakka brings together familiar Punjabi flavours, tandoori cooking, North Indian gravies and Indo-Chinese favourites in one easy family dining experience.</p></div>
-      <div class="story-points"><div class="point"><b>👨‍👩‍👧‍👦 Family Friendly</b><span>Made to enjoy together</span></div><div class="point"><b>🔥 Tandoor Favourites</b><span>Smoky, hot & fresh</span></div><div class="point"><b>🥗 Veg + Non-Veg</b><span>Something for everyone</span></div><div class="point"><b>🥤 Refreshing Drinks</b><span>Mojitos & more</span></div></div>
-    </section>
-
-    
-<section class="instagram-updates">
-  <div class="wrap">
-    <div class="ig-wrap">
-      <div class="ig-head">
-        <div class="ig-title">
-          <div class="ig-logo">◎</div>
-          <div>
-            <h2>Latest from HakkaBakka</h2>
-            <p>Fresh updates from @hakka_bakka.in</p>
-          </div>
-        </div>
-        <a class="ig-follow" href="https://www.instagram.com/hakka_bakka.in/" target="_blank" rel="noopener noreferrer">Follow us on Instagram</a>
-      </div>
-
-      <div class="ig-grid" id="instagramUpdates" aria-live="polite" aria-busy="true"></div>
-
-      <p class="ig-status" id="instagramStatus">Loading the latest available content…</p>
-    </div>
-  </div>
-</section>
-
-  <div class="footer"><strong>Hakka Bakka Punjabi Dhaba</strong><div>Shop No. 1, Near Bhagat Singh Colony, Opp. Maqsudan Bypass, G.T. Road, Jalandhar, Punjab 144008</div><div>WhatsApp: 7796631555</div></div>
-  </div>
+  <section class="hb-experiences" aria-label="Three HakkaBakka experiences">
+    <article class="hb-experience hb-dhaba">
+      <div class="hb-experience-icon">♨</div><h2>Punjabi Dhaba</h2>
+      <div class="hb-label">ONLINE ORDERS</div><p>Delicious Food, Desi Taste</p>
+      <img src="https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20chicken.jpg" alt="Punjabi butter chicken and naan" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=900&q=85'">
+      <button class="hb-card-button" type="button" onclick="openOrderModal()">Order Food Online <b>➜</b></button>
+      <small>Punjabi • Tandoori • Chinese • Drinks</small>
+    </article>
+    <article class="hb-experience hb-daily">
+      <div class="hb-experience-icon">🛒</div><h2>Dailyneeds <em>Store</em></h2>
+      <div class="hb-label">GROCERIES & MORE</div><p>Fresh Essentials, Every Day</p>
+      <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=900&q=85" alt="Fresh groceries and vegetables">
+      <a class="hb-card-button" href="#hb-daily-coming">Explore Dailyneeds <b>➜</b></a>
+      <small>Grocery • Vegetables • Personal Care • Cleaning</small>
+    </article>
+    <article class="hb-experience hb-sweets">
+      <div class="hb-experience-icon">🍰</div><h2>Sweets & Snax</h2>
+      <div class="hb-label">MITHAI, BAKERY & SNACKS</div><p>Taaza te Swaad • Sweet Happiness</p>
+      <img src="https://images.unsplash.com/photo-1605197161470-5d8c1f2b7c6b?auto=format&fit=crop&w=900&q=85" alt="Indian sweets and desserts" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=85'">
+      <a class="hb-card-button" href="#hb-sweets-coming">Explore Sweets & Snax <b>➜</b></a>
+      <small>Mithai • Pakode • Eggless Bakery • Kulfi & Ice Cream</small>
+    </article>
+  </section>
+  <div class="hb-benefits"><span><b>🛵</b>Easy Ordering</span><span><b>🛡️</b>Secure Payments</span><span><b>🚚</b>Fast Delivery</span><span><b>🏷️</b>Daily Offers</span></div>
+  <div class="hb-bottom-slogan">Good Food <i>•</i> Fresh Essentials <i>•</i> Sweet Happiness</div>
+  <section class="hb-coming" id="hb-daily-coming"><h2>HakkaBakka Dailyneeds</h2><p>Daily grocery storefront integration is being prepared. The existing Punjabi Dhaba ordering remains available.</p></section>
+  <section class="hb-coming" id="hb-sweets-coming"><h2>HakkaBakka Sweets & Snax</h2><p>Punjabi mithai, pakode, 100% eggless bakery, kulfi, ice cream and pastries.</p></section>
 </div>
-
 <!-- ORDER CHOOSER: ONLY ONE BUTTON ON HOME, THREE OPTIONS HERE -->
 <div class="modal" id="orderModal" onclick="if(event.target===this)closeOrderModal()">
   <div class="modal-card">
@@ -1765,5 +1724,31 @@ body.hb-billing-open #drawerCard{overflow:hidden!important}
 body.hb-billing-open #drawerCard>.drawer-head{flex:0 0 auto!important}
 </style>
 
+
+<style id="hb-modern-home-css">
+.hb-modern-home{background:#fff5dc!important;color:#31170d!important;min-height:100vh;padding-bottom:20px}
+.hb-sitebar{height:auto;min-height:78px;padding:12px clamp(14px,4vw,52px);display:flex;align-items:center;gap:18px;background:#fffdf8;border-bottom:1px solid #f0dcb4;position:relative;z-index:4}
+.hb-menu-icon,.hb-account,.hb-bag{border:0;background:#35170d;color:#fff;border-radius:50%;width:42px;height:42px;font-size:21px;flex:0 0 auto}
+.hb-logo{font:900 clamp(23px,3vw,36px)/.9 Arial,sans-serif;color:#27130c;text-decoration:none;letter-spacing:-1.4px;white-space:nowrap}.hb-logo span{color:#b51d23}.hb-logo small{display:block;font:italic 11px Georgia,serif;letter-spacing:.2px;text-align:center;margin-top:6px;color:#5b2a17}
+.hb-search{height:44px;max-width:440px;flex:1;margin-left:auto;border:1px solid #e2cfb5;border-radius:30px;background:#fff;display:flex;align-items:center;padding:0 15px;gap:9px;color:#6c4a36}.hb-search span{font-size:25px}.hb-search input{border:0;outline:0;background:transparent;width:100%;font-size:13px;color:#31170d}
+.hb-welcome{position:relative;text-align:center;padding:36px 16px 55px;background:radial-gradient(ellipse at 50% 100%,#ffe0a1 0,#fff2d4 55%,#fffaf0 100%);overflow:hidden}
+.hb-welcome:before,.hb-welcome:after{content:"❧";position:absolute;top:15px;font-size:90px;color:#4b8c35;opacity:.7}.hb-welcome:before{left:-12px;transform:rotate(-35deg)}.hb-welcome:after{right:-12px;transform:scaleX(-1) rotate(-35deg)}
+.hb-welcome-kicker{font:italic 28px Georgia,serif;color:#501b11}.hb-welcome h1{font:italic 900 clamp(50px,9vw,100px)/.95 Arial,sans-serif;color:#3c160c;letter-spacing:-4px;margin:0;text-shadow:2px 3px #f4c45b}.hb-welcome h1 span{color:#c41d25}.hb-chef{position:absolute;top:49px;right:calc(50% - 250px);font-size:40px;color:#b51d23}.hb-ribbon{display:inline-block;background:linear-gradient(90deg,#b31820,#e12727);color:white;font-weight:900;letter-spacing:1px;padding:10px 38px;margin-top:16px;clip-path:polygon(0 0,100% 0,96% 50%,100% 100%,0 100%,4% 50%)}.hb-ribbon i{color:#ffd85d;font-style:normal;padding:0 9px}.hb-welcome p{font-size:16px;font-weight:750;margin:13px 0 0;color:#482217}
+.hb-experiences{max-width:1320px;margin:-26px auto 0;padding:0 18px 28px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;position:relative;z-index:2}
+.hb-experience{min-width:0;border-radius:25px;border:3px solid #f5c64e;box-shadow:0 13px 28px #4d260e38,inset 0 0 0 2px #fff5bd;padding:15px 13px 16px;text-align:center;display:flex;flex-direction:column;align-items:center;overflow:hidden}
+.hb-dhaba{background:linear-gradient(150deg,#b91e25,#730c13);color:#fff}.hb-daily{background:linear-gradient(150deg,#07934d,#03472b);color:#fff}.hb-sweets{background:linear-gradient(150deg,#fff0bd,#eab34d);color:#4a1a0e}
+.hb-experience-icon{width:70px;height:70px;border-radius:50%;margin-top:-27px;border:4px solid #f4ca55;background:#8c141a;color:white;display:grid;place-items:center;font-size:30px;box-shadow:0 5px 13px #0005}.hb-daily .hb-experience-icon{background:#075b34}.hb-sweets .hb-experience-icon{background:#941820}
+.hb-experience h2{font:italic 800 clamp(25px,3vw,38px)/1 Georgia,serif;margin:10px 0 7px;color:#fff6df;text-shadow:0 2px 3px #4c160d}.hb-daily h2 em{font-style:italic;color:#ffdf52}.hb-sweets h2{color:#72151b;text-shadow:none}
+.hb-label{background:#f9d34f;color:#3a1a0c;font-weight:950;font-size:12px;letter-spacing:1px;padding:7px 20px;transform:skew(-5deg);margin:3px 0 8px}.hb-daily .hb-label{background:#fff5d5;color:#07502f}.hb-sweets .hb-label{background:#951821;color:#fff3d3}
+.hb-experience p{font:italic 14px Georgia,serif;margin:0 0 12px;color:inherit}
+.hb-experience img{width:calc(100% + 26px);height:clamp(180px,22vw,260px);object-fit:cover;border-top:3px solid #f3cb5d;border-bottom:3px solid #f3cb5d;margin-top:auto}
+.hb-card-button{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;border:2px solid #fff1a9;border-radius:30px;background:linear-gradient(#ffe98c,#e7b633);color:#35190b;font-weight:950;font-size:clamp(11px,1.2vw,14px);padding:12px 15px;margin:13px 0 9px;box-shadow:0 4px 0 #70400e;cursor:pointer}.hb-card-button b{font-size:18px}.hb-sweets .hb-card-button{background:linear-gradient(#a91c25,#6d0c14);color:#fff2d0}
+.hb-experience>small{font-size:10px;line-height:1.4;font-weight:750;color:inherit;opacity:.95}
+.hb-benefits{display:flex;justify-content:center;align-items:center;gap:clamp(14px,5vw,65px);padding:19px 10px 24px;flex-wrap:wrap;background:#fff8e8;color:#512717;font-size:12px;font-weight:850}.hb-benefits span{display:flex;align-items:center;gap:8px}.hb-benefits b{font-size:22px}
+.hb-bottom-slogan{background:linear-gradient(90deg,#8c1118,#bd1c25,#8c1118);border-top:4px solid #f5cc5a;border-bottom:4px solid #f5cc5a;color:#fff1c9;text-align:center;padding:21px 8px;font:italic clamp(20px,3vw,32px) Georgia,serif;text-shadow:0 2px #4b0b0e}.hb-bottom-slogan i{color:#ffdb54;font-style:normal;padding:0 12px}
+.hb-coming{max-width:900px;margin:20px auto;padding:18px 20px;background:#fffdf6;border:1px solid #ead5a7;border-radius:15px}.hb-coming h2{margin:0;color:#76151b;font:italic 25px Georgia,serif}.hb-coming p{margin:7px 0 0;color:#6b5945;font-size:13px}
+@media(max-width:700px){.hb-sitebar{gap:9px;min-height:66px;padding:9px 11px}.hb-menu-icon{width:34px;height:34px;font-size:17px}.hb-logo{font-size:23px}.hb-logo small{font-size:9px}.hb-search{height:38px;padding:0 9px;min-width:0}.hb-search input{font-size:10px}.hb-account,.hb-bag{width:34px;height:34px;font-size:17px}.hb-welcome{padding:31px 10px 45px}.hb-welcome-kicker{font-size:22px}.hb-welcome h1{font-size:clamp(47px,12vw,69px);letter-spacing:-3px}.hb-chef{right:8%;top:40px;font-size:29px}.hb-ribbon{font-size:11px;padding:9px 24px}.hb-welcome p{font-size:13px}.hb-welcome:before,.hb-welcome:after{font-size:55px}.hb-experiences{grid-template-columns:1fr;max-width:440px;padding:0 13px 20px;gap:16px;margin-top:-18px}.hb-experience{padding:14px 13px 15px}.hb-experience h2{font-size:35px}.hb-experience img{height:220px;width:calc(100% + 26px)}.hb-card-button{font-size:14px;padding:12px 22px}.hb-benefits{gap:13px;font-size:10px;padding:17px 8px}.hb-benefits b{font-size:18px}.hb-bottom-slogan{font-size:20px;padding:17px 5px}.hb-bottom-slogan i{padding:0 5px}}
+@media(min-width:701px) and (max-width:1000px){.hb-experience h2{font-size:26px}.hb-experience img{height:190px}.hb-card-button{padding:10px 11px}}
+</style>
 </body>
 </html>
