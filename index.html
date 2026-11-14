@@ -279,7 +279,7 @@ body{background:var(--hb-cream)}
       <div class="hb-experience-icon">♨</div><h2>Punjabi Dhaba</h2>
       <div class="hb-label">ONLINE ORDERS</div><p>Delicious Food, Desi Taste</p>
       <img src="https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20chicken.jpg" alt="Punjabi butter chicken and naan" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=900&q=85'">
-      <button class="hb-card-button" id="hbOnlineOrderButton" type="button" onclick="return window.hbOpenOnlineMenu ? window.hbOpenOnlineMenu(event) : openMenu()">Order Food Online <b>➜</b></button>
+      <button class="hb-card-button" id="hbOnlineOrderButton" type="button" onclick="return window.hbForceOpenMenu ? window.hbForceOpenMenu(event) : openMenu()">Order Food Online <b>➜</b></button>
       <small>Punjabi • Tandoori • Chinese • Drinks</small>
     </article>
     <article class="hb-experience hb-daily">
@@ -1539,23 +1539,6 @@ renderMenu();renderCart();initCustomerAuth();
 
 
 \n
-<!-- DIRECT ONLINE ORDER BUTTON FIX: bypasses the chooser modal and opens the live menu -->
-<script>
-(function(){
-  window.hbOpenOnlineMenu=function(event){
-    if(event){event.preventDefault();event.stopPropagation();}
-    try{if(typeof closeOrderModal==='function')closeOrderModal();}catch(e){}
-    try{if(typeof setMenuState==='function'){setMenuState();}else if(typeof openMenu==='function'){openMenu();}}
-    catch(error){console.error('Online menu open failed:',error);}
-    return false;
-  };
-  document.addEventListener('click',function(event){
-    var button=event.target&&event.target.closest?event.target.closest('#hbOnlineOrderButton'):null;
-    if(button)window.hbOpenOnlineMenu(event);
-  },true);
-})();
-</script>
-
 <!-- WHATSAPP MENU BUTTON HARD FIX -->
 <script>
 (function () {
