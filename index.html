@@ -629,7 +629,7 @@ async function verifyCustomerOtp(){
   const email=customerAuthMode==='new'?pendingSignup?.email:document.getElementById('loginEmail').value.trim().toLowerCase();
   const otp=document.getElementById('loginOtp').value.trim();
   if(!email)return authMsg('Email address missing.','bad');
-  if(!/^\\d{6}$/.test(otp))return authMsg('6-digit OTP enter karein.','bad');
+  if(!/^\d{6}$/.test(otp))return authMsg('6-digit OTP enter karein.','bad');
   try{
     const res=await fetch(CUSTOMER_AUTH_API+'/api/auth/verify-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,otp}),cache:'no-store'});
     const data=await res.json().catch(()=>({}));
