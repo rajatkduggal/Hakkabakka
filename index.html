@@ -611,8 +611,8 @@ async function requestSignupOtp(){
   const email=document.getElementById('signupEmail').value.trim().toLowerCase();
   const phone=normalizePhone(document.getElementById('signupPhone').value);
   if(!name)return authMsg('Name enter karein.','bad');
-  if(!/^\\d{10}$/.test(phone))return authMsg('Valid 10-digit mobile number enter karein.','bad');
-  if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email))return authMsg('Valid email address enter karein.','bad');
+  if(!/^\d{10}$/.test(phone))return authMsg('Valid 10-digit mobile number enter karein.','bad');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return authMsg('Valid email address enter karein.','bad');
   pendingSignup={name,email,phone};
   const btn=document.getElementById('signupOtpBtn');btn.disabled=true;btn.textContent='Sending OTP…';
   try{
