@@ -881,6 +881,8 @@ let data=[
 ["Cold Drinks","50","https://instamart-media-assets.swiggy.com/swiggy/image/upload/fl_lossy%2Cf_auto%2Cq_auto/NI_CATALOG/IMAGES/ciw/2025/8/13/b2c124db-9e1d-4102-aab1-9cf2c7df45ce_NPIC-001120_20250813_065442.png"]
 ]]
 ];
+// Keep a local fallback so the customer menu never renders blank if the live Admin API returns an empty or malformed payload.
+const BUILT_IN_MENU_FALLBACK = data.map(([category,items])=>[category,items.map(item=>[...item])]);
 function goToMenuCategory(category){const sections=[...document.querySelectorAll('#menu .menu-section')];const target=sections.find(section=>{const h=section.querySelector('h2');return h&&h.textContent.trim()===category});if(target){target.scrollIntoView({behavior:'smooth',block:'start'});target.classList.add('quick-highlight');setTimeout(()=>target.classList.remove('quick-highlight'),1300)}else{const menu=document.getElementById('menu');if(menu)menu.scrollIntoView({behavior:'smooth',block:'start'});}}
 const menuEl=document.getElementById('menu');
 const esc=s=>String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
@@ -954,8 +956,8 @@ function renderMenu(){
   try {
     if(!menuEl){console.error('HakkaBakka menu container #menu missing');return;}
     if(!Array.isArray(data)||!data.length){menuEl.innerHTML='<p style="padding:20px;text-align:center">Menu is temporarily unavailable. Please refresh the page.</p>';return;}
-    const sections=data.filter(row=>Array.isArray(row)&&row.length>=2&&Array.isArray(row[1]));
-    const html=sections.map(([section,list])=>{
+    let sections=data.filter(row=>Array.isArray(row)&&row.length>=2&&Array.isArray(row[1])&&row[1].length>0);
+    let html=sections.map(([section,list])=>{
       const cards=list.filter(x=>Array.isArray(x)&&x.length>=2).map(x=>{
         const n=x[0],p=x[1],im=x[2],diet=getMenuDiet(section,n);
         if(Array.isArray(p))return `<article class="menu-card" data-diet="${diet}">${imageTag(im,n)}<div class="menu-body"><h3>${esc(n)}</h3><div class="price">₹${p[0]} / ₹${p[1]}</div><div class="variant"><button class="add" data-name="${esc(n)} - Half" data-price="${p[0]}">− Half ₹${p[0]} +</button><button class="add" data-name="${esc(n)} - Full" data-price="${p[1]}">− Full ₹${p[1]} +</button></div></div></article>`;
@@ -964,7 +966,20 @@ function renderMenu(){
       }).join('');
       return cards ? `<section class="menu-section"><h2>${esc(section)}</h2><div class="menu-grid">${cards}</div></section>` : '';
     }).join('');
-    menuEl.innerHTML=html || '<p style="padding:20px;text-align:center">Menu items could not be loaded. Please refresh the page.</p>';
+    // If the live menu payload has no usable cards, render the verified bundled menu instead of an empty page.
+    if(!html || !html.includes('class="menu-card"')){
+      sections=BUILT_IN_MENU_FALLBACK.filter(row=>Array.isArray(row)&&Array.isArray(row[1])&&row[1].length>0);
+      html=sections.map(([section,list])=>{
+        const cards=list.map(x=>{
+          const n=x[0],p=x[1],im=x[2],diet=getMenuDiet(section,n);
+          if(Array.isArray(p))return `<article class="menu-card" data-diet="${diet}">${imageTag(im,n)}<div class="menu-body"><h3>${esc(n)}</h3><div class="price">₹${p[0]} / ₹${p[1]}</div><div class="variant"><button class="add" data-name="${esc(n)} - Half" data-price="${p[0]}">− Half ₹${p[0]} +</button><button class="add" data-name="${esc(n)} - Full" data-price="${p[1]}">− Full ₹${p[1]} +</button></div></div></article>`;
+          if(Number(p)===0)return `<article class="menu-card" data-diet="${diet}">${imageTag(im,n)}<div class="menu-body"><h3>${esc(n)}</h3><div class="price">Price not listed</div></div></article>`;
+          return `<article class="menu-card" data-diet="${diet}">${imageTag(im,n)}<div class="menu-body"><h3>${esc(n)}</h3><div class="price">₹${p}</div><button class="add" data-name="${esc(n)}" data-price="${p}">Add to Order</button></div></article>`;
+        }).join('');
+        return `<section class="menu-section"><h2>${esc(section)}</h2><div class="menu-grid">${cards}</div></section>`;
+      }).join('');
+    }
+    menuEl.innerHTML=html || '<p style="padding:20px;text-align:center;color:#8b1118">Menu is temporarily unavailable. Please contact HakkaBakka.</p>';
     refreshButtons();
     applyMenuFilters();
   } catch(err) {
