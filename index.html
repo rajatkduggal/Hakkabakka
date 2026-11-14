@@ -332,13 +332,25 @@ function hideHbComingSoon(){document.querySelectorAll('.hb-coming').forEach(func
     <div id="authMessage" class="auth-message"></div>
 
     <div id="loginForm">
-      <p style="margin:4px 0 12px;color:#665b53">Login / Create Account with email OTP. No password required.</p>
-      <input class="field" id="loginEmail" type="email" placeholder="Enter your email address" autocomplete="email">
-      <button class="drawer-action" id="requestOtpBtn" type="button" onclick="requestCustomerOtp()">Send Email OTP</button>
+      <div style="display:flex;gap:8px;margin:4px 0 14px">
+        <button type="button" class="drawer-action" id="existingCustomerTab" onclick="showExistingCustomer()" style="flex:1;margin:0">Existing Customer</button>
+        <button type="button" class="drawer-action secondary" id="newCustomerTab" onclick="showNewCustomer()" style="flex:1;margin:0">New Signup</button>
+      </div>
+      <p id="authFlowHint" style="margin:4px 0 12px;color:#665b53">Existing customer? Enter your registered email to receive Order Confirmation OTP.</p>
+      <div id="existingCustomerFields">
+        <input class="field" id="loginEmail" type="email" placeholder="Registered Email Address" autocomplete="email">
+        <button class="drawer-action" id="requestOtpBtn" type="button" onclick="requestCustomerOtp()">Send Order Confirmation OTP</button>
+      </div>
+      <div id="newCustomerFields" style="display:none">
+        <input class="field" id="signupName" type="text" placeholder="NAME" autocomplete="name">
+        <input class="field" id="signupEmail" type="email" placeholder="EMAIL" autocomplete="email">
+        <input class="field" id="signupPhone" type="tel" inputmode="numeric" maxlength="10" placeholder="MOBILE NUMBER" autocomplete="tel">
+        <button class="drawer-action" id="signupOtpBtn" type="button" onclick="requestSignupOtp()">Sign Up & Send OTP</button>
+      </div>
       <div id="otpEntry" style="display:none;margin-top:12px">
         <input class="field" id="loginOtp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="Enter 6-digit OTP">
-        <button class="drawer-action" type="button" onclick="verifyCustomerOtp()">Verify OTP & Login</button>
-        <button class="drawer-action secondary" type="button" onclick="requestCustomerOtp()">Resend OTP</button>
+        <button class="drawer-action" type="button" onclick="verifyCustomerOtp()">Verify OTP & Continue</button>
+        <button class="drawer-action secondary" type="button" onclick="resendCustomerOtp()">Resend OTP</button>
       </div>
     </div>
     <div id="signupForm" style="display:none"></div>
@@ -504,13 +516,33 @@ function authMsg(text,kind=''){
   if(!el)return;
   el.textContent=text; el.className='auth-message show '+kind;
 }
+let customerAuthMode='existing',pendingSignup=null,pendingAuthPurpose='checkout';
+function showExistingCustomer(){
+  customerAuthMode='existing';
+  document.getElementById('existingCustomerFields').style.display='block';
+  document.getElementById('newCustomerFields').style.display='none';
+  document.getElementById('existingCustomerTab').className='drawer-action';
+  document.getElementById('newCustomerTab').className='drawer-action secondary';
+  document.getElementById('authFlowHint').textContent='Existing customer? Enter your registered email to receive Order Confirmation OTP.';
+  document.getElementById('otpEntry').style.display='none';authMsg('');
+}
+function showNewCustomer(){
+  customerAuthMode='new';
+  document.getElementById('existingCustomerFields').style.display='none';
+  document.getElementById('newCustomerFields').style.display='block';
+  document.getElementById('existingCustomerTab').className='drawer-action secondary';
+  document.getElementById('newCustomerTab').className='drawer-action';
+  document.getElementById('authFlowHint').textContent='Create your HakkaBakka customer account with these three details.';
+  document.getElementById('otpEntry').style.display='none';authMsg('');
+}
 function showLogin(){
-  document.getElementById('authTitle').textContent='Customer Login';
+  document.getElementById('authTitle').textContent='Customer Login / Signup';
   document.getElementById('loginForm').style.display='block';
   document.getElementById('signupForm').style.display='none';
   document.getElementById('accountForm').style.display='none';
-  const otp=document.getElementById('otpEntry'); if(otp)otp.style.display='none';
-  authMsg('');
+  document.getElementById('otpEntry').style.display='none';
+  showExistingCustomer();
+  if(currentUser?.email)document.getElementById('loginEmail').value=currentUser.email;
 }
 function showSignup(){
   document.getElementById('authTitle').textContent='Create Customer Account';
@@ -574,17 +606,41 @@ async function requestCustomerOtp(){
   }catch(error){authMsg(error.message||'OTP request failed.','bad')}
   finally{if(btn){btn.disabled=false;btn.textContent='Send Email OTP'}}
 }
+async function requestSignupOtp(){
+  const name=document.getElementById('signupName').value.trim();
+  const email=document.getElementById('signupEmail').value.trim().toLowerCase();
+  const phone=normalizePhone(document.getElementById('signupPhone').value);
+  if(!name)return authMsg('Name enter karein.','bad');
+  if(!/^\\d{10}$/.test(phone))return authMsg('Valid 10-digit mobile number enter karein.','bad');
+  if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email))return authMsg('Valid email address enter karein.','bad');
+  pendingSignup={name,email,phone};
+  const btn=document.getElementById('signupOtpBtn');btn.disabled=true;btn.textContent='Sending OTP…';
+  try{
+    const res=await fetch(CUSTOMER_AUTH_API+'/api/auth/request-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email}),cache:'no-store'});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok||!data.success)throw new Error(data.message||'Signup OTP send nahi ho saka.');
+    document.getElementById('otpEntry').style.display='block';
+    authMsg('Signup OTP email par bhej diya gaya hai.','ok');
+  }catch(error){pendingSignup=null;authMsg(error.message||'OTP request failed.','bad')}
+  finally{btn.disabled=false;btn.textContent='Resend Signup OTP'}
+}
+async function resendCustomerOtp(){return customerAuthMode==='new'?requestSignupOtp():requestCustomerOtp()}
 async function verifyCustomerOtp(){
-  const email=document.getElementById('loginEmail').value.trim().toLowerCase();
+  const email=customerAuthMode==='new'?pendingSignup?.email:document.getElementById('loginEmail').value.trim().toLowerCase();
   const otp=document.getElementById('loginOtp').value.trim();
-  if(!/^\d{6}$/.test(otp))return authMsg('6-digit OTP enter karein.','bad');
+  if(!email)return authMsg('Email address missing.','bad');
+  if(!/^\\d{6}$/.test(otp))return authMsg('6-digit OTP enter karein.','bad');
   try{
     const res=await fetch(CUSTOMER_AUTH_API+'/api/auth/verify-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,otp}),cache:'no-store'});
     const data=await res.json().catch(()=>({}));
     if(!res.ok||!data.success||!data.token)throw new Error(data.message||'OTP verify nahi hua.');
-    localStorage.setItem('hb_customer_session',JSON.stringify({email:data.email||email,token:data.token,expires_at:data.expires_at}));
-    currentUser={id:data.account_id||email,email:data.email||email,user_metadata:{}};
-    currentProfile=null; updateAccountUI(); closeAuth();
+    const profile=customerAuthMode==='new'?pendingSignup:null;
+    localStorage.setItem('hb_customer_session',JSON.stringify({email:data.email||email,token:data.token,expires_at:data.expires_at,name:profile?.name||'',phone:profile?.phone||''}));
+    currentUser={id:data.account_id||email,email:data.email||email,user_metadata:{full_name:profile?.name||'',phone:profile?.phone||''}};
+    currentProfile=profile?{full_name:profile.name,phone:profile.phone}:null;
+    if(profile)localStorage.setItem('hb_customer_profile',JSON.stringify({email,full_name:profile.name,phone:profile.phone}));
+    pendingSignup=null;updateAccountUI();closeAuth();
+    if(pendingAuthPurpose==='checkout')await openBillingAfterCustomerAuth();
   }catch(error){authMsg(error.message||'OTP verification failed.','bad')}
 }
 async function loginCustomer(){return requestCustomerOtp()}
@@ -1112,8 +1168,9 @@ function prepareCheckoutCustomer(){
     if(emailInput)emailInput.value=currentUser.email;
     const name=document.getElementById('customerName');
     const phone=document.getElementById('customerPhone');
-    if(name)name.value=currentProfile?.full_name||currentUser.user_metadata?.full_name||currentUser.email.split('@')[0]||'Customer';
-    if(phone)phone.value=currentProfile?.phone||currentUser.user_metadata?.phone||'';
+    let savedProfile=null;try{savedProfile=JSON.parse(localStorage.getItem('hb_customer_profile')||'null')}catch(e){}
+    if(name)name.value=currentProfile?.full_name||savedProfile?.full_name||currentUser.user_metadata?.full_name||currentUser.email.split('@')[0]||'Customer';
+    if(phone)phone.value=currentProfile?.phone||savedProfile?.phone||currentUser.user_metadata?.phone||'';
     checkoutVerifiedEmail='';
     document.getElementById('checkoutOtpEntry').style.display='none';
     document.getElementById('checkoutOtpCode').value='';
@@ -1163,7 +1220,11 @@ function invalidateCheckoutEmailVerification(){
 }
 async function ensureOrderNumber(){if(!currentOrderNo){const res=await fetch(CLOUDFLARE_ORDERS_API+'/orders/next-number',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}',cache:'no-store'});const data=await res.json().catch(()=>null);if(!res.ok||!data?.success||!data.order_no)throw new Error(data?.message||'Cloudflare could not allocate an order number');currentOrderNo=String(data.order_no).toUpperCase()}currentOrderNo=String(currentOrderNo).toUpperCase();document.getElementById('orderNumber').textContent=currentOrderNo;saveCheckout()}
 function resetOrderNumber(){currentOrderNo='';document.getElementById('orderNumber').textContent='—'}
-async function proceedBilling(){if(!cart.length){alert('Cart is empty.');return}if(!(await requireCustomerLogin()))return;try{await ensureOrderNumber()}catch(error){console.error('Order number allocation failed:',error);alert('Order number nahi ban saka. Internet check karke dobara try karein.');return}document.body.classList.add('hb-billing-open');const drawer=document.getElementById('drawer'),card=document.getElementById('drawerCard');drawer.classList.add('show');document.getElementById('cartView').style.display='none';document.getElementById('billingView').style.display='block';if(card)card.scrollTop=0;prepareCheckoutCustomer();updateBilling()}
+async async function openBillingAfterCustomerAuth(){
+  try{await ensureOrderNumber()}catch(error){console.error('Order number allocation failed:',error);alert('Order number nahi ban saka. Internet check karke dobara try karein.');return}
+  document.body.classList.add('hb-billing-open');const drawer=document.getElementById('drawer'),card=document.getElementById('drawerCard');drawer.classList.add('show');document.getElementById('cartView').style.display='none';document.getElementById('billingView').style.display='block';if(card)card.scrollTop=0;prepareCheckoutCustomer();updateBilling();
+}
+function proceedBilling(){if(!cart.length){alert('Cart is empty.');return}pendingAuthPurpose='checkout';document.getElementById('authModal').classList.add('show');showLogin();}
 function backToCart(){document.body.classList.remove('hb-billing-open');document.getElementById('billingView').style.display='none';document.getElementById('cartView').style.display='block'}
 
 document.getElementById('menu').addEventListener('click',e=>{const b=e.target.closest('.add');if(!b)return;const n=b.dataset.name,p=Number(b.dataset.price);if(e.target.closest('.minus')){const i=cart.findIndex(x=>x.name===n&&x.price===p);if(i>=0)cart.splice(i,1)}else if(e.target.closest('.plus'))cart.push({name:n,price:p});else{cart.push({name:n,price:p});b.dataset.original=b.textContent}syncCart()});
