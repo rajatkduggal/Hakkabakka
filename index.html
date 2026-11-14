@@ -286,22 +286,31 @@ body{background:var(--hb-cream)}
       <div class="hb-experience-icon">🛒</div><h2>Dailyneeds <em>Store</em></h2>
       <div class="hb-label">GROCERIES & MORE</div><p>Fresh Essentials, Every Day</p>
       <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=900&q=85" alt="Fresh groceries and vegetables">
-      <a class="hb-card-button" href="#hb-daily-coming">Explore Dailyneeds <b>➜</b></a>
+      <button class="hb-card-button" type="button" onclick="showHbComingSoon('daily')">Shop Daily Essentials <b>➜</b></button>
       <small>Grocery • Vegetables • Personal Care • Cleaning</small>
     </article>
     <article class="hb-experience hb-sweets">
       <div class="hb-experience-icon">🍰</div><h2>Sweets & Snax</h2>
       <div class="hb-label">MITHAI, BAKERY & SNACKS</div><p>Taaza te Swaad • Sweet Happiness</p>
       <img src="https://images.unsplash.com/photo-1605197161470-5d8c1f2b7c6b?auto=format&fit=crop&w=900&q=85" alt="Indian sweets and desserts" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=85'">
-      <a class="hb-card-button" href="#hb-sweets-coming">Explore Sweets & Snax <b>➜</b></a>
+      <button class="hb-card-button" type="button" onclick="showHbComingSoon('sweets')">Shop Sweets & Snacks <b>➜</b></button>
       <small>Mithai • Pakode • Eggless Bakery • Kulfi & Ice Cream</small>
     </article>
   </section>
   <div class="hb-benefits"><span><b>🛵</b>Easy Ordering</span><span><b>🛡️</b>Secure Payments</span><span><b>🚚</b>Fast Delivery</span><span><b>🏷️</b>Daily Offers</span></div>
   <div class="hb-bottom-slogan">Good Food <i>•</i> Fresh Essentials <i>•</i> Sweet Happiness</div>
-  <section class="hb-coming" id="hb-daily-coming"><h2>HakkaBakka Dailyneeds</h2><p>Daily grocery storefront integration is being prepared. The existing Punjabi Dhaba ordering remains available.</p></section>
-  <section class="hb-coming" id="hb-sweets-coming"><h2>HakkaBakka Sweets & Snax</h2><p>Punjabi mithai, pakode, 100% eggless bakery, kulfi, ice cream and pastries.</p></section>
+  <section class="hb-coming" id="hb-daily-coming" hidden></section>
+  <section class="hb-coming" id="hb-sweets-coming" hidden></section>
 </div>
+<script>
+function showHbComingSoon(kind){
+ var section=document.getElementById(kind==='daily'?'hb-daily-coming':'hb-sweets-coming');if(!section)return;
+ section.dataset.kind=kind;
+ section.innerHTML='<button class="hb-coming-back" type="button" onclick="hideHbComingSoon()">← Back to Home</button><div class="hb-coming-art" role="img" aria-label="'+(kind==='daily'?'Dailyneeds grocery store':'Sweets and snacks')+'"></div><div class="hb-coming-title">'+(kind==='daily'?'HakkaBakka Dailyneeds':'HakkaBakka Sweets & Snax')+'</div><div class="hb-coming-sub">'+(kind==='daily'?'Everything you need, every single day!':'Taaza te Swaad — Your Ultimate Treat Destination!')+'</div><div class="hb-coming-tag">COMING SOON</div><p class="hb-coming-note">'+(kind==='daily'?'Fresh quality • Best prices • Daily offers':'Mithai • Bakery • Ice Cream • Pakode & Snacks')+'</p>';
+ document.querySelectorAll('.hb-coming').forEach(function(el){el.classList.remove('hb-coming-active')});section.hidden=false;section.classList.add('hb-coming-active');document.body.style.overflow='hidden';
+}
+function hideHbComingSoon(){document.querySelectorAll('.hb-coming').forEach(function(el){el.classList.remove('hb-coming-active');el.hidden=true});document.body.style.overflow='';}
+</script>
 <!-- ORDER CHOOSER: ONLY ONE BUTTON ON HOME, THREE OPTIONS HERE -->
 <div class="modal" id="orderModal" onclick="if(event.target===this)closeOrderModal()">
   <div class="modal-card">
@@ -1939,6 +1948,38 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
 @media(prefers-reduced-motion:reduce){
  .feature,.feature-media img,.quick-card,.btn{transition:none!important}
 }
+
+
+/* V44 — three-experience landing page and coming-soon views */
+.hb-modern-home{background:linear-gradient(180deg,#21100b 0,#fff1d1 42%,#f4d99d 100%)!important}
+.hb-sitebar{background:#2d160e!important;border-bottom:2px solid #d8a83c!important}
+.hb-logo{color:#ffe5a1!important;font-family:Georgia,serif!important;font-style:italic!important;text-shadow:0 2px 8px #000}
+.hb-logo span{color:#f3bf38!important}.hb-logo small{color:#fff0c9!important}
+.hb-menu-icon,.hb-account,.hb-bag{background:#7c1519!important;border:1px solid #f4cd62!important}
+.hb-search{background:#fff8e9!important}
+.hb-welcome{padding:34px 16px 56px;background:linear-gradient(180deg,#35180f 0%,#6a2a13 52%,#f5d18b 100%)!important;color:#fff}
+.hb-welcome-kicker{color:#ffe5aa!important;font-size:clamp(22px,3vw,32px)!important}
+.hb-welcome h1{font-family:Georgia,serif!important;color:#ffe19a!important;text-shadow:2px 3px 0 #55200d,0 6px 18px #0008!important}
+.hb-welcome h1 span{color:#ffca38!important}.hb-welcome p{color:#fff!important;font-size:clamp(16px,2vw,21px)!important}
+.hb-ribbon{background:linear-gradient(90deg,#8b151b,#c72a20)!important;border:1px solid #f6d36e;box-shadow:0 5px 14px #0004}
+.hb-experiences{margin-top:-28px!important;gap:17px!important}
+.hb-experience{border-radius:28px!important;min-height:560px;box-shadow:0 16px 34px #32170e55,inset 0 0 0 2px #fff5bd!important}
+.hb-experience img{height:clamp(220px,24vw,310px)!important;object-fit:cover}
+.hb-experience h2{font-family:Georgia,serif!important}
+.hb-card-button{min-height:48px;font-size:clamp(13px,1.25vw,16px)!important;padding:13px 21px!important}
+.hb-benefits{background:#35180f!important;color:#ffedc7!important;border-top:3px solid #d9a93e}
+.hb-bottom-slogan{background:linear-gradient(90deg,#30150c,#6d2914,#30150c)!important;border-color:#e2b84e!important}
+.hb-coming[hidden]{display:none!important}
+.hb-coming.hb-coming-active{position:fixed!important;inset:0!important;z-index:300000!important;display:flex!important;flex-direction:column;align-items:center;justify-content:center;max-width:none!important;margin:0!important;padding:26px!important;border:0!important;border-radius:0!important;background:linear-gradient(180deg,#fff2d3 0%,#f4d28c 100%)!important;text-align:center;overflow:auto}
+.hb-coming .hb-coming-back{position:absolute;top:calc(16px + env(safe-area-inset-top));left:16px;border:1px solid #e2c47c;border-radius:999px;padding:11px 17px;background:#fff8e9;color:#5b2112;font-weight:900}
+.hb-coming .hb-coming-art{width:min(88vw,540px);height:min(48vh,470px);min-height:220px;border:5px solid #fff4d4;border-radius:24px;box-shadow:0 18px 38px #5b2b1840;background-position:center;background-size:cover;margin:24px auto 20px}
+.hb-coming[data-kind="daily"] .hb-coming-art{background-image:linear-gradient(180deg,#0000,#0003),url('https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1100&q=85')}
+.hb-coming[data-kind="sweets"] .hb-coming-art{background-image:linear-gradient(180deg,#0000,#0003),url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1100&q=85')}
+.hb-coming .hb-coming-title{font:900 clamp(35px,7vw,64px)/1 Georgia,serif;color:#8a1719;text-shadow:1px 2px #fff}
+.hb-coming .hb-coming-sub{font-size:clamp(15px,2vw,20px);color:#56301c;margin:12px 0 22px}
+.hb-coming .hb-coming-tag{display:inline-block;padding:12px 28px;border-radius:999px;background:linear-gradient(135deg,#851a20,#560b10);color:#fff2d2;font-weight:950;letter-spacing:2px;box-shadow:0 7px 18px #5b111c40}
+.hb-coming .hb-coming-note{max-width:560px;color:#704b31;line-height:1.6;margin:18px auto 0}
+@media(max-width:700px){.hb-sitebar{background:#2d160e!important}.hb-experiences{max-width:470px!important;gap:17px!important}.hb-experience{min-height:0!important;border-radius:23px!important;padding:14px 13px 16px!important}.hb-experience img{height:230px!important}.hb-coming .hb-coming-art{width:min(88vw,430px);height:40vh;min-height:210px}}
 
 </style>
 </body>
