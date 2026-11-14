@@ -427,9 +427,13 @@ function hideHbComingSoon(){document.querySelectorAll('.hb-coming').forEach(func
 
       <div class="billing-section">
         <div class="billing-section-title"><span>👤</span> Customer details</div>
-        <input class="field billing-field" id="customerName" placeholder="Customer Name" autocomplete="name" required>
-        <input class="field billing-field" id="customerEmail" placeholder="Email Address" type="email" inputmode="email" autocomplete="email" required>
+        <div id="checkoutManualCustomerFields">
+          <input class="field billing-field" id="customerName" placeholder="Customer Name" autocomplete="name" required>
+          <input class="field billing-field" id="customerEmail" placeholder="Email Address" type="email" inputmode="email" autocomplete="email" required>
+          <input class="field billing-field" id="customerPhone" placeholder="10-digit Mobile Number" type="tel" inputmode="numeric" maxlength="10" autocomplete="tel" required>
+        </div>
         <div id="checkoutOtpPanel" style="margin-top:8px">
+          <div id="checkoutOtpAccountEmail" style="display:none;margin:0 0 10px;padding:12px;border-radius:12px;background:#f8f3e9;color:#74151d;font-weight:800"></div>
           <button type="button" class="drawer-action" id="checkoutSendOtp" onclick="sendCheckoutOtp()" style="width:100%;margin-top:0">Send Email OTP</button>
           <div id="checkoutOtpEntry" style="display:none;margin-top:8px">
             <input class="field billing-field" id="checkoutOtpCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="Enter 6-digit email OTP">
@@ -437,7 +441,6 @@ function hideHbComingSoon(){document.querySelectorAll('.hb-coming').forEach(func
           </div>
           <div id="checkoutOtpStatus" class="delivery-status" role="status" aria-live="polite"></div>
         </div>
-        <input class="field billing-field" id="customerPhone" placeholder="10-digit Mobile Number" type="tel" inputmode="numeric" maxlength="10" autocomplete="tel" required>
       </div>
 
       <div class="billing-section">
@@ -1097,12 +1100,36 @@ function openCart(){document.body.classList.remove('hb-billing-open');document.g
 function closeCart(){document.body.classList.remove('hb-billing-open');document.getElementById('drawer').classList.remove('show')}
 function continueShopping(){closeCart();const search=document.getElementById('search');if(search)search.blur();const menu=document.getElementById('menuScreen');if(menu)window.scrollTo({top:menu.offsetTop||0,behavior:'smooth'});}
 let checkoutVerifiedEmail='';
+function isCustomerLoggedIn(){return !!(currentUser&&currentUser.email&&(()=>{try{const x=JSON.parse(localStorage.getItem('hb_customer_session')||'null');return !!(x&&x.token&&x.expires_at&&Date.parse(x.expires_at)>Date.now()&&x.email===currentUser.email)}catch(e){return false}})())}
+function prepareCheckoutCustomer(){
+  const manual=document.getElementById('checkoutManualCustomerFields');
+  const accountEmail=document.getElementById('checkoutOtpAccountEmail');
+  const emailInput=document.getElementById('customerEmail');
+  const logged=isCustomerLoggedIn();
+  if(manual)manual.style.display=logged?'none':'block';
+  if(accountEmail){accountEmail.style.display=logged?'block':'none';accountEmail.textContent=logged?'Logged in: '+currentUser.email:''}
+  if(logged){
+    if(emailInput)emailInput.value=currentUser.email;
+    const name=document.getElementById('customerName');
+    const phone=document.getElementById('customerPhone');
+    if(name)name.value=currentProfile?.full_name||currentUser.user_metadata?.full_name||currentUser.email.split('@')[0]||'Customer';
+    if(phone)phone.value=currentProfile?.phone||currentUser.user_metadata?.phone||'';
+    checkoutVerifiedEmail='';
+    document.getElementById('checkoutOtpEntry').style.display='none';
+    document.getElementById('checkoutOtpCode').value='';
+    document.getElementById('checkoutSendOtp').textContent='Send Order Confirmation OTP';
+    checkoutOtpStatus('ok','Account login is active. Order complete karne ke liye ek baar OTP verify karein.');
+  }else{
+    if(accountEmail)accountEmail.style.display='none';
+    document.getElementById('checkoutSendOtp').textContent='Send Email OTP';
+  }
+}
 function checkoutOtpStatus(kind,message){
   const el=document.getElementById('checkoutOtpStatus');if(!el)return;
   el.className='delivery-status show '+(kind==='ok'?'ok':'bad');el.textContent=message;
 }
 async function sendCheckoutOtp(){
-  const email=document.getElementById('customerEmail').value.trim().toLowerCase();
+  const email=(isCustomerLoggedIn()?currentUser.email:document.getElementById('customerEmail').value).trim().toLowerCase();
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){checkoutOtpStatus('bad','Please enter a valid email address first.');document.getElementById('customerEmail').focus();return}
   const btn=document.getElementById('checkoutSendOtp');btn.disabled=true;btn.textContent='Sending OTP…';
   try{
@@ -1115,7 +1142,7 @@ async function sendCheckoutOtp(){
   finally{btn.disabled=false;btn.textContent='Resend Email OTP'}
 }
 async function verifyCheckoutOtp(){
-  const email=document.getElementById('customerEmail').value.trim().toLowerCase();
+  const email=(isCustomerLoggedIn()?currentUser.email:document.getElementById('customerEmail').value).trim().toLowerCase();
   const otp=document.getElementById('checkoutOtpCode').value.trim();
   if(!/^\d{6}$/.test(otp)){checkoutOtpStatus('bad','Enter the 6-digit OTP.');return}
   const btn=document.getElementById('checkoutVerifyOtp');btn.disabled=true;btn.textContent='Verifying…';
@@ -1126,9 +1153,9 @@ async function verifyCheckoutOtp(){
     checkoutVerifiedEmail=email;
     localStorage.setItem('hb_customer_session',JSON.stringify({email,token:data.token,expires_at:data.expires_at}));
     checkoutOtpStatus('ok','Email verified successfully. You can continue checkout.');
-    document.getElementById('customerEmail').readOnly=true;
+    if(!isCustomerLoggedIn())document.getElementById('customerEmail').readOnly=true;
     document.getElementById('checkoutOtpEntry').style.display='none';
-    btn.textContent='Email Verified ✓';
+    btn.textContent='OTP Verified ✓';
   }catch(error){checkoutOtpStatus('bad',error.message||'OTP verification failed.');btn.disabled=false;btn.textContent='Verify Email OTP'}
 }
 function invalidateCheckoutEmailVerification(){
@@ -1136,7 +1163,7 @@ function invalidateCheckoutEmailVerification(){
 }
 async function ensureOrderNumber(){if(!currentOrderNo){const res=await fetch(CLOUDFLARE_ORDERS_API+'/orders/next-number',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}',cache:'no-store'});const data=await res.json().catch(()=>null);if(!res.ok||!data?.success||!data.order_no)throw new Error(data?.message||'Cloudflare could not allocate an order number');currentOrderNo=String(data.order_no).toUpperCase()}currentOrderNo=String(currentOrderNo).toUpperCase();document.getElementById('orderNumber').textContent=currentOrderNo;saveCheckout()}
 function resetOrderNumber(){currentOrderNo='';document.getElementById('orderNumber').textContent='—'}
-async function proceedBilling(){if(!cart.length){alert('Cart is empty.');return}if(!(await requireCustomerLogin()))return;try{await ensureOrderNumber()}catch(error){console.error('Order number allocation failed:',error);alert('Order number nahi ban saka. Internet check karke dobara try karein.');return}document.body.classList.add('hb-billing-open');const drawer=document.getElementById('drawer'),card=document.getElementById('drawerCard');drawer.classList.add('show');document.getElementById('cartView').style.display='none';document.getElementById('billingView').style.display='block';if(card)card.scrollTop=0;updateBilling()}
+async function proceedBilling(){if(!cart.length){alert('Cart is empty.');return}if(!(await requireCustomerLogin()))return;try{await ensureOrderNumber()}catch(error){console.error('Order number allocation failed:',error);alert('Order number nahi ban saka. Internet check karke dobara try karein.');return}document.body.classList.add('hb-billing-open');const drawer=document.getElementById('drawer'),card=document.getElementById('drawerCard');drawer.classList.add('show');document.getElementById('cartView').style.display='none';document.getElementById('billingView').style.display='block';if(card)card.scrollTop=0;prepareCheckoutCustomer();updateBilling()}
 function backToCart(){document.body.classList.remove('hb-billing-open');document.getElementById('billingView').style.display='none';document.getElementById('cartView').style.display='block'}
 
 document.getElementById('menu').addEventListener('click',e=>{const b=e.target.closest('.add');if(!b)return;const n=b.dataset.name,p=Number(b.dataset.price);if(e.target.closest('.minus')){const i=cart.findIndex(x=>x.name===n&&x.price===p);if(i>=0)cart.splice(i,1)}else if(e.target.closest('.plus'))cart.push({name:n,price:p});else{cart.push({name:n,price:p});b.dataset.original=b.textContent}syncCart()});
@@ -1497,7 +1524,7 @@ document.getElementById('waSend').onclick=async()=>{
   if(!name)return showOrderError('Customer name likhein. / Please enter your name.',document.getElementById('customerName'));
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return showOrderError('Valid email address enter karein. / Please enter a valid email address.',document.getElementById('customerEmail'));
   if(checkoutVerifiedEmail!==email)return showOrderError('Please verify your email with the 6-digit OTP before placing the order.',document.getElementById('checkoutSendOtp'));
-  if(!/^\d{10}$/.test(phone))return showOrderError('10-digit mobile number zaroori hai. / Please enter a valid 10-digit mobile number.',document.getElementById('customerPhone'));
+  if(!isCustomerLoggedIn()&&!/^\d{10}$/.test(phone))return showOrderError('10-digit mobile number zaroori hai. / Please enter a valid 10-digit mobile number.',document.getElementById('customerPhone'));
   if(!updateVerificationUI()){setPaymentCheck('bad','Payment verification required hai','Payment screenshot verify hona zaroori hai.');return showOrderError('Verified payment screenshot required hai. / Please complete payment verification first.',paymentScreenshot);}
   let extra='';if(type==='Home Delivery'&&!paymentTestMode){const p=pin(),a=document.getElementById('address').value.trim();if(!a)return showOrderError('Delivery address likhein. / Please enter the delivery address.',document.getElementById('address'));const deliveryStatus=deliveryPinStatus();if(!deliveryStatus.valid)return showOrderError(deliveryStatus.message,document.getElementById('pincode'));extra='\nPincode: '+p+'\nAddress: '+a}
   if(!paymentTestMode&&supabaseClient&&currentUser){try{await saveOrderToSupabase()}catch(error){console.warn('Optional customer order history save failed; Cloudflare D1 remains the primary order archive.',error)}}
