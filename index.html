@@ -1981,6 +1981,68 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
 .hb-coming .hb-coming-note{max-width:560px;color:#704b31;line-height:1.6;margin:18px auto 0}
 @media(max-width:700px){.hb-sitebar{background:#2d160e!important}.hb-experiences{max-width:470px!important;gap:17px!important}.hb-experience{min-height:0!important;border-radius:23px!important;padding:14px 13px 16px!important}.hb-experience img{height:230px!important}.hb-coming .hb-coming-art{width:min(88vw,430px);height:40vh;min-height:210px}}
 
+
+/* V45 — align the landing page with the supplied three-panel reference. Visual-only overrides. */
+#home .hb-sitebar{display:none!important}
+#home .hb-welcome{
+ min-height:330px;padding:48px 14px 68px!important;
+ background:
+ radial-gradient(ellipse at 50% 0%,#a65a2b55,transparent 52%),
+ linear-gradient(180deg,#25100a 0%,#51210f 56%,#d49b54 100%)!important;
+ border-top:5px solid #d8ad4e;border-bottom:4px solid #e6bd62;
+}
+#home .hb-welcome:before,#home .hb-welcome:after{color:#729348!important;opacity:.9;top:38px}
+#home .hb-welcome-kicker{font:italic clamp(22px,4vw,34px) Georgia,serif!important;color:#ffe7b4!important}
+#home .hb-welcome h1{font:italic 900 clamp(48px,9vw,90px)/.98 Georgia,serif!important;letter-spacing:-3px!important;color:#ffd56b!important;text-shadow:2px 4px 0 #55230d,0 7px 18px #0009!important}
+#home .hb-welcome h1 span{color:#ffdb75!important}
+#home .hb-chef{display:none!important}
+#home .hb-ribbon{margin-top:22px!important;padding:12px clamp(18px,4vw,42px)!important;border:1px solid #f8d778!important;box-shadow:0 5px 14px #0005}
+#home .hb-welcome p{font-size:clamp(15px,2vw,22px)!important;color:#fff8e7!important;font-weight:800!important}
+#home .hb-experiences{
+ max-width:1450px!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ gap:12px!important;margin:-25px auto 20px!important;padding:0 18px!important;
+ align-items:stretch;
+}
+#home .hb-experience{
+ min-height:0!important;border-radius:24px!important;padding:14px 10px 16px!important;
+ border:3px solid #f6ce55!important;box-shadow:0 12px 27px #3c1b0d55,inset 0 0 0 2px #fff4bf!important;
+}
+#home .hb-experience-icon{width:64px;height:64px;margin-top:-27px!important}
+#home .hb-experience h2{font-size:clamp(20px,2.8vw,38px)!important;line-height:1.05!important}
+#home .hb-experience .hb-label{font-size:clamp(9px,1.1vw,13px)!important;padding:7px 9px!important;letter-spacing:.5px!important;white-space:normal}
+#home .hb-experience p{font-size:clamp(11px,1.35vw,16px)!important;min-height:34px}
+#home .hb-experience img{width:calc(100% + 20px)!important;height:clamp(145px,23vw,300px)!important;object-fit:cover!important}
+#home .hb-card-button{font-size:clamp(10px,1.2vw,15px)!important;padding:11px 9px!important;min-height:42px!important;white-space:normal}
+#home .hb-experience>small{font-size:clamp(8px,.9vw,12px)!important}
+#home .hb-benefits{background:#32170d!important;border-top:3px solid #e1b84e!important;color:#ffedc7!important}
+#home .hb-bottom-slogan{background:linear-gradient(90deg,#2b130b,#6a2912,#2b130b)!important}
+@media(max-width:700px){
+ #home .hb-welcome{min-height:270px!important;padding:42px 8px 48px!important}
+ #home .hb-welcome-kicker{font-size:21px!important}
+ #home .hb-welcome h1{font-size:clamp(39px,11vw,58px)!important;letter-spacing:-2px!important}
+ #home .hb-ribbon{font-size:10px!important;padding:9px 14px!important;margin-top:16px!important;letter-spacing:.6px!important}
+ #home .hb-welcome p{font-size:13px!important;margin-top:12px!important}
+ #home .hb-experiences{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important;padding:0 8px!important;margin-top:-17px!important}
+ #home .hb-experience{padding:11px 5px 12px!important;border-width:2px!important;border-radius:15px!important}
+ #home .hb-experience-icon{width:42px!important;height:42px!important;font-size:20px!important;border-width:3px!important;margin-top:-23px!important}
+ #home .hb-experience h2{font-size:clamp(13px,3.8vw,19px)!important;line-height:1.02!important;margin:8px 0 6px!important}
+ #home .hb-experience .hb-label{font-size:7px!important;line-height:1.2;padding:6px 3px!important;letter-spacing:0!important;width:100%}
+ #home .hb-experience p{font-size:9px!important;line-height:1.2!important;min-height:31px;margin-bottom:7px!important}
+ #home .hb-experience img{height:clamp(92px,27vw,150px)!important;width:calc(100% + 10px)!important;border-width:2px!important}
+ #home .hb-card-button{font-size:8px!important;line-height:1.15!important;padding:8px 3px!important;min-height:34px!important;gap:3px!important;margin:9px 0 6px!important;border-width:1px!important}
+ #home .hb-card-button b{font-size:11px!important}
+ #home .hb-experience>small{font-size:7px!important;line-height:1.2!important}
+ #home .hb-benefits{gap:8px!important;padding:13px 5px!important;font-size:8px!important}
+ #home .hb-benefits b{font-size:14px!important}
+ #home .hb-bottom-slogan{font-size:15px!important;padding:14px 4px!important}
+}
+@media(max-width:360px){
+ #home .hb-experiences{gap:5px!important;padding:0 5px!important}
+ #home .hb-experience h2{font-size:12px!important}
+ #home .hb-experience img{height:94px!important}
+ #home .hb-card-button{font-size:7px!important}
+}
+
 </style>
 </body>
 </html>
