@@ -2222,7 +2222,7 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
     const response=await fetch(endpoint,{headers:{'Accept':'application/json'}});
     const result=await response.json().catch(()=>({}));
     if(!response.ok)throw new Error(result.error||'Address lookup service is unavailable.');
-    if(!result.success||!result.address||!/^\\d{6}$/.test(String(result.postcode||'')))throw new Error(result.error||'No reliable locality and PIN were found. Please enter your area and PIN manually.');
+    if(!result.success||!result.address||!/^\d{6}$/.test(String(result.postcode||'')))throw new Error(result.error||'No reliable locality and PIN were found. Please enter your area and PIN manually.');
     return {address:result.address,postcode:String(result.postcode)};
   };
 })();
