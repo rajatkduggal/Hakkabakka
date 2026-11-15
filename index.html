@@ -2215,22 +2215,29 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
       const u='https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&zoom=18&lat='+encodeURIComponent(lat)+'&lon='+encodeURIComponent(lon);
       const r=await fetch(u,{headers:{'Accept':'application/json'}});if(!r.ok)throw new Error('Nominatim HTTP '+r.status);
       const d=await r.json(),a=d.address||{};
-      const locality=a.suburb||a.neighbourhood||a.residential||a.city_district||a.town||a.city||a.village||a.county;
+      const street=a.road||a.pedestrian||a.footway||a.path||a.residential;
+      const locality=a.suburb||a.neighbourhood||a.city_district;
       const city=a.city||a.town||a.village||a.municipality;
-      const line=clean([a.house_number,a.road||a.pedestrian||a.footway||a.path,locality,city&&city!==locality?city:null,a.state]);
-      const postcode=(a.postcode||'').replace(/\D/g,'').slice(0,6);
-      if(line.length>=5)return {address:line,postcode:postcode};
-      nominatimError=new Error('No street-level address returned');
+      // Reject city/state-only results: they can produce a misleading PIN for another locality.
+      if(street||locality){
+        const line=clean([a.house_number,street,locality,city&&city!==locality?city:null,a.state]);
+        const postcode=(a.postcode||'').replace(/\D/g,'').slice(0,6);
+        if(line.length>=5)return {address:line,postcode:postcode};
+      }
+      nominatimError=new Error('No street/locality-level address returned');
     }catch(e){nominatimError=e}
     try{
       const u='https://photon.komoot.io/reverse?lat='+encodeURIComponent(lat)+'&lon='+encodeURIComponent(lon)+'&lang=en';
       const r=await fetch(u,{headers:{'Accept':'application/json'}});if(!r.ok)throw new Error('Photon HTTP '+r.status);
       const d=await r.json(),p=d&&d.features&&d.features[0]&&d.features[0].properties;
       if(!p)throw new Error('No address result');
-      const locality=p.suburb||p.district||p.city||p.county;
-      const line=clean([p.housenumber&&p.street?p.housenumber+' '+p.street:p.street,locality,p.city&&p.city!==locality?p.city:null,p.state]);
-      const postcode=(p.postcode||'').replace(/\D/g,'').slice(0,6);
-      if(line.length>=5)return {address:line,postcode:postcode};
+      const locality=p.suburb||p.neighbourhood||p.district;
+      // Do not accept a city-only Photon result as a delivery address.
+      if(p.street||locality){
+        const line=clean([p.housenumber&&p.street?p.housenumber+' '+p.street:p.street,locality,p.city&&p.city!==locality?p.city:null,p.state]);
+        const postcode=(p.postcode||'').replace(/\D/g,'').slice(0,6);
+        if(line.length>=5)return {address:line,postcode:postcode};
+      }
     }catch(e){throw new Error('Address lookup failed. Please enter your street/area and PIN code manually.')}
     throw new Error('No reliable street address was found for these GPS coordinates. Please enter the correct address and PIN manually.');
   };
