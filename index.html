@@ -483,6 +483,8 @@ body{background:var(--hb-cream)}
         </select>
         <div id="deliveryFields" style="display:none">
           <textarea class="field billing-field" id="address" rows="3" placeholder="Delivery Address" autocomplete="street-address"></textarea>
+          <button type="button" id="useCurrentLocation" class="drawer-action secondary" style="margin-top:8px">📍 Use My Current Location</button>
+          <small id="mapplsLocationStatus" style="display:block;margin-top:7px;color:#777" aria-live="polite">Use GPS to fill your delivery address automatically.</small>
           <input class="field billing-field" id="pincode" placeholder="6-digit Pincode" maxlength="6" inputmode="numeric" autocomplete="postal-code">
           <div id="deliveryStatus" class="delivery-status" aria-live="polite"></div>
         </div>
@@ -1765,5 +1767,6 @@ body.hb-billing-open #drawerCard{overflow:hidden!important}
 body.hb-billing-open #drawerCard>.drawer-head{flex:0 0 auto!important}
 </style>
 
+  <script src="mappls-location.js" defer></script>
 </body>
 </html>
