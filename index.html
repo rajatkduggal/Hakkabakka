@@ -349,9 +349,10 @@ function hideHbComingSoon(){document.querySelectorAll('.hb-coming').forEach(func
           <div style="font-weight:900;color:#7b1113;margin-bottom:5px">📍 Delivery Address (Optional)</div>
           <button class="drawer-action" type="button" id="hbSignupUseLocation" style="margin:6px 0;background:#176b43">📍 Use My Current Location</button>
           <div id="hbSignupLocationStatus" class="delivery-status" role="status" aria-live="polite"></div>
-          <div id="hbSignupLocationDiagnostic" style="display:none;margin:8px 0;padding:10px;border:1px solid #d9d9d9;border-radius:10px;background:#f5f7fa;font-size:12px;line-height:1.6"></div>
-          <textarea class="field" id="signupAddress" rows="2" placeholder="House / Street / Area / City (editable)" autocomplete="street-address"></textarea>
-          <input class="field" id="signupPincode" type="text" inputmode="numeric" maxlength="6" placeholder="6-digit PIN Code" autocomplete="postal-code">
+          <input class="field" id="signupHouseNo" placeholder="House / Flat / Shop Number (enter manually)" autocomplete="address-line1">
+          <input class="field" id="signupLandmark" placeholder="Landmark (enter manually)" autocomplete="off">
+          <textarea class="field" id="signupAddress" rows="2" placeholder="Area / Colony / City (auto-filled; editable)" autocomplete="address-level2"></textarea>
+          <input class="field" id="signupPincode" type="text" inputmode="numeric" maxlength="6" placeholder="6-digit PIN Code (verify)" autocomplete="postal-code">
           <small style="display:block;color:#777;font-size:11px;margin-top:6px">You can edit this address later in checkout. Map data © OpenStreetMap contributors.</small>
         </div>
         <button class="drawer-action" id="signupOtpBtn" type="button" onclick="requestSignupOtp()">Sign Up & Send OTP</button>
@@ -474,9 +475,10 @@ function hideHbComingSoon(){document.querySelectorAll('.hb-coming').forEach(func
         <div id="deliveryFields" style="display:none">
           <button type="button" class="drawer-action" id="hbUseLocation" style="margin:8px 0;background:#176b43">📍 Use My Current Location</button>
           <div id="hbMapLocationStatus" class="delivery-status" role="status" aria-live="polite"></div>
-          <div id="hbDeliveryLocationDiagnostic" style="display:none;margin:8px 0;padding:10px;border:1px solid #d9d9d9;border-radius:10px;background:#f5f7fa;font-size:12px;line-height:1.6"></div>
-          <textarea class="field billing-field" id="address" rows="3" placeholder="Delivery Address (editable)" autocomplete="street-address"></textarea>
-          <input class="field billing-field" id="pincode" placeholder="6-digit Pincode" maxlength="6" inputmode="numeric" autocomplete="postal-code">
+          <input class="field billing-field" id="deliveryHouseNo" placeholder="House / Flat / Shop Number (enter manually)" autocomplete="address-line1">
+          <input class="field billing-field" id="deliveryLandmark" placeholder="Landmark (enter manually)" autocomplete="off">
+          <textarea class="field billing-field" id="address" rows="2" placeholder="Area / Colony / City (auto-filled; editable)" autocomplete="address-level2"></textarea>
+          <input class="field billing-field" id="pincode" placeholder="6-digit PIN Code (verify)" maxlength="6" inputmode="numeric" autocomplete="postal-code">
           <button type="button" class="drawer-action secondary" id="hbConfirmAddress" style="margin-top:8px">Confirm Delivery Address</button>
           <div id="hbAddressConfirmStatus" class="delivery-status" role="status" aria-live="polite"></div>
           <div id="deliveryStatus" class="delivery-status" aria-live="polite"></div>
@@ -628,7 +630,7 @@ async function requestSignupOtp(){
   if(!name)return authMsg('Name enter karein.','bad');
   if(!/^\d{10}$/.test(phone))return authMsg('Valid 10-digit mobile number enter karein.','bad');
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return authMsg('Valid email address enter karein.','bad');
-  pendingSignup={name,email,phone,address:(document.getElementById('signupAddress')?.value||'').trim(),pincode:(document.getElementById('signupPincode')?.value||'').replace(/\\D/g,'').slice(0,6)};
+  pendingSignup={name,email,phone,address:[document.getElementById('signupHouseNo')?.value,document.getElementById('signupLandmark')?.value,document.getElementById('signupAddress')?.value].map(x=>(x||'').trim()).filter(Boolean).join(', '),pincode:(document.getElementById('signupPincode')?.value||'').replace(/\\D/g,'').slice(0,6)};
   const btn=document.getElementById('signupOtpBtn');btn.disabled=true;btn.textContent='Sending OTP…';
   try{
     const res=await fetch(CUSTOMER_AUTH_API+'/api/auth/request-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email}),cache:'no-store'});
@@ -2180,7 +2182,6 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
     locateBtn.disabled=true;locateBtn.textContent='Finding your location…';showStatus(mapStatus,'Allow location access. Getting a precise GPS fix…','');
     navigator.geolocation.getCurrentPosition(async function(position){
       try{
-        window.hbShowLocationDiagnostic('hbDeliveryLocationDiagnostic',position);
         const result=await window.hbReverseGeocode(position.coords.latitude,position.coords.longitude);
         addressEl.value=result.address;
         pinEl.value=result.postcode||'';
@@ -2192,7 +2193,6 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
       }catch(error){showStatus(mapStatus,error.message||'Could not verify this location. Please enter the address and PIN manually.','bad')}
       finally{locateBtn.disabled=false;locateBtn.textContent='📍 Use My Current Location';if(typeof updateBilling==='function')updateBilling()}
     },function(error){
-      window.hbShowLocationDiagnostic('hbDeliveryLocationDiagnostic',null,error&&error.message||'Browser did not return coordinates');
       let msg='Location permission was denied. Enter the address manually or allow location access.';
       if(error&&error.code===error.TIMEOUT)msg='GPS timed out. Turn on device Location and try again.';
       if(error&&error.code===error.POSITION_UNAVAILABLE)msg='GPS location is unavailable. Check device Location settings and retry.';
@@ -2214,56 +2214,38 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
 (function(){
   function clean(parts){return [...new Set(parts.filter(Boolean).map(x=>String(x).trim()).filter(x=>x&&!/^(office|building|yes|residential|house)$/i.test(x)))].join(', ')}
   window.hbReverseGeocode=async function(lat,lon){
-    let nominatimError=null;
+    // BigDataCloud first: return locality/city only, never coordinates or Plus Codes in the form.
     try{
-      const u='https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&zoom=18&lat='+encodeURIComponent(lat)+'&lon='+encodeURIComponent(lon);
-      const r=await fetch(u,{headers:{'Accept':'application/json'}});if(!r.ok)throw new Error('Nominatim HTTP '+r.status);
-      const d=await r.json(),a=d.address||{};
-      const street=a.road||a.pedestrian||a.footway||a.path||a.residential;
-      const locality=a.suburb||a.neighbourhood||a.city_district;
-      const city=a.city||a.town||a.village||a.municipality;
-      // Reject city/state-only results: they can produce a misleading PIN for another locality.
-      if(street&&(locality||a.house_number)){
-        const line=clean([a.house_number,street,locality,city&&city!==locality?city:null,a.state]);
-        if(line.length>=5)return {address:line,postcode:''};
+      const u='https://api.bigdatacloud.net/data/reverse-geocode-client?latitude='+encodeURIComponent(lat)+'&longitude='+encodeURIComponent(lon)+'&localityLanguage=en';
+      const r=await fetch(u,{headers:{'Accept':'application/json'}});
+      if(r.ok){
+        const d=await r.json();
+        const area=d.locality||d.city;
+        const city=d.city||d.locality;
+        const state=d.principalSubdivision;
+        const postcode=(d.postcode||'').replace(/\\D/g,'').slice(0,6);
+        const address=clean([area,city&&city!==area?city:null,state]);
+        if(address.length>=5)return {address,postcode};
       }
-      nominatimError=new Error('No street/locality-level address returned');
-    }catch(e){nominatimError=e}
+    }catch(e){}
     try{
-      const u='https://photon.komoot.io/reverse?lat='+encodeURIComponent(lat)+'&lon='+encodeURIComponent(lon)+'&lang=en';
-      const r=await fetch(u,{headers:{'Accept':'application/json'}});if(!r.ok)throw new Error('Photon HTTP '+r.status);
-      const d=await r.json(),p=d&&d.features&&d.features[0]&&d.features[0].properties;
-      if(!p)throw new Error('No address result');
-      const locality=p.suburb||p.neighbourhood||p.district;
-      // Do not accept a city-only Photon result as a delivery address.
-      if(p.street&&(locality||p.housenumber)){
-        const line=clean([p.housenumber&&p.street?p.housenumber+' '+p.street:p.street,locality,p.city&&p.city!==locality?p.city:null,p.state]);
-        if(line.length>=5)return {address:line,postcode:''};
+      const u='https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&zoom=16&lat='+encodeURIComponent(lat)+'&lon='+encodeURIComponent(lon);
+      const r=await fetch(u,{headers:{'Accept':'application/json'}});
+      if(r.ok){
+        const d=await r.json(),a=d.address||{};
+        const area=a.suburb||a.neighbourhood||a.city_district||a.residential;
+        const city=a.city||a.town||a.village||a.municipality;
+        const address=clean([area,city&&city!==area?city:null,a.state]);
+        const postcode=(a.postcode||'').replace(/\\D/g,'').slice(0,6);
+        if(area&&address.length>=5)return {address,postcode};
       }
-    }catch(e){throw new Error('Address lookup failed. Please enter your street/area and PIN code manually.')}
-    throw new Error('No reliable street address was found for these GPS coordinates. Please enter the correct address and PIN manually.');
+    }catch(e){}
+    throw new Error('Your location was received, but the area address could not be matched. Please enter your area and PIN manually.');
   };
 })();
 </script>
 
-<!-- GPS DIAGNOSTICS -->
-<script>
-(function(){
-  window.hbShowLocationDiagnostic=function(id,position,errorText){
-    const el=document.getElementById(id);if(!el)return;
-    el.style.display='block';
-    if(!position){el.textContent='GPS diagnostic: '+(errorText||'Location data unavailable');return}
-    const c=position.coords||{},lat=Number(c.latitude),lon=Number(c.longitude);
-    const accuracy=Number.isFinite(c.accuracy)?Math.round(c.accuracy):'Unavailable';
-    const timestamp=position.timestamp?new Date(position.timestamp).toLocaleString():'Unavailable';
-    const altitude=Number.isFinite(c.altitude)?Math.round(c.altitude)+' m':'Unavailable';
-    const heading=Number.isFinite(c.heading)?Math.round(c.heading)+'°':'Unavailable';
-    const speed=Number.isFinite(c.speed)?(c.speed*3.6).toFixed(1)+' km/h':'Unavailable';
-    const mapUrl=Number.isFinite(lat)&&Number.isFinite(lon)?'https://www.google.com/maps?q='+encodeURIComponent(lat+','+lon):'';
-    el.innerHTML='<strong>📡 Phone GPS Diagnostic</strong><br>Latitude: '+lat.toFixed(6)+'<br>Longitude: '+lon.toFixed(6)+'<br>Accuracy: ±'+accuracy+' metres<br>Location time: '+timestamp+'<br>Altitude: '+altitude+'<br>Heading: '+heading+'<br>Speed: '+speed+(mapUrl?'<br><a href="'+mapUrl+'" target="_blank" rel="noopener">View these exact coordinates on map</a>':'');
-  };
-})();
-</script>
+
 
 <!-- NEW SIGNUP LOCATION AUTOFILL: GPS + structured OpenStreetMap reverse geocoding -->
 <script>
@@ -2277,17 +2259,15 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
     btn.disabled=true;btn.textContent='Finding your location…';status.textContent='Allow location access. Getting a precise GPS fix…';status.className='delivery-status show';
     navigator.geolocation.getCurrentPosition(async function(position){
       try{
-        window.hbShowLocationDiagnostic('hbSignupLocationDiagnostic',position);
         const accuracy=Math.round(position.coords.accuracy||0);
         if(accuracy>50)throw new Error('Your phone GPS is only accurate to about '+accuracy+' metres. Turn on Precise Location and try again; no address or PIN was filled.');
         const result=await window.hbReverseGeocode(position.coords.latitude,position.coords.longitude);
         address.value=result.address;postcode.value='';
-        status.textContent='Street/locality found. PIN code was left blank intentionally—enter your verified 6-digit PIN. Check the address before signup. GPS accuracy: '+accuracy+' metres.';
+        status.textContent='Area and city auto-filled. Please enter your house number and landmark, and verify the PIN code.';
         status.className='delivery-status show ok';
       }catch(error){status.textContent=error.message||'Could not verify this location. Please type your address and PIN manually.';status.className='delivery-status show bad'}
       finally{btn.disabled=false;btn.textContent='📍 Use My Current Location'}
     },function(error){
-      window.hbShowLocationDiagnostic('hbSignupLocationDiagnostic',null,error&&error.message||'Browser did not return coordinates');
       let msg='Location permission denied. Please allow GPS access or enter the address manually.';
       if(error&&error.code===error.TIMEOUT)msg='GPS timed out. Turn on device Location and try again.';
       if(error&&error.code===error.POSITION_UNAVAILABLE)msg='GPS location unavailable. Check device Location settings and retry.';
