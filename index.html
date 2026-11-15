@@ -345,6 +345,14 @@ function hideHbComingSoon(){document.querySelectorAll('.hb-coming').forEach(func
         <input class="field" id="signupName" type="text" placeholder="NAME" autocomplete="name">
         <input class="field" id="signupEmail" type="email" placeholder="EMAIL" autocomplete="email">
         <input class="field" id="signupPhone" type="tel" inputmode="numeric" maxlength="10" placeholder="MOBILE NUMBER" autocomplete="tel">
+        <div style="margin-top:12px;padding:12px;border:1px solid #eadfd4;border-radius:12px;background:#faf7f2">
+          <div style="font-weight:900;color:#7b1113;margin-bottom:5px">📍 Delivery Address (Optional)</div>
+          <button class="drawer-action" type="button" id="hbSignupUseLocation" style="margin:6px 0;background:#176b43">📍 Use My Current Location</button>
+          <div id="hbSignupLocationStatus" class="delivery-status" role="status" aria-live="polite"></div>
+          <textarea class="field" id="signupAddress" rows="2" placeholder="House / Street / Area / City (editable)" autocomplete="street-address"></textarea>
+          <input class="field" id="signupPincode" type="text" inputmode="numeric" maxlength="6" placeholder="6-digit PIN Code" autocomplete="postal-code">
+          <small style="display:block;color:#777;font-size:11px;margin-top:6px">You can edit this address later in checkout. Map data © OpenStreetMap contributors.</small>
+        </div>
         <button class="drawer-action" id="signupOtpBtn" type="button" onclick="requestSignupOtp()">Sign Up & Send OTP</button>
       </div>
       <div id="otpEntry" style="display:none;margin-top:12px">
@@ -618,7 +626,7 @@ async function requestSignupOtp(){
   if(!name)return authMsg('Name enter karein.','bad');
   if(!/^\d{10}$/.test(phone))return authMsg('Valid 10-digit mobile number enter karein.','bad');
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return authMsg('Valid email address enter karein.','bad');
-  pendingSignup={name,email,phone};
+  pendingSignup={name,email,phone,address:(document.getElementById('signupAddress')?.value||'').trim(),pincode:(document.getElementById('signupPincode')?.value||'').replace(/\\D/g,'').slice(0,6)};
   const btn=document.getElementById('signupOtpBtn');btn.disabled=true;btn.textContent='Sending OTP…';
   try{
     const res=await fetch(CUSTOMER_AUTH_API+'/api/auth/request-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email}),cache:'no-store'});
@@ -641,10 +649,17 @@ async function verifyCustomerOtp(){
     const data=await res.json().catch(()=>({}));
     if(!res.ok||!data.success||!data.token)throw new Error(data.message||'OTP verify nahi hua.');
     const profile=customerAuthMode==='new'?pendingSignup:null;
-    const savedProfile={email:data.email||email,full_name:profile?.name||data.name||'',phone:profile?.phone||data.phone||''};
+    const savedProfile={email:data.email||email,full_name:profile?.name||data.name||'',phone:profile?.phone||data.phone||'',default_address:profile?.address||''};
+    if(profile?.address){
+      const checkoutAddress=document.getElementById('address');
+      const checkoutPin=document.getElementById('pincode');
+      if(checkoutAddress)checkoutAddress.value=profile.address;
+      if(checkoutPin&&profile.pincode)checkoutPin.value=profile.pincode;
+      window.hbDeliveryAddressConfirmed=false;
+    }
     localStorage.setItem('hb_customer_session',JSON.stringify({email:data.email||email,token:data.token,expires_at:data.expires_at,name:savedProfile.full_name,phone:savedProfile.phone}));
     currentUser={id:data.account_id||email,email:data.email||email,user_metadata:{full_name:savedProfile.full_name,phone:savedProfile.phone}};
-    currentProfile={full_name:savedProfile.full_name,phone:savedProfile.phone};
+    currentProfile={full_name:savedProfile.full_name,phone:savedProfile.phone,default_address:savedProfile.default_address};
     localStorage.setItem('hb_customer_profile',JSON.stringify(savedProfile));
     if(pendingAuthPurpose==='checkout'){skipOrderOtpOnce=true;checkoutVerifiedEmail=email;}
     pendingSignup=null;updateAccountUI();closeAuth();
@@ -2216,6 +2231,50 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
     showStatus(confirmStatus,'✓ Address confirmed. You can still edit it; editing will require confirmation again.','ok');
     if(typeof saveCheckout==='function')saveCheckout();
     if(typeof updateBilling==='function')updateBilling();
+  });
+})();
+</script>
+
+
+<!-- NEW SIGNUP LOCATION AUTOFILL: browser GPS + Photon / OpenStreetMap -->
+<script>
+(function(){
+  const btn=document.getElementById('hbSignupUseLocation');
+  const address=document.getElementById('signupAddress');
+  const postcode=document.getElementById('signupPincode');
+  const status=document.getElementById('hbSignupLocationStatus');
+  if(!btn||!address||!postcode||!status)return;
+  postcode.addEventListener('input',function(){postcode.value=postcode.value.replace(/\\D/g,'').slice(0,6)});
+  btn.addEventListener('click',function(){
+    if(!navigator.geolocation){status.textContent='This browser does not support GPS. Please enter your address manually.';status.className='delivery-status show bad';return}
+    btn.disabled=true;btn.textContent='Finding your location…';
+    status.textContent='Please allow location access when your browser asks.';status.className='delivery-status show';
+    navigator.geolocation.getCurrentPosition(async function(position){
+      try{
+        const lat=position.coords.latitude,lon=position.coords.longitude;
+        const url='https://photon.komoot.io/reverse?lat='+encodeURIComponent(lat)+'&lon='+encodeURIComponent(lon)+'&lang=en';
+        const response=await fetch(url,{headers:{'Accept':'application/json'}});
+        if(!response.ok)throw new Error('Address lookup is temporarily unavailable. Please type your address.');
+        const data=await response.json();
+        const p=data&&data.features&&data.features[0]&&data.features[0].properties;
+        if(!p)throw new Error('No address found at this location. Please enter it manually.');
+        const locality=p.suburb||p.district||p.city||p.county;
+        const parts=[p.housenumber&&p.street?p.housenumber+' '+p.street:(p.name||p.street),locality,p.city&&p.city!==locality?p.city:null,p.state,p.postcode,p.country].filter(Boolean);
+        address.value=[...new Set(parts)].join(', ');
+        if(p.postcode)postcode.value=String(p.postcode).replace(/\\D/g,'').slice(0,6);
+        status.textContent='✓ Location found. Check and edit your address and PIN code before signup.';
+        status.className='delivery-status show ok';
+      }catch(error){
+        status.textContent=error.message||'Could not find address. Please enter it manually.';
+        status.className='delivery-status show bad';
+      }finally{btn.disabled=false;btn.textContent='📍 Use My Current Location'}
+    },function(error){
+      let msg='Location permission was denied. You can type your address manually.';
+      if(error&&error.code===error.TIMEOUT)msg='Location request timed out. Please try again.';
+      if(error&&error.code===error.POSITION_UNAVAILABLE)msg='Location unavailable. Check your phone GPS and try again.';
+      status.textContent=msg;status.className='delivery-status show bad';
+      btn.disabled=false;btn.textContent='📍 Use My Current Location';
+    },{enableHighAccuracy:true,timeout:15000,maximumAge:60000});
   });
 })();
 </script>
