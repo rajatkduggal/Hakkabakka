@@ -2245,8 +2245,8 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
         const accuracy=Math.round(position.coords.accuracy||0);
         if(accuracy>50)throw new Error('Your phone GPS is only accurate to about '+accuracy+' metres. Turn on Precise Location and try again; no address or PIN was filled.');
         const result=await window.hbReverseGeocode(position.coords.latitude,position.coords.longitude);
-        address.value=result.address;postcode.value='';
-        status.textContent='Area and city auto-filled. Please enter your house number and landmark, and verify the PIN code.';
+        address.value=result.address;postcode.value=result.postcode||'';
+        status.textContent=postcode.value?'Area, city and PIN auto-filled. Please verify the PIN, and enter your house number and landmark.':'Area and city auto-filled. Please enter your house number, landmark and PIN code.';
         status.className='delivery-status show ok';
       }catch(error){status.textContent=error.message||'Could not verify this location. Please type your address and PIN manually.';status.className='delivery-status show bad'}
       finally{btn.disabled=false;btn.textContent='📍 Use My Current Location'}
