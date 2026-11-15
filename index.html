@@ -631,14 +631,17 @@ async function verifyCustomerOtp(){
   if(!email)return authMsg('Email address missing.','bad');
   if(!/^\d{6}$/.test(otp))return authMsg('6-digit OTP enter karein.','bad');
   try{
-    const res=await fetch(CUSTOMER_AUTH_API+'/api/auth/verify-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,otp}),cache:'no-store'});
+    const verifyPayload={email,otp};if(customerAuthMode==='new'&&pendingSignup){verifyPayload.name=pendingSignup.name;verifyPayload.phone=pendingSignup.phone;}
+    const res=await fetch(CUSTOMER_AUTH_API+'/api/auth/verify-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(verifyPayload),cache:'no-store'});
     const data=await res.json().catch(()=>({}));
     if(!res.ok||!data.success||!data.token)throw new Error(data.message||'OTP verify nahi hua.');
     const profile=customerAuthMode==='new'?pendingSignup:null;
-    localStorage.setItem('hb_customer_session',JSON.stringify({email:data.email||email,token:data.token,expires_at:data.expires_at,name:profile?.name||'',phone:profile?.phone||''}));
-    currentUser={id:data.account_id||email,email:data.email||email,user_metadata:{full_name:profile?.name||'',phone:profile?.phone||''}};
-    currentProfile=profile?{full_name:profile.name,phone:profile.phone}:null;
-    if(profile)localStorage.setItem('hb_customer_profile',JSON.stringify({email,full_name:profile.name,phone:profile.phone}));
+    const savedProfile={email:data.email||email,full_name:profile?.name||data.name||'',phone:profile?.phone||data.phone||''};
+    localStorage.setItem('hb_customer_session',JSON.stringify({email:data.email||email,token:data.token,expires_at:data.expires_at,name:savedProfile.full_name,phone:savedProfile.phone}));
+    currentUser={id:data.account_id||email,email:data.email||email,user_metadata:{full_name:savedProfile.full_name,phone:savedProfile.phone}};
+    currentProfile={full_name:savedProfile.full_name,phone:savedProfile.phone};
+    localStorage.setItem('hb_customer_profile',JSON.stringify(savedProfile));
+    if(profile&&pendingAuthPurpose==='checkout'){skipOrderOtpOnce=true;checkoutVerifiedEmail=email;}
     pendingSignup=null;updateAccountUI();closeAuth();
     if(pendingAuthPurpose==='checkout')await openBillingAfterCustomerAuth();
   }catch(error){authMsg(error.message||'OTP verification failed.','bad')}
@@ -748,7 +751,9 @@ async function initCustomerAuth(){
       currentUser={id:saved.email,email:saved.email,user_metadata:{}};
     }else localStorage.removeItem('hb_customer_session');
   }catch(e){localStorage.removeItem('hb_customer_session')}
-  currentProfile=null; updateAccountUI();
+  try{const p=JSON.parse(localStorage.getItem('hb_customer_profile')||'null');if(p&&p.email===currentUser?.email)currentProfile={full_name:p.full_name||'',phone:p.phone||''};else currentProfile=null;}catch(e){currentProfile=null}
+  if(currentUser){const saved=JSON.parse(localStorage.getItem('hb_customer_session')||'null');if(saved)currentUser.user_metadata={full_name:saved.name||currentProfile?.full_name||'',phone:saved.phone||currentProfile?.phone||''};}
+  updateAccountUI();
 }
 
 const CART_STORAGE_KEY='hb_cart_v1';
@@ -1152,10 +1157,11 @@ function closeMenu(){closeCart();setHomeState();window.scrollTo({top:0,left:0,be
 (function(){setHomeState();window.addEventListener('pageshow',function(){if(!document.body.classList.contains('hb-menu-open'))setHomeState()});})();
 function openOrderModal(){document.getElementById('orderModal').classList.add('show')}
 function closeOrderModal(){document.getElementById('orderModal').classList.remove('show')}
-function openCart(){document.body.classList.remove('hb-billing-open');document.getElementById('drawer').classList.add('show');document.getElementById('cartView').style.display='block';document.getElementById('billingView').style.display='none';renderCart()}
+function openCart(){checkoutVerifiedEmail='';skipOrderOtpOnce=false;document.body.classList.remove('hb-billing-open');document.getElementById('drawer').classList.add('show');document.getElementById('cartView').style.display='block';document.getElementById('billingView').style.display='none';renderCart()}
 function closeCart(){document.body.classList.remove('hb-billing-open');document.getElementById('drawer').classList.remove('show')}
 function continueShopping(){closeCart();const search=document.getElementById('search');if(search)search.blur();const menu=document.getElementById('menuScreen');if(menu)window.scrollTo({top:menu.offsetTop||0,behavior:'smooth'});}
 let checkoutVerifiedEmail='';
+let skipOrderOtpOnce=false;
 function isCustomerLoggedIn(){return !!(currentUser&&currentUser.email&&(()=>{try{const x=JSON.parse(localStorage.getItem('hb_customer_session')||'null');return !!(x&&x.token&&x.expires_at&&Date.parse(x.expires_at)>Date.now()&&x.email===currentUser.email)}catch(e){return false}})())}
 function prepareCheckoutCustomer(){
   const manual=document.getElementById('checkoutManualCustomerFields');
@@ -1171,11 +1177,11 @@ function prepareCheckoutCustomer(){
     let savedProfile=null;try{savedProfile=JSON.parse(localStorage.getItem('hb_customer_profile')||'null')}catch(e){}
     if(name)name.value=currentProfile?.full_name||savedProfile?.full_name||currentUser.user_metadata?.full_name||currentUser.email.split('@')[0]||'Customer';
     if(phone)phone.value=currentProfile?.phone||savedProfile?.phone||currentUser.user_metadata?.phone||'';
-    checkoutVerifiedEmail='';
-    document.getElementById('checkoutOtpEntry').style.display='none';
+    if(skipOrderOtpOnce){checkoutVerifiedEmail=currentUser.email;skipOrderOtpOnce=false;document.getElementById('checkoutOtpPanel').style.display='none';checkoutOtpStatus('ok','Signup verified. Order confirmation OTP ki zaroorat nahi hai.');}
+    else{checkoutVerifiedEmail='';document.getElementById('checkoutOtpPanel').style.display='block';document.getElementById('checkoutOtpEntry').style.display='none';
     document.getElementById('checkoutOtpCode').value='';
     document.getElementById('checkoutSendOtp').textContent='Send Order Confirmation OTP';
-    checkoutOtpStatus('ok','Account login is active. Order complete karne ke liye ek baar OTP verify karein.');
+    checkoutOtpStatus('ok','Account login active hai. Order complete karne ke liye ek baar OTP verify karein.');}
   }else{
     if(accountEmail)accountEmail.style.display='none';
     document.getElementById('checkoutSendOtp').textContent='Send Email OTP';
@@ -1224,7 +1230,7 @@ async function openBillingAfterCustomerAuth(){
   try{await ensureOrderNumber()}catch(error){console.error('Order number allocation failed:',error);alert('Order number nahi ban saka. Internet check karke dobara try karein.');return}
   document.body.classList.add('hb-billing-open');const drawer=document.getElementById('drawer'),card=document.getElementById('drawerCard');drawer.classList.add('show');document.getElementById('cartView').style.display='none';document.getElementById('billingView').style.display='block';if(card)card.scrollTop=0;prepareCheckoutCustomer();updateBilling();
 }
-function proceedBilling(){if(!cart.length){alert('Cart is empty.');return}pendingAuthPurpose='checkout';closeCart();document.getElementById('authModal').classList.add('show');showLogin();}
+function proceedBilling(){if(!cart.length){alert('Cart is empty.');return}pendingAuthPurpose='checkout';if(isCustomerLoggedIn()){openBillingAfterCustomerAuth();return}closeCart();document.getElementById('authModal').classList.add('show');showLogin();}
 function backToCart(){document.body.classList.remove('hb-billing-open');document.getElementById('billingView').style.display='none';document.getElementById('cartView').style.display='block'}
 
 document.getElementById('menu').addEventListener('click',e=>{const b=e.target.closest('.add');if(!b)return;const n=b.dataset.name,p=Number(b.dataset.price);if(e.target.closest('.minus')){const i=cart.findIndex(x=>x.name===n&&x.price===p);if(i>=0)cart.splice(i,1)}else if(e.target.closest('.plus'))cart.push({name:n,price:p});else{cart.push({name:n,price:p});b.dataset.original=b.textContent}syncCart()});
