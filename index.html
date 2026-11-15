@@ -2200,10 +2200,13 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
     },{enableHighAccuracy:true,timeout:25000,maximumAge:0});
   });
   confirmBtn.addEventListener('click',function(){
-    const a=addressEl.value.trim(),p=pinEl.value.trim();
-    if(a.length<8){showStatus(confirmStatus,'Enter a complete house/street/area address.','bad');return}
+    const area=addressEl.value.trim(),house=document.getElementById('deliveryHouseNo')?.value.trim()||'',landmark=document.getElementById('deliveryLandmark')?.value.trim()||'',p=pinEl.value.trim();
+    if(area.length<4){showStatus(confirmStatus,'Please enter or locate your area / colony / city.','bad');return}
+    if(!house){showStatus(confirmStatus,'Please enter your house, flat or shop number.','bad');return}
     if(!/^\d{6}$/.test(p)){showStatus(confirmStatus,'Enter and verify the correct 6-digit PIN code.','bad');return}
-    window.hbDeliveryAddressConfirmed=true;showStatus(confirmStatus,'✓ Address and PIN confirmed by you.','ok');
+    window.hbDeliveryAddressConfirmed=true;
+    window.hbConfirmedDeliveryAddress=[house,landmark,area].filter(Boolean).join(', ');
+    showStatus(confirmStatus,'✓ Address confirmed. House number and landmark included.','ok');
     if(typeof saveCheckout==='function')saveCheckout();if(typeof updateBilling==='function')updateBilling();
   });
 })();
