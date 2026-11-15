@@ -2161,120 +2161,108 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
 
 </style>
 
-<!-- HAKKABAKKA DELIVERY LOCATION: Browser GPS + Photon (OpenStreetMap) -->
+<!-- HAKKABAKKA DELIVERY LOCATION: GPS + structured OpenStreetMap reverse geocoding -->
 <script>
 (function(){
-  const addressEl=document.getElementById('address');
-  const pinEl=document.getElementById('pincode');
-  const locateBtn=document.getElementById('hbUseLocation');
-  const confirmBtn=document.getElementById('hbConfirmAddress');
-  const mapStatus=document.getElementById('hbMapLocationStatus');
-  const confirmStatus=document.getElementById('hbAddressConfirmStatus');
+  const addressEl=document.getElementById('address'),pinEl=document.getElementById('pincode');
+  const locateBtn=document.getElementById('hbUseLocation'),confirmBtn=document.getElementById('hbConfirmAddress');
+  const mapStatus=document.getElementById('hbMapLocationStatus'),confirmStatus=document.getElementById('hbAddressConfirmStatus');
   if(!addressEl||!pinEl||!locateBtn||!confirmBtn)return;
   window.hbDeliveryAddressConfirmed=false;
-  function showStatus(el,message,type){
-    el.textContent=message;
-    el.className='delivery-status show '+(type||'');
-  }
-  function resetConfirmation(){
-    window.hbDeliveryAddressConfirmed=false;
-    if(confirmStatus){confirmStatus.className='delivery-status';confirmStatus.textContent=''}
-    if(typeof updateBilling==='function')updateBilling();
-  }
-  addressEl.addEventListener('input',function(){
-    resetConfirmation();
-    if(typeof saveCheckout==='function')saveCheckout();
-  });
-  pinEl.addEventListener('input',function(){
-    resetConfirmation();
-  });
+  function showStatus(el,message,type){el.textContent=message;el.className='delivery-status show '+(type||'')}
+  function resetConfirmation(){window.hbDeliveryAddressConfirmed=false;if(confirmStatus){confirmStatus.className='delivery-status';confirmStatus.textContent=''}if(typeof updateBilling==='function')updateBilling()}
+  addressEl.addEventListener('input',function(){resetConfirmation();if(typeof saveCheckout==='function')saveCheckout()});
+  pinEl.addEventListener('input',function(){resetConfirmation()});
   locateBtn.addEventListener('click',function(){
-    if(!navigator.geolocation){
-      showStatus(mapStatus,'This browser does not support location. Please enter your address manually.','bad');return;
-    }
-    locateBtn.disabled=true;locateBtn.textContent='Finding your location…';
-    showStatus(mapStatus,'Please allow location access when your browser asks.','');
+    if(!navigator.geolocation){showStatus(mapStatus,'GPS is not supported. Please enter your address manually.','bad');return}
+    locateBtn.disabled=true;locateBtn.textContent='Finding your location…';showStatus(mapStatus,'Allow location access. Getting a precise GPS fix…','');
     navigator.geolocation.getCurrentPosition(async function(position){
       try{
-        const lat=position.coords.latitude,lon=position.coords.longitude;
-        const url='https://photon.komoot.io/reverse?lat='+encodeURIComponent(lat)+'&lon='+encodeURIComponent(lon)+'&lang=en';
-        const response=await fetch(url,{headers:{'Accept':'application/json'}});
-        if(!response.ok)throw new Error('Address lookup service is temporarily unavailable.');
-        const data=await response.json();
-        const p=data&&data.features&&data.features[0]&&data.features[0].properties;
-        if(!p)throw new Error('Could not find a street address here. Please type it manually.');
-        const parts=[p.name,p.housenumber&&p.street?null:p.street,p.housenumber&&p.street?p.housenumber+' '+p.street:null,p.suburb||p.district||p.city,p.city&&p.city!==(p.suburb||p.district)?p.city:null,p.state,p.country].filter(Boolean);
-        addressEl.value=[...new Set(parts)].join(', ');
-        if(p.postcode)pinEl.value=String(p.postcode).replace(/\\D/g,'').slice(0,6);
+        const result=await window.hbReverseGeocode(position.coords.latitude,position.coords.longitude);
+        addressEl.value=result.address;
+        pinEl.value=result.postcode||'';
         resetConfirmation();
-        showStatus(mapStatus,'Location found. Please check/edit the address and PIN code, then confirm below.','ok');
+        const accuracy=Math.round(position.coords.accuracy||0);
+        const note=accuracy>100?' GPS accuracy is approximately '+accuracy+' metres; please verify the street and PIN carefully.':'';
+        showStatus(mapStatus,result.postcode?'Address lookup complete. Verify the street and PIN code before confirming.'+note:'Street/locality found, but no reliable PIN code was returned. Please enter and verify it manually.'+note,result.postcode?'ok':'bad');
         if(typeof saveCheckout==='function')saveCheckout();
-      }catch(error){
-        showStatus(mapStatus,error.message||'Could not convert location to address. Please enter it manually.','bad');
-      }finally{
-        locateBtn.disabled=false;locateBtn.textContent='📍 Use My Current Location';
-        if(typeof updateBilling==='function')updateBilling();
-      }
+      }catch(error){showStatus(mapStatus,error.message||'Could not verify this location. Please enter the address and PIN manually.','bad')}
+      finally{locateBtn.disabled=false;locateBtn.textContent='📍 Use My Current Location';if(typeof updateBilling==='function')updateBilling()}
     },function(error){
-      let message='Location permission was not granted. You can enter the address manually.';
-      if(error&&error.code===error.TIMEOUT)message='Location request timed out. Please try again or enter the address manually.';
-      if(error&&error.code===error.POSITION_UNAVAILABLE)message='Your location is unavailable. Check GPS and try again.';
-      showStatus(mapStatus,message,'bad');
-      locateBtn.disabled=false;locateBtn.textContent='📍 Use My Current Location';
-    },{enableHighAccuracy:true,timeout:15000,maximumAge:60000});
+      let msg='Location permission was denied. Enter the address manually or allow location access.';
+      if(error&&error.code===error.TIMEOUT)msg='GPS timed out. Turn on device Location and try again.';
+      if(error&&error.code===error.POSITION_UNAVAILABLE)msg='GPS location is unavailable. Check device Location settings and retry.';
+      showStatus(mapStatus,msg,'bad');locateBtn.disabled=false;locateBtn.textContent='📍 Use My Current Location';
+    },{enableHighAccuracy:true,timeout:25000,maximumAge:0});
   });
   confirmBtn.addEventListener('click',function(){
-    const address=addressEl.value.trim(),postcode=pinEl.value.trim();
-    if(address.length<8){showStatus(confirmStatus,'Please enter a complete delivery address.','bad');return}
-    if(!/^\\d{6}$/.test(postcode)){showStatus(confirmStatus,'Please enter a valid 6-digit PIN code.','bad');return}
-    window.hbDeliveryAddressConfirmed=true;
-    showStatus(confirmStatus,'✓ Address confirmed. You can still edit it; editing will require confirmation again.','ok');
-    if(typeof saveCheckout==='function')saveCheckout();
-    if(typeof updateBilling==='function')updateBilling();
+    const a=addressEl.value.trim(),p=pinEl.value.trim();
+    if(a.length<8){showStatus(confirmStatus,'Enter a complete house/street/area address.','bad');return}
+    if(!/^\d{6}$/.test(p)){showStatus(confirmStatus,'Enter and verify the correct 6-digit PIN code.','bad');return}
+    window.hbDeliveryAddressConfirmed=true;showStatus(confirmStatus,'✓ Address and PIN confirmed by you.','ok');
+    if(typeof saveCheckout==='function')saveCheckout();if(typeof updateBilling==='function')updateBilling();
   });
 })();
 </script>
 
-
-<!-- NEW SIGNUP LOCATION AUTOFILL: browser GPS + Photon / OpenStreetMap -->
+<!-- Shared reverse geocoder: prefer structured Nominatim address; Photon fallback -->
 <script>
 (function(){
-  const btn=document.getElementById('hbSignupUseLocation');
-  const address=document.getElementById('signupAddress');
-  const postcode=document.getElementById('signupPincode');
-  const status=document.getElementById('hbSignupLocationStatus');
+  function clean(parts){return [...new Set(parts.filter(Boolean).map(x=>String(x).trim()).filter(x=>x&&!/^(office|building|yes|residential|house)$/i.test(x)))].join(', ')}
+  window.hbReverseGeocode=async function(lat,lon){
+    let nominatimError=null;
+    try{
+      const u='https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&zoom=18&lat='+encodeURIComponent(lat)+'&lon='+encodeURIComponent(lon);
+      const r=await fetch(u,{headers:{'Accept':'application/json'}});if(!r.ok)throw new Error('Nominatim HTTP '+r.status);
+      const d=await r.json(),a=d.address||{};
+      const locality=a.suburb||a.neighbourhood||a.residential||a.city_district||a.town||a.city||a.village||a.county;
+      const city=a.city||a.town||a.village||a.municipality;
+      const line=clean([a.house_number,a.road||a.pedestrian||a.footway||a.path,locality,city&&city!==locality?city:null,a.state]);
+      const postcode=(a.postcode||'').replace(/\D/g,'').slice(0,6);
+      if(line.length>=5)return {address:line,postcode:postcode};
+      nominatimError=new Error('No street-level address returned');
+    }catch(e){nominatimError=e}
+    try{
+      const u='https://photon.komoot.io/reverse?lat='+encodeURIComponent(lat)+'&lon='+encodeURIComponent(lon)+'&lang=en';
+      const r=await fetch(u,{headers:{'Accept':'application/json'}});if(!r.ok)throw new Error('Photon HTTP '+r.status);
+      const d=await r.json(),p=d&&d.features&&d.features[0]&&d.features[0].properties;
+      if(!p)throw new Error('No address result');
+      const locality=p.suburb||p.district||p.city||p.county;
+      const line=clean([p.housenumber&&p.street?p.housenumber+' '+p.street:p.street,locality,p.city&&p.city!==locality?p.city:null,p.state]);
+      const postcode=(p.postcode||'').replace(/\D/g,'').slice(0,6);
+      if(line.length>=5)return {address:line,postcode:postcode};
+    }catch(e){throw new Error('Address lookup failed. Please enter your street/area and PIN code manually.')}
+    throw new Error('No reliable street address was found for these GPS coordinates. Please enter the correct address and PIN manually.');
+  };
+})();
+</script>
+
+<!-- NEW SIGNUP LOCATION AUTOFILL: GPS + structured OpenStreetMap reverse geocoding -->
+<script>
+(function(){
+  const btn=document.getElementById('hbSignupUseLocation'),address=document.getElementById('signupAddress');
+  const postcode=document.getElementById('signupPincode'),status=document.getElementById('hbSignupLocationStatus');
   if(!btn||!address||!postcode||!status)return;
-  postcode.addEventListener('input',function(){postcode.value=postcode.value.replace(/\\D/g,'').slice(0,6)});
+  postcode.addEventListener('input',function(){postcode.value=postcode.value.replace(/\D/g,'').slice(0,6)});
   btn.addEventListener('click',function(){
-    if(!navigator.geolocation){status.textContent='This browser does not support GPS. Please enter your address manually.';status.className='delivery-status show bad';return}
-    btn.disabled=true;btn.textContent='Finding your location…';
-    status.textContent='Please allow location access when your browser asks.';status.className='delivery-status show';
+    if(!navigator.geolocation){status.textContent='GPS is not supported. Please enter your address manually.';status.className='delivery-status show bad';return}
+    btn.disabled=true;btn.textContent='Finding your location…';status.textContent='Allow location access. Getting a precise GPS fix…';status.className='delivery-status show';
     navigator.geolocation.getCurrentPosition(async function(position){
       try{
-        const lat=position.coords.latitude,lon=position.coords.longitude;
-        const url='https://photon.komoot.io/reverse?lat='+encodeURIComponent(lat)+'&lon='+encodeURIComponent(lon)+'&lang=en';
-        const response=await fetch(url,{headers:{'Accept':'application/json'}});
-        if(!response.ok)throw new Error('Address lookup is temporarily unavailable. Please type your address.');
-        const data=await response.json();
-        const p=data&&data.features&&data.features[0]&&data.features[0].properties;
-        if(!p)throw new Error('No address found at this location. Please enter it manually.');
-        const locality=p.suburb||p.district||p.city||p.county;
-        const parts=[p.housenumber&&p.street?p.housenumber+' '+p.street:(p.name||p.street),locality,p.city&&p.city!==locality?p.city:null,p.state,p.postcode,p.country].filter(Boolean);
-        address.value=[...new Set(parts)].join(', ');
-        if(p.postcode)postcode.value=String(p.postcode).replace(/\\D/g,'').slice(0,6);
-        status.textContent='✓ Location found. Check and edit your address and PIN code before signup.';
-        status.className='delivery-status show ok';
-      }catch(error){
-        status.textContent=error.message||'Could not find address. Please enter it manually.';
-        status.className='delivery-status show bad';
-      }finally{btn.disabled=false;btn.textContent='📍 Use My Current Location'}
+        const result=await window.hbReverseGeocode(position.coords.latitude,position.coords.longitude);
+        address.value=result.address;postcode.value=result.postcode||'';
+        const accuracy=Math.round(position.coords.accuracy||0);
+        const note=accuracy>100?' GPS accuracy is approximately '+accuracy+' metres; please verify the address and PIN carefully.':'';
+        status.textContent=result.postcode?'Address lookup complete. Please verify the street and PIN before signup.'+note:'Street/locality found, but no reliable PIN code was returned. Enter it manually.'+note;
+        status.className='delivery-status show '+(result.postcode?'ok':'bad');
+      }catch(error){status.textContent=error.message||'Could not verify this location. Please type your address and PIN manually.';status.className='delivery-status show bad'}
+      finally{btn.disabled=false;btn.textContent='📍 Use My Current Location'}
     },function(error){
-      let msg='Location permission was denied. You can type your address manually.';
-      if(error&&error.code===error.TIMEOUT)msg='Location request timed out. Please try again.';
-      if(error&&error.code===error.POSITION_UNAVAILABLE)msg='Location unavailable. Check your phone GPS and try again.';
-      status.textContent=msg;status.className='delivery-status show bad';
-      btn.disabled=false;btn.textContent='📍 Use My Current Location';
-    },{enableHighAccuracy:true,timeout:15000,maximumAge:60000});
+      let msg='Location permission denied. Please allow GPS access or enter the address manually.';
+      if(error&&error.code===error.TIMEOUT)msg='GPS timed out. Turn on device Location and try again.';
+      if(error&&error.code===error.POSITION_UNAVAILABLE)msg='GPS location unavailable. Check device Location settings and retry.';
+      status.textContent=msg;status.className='delivery-status show bad';btn.disabled=false;btn.textContent='📍 Use My Current Location';
+    },{enableHighAccuracy:true,timeout:25000,maximumAge:0});
   });
 })();
 </script>
