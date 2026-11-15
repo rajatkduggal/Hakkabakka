@@ -25,10 +25,3 @@ Keep both D1 bindings configured. Menu price and availability changes made in th
 ## Abuse controls
 
 The public order endpoints use D1-backed per-client rate limits keyed by a SHA-256 hash of Cloudflare's connecting IP: 10 order submissions and 30 order-number allocations per 10-minute window. Raw IP addresses are not stored in the rate-limit key.
-
-## Mappls reverse geocoding
-
-- `GET /location/reverse-geocode?lat=<latitude>&lng=<longitude>` — resolves GPS coordinates into a formatted delivery address and pincode.
-- Configure the Cloudflare Worker secret `MAPPLS_API_KEY` with the Static Key from the Mappls Console. Never add the key to GitHub or frontend JavaScript.
-- Enable Reverse Geocoding API allocation for this Web/Cloud application in Mappls Console. Mappls may reject requests until API access and key restrictions are correctly configured.
-- The endpoint applies a D1-backed rate limit of 30 location lookups per client per 10 minutes.
