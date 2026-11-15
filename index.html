@@ -1592,7 +1592,7 @@ async function sendOrderToPOS(){
     source:'ONLINE',
     order_type:type,
     customer_name:document.getElementById('customerName').value.trim(),
-    customer_email:document.getElementById('customerEmail').value.trim().toLowerCase(),
+    customer_email:(()=>{let saved=null;try{saved=JSON.parse(localStorage.getItem('hb_customer_session')||'null')}catch(e){}return String(checkoutVerifiedEmail||(isCustomerLoggedIn()?currentUser.email:'')||saved?.email||document.getElementById('customerEmail').value||'').trim().toLowerCase()})(),
     customer_phone:normalizePhone(document.getElementById('customerPhone').value),
     address:type==='Home Delivery'?document.getElementById('address').value.trim():null,
     pincode:type==='Home Delivery'?pin():null,
@@ -1609,6 +1609,14 @@ async function sendOrderToPOS(){
   const res=await fetch(CLOUDFLARE_ORDERS_API+'/orders/online',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),cache:'no-store'});
   const data=await res.json().catch(()=>null);
   if(!res.ok||!data?.success)throw new Error(data?.message||'Order could not be saved in Cloudflare database');
+  if(!data.email_sent){
+    try{
+      const retry=await fetch(CLOUDFLARE_ORDERS_API+'/orders/resend-confirmation',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({order_no:currentOrderNo,mobile:normalizePhone(document.getElementById('customerPhone').value)}),cache:'no-store'});
+      const retryData=await retry.json().catch(()=>({}));
+      if(retry.ok&&retryData.success)data.email_sent=true;
+      else data.email_message=retryData.message||data.email_message||'Confirmation email pending; order is saved.';
+    }catch(e){data.email_message='Order saved; confirmation email will need retry.';}
+  }
   return data;
 }
 document.getElementById('waSend').onclick=async()=>{
@@ -1622,7 +1630,10 @@ document.getElementById('waSend').onclick=async()=>{
   if(!updateVerificationUI()){setPaymentCheck('bad','Payment verification required hai','Payment screenshot verify hona zaroori hai.');return showOrderError('Verified payment screenshot required hai. / Please complete payment verification first.',paymentScreenshot);}
   let extra='';if(type==='Home Delivery'&&!paymentTestMode){const p=pin(),a=document.getElementById('address').value.trim();if(!a)return showOrderError('Delivery address likhein. / Please enter the delivery address.',document.getElementById('address'));const deliveryStatus=deliveryPinStatus();if(!deliveryStatus.valid)return showOrderError(deliveryStatus.message,document.getElementById('pincode'));extra='\nPincode: '+p+'\nAddress: '+a}
   if(!paymentTestMode&&supabaseClient&&currentUser){try{await saveOrderToSupabase()}catch(error){console.warn('Optional customer order history save failed; Cloudflare D1 remains the primary order archive.',error)}}
-  try{await sendOrderToPOS()}catch(error){console.error('POS sync:',error);return showOrderError((error&&error.message)||'POS se connection nahi ho saka. / Order POS mein save nahi hua, isliye WhatsApp order send nahi kiya gaya. Please try again.');}
+  let savedOrderResult;
+  try{savedOrderResult=await sendOrderToPOS()}catch(error){console.error('POS sync:',error);return showOrderError((error&&error.message)||'POS se connection nahi ho saka. / Order POS mein save nahi hua, isliye WhatsApp order send nahi kiya gaya. Please try again.');}
+  if(savedOrderResult?.email_sent){setPaymentCheck('ok','✅ Order saved and confirmation email sent','Order '+currentOrderNo+' confirmation and tracking link sent to '+(checkoutVerifiedEmail||currentUser?.email||document.getElementById('customerEmail').value)+'.');}
+  else{setPaymentCheck('bad','Order saved — confirmation email pending',savedOrderResult?.email_message||'Please contact HakkaBakka if the email does not arrive.');}
   if(paymentTestMode){
     const msg='*HAKKA BAKKA ₹2 PAYMENT TEST*\n*TEST ORDER: '+currentOrderNo+'*\n\n₹2 payment screenshot verified.\nPOS test endpoint validated and rolled back.\n\nName: '+name+'\nMobile: '+phone+'\n\nPlease confirm receipt of this ₹2 test.';
     clearCart();
