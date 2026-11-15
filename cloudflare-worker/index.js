@@ -57,6 +57,31 @@ export default {
         return reply(request, { success: true, service: "hb-orders-api", database: "connected", menu_database: "connected", count: Number(row?.count || 0), published_menu_count: Number(menu?.count || 0) });
       } catch { return reply(request, { success: false, message: "Database check failed" }, 500); }
     }
+    if (request.method === "GET" && url.pathname === "/location/reverse-geocode") {
+      const lat = Number(url.searchParams.get("lat"));
+      const lng = Number(url.searchParams.get("lng"));
+      if (!Number.isFinite(lat) || !Number.isFinite(lng) || Math.abs(lat) > 90 || Math.abs(lng) > 180) return reply(request, { success: false, message: "Valid latitude and longitude are required" }, 400);
+      if (!env.MAPPLS_API_KEY) return reply(request, { success: false, message: "Mappls API key is not configured on the server" }, 503);
+      try {
+        if (await isRateLimited(env, request, "mappls-reverse", 30, 600)) return reply(request, { success: false, message: "Location lookup limit reached. Please try again shortly." }, 429);
+        const mapplsUrl = new URL("https://search.mappls.com/search/address/rev-geocode");
+        mapplsUrl.searchParams.set("lat", String(lat));
+        mapplsUrl.searchParams.set("lng", String(lng));
+        mapplsUrl.searchParams.set("access_token", env.MAPPLS_API_KEY);
+        const upstream = await fetch(mapplsUrl.toString(), { method: "GET", headers: { "Accept": "application/json" } });
+        const payload = await upstream.json().catch(() => null);
+        if (!upstream.ok) {
+          console.error("Mappls reverse geocoding failed", upstream.status);
+          return reply(request, { success: false, message: upstream.status === 403 ? "Mappls access denied. Check API allocation and key restrictions." : upstream.status === 401 ? "Mappls rejected the API key." : "Mappls could not find this location right now." }, upstream.status === 429 ? 429 : 502);
+        }
+        const result = Array.isArray(payload?.results) ? payload.results[0] : null;
+        if (!result) return reply(request, { success: false, message: "No address found for this location." }, 404);
+        return reply(request, { success: true, address: { formatted_address: result.formatted_address || "", houseNumber: result.houseNumber || "", houseName: result.houseName || "", poi: result.poi || "", street: result.street || "", subLocality: result.subLocality || "", locality: result.locality || "", village: result.village || "", city: result.city || "", district: result.district || "", state: result.state || "", pincode: result.pincode || "" } });
+      } catch (error) {
+        console.error("Mappls reverse geocoding request failed");
+        return reply(request, { success: false, message: "Location lookup is temporarily unavailable." }, 502);
+      }
+    }
     if (request.method === "POST" && url.pathname === "/orders/next-number") {
       try {
         let p = {};
