@@ -349,6 +349,7 @@ function hideHbComingSoon(){document.querySelectorAll('.hb-coming').forEach(func
           <div style="font-weight:900;color:#7b1113;margin-bottom:5px">📍 Delivery Address (Optional)</div>
           <button class="drawer-action" type="button" id="hbSignupUseLocation" style="margin:6px 0;background:#176b43">📍 Use My Current Location</button>
           <div id="hbSignupLocationStatus" class="delivery-status" role="status" aria-live="polite"></div>
+          <div id="hbSignupLocationDiagnostic" style="display:none;margin:8px 0;padding:10px;border:1px solid #d9d9d9;border-radius:10px;background:#f5f7fa;font-size:12px;line-height:1.6"></div>
           <textarea class="field" id="signupAddress" rows="2" placeholder="House / Street / Area / City (editable)" autocomplete="street-address"></textarea>
           <input class="field" id="signupPincode" type="text" inputmode="numeric" maxlength="6" placeholder="6-digit PIN Code" autocomplete="postal-code">
           <small style="display:block;color:#777;font-size:11px;margin-top:6px">You can edit this address later in checkout. Map data © OpenStreetMap contributors.</small>
@@ -473,6 +474,7 @@ function hideHbComingSoon(){document.querySelectorAll('.hb-coming').forEach(func
         <div id="deliveryFields" style="display:none">
           <button type="button" class="drawer-action" id="hbUseLocation" style="margin:8px 0;background:#176b43">📍 Use My Current Location</button>
           <div id="hbMapLocationStatus" class="delivery-status" role="status" aria-live="polite"></div>
+          <div id="hbDeliveryLocationDiagnostic" style="display:none;margin:8px 0;padding:10px;border:1px solid #d9d9d9;border-radius:10px;background:#f5f7fa;font-size:12px;line-height:1.6"></div>
           <textarea class="field billing-field" id="address" rows="3" placeholder="Delivery Address (editable)" autocomplete="street-address"></textarea>
           <input class="field billing-field" id="pincode" placeholder="6-digit Pincode" maxlength="6" inputmode="numeric" autocomplete="postal-code">
           <button type="button" class="drawer-action secondary" id="hbConfirmAddress" style="margin-top:8px">Confirm Delivery Address</button>
@@ -2178,6 +2180,7 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
     locateBtn.disabled=true;locateBtn.textContent='Finding your location…';showStatus(mapStatus,'Allow location access. Getting a precise GPS fix…','');
     navigator.geolocation.getCurrentPosition(async function(position){
       try{
+        window.hbShowLocationDiagnostic('hbDeliveryLocationDiagnostic',position);
         const result=await window.hbReverseGeocode(position.coords.latitude,position.coords.longitude);
         addressEl.value=result.address;
         pinEl.value=result.postcode||'';
@@ -2189,6 +2192,7 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
       }catch(error){showStatus(mapStatus,error.message||'Could not verify this location. Please enter the address and PIN manually.','bad')}
       finally{locateBtn.disabled=false;locateBtn.textContent='📍 Use My Current Location';if(typeof updateBilling==='function')updateBilling()}
     },function(error){
+      window.hbShowLocationDiagnostic('hbDeliveryLocationDiagnostic',null,error&&error.message||'Browser did not return coordinates');
       let msg='Location permission was denied. Enter the address manually or allow location access.';
       if(error&&error.code===error.TIMEOUT)msg='GPS timed out. Turn on device Location and try again.';
       if(error&&error.code===error.POSITION_UNAVAILABLE)msg='GPS location is unavailable. Check device Location settings and retry.';
@@ -2242,6 +2246,25 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
 })();
 </script>
 
+<!-- GPS DIAGNOSTICS -->
+<script>
+(function(){
+  window.hbShowLocationDiagnostic=function(id,position,errorText){
+    const el=document.getElementById(id);if(!el)return;
+    el.style.display='block';
+    if(!position){el.textContent='GPS diagnostic: '+(errorText||'Location data unavailable');return}
+    const c=position.coords||{},lat=Number(c.latitude),lon=Number(c.longitude);
+    const accuracy=Number.isFinite(c.accuracy)?Math.round(c.accuracy):'Unavailable';
+    const timestamp=position.timestamp?new Date(position.timestamp).toLocaleString():'Unavailable';
+    const altitude=Number.isFinite(c.altitude)?Math.round(c.altitude)+' m':'Unavailable';
+    const heading=Number.isFinite(c.heading)?Math.round(c.heading)+'°':'Unavailable';
+    const speed=Number.isFinite(c.speed)?(c.speed*3.6).toFixed(1)+' km/h':'Unavailable';
+    const mapUrl=Number.isFinite(lat)&&Number.isFinite(lon)?'https://www.google.com/maps?q='+encodeURIComponent(lat+','+lon):'';
+    el.innerHTML='<strong>📡 Phone GPS Diagnostic</strong><br>Latitude: '+lat.toFixed(6)+'<br>Longitude: '+lon.toFixed(6)+'<br>Accuracy: ±'+accuracy+' metres<br>Location time: '+timestamp+'<br>Altitude: '+altitude+'<br>Heading: '+heading+'<br>Speed: '+speed+(mapUrl?'<br><a href="'+mapUrl+'" target="_blank" rel="noopener">View these exact coordinates on map</a>':'');
+  };
+})();
+</script>
+
 <!-- NEW SIGNUP LOCATION AUTOFILL: GPS + structured OpenStreetMap reverse geocoding -->
 <script>
 (function(){
@@ -2254,6 +2277,7 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
     btn.disabled=true;btn.textContent='Finding your location…';status.textContent='Allow location access. Getting a precise GPS fix…';status.className='delivery-status show';
     navigator.geolocation.getCurrentPosition(async function(position){
       try{
+        window.hbShowLocationDiagnostic('hbSignupLocationDiagnostic',position);
         const accuracy=Math.round(position.coords.accuracy||0);
         if(accuracy>50)throw new Error('Your phone GPS is only accurate to about '+accuracy+' metres. Turn on Precise Location and try again; no address or PIN was filled.');
         const result=await window.hbReverseGeocode(position.coords.latitude,position.coords.longitude);
@@ -2263,6 +2287,7 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
       }catch(error){status.textContent=error.message||'Could not verify this location. Please type your address and PIN manually.';status.className='delivery-status show bad'}
       finally{btn.disabled=false;btn.textContent='📍 Use My Current Location'}
     },function(error){
+      window.hbShowLocationDiagnostic('hbSignupLocationDiagnostic',null,error&&error.message||'Browser did not return coordinates');
       let msg='Location permission denied. Please allow GPS access or enter the address manually.';
       if(error&&error.code===error.TIMEOUT)msg='GPS timed out. Turn on device Location and try again.';
       if(error&&error.code===error.POSITION_UNAVAILABLE)msg='GPS location unavailable. Check device Location settings and retry.';
