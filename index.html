@@ -258,91 +258,60 @@ body{background:var(--hb-cream)}
 <script>document.documentElement.classList.add("hb-v34");</script>
 
 <!-- SINGLE PROFESSIONAL WELCOME PAGE -->
-<div id="home" class="home">
-  <section class="hero">
-    <div class="hero-slides" id="heroSlides">
-      <img class="active" src="images/paneer butter masala.jpg" alt="Paneer Butter Masala" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/paneer%20butter%20masala.jpg'">
-      <img src="images/dal makhani.jpg" alt="Dal Makhani" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/dal%20makhani.jpg'">
-      <img src="sweetlassi.png" alt="Sweet Lassi" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/sweetlassi.png'">
-      <img src="mojitoo.png" alt="Refreshing Mojito" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/mojitoo.png'">
-      <img src="images/chilli mushroom.jpg" alt="Chilli Mushroom" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chilli%20mushroom.jpg'">
-      <img src="guava-mojito.jpg" alt="Guava Mojito" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/guava-mojito.jpg'">
-      <img src="images/butter chicken.jpg" alt="Butter Chicken" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20chicken.jpg'">
-      <img src="sweetlassi.jpg" alt="Sweet Lassi" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/sweetlassi.jpg'">
-      <img src="images/honey chilli potato.jpg" alt="Honey Chilli Potato" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/honey%20chilli%20potato.jpg'">
-      <img src="chach.png" alt="Masala Chach" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/chach.png'">
-      <img src="images/tari wala mutton 2pc.jpg" alt="Tari Wala Mutton" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/tari%20wala%20mutton%202pc.jpg'">
-      <img src="images/butter naan.jpg" alt="Butter Naan" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20naan.jpg'">
-    </div>
-    <div class="hero-top">
-      <div class="brand"><img src="newlogo.jpg" alt="Hakka Bakka Logo" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/newlogo.jpg'"><span>Hakka Bakka<br>Punjabi Dhaba</span></div>
-      <button class="hero-order-mini" onclick="openOrderModal()">Order Now</button>
-    </div>
-    <div class="hero-copy">
-      <span class="eyebrow">🔥 Desi Swad • Modern Vibe</span>
-      <h1>Hakka Bakka</h1>
-      <p>Authentic Punjabi taste, tandoori favourites & hearty family meals.</p>
-      <div class="hero-actions"><button class="btn btn-primary" type="button" onclick="openOrderModal()">🛍️ Online Order</button></div>
-    </div>
-    <div class="hero-dots" id="heroDots"></div>
+<!-- HAKKABAKKA THREE-EXPERIENCE HOMEPAGE REDESIGN -->
+<div id="home" class="home hb-modern-home">
+  <header class="hb-sitebar">
+    <button class="hb-menu-icon" type="button" aria-label="Open menu" onclick="openOrderModal()">☰</button>
+    <a class="hb-logo" href="#home">Hakka<span>Bakka</span><small>Desi Swad, Modern Vibe</small></a>
+    <label class="hb-search"><span>⌕</span><input type="search" placeholder="Search food, groceries & more…" onkeydown="if(event.key==='Enter'){openOrderModal()}"></label>
+    <button class="hb-account" type="button" aria-label="Customer account" onclick="openAuth()">♙</button>
+    <button class="hb-bag" type="button" aria-label="Open bag" onclick="openCart()">🛒</button>
+  </header>
+  <section class="hb-welcome">
+    <div class="hb-leaf hb-leaf-left">✦</div><div class="hb-leaf hb-leaf-right">✦</div>
+    <div class="hb-welcome-kicker">WELCOME TO</div>
+    <h1>Hakka<span>Bakka</span></h1>
+    <div class="hb-chef">♨</div>
+    <div class="hb-ribbon">ONE BRAND <i>•</i> THREE EXPERIENCES</div>
+    <p>What would you like to explore today?</p>
   </section>
-
-
-  <div class="wrap">
-    <div class="quick" aria-label="Quick menu categories">
-      <button class="quick-card" type="button" onclick="goToMenuCategory('Indian Veg Main Course')"><img class="qphoto" src="images/paneer butter masala.jpg" alt=""><b>Punjabi Veg</b></button>
-      <button class="quick-card" type="button" onclick="goToMenuCategory('Tandoori Veg')"><img class="qphoto" src="images/paneer malai tikka.jpg" alt=""><b>Tandoori</b></button>
-      <button class="quick-card" type="button" onclick="goToMenuCategory('Indian Non-Veg Main Course')"><img class="qphoto" src="muttonrogan.jpg" alt="Mutton" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/tari%20wala%20mutton.jpg'"><b>Non-Veg</b></button>
-      <button class="quick-card" type="button" onclick="goToMenuCategory('Chinese Veg & Veg Snacks')"><img class="qphoto" src="images/chilli mushroom.jpg" alt=""><b>Chinese</b></button>
-      <button class="quick-card" type="button" onclick="goToMenuCategory('Chapati / Breads / Kulcha')"><img class="qphoto" src="images/butter naan.jpg" alt="Butter Naan" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/plain%20naan.jpg'"><b>Breads</b></button>
-      <button class="quick-card" type="button" onclick="goToMenuCategory('Drinks')"><img class="qphoto" src="guava-mojito.jpg" alt="Drinks" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/sweetlassi.png'"><b>Drinks</b></button>
-    </div>
-
-    <section class="section">
-      <div class="section-head"><span class="label">From our kitchen</span><h2>Hakka Bakka Favourites</h2><p>A visual taste of the dishes customers come for — rich Punjabi gravies, tandoori favourites, Indo-Chinese bites and refreshing sides.</p></div>
-      <div class="feature-grid">
-        <article class="feature"><div class="feature-media"><img src="images/butter chicken.jpg" alt="Butter Chicken" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20chicken.jpg'"><span class="feature-badge">NON-VEG • SIGNATURE</span></div><div class="feature-body"><h3>Butter Chicken</h3><p>Rich, buttery North Indian gravy with tender chicken.</p></div></article>
-        <article class="feature"><div class="feature-media"><img src="images/chicken kali mirch.jpg" alt="Chicken Kali Mirch" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chicken%20kali%20mirch.jpg'"><span class="feature-badge">NON-VEG • FAVOURITE</span></div><div class="feature-body"><h3>Chicken Kali Mirch</h3><p>Creamy black-pepper chicken with bold aroma.</p></div></article>
-        <article class="feature"><div class="feature-media"><img src="images/chilli mushroom.jpg" alt="Chilli Mushroom" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chilli%20mushroom.jpg'"><span class="feature-badge">VEG • INDO-CHINESE</span></div><div class="feature-body"><h3>Chilli Mushroom</h3><p>Mushrooms, peppers and onion in a spicy glaze.</p></div></article>
-        <article class="feature"><div class="feature-media"><img src="images/honey chilli potato.jpg" alt="Honey Chilli Potato" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/honey%20chilli%20potato.jpg'"><span class="feature-badge">VEG • CRISPY</span></div><div class="feature-body"><h3>Honey Chilli Potato</h3><p>Crispy potato tossed in sweet-spicy honey chilli.</p></div></article>
-        <article class="feature"><div class="feature-media"><img src="images/dal makhani.jpg" alt="Dal Makhani" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/dal%20makhani.jpg'"><span class="feature-badge">VEG • PUNJABI</span></div><div class="feature-body"><h3>Dal Makhani</h3><p>Slow-cooked creamy black lentils with desi flavour.</p></div></article>
-        <article class="feature"><div class="feature-media"><img src="images/tari wala mutton 2pc.jpg" alt="Tari Wala Mutton" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/tari%20wala%20mutton%202pc.jpg'"><span class="feature-badge">NON-VEG • PUNJABI</span></div><div class="feature-body"><h3>Tari Wala Mutton</h3><p>Slow-cooked mutton in a rich Punjabi tari.</p></div></article>
-        <article class="feature"><div class="feature-media"><img src="images/butter naan.jpg" alt="Butter Naan" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20naan.jpg'"><span class="feature-badge">TANDOOR • BREAD</span></div><div class="feature-body"><h3>Butter Naan</h3><p>Soft tandoori naan finished with butter.</p></div></article>
-        <article class="feature"><div class="feature-media"><img src="fries.png" alt="Fries and Sides" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/fries.png'"><span class="feature-badge">SNACKS • SIDES</span></div><div class="feature-body"><h3>Fries & Sides</h3><p>Crispy seasoned sides made for sharing.</p></div></article>
-      </div>
-    </section>
-
-    <section class="story-band">
-      <div><h2>Punjabi heart. Modern vibe.</h2><p>Hakka Bakka brings together familiar Punjabi flavours, tandoori cooking, North Indian gravies and Indo-Chinese favourites in one easy family dining experience.</p></div>
-      <div class="story-points"><div class="point"><b>👨‍👩‍👧‍👦 Family Friendly</b><span>Made to enjoy together</span></div><div class="point"><b>🔥 Tandoor Favourites</b><span>Smoky, hot & fresh</span></div><div class="point"><b>🥗 Veg + Non-Veg</b><span>Something for everyone</span></div><div class="point"><b>🥤 Refreshing Drinks</b><span>Mojitos & more</span></div></div>
-    </section>
-
-    
-<section class="instagram-updates">
-  <div class="wrap">
-    <div class="ig-wrap">
-      <div class="ig-head">
-        <div class="ig-title">
-          <div class="ig-logo">◎</div>
-          <div>
-            <h2>Latest from HakkaBakka</h2>
-            <p>Fresh updates from @hakka_bakka.in</p>
-          </div>
-        </div>
-        <a class="ig-follow" href="https://www.instagram.com/hakka_bakka.in/" target="_blank" rel="noopener noreferrer">Follow us on Instagram</a>
-      </div>
-
-      <div class="ig-grid" id="instagramUpdates" aria-live="polite" aria-busy="true"></div>
-
-      <p class="ig-status" id="instagramStatus">Loading the latest available content…</p>
-    </div>
-  </div>
-</section>
-
-  <div class="footer"><strong>Hakka Bakka Punjabi Dhaba</strong><div>Shop No. 1, Near Bhagat Singh Colony, Opp. Maqsudan Bypass, G.T. Road, Jalandhar, Punjab 144008</div><div>WhatsApp: 7796631555</div></div>
-  </div>
+  <section class="hb-experiences" aria-label="Three HakkaBakka experiences">
+    <article class="hb-experience hb-dhaba">
+      <div class="hb-experience-icon">♨</div><h2>Punjabi Dhaba</h2>
+      <div class="hb-label">ONLINE ORDERS</div><p>Delicious Food, Desi Taste</p>
+      <img src="https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20chicken.jpg" alt="Punjabi butter chicken and naan" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=900&q=85'">
+      <button class="hb-card-button" id="hbOnlineOrderButton" type="button" onclick="return window.hbForceOpenMenu ? window.hbForceOpenMenu(event) : openMenu()">Order Food Online <b>➜</b></button>
+      <small>Punjabi • Tandoori • Chinese • Drinks</small>
+    </article>
+    <article class="hb-experience hb-daily">
+      <div class="hb-experience-icon">🛒</div><h2>Dailyneeds <em>Store</em></h2>
+      <div class="hb-label">GROCERIES & MORE</div><p>Fresh Essentials, Every Day</p>
+      <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=900&q=85" alt="Fresh groceries and vegetables">
+      <button class="hb-card-button" type="button" onclick="showHbComingSoon('daily')">Shop Daily Essentials <b>➜</b></button>
+      <small>Grocery • Vegetables • Personal Care • Cleaning</small>
+    </article>
+    <article class="hb-experience hb-sweets">
+      <div class="hb-experience-icon">🍰</div><h2>Sweets & Snax</h2>
+      <div class="hb-label">MITHAI, BAKERY & SNACKS</div><p>Taaza te Swaad • Sweet Happiness</p>
+      <img src="https://images.unsplash.com/photo-1605197161470-5d8c1f2b7c6b?auto=format&fit=crop&w=900&q=85" alt="Indian sweets and desserts" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=85'">
+      <button class="hb-card-button" type="button" onclick="showHbComingSoon('sweets')">Shop Sweets & Snacks <b>➜</b></button>
+      <small>Mithai • Pakode • Eggless Bakery • Kulfi & Ice Cream</small>
+    </article>
+  </section>
+  <div class="hb-benefits"><span><b>🛵</b>Easy Ordering</span><span><b>🛡️</b>Secure Payments</span><span><b>🚚</b>Fast Delivery</span><span><b>🏷️</b>Daily Offers</span></div>
+  <div class="hb-bottom-slogan">Good Food <i>•</i> Fresh Essentials <i>•</i> Sweet Happiness</div>
+  <section class="hb-coming" id="hb-daily-coming" hidden></section>
+  <section class="hb-coming" id="hb-sweets-coming" hidden></section>
 </div>
-
+<script>
+function showHbComingSoon(kind){
+ var section=document.getElementById(kind==='daily'?'hb-daily-coming':'hb-sweets-coming');if(!section)return;
+ section.dataset.kind=kind;
+ section.innerHTML='<button class="hb-coming-back" type="button" onclick="hideHbComingSoon()">← Back to Home</button><div class="hb-coming-art" role="img" aria-label="'+(kind==='daily'?'Dailyneeds grocery store':'Sweets and snacks')+'"></div><div class="hb-coming-title">'+(kind==='daily'?'HakkaBakka Dailyneeds':'HakkaBakka Sweets & Snax')+'</div><div class="hb-coming-sub">'+(kind==='daily'?'Everything you need, every single day!':'Taaza te Swaad — Your Ultimate Treat Destination!')+'</div><div class="hb-coming-tag">COMING SOON</div><p class="hb-coming-note">'+(kind==='daily'?'Fresh quality • Best prices • Daily offers':'Mithai • Bakery • Ice Cream • Pakode & Snacks')+'</p>';
+ document.querySelectorAll('.hb-coming').forEach(function(el){el.classList.remove('hb-coming-active')});section.hidden=false;section.classList.add('hb-coming-active');document.body.style.overflow='hidden';
+}
+function hideHbComingSoon(){document.querySelectorAll('.hb-coming').forEach(function(el){el.classList.remove('hb-coming-active');el.hidden=true});document.body.style.overflow='';}
+</script>
 <!-- ORDER CHOOSER: ONLY ONE BUTTON ON HOME, THREE OPTIONS HERE -->
 <div class="modal" id="orderModal" onclick="if(event.target===this)closeOrderModal()">
   <div class="modal-card">
@@ -364,21 +333,38 @@ body{background:var(--hb-cream)}
     <div id="authMessage" class="auth-message"></div>
 
     <div id="loginForm">
-      <input class="field" id="loginEmail" type="email" placeholder="Email address" autocomplete="email">
-      <input class="field" id="loginPassword" type="password" placeholder="Password" autocomplete="current-password">
-      <button class="drawer-action" type="button" onclick="loginCustomer()">Login</button>
-      <button class="drawer-action secondary" type="button" onclick="showSignup()">Create New Account</button>
+      <div style="display:flex;gap:8px;margin:4px 0 14px">
+        <button type="button" class="drawer-action" id="existingCustomerTab" onclick="showExistingCustomer()" style="flex:1;margin:0">Existing Customer</button>
+        <button type="button" class="drawer-action secondary" id="newCustomerTab" onclick="showNewCustomer()" style="flex:1;margin:0">New Signup</button>
+      </div>
+      <p id="authFlowHint" style="margin:4px 0 12px;color:#665b53">Existing customer? Enter your registered email to receive Order Confirmation OTP.</p>
+      <div id="existingCustomerFields">
+        <input class="field" id="loginEmail" type="email" placeholder="Registered Email Address" autocomplete="email">
+        <button class="drawer-action" id="requestOtpBtn" type="button" onclick="requestCustomerOtp()">Send Order Confirmation OTP</button>
+      </div>
+      <div id="newCustomerFields" style="display:none">
+        <input class="field" id="signupName" type="text" placeholder="NAME" autocomplete="name">
+        <input class="field" id="signupEmail" type="email" placeholder="EMAIL" autocomplete="email">
+        <input class="field" id="signupPhone" type="tel" inputmode="numeric" maxlength="10" placeholder="MOBILE NUMBER" autocomplete="tel">
+        <div style="margin-top:12px;padding:12px;border:1px solid #eadfd4;border-radius:12px;background:#faf7f2">
+          <div style="font-weight:900;color:#7b1113;margin-bottom:5px">📍 Delivery Address (Optional)</div>
+          <button class="drawer-action" type="button" id="hbSignupUseLocation" style="margin:6px 0;background:#176b43">📍 Use My Current Location</button>
+          <div id="hbSignupLocationStatus" class="delivery-status" role="status" aria-live="polite"></div>
+          <input class="field" id="signupHouseNo" placeholder="House / Flat / Shop Number (enter manually)" autocomplete="address-line1">
+          <input class="field" id="signupLandmark" placeholder="Landmark (enter manually)" autocomplete="off">
+          <textarea class="field" id="signupAddress" rows="2" placeholder="Area / Colony / City (auto-filled; editable)" autocomplete="address-level2"></textarea>
+          <input class="field" id="signupPincode" type="text" inputmode="numeric" maxlength="6" placeholder="6-digit PIN Code (verify)" autocomplete="postal-code">
+          <small style="display:block;color:#777;font-size:11px;margin-top:6px">You can edit this address later in checkout. Map data © OpenStreetMap contributors.</small>
+        </div>
+        <button class="drawer-action" id="signupOtpBtn" type="button" onclick="requestSignupOtp()">Sign Up & Send OTP</button>
+      </div>
+      <div id="otpEntry" style="display:none;margin-top:12px">
+        <input class="field" id="loginOtp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="Enter 6-digit OTP">
+        <button class="drawer-action" type="button" onclick="verifyCustomerOtp()">Verify OTP & Continue</button>
+        <button class="drawer-action secondary" type="button" onclick="resendCustomerOtp()">Resend OTP</button>
+      </div>
     </div>
-
-    <div id="signupForm" style="display:none">
-      <input class="field" id="signupName" placeholder="Full Name" autocomplete="name">
-      <input class="field" id="signupPhone" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit Mobile Number" autocomplete="tel">
-      <input class="field" id="signupEmail" type="email" placeholder="Email address" autocomplete="email">
-      <input class="field" id="signupPassword" type="password" placeholder="Password (minimum 6 characters)" autocomplete="new-password">
-      <input class="field" id="signupPassword2" type="password" placeholder="Confirm Password" autocomplete="new-password">
-      <button class="drawer-action" type="button" onclick="signupCustomer()">Create Account</button>
-      <button class="drawer-action secondary" type="button" onclick="showLogin()">← Back to Login</button>
-    </div>
+    <div id="signupForm" style="display:none"></div>
 
     <div id="accountForm" style="display:none">
       <div class="account-summary" style="margin-top:12px;padding:14px 15px;border:1px solid #eadfd4;border-radius:13px;background:#faf7f2;line-height:1.55">
@@ -457,12 +443,6 @@ body{background:var(--hb-cream)}
         <p>Enter your details, choose Pickup or Home Delivery, then pay securely with UPI.</p>
       </div>
 
-      <div id="customerAccountHint" class="account-hint">
-        <b>👤 Customer Account</b>
-        <span id="customerAccountStatus">Login to save your details and order history.</span>
-        <button type="button" class="mini-account-btn" onclick="openAuth()">Login / Create Account</button>
-      </div>
-
       <div class="billing-section">
         <div class="billing-section-title"><span>🧾</span> Order details</div>
         <div class="order-no billing-order-no"><span>Your Order Number</span><strong id="orderNumber">—</strong></div>
@@ -470,8 +450,20 @@ body{background:var(--hb-cream)}
 
       <div class="billing-section">
         <div class="billing-section-title"><span>👤</span> Customer details</div>
-        <input class="field billing-field" id="customerName" placeholder="Customer Name" autocomplete="name">
-        <input class="field billing-field" id="customerPhone" placeholder="10-digit Mobile Number" type="tel" inputmode="numeric" maxlength="10" autocomplete="tel">
+        <div id="checkoutManualCustomerFields">
+          <input class="field billing-field" id="customerName" placeholder="Customer Name" autocomplete="name" required>
+          <input class="field billing-field" id="customerEmail" placeholder="Email Address" type="email" inputmode="email" autocomplete="email" required>
+          <input class="field billing-field" id="customerPhone" placeholder="10-digit Mobile Number" type="tel" inputmode="numeric" maxlength="10" autocomplete="tel" required>
+        </div>
+        <div id="checkoutOtpPanel" style="margin-top:8px">
+          <div id="checkoutOtpAccountEmail" style="display:none;margin:0 0 10px;padding:12px;border-radius:12px;background:#f8f3e9;color:#74151d;font-weight:800"></div>
+          <button type="button" class="drawer-action" id="checkoutSendOtp" onclick="sendCheckoutOtp()" style="width:100%;margin-top:0">Send Email OTP</button>
+          <div id="checkoutOtpEntry" style="display:none;margin-top:8px">
+            <input class="field billing-field" id="checkoutOtpCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="Enter 6-digit email OTP">
+            <button type="button" class="drawer-action" id="checkoutVerifyOtp" onclick="verifyCheckoutOtp()" style="width:100%">Verify Email OTP</button>
+          </div>
+          <div id="checkoutOtpStatus" class="delivery-status" role="status" aria-live="polite"></div>
+        </div>
       </div>
 
       <div class="billing-section">
@@ -482,9 +474,16 @@ body{background:var(--hb-cream)}
           <option value="Home Delivery">Home Delivery</option>
         </select>
         <div id="deliveryFields" style="display:none">
-          <textarea class="field billing-field" id="address" rows="3" placeholder="Delivery Address" autocomplete="street-address"></textarea>
-          <input class="field billing-field" id="pincode" placeholder="6-digit Pincode" maxlength="6" inputmode="numeric" autocomplete="postal-code">
+          <button type="button" class="drawer-action" id="hbUseLocation" style="margin:8px 0;background:#176b43">📍 Use My Current Location</button>
+          <div id="hbMapLocationStatus" class="delivery-status" role="status" aria-live="polite"></div>
+          <input class="field billing-field" id="deliveryHouseNo" placeholder="House / Flat / Shop Number (enter manually)" autocomplete="address-line1">
+          <input class="field billing-field" id="deliveryLandmark" placeholder="Landmark (enter manually)" autocomplete="off">
+          <textarea class="field billing-field" id="address" rows="2" placeholder="Area / Colony / City (auto-filled; editable)" autocomplete="address-level2"></textarea>
+          <input class="field billing-field" id="pincode" placeholder="6-digit PIN Code (verify)" maxlength="6" inputmode="numeric" autocomplete="postal-code">
+          <button type="button" class="drawer-action secondary" id="hbConfirmAddress" style="margin-top:8px">Confirm Delivery Address</button>
+          <div id="hbAddressConfirmStatus" class="delivery-status" role="status" aria-live="polite"></div>
           <div id="deliveryStatus" class="delivery-status" aria-live="polite"></div>
+          <small style="display:block;color:#777;font-size:11px;margin-top:8px">Map data © OpenStreetMap contributors</small>
         </div>
       </div>
 
@@ -535,12 +534,33 @@ function authMsg(text,kind=''){
   if(!el)return;
   el.textContent=text; el.className='auth-message show '+kind;
 }
+let customerAuthMode='existing',pendingSignup=null,pendingAuthPurpose='checkout';
+function showExistingCustomer(){
+  customerAuthMode='existing';
+  document.getElementById('existingCustomerFields').style.display='block';
+  document.getElementById('newCustomerFields').style.display='none';
+  document.getElementById('existingCustomerTab').className='drawer-action';
+  document.getElementById('newCustomerTab').className='drawer-action secondary';
+  document.getElementById('authFlowHint').textContent='Existing customer? Enter your registered email to receive Order Confirmation OTP.';
+  document.getElementById('otpEntry').style.display='none';authMsg('');
+}
+function showNewCustomer(){
+  customerAuthMode='new';
+  document.getElementById('existingCustomerFields').style.display='none';
+  document.getElementById('newCustomerFields').style.display='block';
+  document.getElementById('existingCustomerTab').className='drawer-action secondary';
+  document.getElementById('newCustomerTab').className='drawer-action';
+  document.getElementById('authFlowHint').textContent='Create your HakkaBakka customer account with these three details.';
+  document.getElementById('otpEntry').style.display='none';authMsg('');
+}
 function showLogin(){
-  document.getElementById('authTitle').textContent='Customer Login';
+  document.getElementById('authTitle').textContent='Customer Login / Signup';
   document.getElementById('loginForm').style.display='block';
   document.getElementById('signupForm').style.display='none';
   document.getElementById('accountForm').style.display='none';
-  authMsg('');
+  document.getElementById('otpEntry').style.display='none';
+  showExistingCustomer();
+  if(currentUser?.email)document.getElementById('loginEmail').value=currentUser.email;
 }
 function showSignup(){
   document.getElementById('authTitle').textContent='Create Customer Account';
@@ -590,17 +610,68 @@ function updateAccountUI(){
     if(a && !a.value)a.value=currentProfile.default_address||'';
   }
 }
-async function loginCustomer(){
-  if(!supabaseClient)return authMsg('Supabase connection not available.','bad');
-  const email=document.getElementById('loginEmail').value.trim();
-  const password=document.getElementById('loginPassword').value;
-  if(!email||!password)return authMsg('Email aur password dono enter karein.','bad');
-  const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
-  if(error)return authMsg(error.message,'bad');
-  currentUser=data.user; await loadCustomerProfile(currentUser);
-  closeAuth();
-  updateAccountUI();
+const CUSTOMER_AUTH_API='https://hakkabakka-platform-api.mail-marvelgroup.workers.dev';
+async function requestCustomerOtp(){
+  const email=document.getElementById('loginEmail').value.trim().toLowerCase();
+  if(email.indexOf('@')<1||email.indexOf('.')<email.indexOf('@')+2)return authMsg('Valid email address enter karein.','bad');
+  const btn=document.getElementById('requestOtpBtn'); if(btn){btn.disabled=true;btn.textContent='Sending OTP…'}
+  try{
+    const res=await fetch(CUSTOMER_AUTH_API+'/api/auth/request-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email}),cache:'no-store'});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok||!data.success)throw new Error(data.message||'Email OTP send nahi ho saka.');
+    document.getElementById('otpEntry').style.display='block';
+    authMsg('6-digit OTP aapke email par bhej diya gaya hai. Inbox aur Spam folder check karein.','ok');
+  }catch(error){authMsg(error.message||'OTP request failed.','bad')}
+  finally{if(btn){btn.disabled=false;btn.textContent='Send Email OTP'}}
 }
+async function requestSignupOtp(){
+  const name=document.getElementById('signupName').value.trim();
+  const email=document.getElementById('signupEmail').value.trim().toLowerCase();
+  const phone=normalizePhone(document.getElementById('signupPhone').value);
+  if(!name)return authMsg('Name enter karein.','bad');
+  if(!/^\d{10}$/.test(phone))return authMsg('Valid 10-digit mobile number enter karein.','bad');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return authMsg('Valid email address enter karein.','bad');
+  pendingSignup={name,email,phone,address:[document.getElementById('signupHouseNo')?.value,document.getElementById('signupLandmark')?.value,document.getElementById('signupAddress')?.value].map(x=>(x||'').trim()).filter(Boolean).join(', '),pincode:(document.getElementById('signupPincode')?.value||'').replace(/\\D/g,'').slice(0,6)};
+  const btn=document.getElementById('signupOtpBtn');btn.disabled=true;btn.textContent='Sending OTP…';
+  try{
+    const res=await fetch(CUSTOMER_AUTH_API+'/api/auth/request-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email}),cache:'no-store'});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok||!data.success)throw new Error(data.message||'Signup OTP send nahi ho saka.');
+    document.getElementById('otpEntry').style.display='block';
+    authMsg('Signup OTP email par bhej diya gaya hai.','ok');
+  }catch(error){pendingSignup=null;authMsg(error.message||'OTP request failed.','bad')}
+  finally{btn.disabled=false;btn.textContent='Resend Signup OTP'}
+}
+async function resendCustomerOtp(){return customerAuthMode==='new'?requestSignupOtp():requestCustomerOtp()}
+async function verifyCustomerOtp(){
+  const email=customerAuthMode==='new'?pendingSignup?.email:document.getElementById('loginEmail').value.trim().toLowerCase();
+  const otp=document.getElementById('loginOtp').value.trim();
+  if(!email)return authMsg('Email address missing.','bad');
+  if(!/^\d{6}$/.test(otp))return authMsg('6-digit OTP enter karein.','bad');
+  try{
+    const verifyPayload={email,otp};if(customerAuthMode==='new'&&pendingSignup){verifyPayload.name=pendingSignup.name;verifyPayload.phone=pendingSignup.phone;}
+    const res=await fetch(CUSTOMER_AUTH_API+'/api/auth/verify-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(verifyPayload),cache:'no-store'});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok||!data.success||!data.token)throw new Error(data.message||'OTP verify nahi hua.');
+    const profile=customerAuthMode==='new'?pendingSignup:null;
+    const savedProfile={email:data.email||email,full_name:profile?.name||data.name||'',phone:profile?.phone||data.phone||'',default_address:profile?.address||''};
+    if(profile?.address){
+      const checkoutAddress=document.getElementById('address');
+      const checkoutPin=document.getElementById('pincode');
+      if(checkoutAddress)checkoutAddress.value=profile.address;
+      if(checkoutPin&&profile.pincode)checkoutPin.value=profile.pincode;
+      window.hbDeliveryAddressConfirmed=false;
+    }
+    localStorage.setItem('hb_customer_session',JSON.stringify({email:data.email||email,token:data.token,expires_at:data.expires_at,name:savedProfile.full_name,phone:savedProfile.phone}));
+    currentUser={id:data.account_id||email,email:data.email||email,user_metadata:{full_name:savedProfile.full_name,phone:savedProfile.phone}};
+    currentProfile={full_name:savedProfile.full_name,phone:savedProfile.phone,default_address:savedProfile.default_address};
+    localStorage.setItem('hb_customer_profile',JSON.stringify(savedProfile));
+    if(pendingAuthPurpose==='checkout'){skipOrderOtpOnce=true;checkoutVerifiedEmail=email;}
+    pendingSignup=null;updateAccountUI();closeAuth();
+    if(pendingAuthPurpose==='checkout')await openBillingAfterCustomerAuth();
+  }catch(error){authMsg(error.message||'OTP verification failed.','bad')}
+}
+async function loginCustomer(){return requestCustomerOtp()}
 async function signupCustomer(){
   if(!supabaseClient)return authMsg('Supabase connection not available.','bad');
   const name=document.getElementById('signupName').value.trim();
@@ -674,7 +745,7 @@ async function saveCustomerProfile(){
   currentProfile=data; updateAccountUI(); authMsg('Profile saved successfully.','ok');
 }
 async function logoutCustomer(){
-  if(supabaseClient)await supabaseClient.auth.signOut();
+  localStorage.removeItem('hb_customer_session');
   currentUser=null; currentProfile=null; updateAccountUI(); showLogin(); closeAuth();
 }
 async function requireCustomerLogin(){
@@ -699,16 +770,15 @@ async function saveOrderToSupabase(){
   return true;
 }
 async function initCustomerAuth(){
-  if(!supabaseClient)return;
-  const {data}=await supabaseClient.auth.getSession();
-  currentUser=data.session?.user||null;
-  if(currentUser)await savePendingProfile();
-  if(currentUser)await loadCustomerProfile(currentUser); else updateAccountUI();
-  supabaseClient.auth.onAuthStateChange(async (_event,session)=>{
-    currentUser=session?.user||null;
-    if(currentUser){await savePendingProfile();await loadCustomerProfile(currentUser)}
-    else{currentProfile=null;updateAccountUI()}
-  });
+  try{
+    const saved=JSON.parse(localStorage.getItem('hb_customer_session')||'null');
+    if(saved&&saved.email&&saved.token&&saved.expires_at&&Date.parse(saved.expires_at)>Date.now()){
+      currentUser={id:saved.email,email:saved.email,user_metadata:{}};
+    }else localStorage.removeItem('hb_customer_session');
+  }catch(e){localStorage.removeItem('hb_customer_session')}
+  try{const p=JSON.parse(localStorage.getItem('hb_customer_profile')||'null');if(p&&p.email===currentUser?.email)currentProfile={full_name:p.full_name||'',phone:p.phone||''};else currentProfile=null;}catch(e){currentProfile=null}
+  if(currentUser){const saved=JSON.parse(localStorage.getItem('hb_customer_session')||'null');if(saved)currentUser.user_metadata={full_name:saved.name||currentProfile?.full_name||'',phone:saved.phone||currentProfile?.phone||''};}
+  updateAccountUI();
 }
 
 const CART_STORAGE_KEY='hb_cart_v1';
@@ -728,6 +798,7 @@ function saveCheckout(){
   localStorage.setItem(CHECKOUT_STORAGE_KEY,JSON.stringify({
     orderNo:currentOrderNo,
     customerName:document.getElementById('customerName').value,
+    customerEmail:document.getElementById('customerEmail').value,
     customerPhone:document.getElementById('customerPhone').value,
     orderType:document.getElementById('orderType').value,
     address:document.getElementById('address').value,
@@ -740,6 +811,7 @@ function restoreCheckout(){
     if(!saved)return;
     currentOrderNo=typeof saved.orderNo==='string'?saved.orderNo.toUpperCase():'';
     document.getElementById('customerName').value=saved.customerName||'';
+    document.getElementById('customerEmail').value=saved.customerEmail||'';
     document.getElementById('customerPhone').value=saved.customerPhone||'';
     document.getElementById('orderType').value=saved.orderType==='Home Delivery'?'Home Delivery':'Pickup';
     document.getElementById('address').value=saved.address||'';
@@ -922,6 +994,8 @@ let data=[
 ["Cold Drinks","50","https://instamart-media-assets.swiggy.com/swiggy/image/upload/fl_lossy%2Cf_auto%2Cq_auto/NI_CATALOG/IMAGES/ciw/2025/8/13/b2c124db-9e1d-4102-aab1-9cf2c7df45ce_NPIC-001120_20250813_065442.png"]
 ]]
 ];
+// Keep a local fallback so the customer menu never renders blank if the live Admin API returns an empty or malformed payload.
+const BUILT_IN_MENU_FALLBACK = data.map(([category,items])=>[category,items.map(item=>[...item])]);
 function goToMenuCategory(category){const sections=[...document.querySelectorAll('#menu .menu-section')];const target=sections.find(section=>{const h=section.querySelector('h2');return h&&h.textContent.trim()===category});if(target){target.scrollIntoView({behavior:'smooth',block:'start'});target.classList.add('quick-highlight');setTimeout(()=>target.classList.remove('quick-highlight'),1300)}else{const menu=document.getElementById('menu');if(menu)menu.scrollIntoView({behavior:'smooth',block:'start'});}}
 const menuEl=document.getElementById('menu');
 const esc=s=>String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
@@ -995,8 +1069,8 @@ function renderMenu(){
   try {
     if(!menuEl){console.error('HakkaBakka menu container #menu missing');return;}
     if(!Array.isArray(data)||!data.length){menuEl.innerHTML='<p style="padding:20px;text-align:center">Menu is temporarily unavailable. Please refresh the page.</p>';return;}
-    const sections=data.filter(row=>Array.isArray(row)&&row.length>=2&&Array.isArray(row[1]));
-    const html=sections.map(([section,list])=>{
+    let sections=data.filter(row=>Array.isArray(row)&&row.length>=2&&Array.isArray(row[1])&&row[1].length>0);
+    let html=sections.map(([section,list])=>{
       const cards=list.filter(x=>Array.isArray(x)&&x.length>=2).map(x=>{
         const n=x[0],p=x[1],im=x[2],diet=getMenuDiet(section,n);
         if(Array.isArray(p))return `<article class="menu-card" data-diet="${diet}">${imageTag(im,n)}<div class="menu-body"><h3>${esc(n)}</h3><div class="price">₹${p[0]} / ₹${p[1]}</div><div class="variant"><button class="add" data-name="${esc(n)} - Half" data-price="${p[0]}">− Half ₹${p[0]} +</button><button class="add" data-name="${esc(n)} - Full" data-price="${p[1]}">− Full ₹${p[1]} +</button></div></div></article>`;
@@ -1005,7 +1079,20 @@ function renderMenu(){
       }).join('');
       return cards ? `<section class="menu-section"><h2>${esc(section)}</h2><div class="menu-grid">${cards}</div></section>` : '';
     }).join('');
-    menuEl.innerHTML=html || '<p style="padding:20px;text-align:center">Menu items could not be loaded. Please refresh the page.</p>';
+    // If the live menu payload has no usable cards, render the verified bundled menu instead of an empty page.
+    if(!html || !html.includes('class="menu-card"')){
+      sections=BUILT_IN_MENU_FALLBACK.filter(row=>Array.isArray(row)&&Array.isArray(row[1])&&row[1].length>0);
+      html=sections.map(([section,list])=>{
+        const cards=list.map(x=>{
+          const n=x[0],p=x[1],im=x[2],diet=getMenuDiet(section,n);
+          if(Array.isArray(p))return `<article class="menu-card" data-diet="${diet}">${imageTag(im,n)}<div class="menu-body"><h3>${esc(n)}</h3><div class="price">₹${p[0]} / ₹${p[1]}</div><div class="variant"><button class="add" data-name="${esc(n)} - Half" data-price="${p[0]}">− Half ₹${p[0]} +</button><button class="add" data-name="${esc(n)} - Full" data-price="${p[1]}">− Full ₹${p[1]} +</button></div></div></article>`;
+          if(Number(p)===0)return `<article class="menu-card" data-diet="${diet}">${imageTag(im,n)}<div class="menu-body"><h3>${esc(n)}</h3><div class="price">Price not listed</div></div></article>`;
+          return `<article class="menu-card" data-diet="${diet}">${imageTag(im,n)}<div class="menu-body"><h3>${esc(n)}</h3><div class="price">₹${p}</div><button class="add" data-name="${esc(n)}" data-price="${p}">Add to Order</button></div></article>`;
+        }).join('');
+        return `<section class="menu-section"><h2>${esc(section)}</h2><div class="menu-grid">${cards}</div></section>`;
+      }).join('');
+    }
+    menuEl.innerHTML=html || '<p style="padding:20px;text-align:center;color:#8b1118">Menu is temporarily unavailable. Please contact HakkaBakka.</p>';
     refreshButtons();
     applyMenuFilters();
   } catch(err) {
@@ -1031,6 +1118,8 @@ function orderDiscount(){return orderType.value==='Pickup'?pickupDiscount():0}
 function pin(){return /^144\d{3}$/.test(pincode.value)?Number(pincode.value):null}
 function deliveryPinStatus(){
   if(orderType.value!=='Home Delivery')return {valid:true,charge:0,message:''};
+  const deliveryAddress=(document.getElementById('address')?.value||'').trim();
+  if(!deliveryAddress||!window.hbDeliveryAddressConfirmed)return {valid:false,charge:0,message:'Enter or locate your delivery address, then tap Confirm Delivery Address.'};
   const p=pin();
   if(p===null)return {valid:false,charge:0,message:'Enter a valid 6-digit pincode.'};
   if(p<PIN_MIN||p>PIN_MAX)return {valid:false,charge:0,message:'Home Delivery is available only for pincodes 144001–144030.'};
@@ -1095,12 +1184,80 @@ function closeMenu(){closeCart();setHomeState();window.scrollTo({top:0,left:0,be
 (function(){setHomeState();window.addEventListener('pageshow',function(){if(!document.body.classList.contains('hb-menu-open'))setHomeState()});})();
 function openOrderModal(){document.getElementById('orderModal').classList.add('show')}
 function closeOrderModal(){document.getElementById('orderModal').classList.remove('show')}
-function openCart(){document.body.classList.remove('hb-billing-open');document.getElementById('drawer').classList.add('show');document.getElementById('cartView').style.display='block';document.getElementById('billingView').style.display='none';renderCart()}
+function openCart(){checkoutVerifiedEmail='';skipOrderOtpOnce=false;document.body.classList.remove('hb-billing-open');document.getElementById('drawer').classList.add('show');document.getElementById('cartView').style.display='block';document.getElementById('billingView').style.display='none';renderCart()}
 function closeCart(){document.body.classList.remove('hb-billing-open');document.getElementById('drawer').classList.remove('show')}
 function continueShopping(){closeCart();const search=document.getElementById('search');if(search)search.blur();const menu=document.getElementById('menuScreen');if(menu)window.scrollTo({top:menu.offsetTop||0,behavior:'smooth'});}
+let checkoutVerifiedEmail='';
+let skipOrderOtpOnce=false;
+function isCustomerLoggedIn(){return !!(currentUser&&currentUser.email&&(()=>{try{const x=JSON.parse(localStorage.getItem('hb_customer_session')||'null');return !!(x&&x.token&&x.expires_at&&Date.parse(x.expires_at)>Date.now()&&x.email===currentUser.email)}catch(e){return false}})())}
+function prepareCheckoutCustomer(){
+  const manual=document.getElementById('checkoutManualCustomerFields');
+  const accountEmail=document.getElementById('checkoutOtpAccountEmail');
+  const emailInput=document.getElementById('customerEmail');
+  const logged=isCustomerLoggedIn();
+  if(manual)manual.style.display=logged?'none':'block';
+  if(accountEmail){accountEmail.style.display=logged?'block':'none';accountEmail.textContent=logged?'Logged in: '+currentUser.email:''}
+  if(logged){
+    if(emailInput)emailInput.value=currentUser.email;
+    const name=document.getElementById('customerName');
+    const phone=document.getElementById('customerPhone');
+    let savedProfile=null;try{savedProfile=JSON.parse(localStorage.getItem('hb_customer_profile')||'null')}catch(e){}
+    if(name)name.value=currentProfile?.full_name||savedProfile?.full_name||currentUser.user_metadata?.full_name||currentUser.email.split('@')[0]||'Customer';
+    if(phone)phone.value=currentProfile?.phone||savedProfile?.phone||currentUser.user_metadata?.phone||'';
+    if(skipOrderOtpOnce){checkoutVerifiedEmail=currentUser.email;skipOrderOtpOnce=false;document.getElementById('checkoutOtpPanel').style.display='none';checkoutOtpStatus('ok','Signup verified. Order confirmation OTP ki zaroorat nahi hai.');}
+    else{checkoutVerifiedEmail='';document.getElementById('checkoutOtpPanel').style.display='block';document.getElementById('checkoutOtpEntry').style.display='none';
+    document.getElementById('checkoutOtpCode').value='';
+    document.getElementById('checkoutSendOtp').textContent='Send Order Confirmation OTP';
+    checkoutOtpStatus('ok','Account login active hai. Order complete karne ke liye ek baar OTP verify karein.');}
+  }else{
+    if(accountEmail)accountEmail.style.display='none';
+    document.getElementById('checkoutSendOtp').textContent='Send Email OTP';
+  }
+}
+function checkoutOtpStatus(kind,message){
+  const el=document.getElementById('checkoutOtpStatus');if(!el)return;
+  el.className='delivery-status show '+(kind==='ok'?'ok':'bad');el.textContent=message;
+}
+async function sendCheckoutOtp(){
+  const email=(isCustomerLoggedIn()?currentUser.email:document.getElementById('customerEmail').value).trim().toLowerCase();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){checkoutOtpStatus('bad','Please enter a valid email address first.');document.getElementById('customerEmail').focus();return}
+  const btn=document.getElementById('checkoutSendOtp');btn.disabled=true;btn.textContent='Sending OTP…';
+  try{
+    const res=await fetch(CUSTOMER_AUTH_API+'/api/auth/request-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email}),cache:'no-store'});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok||!data.success)throw new Error(data.error||data.message||'OTP email could not be sent. Please try again.');
+    document.getElementById('checkoutOtpEntry').style.display='block';
+    checkoutOtpStatus('ok','OTP sent to '+email+'. Check Inbox and Spam. Code expires in 5 minutes.');
+  }catch(error){checkoutOtpStatus('bad',error.message||'OTP sending failed.')}
+  finally{btn.disabled=false;btn.textContent='Resend Email OTP'}
+}
+async function verifyCheckoutOtp(){
+  const email=(isCustomerLoggedIn()?currentUser.email:document.getElementById('customerEmail').value).trim().toLowerCase();
+  const otp=document.getElementById('checkoutOtpCode').value.trim();
+  if(!/^\d{6}$/.test(otp)){checkoutOtpStatus('bad','Enter the 6-digit OTP.');return}
+  const btn=document.getElementById('checkoutVerifyOtp');btn.disabled=true;btn.textContent='Verifying…';
+  try{
+    const res=await fetch(CUSTOMER_AUTH_API+'/api/auth/verify-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,otp}),cache:'no-store'});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok||!data.success||!data.token)throw new Error(data.error||data.message||'OTP is invalid or expired.');
+    checkoutVerifiedEmail=email;
+    localStorage.setItem('hb_customer_session',JSON.stringify({email,token:data.token,expires_at:data.expires_at}));
+    checkoutOtpStatus('ok','Email verified successfully. You can continue checkout.');
+    if(!isCustomerLoggedIn())document.getElementById('customerEmail').readOnly=true;
+    document.getElementById('checkoutOtpEntry').style.display='none';
+    btn.textContent='OTP Verified ✓';
+  }catch(error){checkoutOtpStatus('bad',error.message||'OTP verification failed.');btn.disabled=false;btn.textContent='Verify Email OTP'}
+}
+function invalidateCheckoutEmailVerification(){
+  if(checkoutVerifiedEmail){checkoutVerifiedEmail='';document.getElementById('customerEmail').readOnly=false;document.getElementById('checkoutOtpEntry').style.display='none';document.getElementById('checkoutVerifyOtp').disabled=false;document.getElementById('checkoutVerifyOtp').textContent='Verify Email OTP';checkoutOtpStatus('bad','Email changed. Please verify the new email address.')}
+}
 async function ensureOrderNumber(){if(!currentOrderNo){const res=await fetch(CLOUDFLARE_ORDERS_API+'/orders/next-number',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}',cache:'no-store'});const data=await res.json().catch(()=>null);if(!res.ok||!data?.success||!data.order_no)throw new Error(data?.message||'Cloudflare could not allocate an order number');currentOrderNo=String(data.order_no).toUpperCase()}currentOrderNo=String(currentOrderNo).toUpperCase();document.getElementById('orderNumber').textContent=currentOrderNo;saveCheckout()}
 function resetOrderNumber(){currentOrderNo='';document.getElementById('orderNumber').textContent='—'}
-async function proceedBilling(){if(!cart.length){alert('Cart is empty.');return}if(!(await requireCustomerLogin()))return;try{await ensureOrderNumber()}catch(error){console.error('Order number allocation failed:',error);alert('Order number nahi ban saka. Internet check karke dobara try karein.');return}document.body.classList.add('hb-billing-open');const drawer=document.getElementById('drawer'),card=document.getElementById('drawerCard');drawer.classList.add('show');document.getElementById('cartView').style.display='none';document.getElementById('billingView').style.display='block';if(card)card.scrollTop=0;updateBilling()}
+async function openBillingAfterCustomerAuth(){
+  try{await ensureOrderNumber()}catch(error){console.error('Order number allocation failed:',error);alert('Order number nahi ban saka. Internet check karke dobara try karein.');return}
+  document.body.classList.add('hb-billing-open');const drawer=document.getElementById('drawer'),card=document.getElementById('drawerCard');drawer.classList.add('show');document.getElementById('cartView').style.display='none';document.getElementById('billingView').style.display='block';if(card)card.scrollTop=0;prepareCheckoutCustomer();updateBilling();
+}
+function proceedBilling(){if(!cart.length){alert('Cart is empty.');return}pendingAuthPurpose='checkout';if(isCustomerLoggedIn()){openBillingAfterCustomerAuth();return}closeCart();document.getElementById('authModal').classList.add('show');showLogin();}
 function backToCart(){document.body.classList.remove('hb-billing-open');document.getElementById('billingView').style.display='none';document.getElementById('cartView').style.display='block'}
 
 document.getElementById('menu').addEventListener('click',e=>{const b=e.target.closest('.add');if(!b)return;const n=b.dataset.name,p=Number(b.dataset.price);if(e.target.closest('.minus')){const i=cart.findIndex(x=>x.name===n&&x.price===p);if(i>=0)cart.splice(i,1)}else if(e.target.closest('.plus'))cart.push({name:n,price:p});else{cart.push({name:n,price:p});b.dataset.original=b.textContent}syncCart()});
@@ -1110,11 +1267,11 @@ document.querySelectorAll('[data-diet-filter]').forEach(button=>button.addEventL
   applyMenuFilters();
 }));
 document.getElementById('search').addEventListener('input',applyMenuFilters);
-document.getElementById('orderType').addEventListener('change',()=>{saveCheckout();updateBilling()});document.getElementById('pincode').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,6);saveCheckout();updateBilling()});['customerName','customerPhone','address'].forEach(id=>document.getElementById(id).addEventListener('input',e=>{if(id==='customerPhone')e.target.value=e.target.value.replace(/\D/g,'').slice(0,10);saveCheckout()}));
+document.getElementById('orderType').addEventListener('change',()=>{saveCheckout();updateBilling()});document.getElementById('pincode').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,6);saveCheckout();updateBilling()});['customerName','customerEmail','customerPhone','address'].forEach(id=>document.getElementById(id).addEventListener('input',e=>{if(id==='customerPhone')e.target.value=e.target.value.replace(/\D/g,'').slice(0,10);if(id==='customerEmail')invalidateCheckoutEmailVerification();saveCheckout()}));
 let paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};
 const paymentScreenshot=document.getElementById('paymentScreenshot'), paymentCheck=document.getElementById('paymentCheck'), waSend=document.getElementById('waSend');
 const paymentTimer=document.getElementById('paymentTimer'), paymentCountdown=document.getElementById('paymentCountdown');
-const PAYMENT_WINDOW_MS=2*60*1000;
+const PAYMENT_WINDOW_MS=15*60*1000;
 let paymentStartedAt=0, paymentTimerId=null, paymentContext=null, paymentTestMode=false;
 waSend.disabled=true;
 function expectedTotal(){return Math.max(0,foodTotal()-orderDiscount()+deliveryCharge())}
@@ -1195,8 +1352,8 @@ function orderNoMatches(text){const expected=normalizeOrderText(currentOrderNo);
 function hasCurrentPaymentContext(){const expected=paymentTestMode?2:expectedTotal();return !!paymentContext&&paymentContext.orderNo===currentOrderNo&&Math.abs(paymentContext.total-expected)<0.01&&Date.now()-paymentContext.startedAt<=PAYMENT_WINDOW_MS}
 function updateVerificationUI(){const orderOk=paymentTestMode?true:paymentVerification.order;const verified=paymentVerification.file&&paymentVerification.amount&&paymentVerification.date&&paymentVerification.time&&orderOk&&paymentVerification.ocr&&hasCurrentPaymentContext();waSend.disabled=!verified;return verified}
 function stopPaymentTimer(){if(paymentTimerId){clearInterval(paymentTimerId);paymentTimerId=null}paymentTimer.style.display='none'}
-function expirePaymentOrder(){if(paymentTimerId){clearInterval(paymentTimerId);paymentTimerId=null}paymentStartedAt=0;paymentContext=null;paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};paymentScreenshot.value='';waSend.disabled=true;cart=[];resetOrderNumber();localStorage.removeItem(CART_STORAGE_KEY);localStorage.removeItem(CHECKOUT_STORAGE_KEY);saveCart();renderCart();paymentTimer.style.display='none';const drawer=document.getElementById('drawer'),card=document.getElementById('drawerCard');document.body.classList.remove('hb-billing-open');if(drawer)drawer.classList.add('show');if(card){card.innerHTML='<div id="expiredOrderScreen" style="min-height:65vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:28px 22px;gap:16px"><div style="font-weight:900;color:#b00020;font-size:clamp(22px,5vw,30px);line-height:1.25">TIME LIMIT EXPIRED, TRY NEW ORDER</div><div style="font-weight:600;color:#333;font-size:16px;line-height:1.55">This order has been cancelled and your cart has been cleared. Please add items and create a new order.</div></div>';} }
-function startPaymentTimer(testMode=false){if(paymentTimerId)clearInterval(paymentTimerId);paymentTestMode=!!testMode;paymentStartedAt=Date.now();paymentContext={startedAt:paymentStartedAt,total:paymentTestMode?2:expectedTotal(),orderNo:currentOrderNo};paymentTimer.style.display='block';paymentCountdown.textContent='02:00';paymentTimerId=setInterval(()=>{const left=Math.max(0,Math.ceil((PAYMENT_WINDOW_MS-(Date.now()-paymentStartedAt))/1000));const mm=String(Math.floor(left/60)).padStart(2,'0'),ss=String(left%60).padStart(2,'0');paymentCountdown.textContent=mm+':'+ss;if(left===0)expirePaymentOrder()},250)}
+function expirePaymentOrder(){if(paymentTimerId){clearInterval(paymentTimerId);paymentTimerId=null}paymentStartedAt=0;paymentContext=null;paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};paymentScreenshot.value='';waSend.disabled=true;resetOrderNumber();localStorage.removeItem(CHECKOUT_STORAGE_KEY);saveCart();renderCart();paymentTimer.style.display='none';const drawer=document.getElementById('drawer'),card=document.getElementById('drawerCard');document.body.classList.remove('hb-billing-open');if(drawer)drawer.classList.add('show');if(card){card.innerHTML='<div id="expiredOrderScreen" style="min-height:65vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:28px 22px;gap:16px"><div style="font-weight:900;color:#b00020;font-size:clamp(22px,5vw,30px);line-height:1.25">PAYMENT WINDOW EXPIRED</div><div style="font-weight:600;color:#333;font-size:16px;line-height:1.55">Aapka cart safe hai. Payment verify nahi hui, isliye naya payment session banayein. Cart ke items delete nahi kiye gaye.</div><button type="button" style="border:0;border-radius:12px;background:#7b1113;color:white;padding:14px 22px;font-weight:800" onclick="backToCart()">Return to cart</button></div>';} }
+function startPaymentTimer(testMode=false){if(paymentTimerId)clearInterval(paymentTimerId);paymentTestMode=!!testMode;paymentStartedAt=Date.now();paymentContext={startedAt:paymentStartedAt,total:paymentTestMode?2:expectedTotal(),orderNo:currentOrderNo};paymentTimer.style.display='block';paymentCountdown.textContent='15:00';paymentTimerId=setInterval(()=>{const left=Math.max(0,Math.ceil((PAYMENT_WINDOW_MS-(Date.now()-paymentStartedAt))/1000));const mm=String(Math.floor(left/60)).padStart(2,'0'),ss=String(left%60).padStart(2,'0');paymentCountdown.textContent=mm+':'+ss;if(left===0)expirePaymentOrder()},250)}
 document.getElementById('upiPay').onclick=()=>{
   const status=deliveryPinStatus();
   if(!status.valid)return showOrderError(status.message,document.getElementById('pincode'));
@@ -1435,6 +1592,7 @@ async function sendOrderToPOS(){
     source:'ONLINE',
     order_type:type,
     customer_name:document.getElementById('customerName').value.trim(),
+    customer_email:document.getElementById('customerEmail').value.trim().toLowerCase(),
     customer_phone:normalizePhone(document.getElementById('customerPhone').value),
     address:type==='Home Delivery'?document.getElementById('address').value.trim():null,
     pincode:type==='Home Delivery'?pin():null,
@@ -1456,9 +1614,11 @@ async function sendOrderToPOS(){
 document.getElementById('waSend').onclick=async()=>{
   if(!cart.length)return showOrderError('Cart khaali hai. / Please add items first.');
   if(!(await requireCustomerLogin()))return;
-  const name=document.getElementById('customerName').value.trim(),phone=document.getElementById('customerPhone').value.trim(),type=document.getElementById('orderType').value;
+  const name=document.getElementById('customerName').value.trim(),email=document.getElementById('customerEmail').value.trim().toLowerCase(),phone=document.getElementById('customerPhone').value.trim(),type=document.getElementById('orderType').value;
   if(!name)return showOrderError('Customer name likhein. / Please enter your name.',document.getElementById('customerName'));
-  if(!/^\d{10}$/.test(phone))return showOrderError('10-digit mobile number zaroori hai. / Please enter a valid 10-digit mobile number.',document.getElementById('customerPhone'));
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return showOrderError('Valid email address enter karein. / Please enter a valid email address.',document.getElementById('customerEmail'));
+  if(checkoutVerifiedEmail!==email)return showOrderError('Please verify your email with the 6-digit OTP before placing the order.',document.getElementById('checkoutSendOtp'));
+  if(!isCustomerLoggedIn()&&!/^\d{10}$/.test(phone))return showOrderError('10-digit mobile number zaroori hai. / Please enter a valid 10-digit mobile number.',document.getElementById('customerPhone'));
   if(!updateVerificationUI()){setPaymentCheck('bad','Payment verification required hai','Payment screenshot verify hona zaroori hai.');return showOrderError('Verified payment screenshot required hai. / Please complete payment verification first.',paymentScreenshot);}
   let extra='';if(type==='Home Delivery'&&!paymentTestMode){const p=pin(),a=document.getElementById('address').value.trim();if(!a)return showOrderError('Delivery address likhein. / Please enter the delivery address.',document.getElementById('address'));const deliveryStatus=deliveryPinStatus();if(!deliveryStatus.valid)return showOrderError(deliveryStatus.message,document.getElementById('pincode'));extra='\nPincode: '+p+'\nAddress: '+a}
   if(!paymentTestMode&&supabaseClient&&currentUser){try{await saveOrderToSupabase()}catch(error){console.warn('Optional customer order history save failed; Cloudflare D1 remains the primary order archive.',error)}}
@@ -1764,6 +1924,341 @@ body.hb-billing-open #billingView{display:block!important;flex:1 1 auto!importan
 body.hb-billing-open #drawerCard{overflow:hidden!important}
 body.hb-billing-open #drawerCard>.drawer-head{flex:0 0 auto!important}
 </style>
+
+
+<style id="hb-modern-home-css">
+.hb-modern-home{background:#fff5dc!important;color:#31170d!important;min-height:100vh;padding-bottom:20px}
+.hb-sitebar{height:auto;min-height:78px;padding:12px clamp(14px,4vw,52px);display:flex;align-items:center;gap:18px;background:#fffdf8;border-bottom:1px solid #f0dcb4;position:relative;z-index:4}
+.hb-menu-icon,.hb-account,.hb-bag{border:0;background:#35170d;color:#fff;border-radius:50%;width:42px;height:42px;font-size:21px;flex:0 0 auto}
+.hb-logo{font:900 clamp(23px,3vw,36px)/.9 Arial,sans-serif;color:#27130c;text-decoration:none;letter-spacing:-1.4px;white-space:nowrap}.hb-logo span{color:#b51d23}.hb-logo small{display:block;font:italic 11px Georgia,serif;letter-spacing:.2px;text-align:center;margin-top:6px;color:#5b2a17}
+.hb-search{height:44px;max-width:440px;flex:1;margin-left:auto;border:1px solid #e2cfb5;border-radius:30px;background:#fff;display:flex;align-items:center;padding:0 15px;gap:9px;color:#6c4a36}.hb-search span{font-size:25px}.hb-search input{border:0;outline:0;background:transparent;width:100%;font-size:13px;color:#31170d}
+.hb-welcome{position:relative;text-align:center;padding:36px 16px 55px;background:radial-gradient(ellipse at 50% 100%,#ffe0a1 0,#fff2d4 55%,#fffaf0 100%);overflow:hidden}
+.hb-welcome:before,.hb-welcome:after{content:"❧";position:absolute;top:15px;font-size:90px;color:#4b8c35;opacity:.7}.hb-welcome:before{left:-12px;transform:rotate(-35deg)}.hb-welcome:after{right:-12px;transform:scaleX(-1) rotate(-35deg)}
+.hb-welcome-kicker{font:italic 28px Georgia,serif;color:#501b11}.hb-welcome h1{font:italic 900 clamp(50px,9vw,100px)/.95 Arial,sans-serif;color:#3c160c;letter-spacing:-4px;margin:0;text-shadow:2px 3px #f4c45b}.hb-welcome h1 span{color:#c41d25}.hb-chef{position:absolute;top:49px;right:calc(50% - 250px);font-size:40px;color:#b51d23}.hb-ribbon{display:inline-block;background:linear-gradient(90deg,#b31820,#e12727);color:white;font-weight:900;letter-spacing:1px;padding:10px 38px;margin-top:16px;clip-path:polygon(0 0,100% 0,96% 50%,100% 100%,0 100%,4% 50%)}.hb-ribbon i{color:#ffd85d;font-style:normal;padding:0 9px}.hb-welcome p{font-size:16px;font-weight:750;margin:13px 0 0;color:#482217}
+.hb-experiences{max-width:1320px;margin:-26px auto 0;padding:0 18px 28px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;position:relative;z-index:2}
+.hb-experience{min-width:0;border-radius:25px;border:3px solid #f5c64e;box-shadow:0 13px 28px #4d260e38,inset 0 0 0 2px #fff5bd;padding:15px 13px 16px;text-align:center;display:flex;flex-direction:column;align-items:center;overflow:hidden}
+.hb-dhaba{background:linear-gradient(150deg,#b91e25,#730c13);color:#fff}.hb-daily{background:linear-gradient(150deg,#07934d,#03472b);color:#fff}.hb-sweets{background:linear-gradient(150deg,#fff0bd,#eab34d);color:#4a1a0e}
+.hb-experience-icon{width:70px;height:70px;border-radius:50%;margin-top:-27px;border:4px solid #f4ca55;background:#8c141a;color:white;display:grid;place-items:center;font-size:30px;box-shadow:0 5px 13px #0005}.hb-daily .hb-experience-icon{background:#075b34}.hb-sweets .hb-experience-icon{background:#941820}
+.hb-experience h2{font:italic 800 clamp(25px,3vw,38px)/1 Georgia,serif;margin:10px 0 7px;color:#fff6df;text-shadow:0 2px 3px #4c160d}.hb-daily h2 em{font-style:italic;color:#ffdf52}.hb-sweets h2{color:#72151b;text-shadow:none}
+.hb-label{background:#f9d34f;color:#3a1a0c;font-weight:950;font-size:12px;letter-spacing:1px;padding:7px 20px;transform:skew(-5deg);margin:3px 0 8px}.hb-daily .hb-label{background:#fff5d5;color:#07502f}.hb-sweets .hb-label{background:#951821;color:#fff3d3}
+.hb-experience p{font:italic 14px Georgia,serif;margin:0 0 12px;color:inherit}
+.hb-experience img{width:calc(100% + 26px);height:clamp(180px,22vw,260px);object-fit:cover;border-top:3px solid #f3cb5d;border-bottom:3px solid #f3cb5d;margin-top:auto}
+.hb-card-button{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;border:2px solid #fff1a9;border-radius:30px;background:linear-gradient(#ffe98c,#e7b633);color:#35190b;font-weight:950;font-size:clamp(11px,1.2vw,14px);padding:12px 15px;margin:13px 0 9px;box-shadow:0 4px 0 #70400e;cursor:pointer}.hb-card-button b{font-size:18px}.hb-sweets .hb-card-button{background:linear-gradient(#a91c25,#6d0c14);color:#fff2d0}
+.hb-experience>small{font-size:10px;line-height:1.4;font-weight:750;color:inherit;opacity:.95}
+.hb-benefits{display:flex;justify-content:center;align-items:center;gap:clamp(14px,5vw,65px);padding:19px 10px 24px;flex-wrap:wrap;background:#fff8e8;color:#512717;font-size:12px;font-weight:850}.hb-benefits span{display:flex;align-items:center;gap:8px}.hb-benefits b{font-size:22px}
+.hb-bottom-slogan{background:linear-gradient(90deg,#8c1118,#bd1c25,#8c1118);border-top:4px solid #f5cc5a;border-bottom:4px solid #f5cc5a;color:#fff1c9;text-align:center;padding:21px 8px;font:italic clamp(20px,3vw,32px) Georgia,serif;text-shadow:0 2px #4b0b0e}.hb-bottom-slogan i{color:#ffdb54;font-style:normal;padding:0 12px}
+.hb-coming{max-width:900px;margin:20px auto;padding:18px 20px;background:#fffdf6;border:1px solid #ead5a7;border-radius:15px}.hb-coming h2{margin:0;color:#76151b;font:italic 25px Georgia,serif}.hb-coming p{margin:7px 0 0;color:#6b5945;font-size:13px}
+@media(max-width:700px){.hb-sitebar{gap:9px;min-height:66px;padding:9px 11px}.hb-menu-icon{width:34px;height:34px;font-size:17px}.hb-logo{font-size:23px}.hb-logo small{font-size:9px}.hb-search{height:38px;padding:0 9px;min-width:0}.hb-search input{font-size:10px}.hb-account,.hb-bag{width:34px;height:34px;font-size:17px}.hb-welcome{padding:31px 10px 45px}.hb-welcome-kicker{font-size:22px}.hb-welcome h1{font-size:clamp(47px,12vw,69px);letter-spacing:-3px}.hb-chef{right:8%;top:40px;font-size:29px}.hb-ribbon{font-size:11px;padding:9px 24px}.hb-welcome p{font-size:13px}.hb-welcome:before,.hb-welcome:after{font-size:55px}.hb-experiences{grid-template-columns:1fr;max-width:440px;padding:0 13px 20px;gap:16px;margin-top:-18px}.hb-experience{padding:14px 13px 15px}.hb-experience h2{font-size:35px}.hb-experience img{height:220px;width:calc(100% + 26px)}.hb-card-button{font-size:14px;padding:12px 22px}.hb-benefits{gap:13px;font-size:10px;padding:17px 8px}.hb-benefits b{font-size:18px}.hb-bottom-slogan{font-size:20px;padding:17px 5px}.hb-bottom-slogan i{padding:0 5px}}
+@media(min-width:701px) and (max-width:1000px){.hb-experience h2{font-size:26px}.hb-experience img{height:190px}.hb-card-button{padding:10px 11px}}
+
+/* V43 — visual-only premium refresh. No markup, scripts, APIs, data, or checkout logic changed. */
+:root{
+ --red:#781419;--red2:#3f080c;--cream:#fbf5eb;--gold:#d9ad59;
+ --ink:#241c19;--muted:#776c64;--green:#16834c;
+}
+body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
+.home{background:radial-gradient(ellipse at 50% 0%,#fff 0%,#fbf5eb 58%,#f1e7d9 100%)}
+.hero{
+ height:min(78vh,700px);min-height:520px;border-radius:0 0 38px 38px;
+ box-shadow:0 22px 55px #4b080a30;
+}
+.hero:after{background:linear-gradient(180deg,#17060755 0%,#16070708 28%,#16070715 48%,#160707d9 100%)}
+.hero-top{top:24px;left:clamp(18px,4vw,48px);right:clamp(18px,4vw,48px)}
+.brand img{width:68px;height:68px;border:2px solid #f4d58b;box-shadow:0 8px 25px #0005}
+.brand span{font-size:13px;letter-spacing:1.25px}
+.hero-order-mini{border:1px solid #f5dca477;background:#310b0c77;padding:12px 18px;box-shadow:0 8px 24px #0002}
+.hero-copy{bottom:68px}
+.eyebrow{background:#f5dca722;border-color:#f5dca777;color:#fff4dc;letter-spacing:1.7px}
+.hero h1{font-family:Georgia,"Times New Roman",serif;font-weight:800;letter-spacing:-2.8px;text-shadow:0 5px 24px #0008}
+.hero-copy p{font-weight:500;letter-spacing:.15px;text-shadow:0 2px 10px #0008}
+.btn{border-radius:999px;padding:14px 23px;transition:transform .2s,box-shadow .2s}
+.btn-primary{background:linear-gradient(135deg,#fff8e9,#e9c77d);color:#541014;box-shadow:0 8px 24px #0003}
+.btn-glass{background:#ffffff18;border-color:#ffffff88;backdrop-filter:blur(10px)}
+.btn:active,.online-btn:active,.order-choice:active{transform:scale(.98)}
+.hero-dots span.active{background:#e9c77d}
+.wrap{max-width:1240px}
+.quick{gap:13px;margin-top:-34px}
+.quick-card{border:1px solid #e8d7b8;border-radius:19px;padding:10px;background:linear-gradient(180deg,#fff 0%,#fffaf2 100%);box-shadow:0 12px 30px #3c1c1017;transition:transform .22s,box-shadow .22s}
+.quick-card:hover{transform:translateY(-4px);box-shadow:0 16px 34px #3c1c1024}
+.quick-card .qphoto{height:76px;border-radius:13px}
+.quick-card b{font-size:13px;letter-spacing:.1px;color:#4b1716}
+.section{padding-top:48px}
+.section-head{margin-bottom:25px}
+.section-head .label{letter-spacing:2px;color:#a26c25}
+.section-head h2{font-family:Georgia,"Times New Roman",serif;color:#4d1114;font-size:clamp(31px,4vw,46px);letter-spacing:-.7px}
+.section-head p{font-size:15px;color:#786d64}
+.feature-grid{gap:18px}
+.feature{border:1px solid #eadcc8;border-radius:22px;box-shadow:0 10px 28px #3b1b1012;transition:transform .25s,box-shadow .25s}
+.feature:hover{transform:translateY(-6px);box-shadow:0 18px 38px #3b1b1022}
+.feature-media{height:230px}
+.feature-media img{transition:transform .5s}
+.feature:hover .feature-media img{transform:scale(1.045)}
+.feature-badge{background:#fff7e9;color:#76151a;border:1px solid #e8d4a9}
+.feature-body{padding:17px}
+.feature-body h3{font-family:Georgia,"Times New Roman",serif;font-size:20px;color:#681217}
+.feature-body p{font-size:13px;line-height:1.6}
+.story-band{border:1px solid #b77a5140;background:radial-gradient(circle at 90% 0%,#a84c3c 0%,transparent 42%),linear-gradient(130deg,#741318,#3d090d);border-radius:28px;padding:clamp(24px,4vw,42px);box-shadow:0 18px 38px #6412172c}
+.story-band h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(29px,4vw,39px)}
+.point{border-color:#f3dba044;background:#ffffff12;border-radius:17px;backdrop-filter:blur(6px)}
+.point b{font-size:15px}.point span{line-height:1.5}
+.order-block{border:1px solid #e6d4b3;border-radius:26px;background:linear-gradient(135deg,#fff,#fff8ec);box-shadow:0 14px 34px #4a211011;padding:clamp(24px,4vw,40px)}
+.order-block h2{font-family:Georgia,"Times New Roman",serif;color:#641217;font-size:clamp(28px,4vw,36px)}
+.online-btn{border-radius:999px;background:linear-gradient(135deg,#851a20,#570b10);padding:16px 32px;box-shadow:0 10px 24px #74131840}
+.footer{color:#8b7c70}
+.footer strong{color:#75141a}
+/* Menu view: retain all existing controls and behavior; refresh presentation only. */
+#menuScreen{background:linear-gradient(180deg,#fffdf9,#f6efe5)}
+.menu-header{background:#fffdf9ed;backdrop-filter:blur(14px);border-bottom:1px solid #eadfce;box-shadow:0 7px 22px #32140c0b;padding:14px}
+.menu-title b{font-family:Georgia,"Times New Roman",serif;font-size:20px;letter-spacing:-.2px}
+.back{border:1px solid #eadfce;background:#f8f1e7;border-radius:999px;padding:11px 16px}
+.pickup-discount-badge{border-radius:14px;background:linear-gradient(100deg,#effaf2,#f8fff9);border-color:#c6e4cf;padding:11px 15px}
+.diet-filter{gap:10px}
+.diet-filter-btn{border-radius:999px;padding:12px 15px;border-color:#e7d9c8;background:#fffdf9;transition:.2s}
+.diet-filter-btn.active{background:linear-gradient(135deg,#851a20,#5b0b10);border-color:#851a20;box-shadow:0 7px 18px #78141930}
+.searchbox input{border-radius:999px;background:#fffdf9;border-color:#e4d7c8;padding:14px 18px}
+.cart-summary{border-radius:16px;border-color:#eadcc8;background:#fffdf9;box-shadow:0 6px 18px #34170d0c;padding:11px 13px}
+.cart-summary-head{background:#fffdf9}
+.cart-pay{border-radius:999px;background:linear-gradient(135deg,#851a20,#5b0b10);padding:8px 12px}
+.menu-content{padding-top:23px}
+.menu-section h2{font-family:Georgia,"Times New Roman",serif;font-size:25px;letter-spacing:-.25px;padding-bottom:8px;border-bottom:1px solid #eadcc8}
+.menu-grid{gap:15px}
+.menu-card{border:1px solid #eadcc8;border-radius:19px;background:#fffdf9;box-shadow:0 8px 22px #34170d0c;transition:transform .2s,box-shadow .2s}
+.menu-card:hover{transform:translateY(-4px);box-shadow:0 14px 28px #34170d18}
+.menu-card img{background:#f1e7da}
+.menu-body{padding:13px}
+.menu-body h3{font-size:15px;line-height:1.4;color:#342522}
+.price{color:#781419;font-size:16px}
+.add{border-radius:999px;background:linear-gradient(135deg,#851a20,#5b0b10);padding:10px}
+.qty-control{border-radius:999px}
+.cart-fab{background:linear-gradient(135deg,#851a20,#5b0b10);box-shadow:0 10px 28px #4d0c1270;padding:15px 21px}
+.cart-fab .count{color:#781419}
+/* Checkout visual polish only; all existing checkout fields and handlers remain untouched. */
+.drawer-head h2{font-family:Georgia,"Times New Roman",serif}
+.billing-intro{background:radial-gradient(circle at 95% 5%,#a4473d 0%,transparent 40%),linear-gradient(135deg,#781419,#43080c);border:1px solid #a65c4c55}
+.billing-section{border-color:#e9ddcd;border-radius:20px;box-shadow:0 8px 22px #34170d0a}
+.billing-section-title{font-family:Georgia,"Times New Roman",serif;font-size:17px}
+.field.billing-field{border-radius:14px}
+.order-no.billing-order-no{border-color:#e3c98e;background:linear-gradient(120deg,#fff9ed,#f6ead6)}
+.pay.billing-payment{border-color:#e9ddcd;border-radius:20px}
+.drawer-action{border-radius:999px}
+@media(max-width:600px){
+ .hero{height:610px;border-radius:0 0 29px 29px}
+ .hero-top{top:15px}
+ .brand img{width:58px;height:58px}
+ .hero-copy{bottom:55px}
+ .hero h1{font-size:49px;letter-spacing:-1.8px}
+ .quick{gap:9px;margin-top:-25px}
+ .quick-card{border-radius:16px;padding:8px}
+ .quick-card .qphoto{height:67px}
+ .section{padding-top:37px}
+ .feature-grid{gap:10px}
+ .feature{border-radius:17px}
+ .feature-media{height:150px}
+ .feature-body{padding:12px}
+ .feature-body h3{font-size:16px}
+ .story-band{border-radius:22px}
+ .menu-header{padding:11px 12px}
+ .menu-title b{font-size:17px}
+ .diet-filter-btn{font-size:13px;padding:11px 8px}
+ .menu-grid{gap:10px}
+ .menu-card{border-radius:16px}
+ .menu-card img{height:142px}
+ .menu-body{padding:10px}
+ .menu-body h3{font-size:14px}
+}
+@media(prefers-reduced-motion:reduce){
+ .feature,.feature-media img,.quick-card,.btn{transition:none!important}
+}
+
+
+/* V44 — three-experience landing page and coming-soon views */
+.hb-modern-home{background:linear-gradient(180deg,#21100b 0,#fff1d1 42%,#f4d99d 100%)!important}
+.hb-sitebar{background:#2d160e!important;border-bottom:2px solid #d8a83c!important}
+.hb-logo{color:#ffe5a1!important;font-family:Georgia,serif!important;font-style:italic!important;text-shadow:0 2px 8px #000}
+.hb-logo span{color:#f3bf38!important}.hb-logo small{color:#fff0c9!important}
+.hb-menu-icon,.hb-account,.hb-bag{background:#7c1519!important;border:1px solid #f4cd62!important}
+.hb-search{background:#fff8e9!important}
+.hb-welcome{padding:34px 16px 56px;background:linear-gradient(180deg,#35180f 0%,#6a2a13 52%,#f5d18b 100%)!important;color:#fff}
+.hb-welcome-kicker{color:#ffe5aa!important;font-size:clamp(22px,3vw,32px)!important}
+.hb-welcome h1{font-family:Georgia,serif!important;color:#ffe19a!important;text-shadow:2px 3px 0 #55200d,0 6px 18px #0008!important}
+.hb-welcome h1 span{color:#ffca38!important}.hb-welcome p{color:#fff!important;font-size:clamp(16px,2vw,21px)!important}
+.hb-ribbon{background:linear-gradient(90deg,#8b151b,#c72a20)!important;border:1px solid #f6d36e;box-shadow:0 5px 14px #0004}
+.hb-experiences{margin-top:-28px!important;gap:17px!important}
+.hb-experience{border-radius:28px!important;min-height:560px;box-shadow:0 16px 34px #32170e55,inset 0 0 0 2px #fff5bd!important}
+.hb-experience img{height:clamp(220px,24vw,310px)!important;object-fit:cover}
+.hb-experience h2{font-family:Georgia,serif!important}
+.hb-card-button{min-height:48px;font-size:clamp(13px,1.25vw,16px)!important;padding:13px 21px!important}
+.hb-benefits{background:#35180f!important;color:#ffedc7!important;border-top:3px solid #d9a93e}
+.hb-bottom-slogan{background:linear-gradient(90deg,#30150c,#6d2914,#30150c)!important;border-color:#e2b84e!important}
+.hb-coming[hidden]{display:none!important}
+.hb-coming.hb-coming-active{position:fixed!important;inset:0!important;z-index:300000!important;display:flex!important;flex-direction:column;align-items:center;justify-content:center;max-width:none!important;margin:0!important;padding:26px!important;border:0!important;border-radius:0!important;background:linear-gradient(180deg,#fff2d3 0%,#f4d28c 100%)!important;text-align:center;overflow:auto}
+.hb-coming .hb-coming-back{position:absolute;top:calc(16px + env(safe-area-inset-top));left:16px;border:1px solid #e2c47c;border-radius:999px;padding:11px 17px;background:#fff8e9;color:#5b2112;font-weight:900}
+.hb-coming .hb-coming-art{width:min(88vw,540px);height:min(48vh,470px);min-height:220px;border:5px solid #fff4d4;border-radius:24px;box-shadow:0 18px 38px #5b2b1840;background-position:center;background-size:cover;margin:24px auto 20px}
+.hb-coming[data-kind="daily"] .hb-coming-art{background-image:linear-gradient(180deg,#0000,#0003),url('https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1100&q=85')}
+.hb-coming[data-kind="sweets"] .hb-coming-art{background-image:linear-gradient(180deg,#0000,#0003),url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1100&q=85')}
+.hb-coming .hb-coming-title{font:900 clamp(35px,7vw,64px)/1 Georgia,serif;color:#8a1719;text-shadow:1px 2px #fff}
+.hb-coming .hb-coming-sub{font-size:clamp(15px,2vw,20px);color:#56301c;margin:12px 0 22px}
+.hb-coming .hb-coming-tag{display:inline-block;padding:12px 28px;border-radius:999px;background:linear-gradient(135deg,#851a20,#560b10);color:#fff2d2;font-weight:950;letter-spacing:2px;box-shadow:0 7px 18px #5b111c40}
+.hb-coming .hb-coming-note{max-width:560px;color:#704b31;line-height:1.6;margin:18px auto 0}
+@media(max-width:700px){.hb-sitebar{background:#2d160e!important}.hb-experiences{max-width:470px!important;gap:17px!important}.hb-experience{min-height:0!important;border-radius:23px!important;padding:14px 13px 16px!important}.hb-experience img{height:230px!important}.hb-coming .hb-coming-art{width:min(88vw,430px);height:40vh;min-height:210px}}
+
+
+/* V45 — align the landing page with the supplied three-panel reference. Visual-only overrides. */
+#home .hb-sitebar{display:none!important}
+#home .hb-welcome{
+ min-height:330px;padding:48px 14px 68px!important;
+ background:
+ radial-gradient(ellipse at 50% 0%,#a65a2b55,transparent 52%),
+ linear-gradient(180deg,#25100a 0%,#51210f 56%,#d49b54 100%)!important;
+ border-top:5px solid #d8ad4e;border-bottom:4px solid #e6bd62;
+}
+#home .hb-welcome:before,#home .hb-welcome:after{color:#729348!important;opacity:.9;top:38px}
+#home .hb-welcome-kicker{font:italic clamp(22px,4vw,34px) Georgia,serif!important;color:#ffe7b4!important}
+#home .hb-welcome h1{font:italic 900 clamp(48px,9vw,90px)/.98 Georgia,serif!important;letter-spacing:-3px!important;color:#ffd56b!important;text-shadow:2px 4px 0 #55230d,0 7px 18px #0009!important}
+#home .hb-welcome h1 span{color:#ffdb75!important}
+#home .hb-chef{display:none!important}
+#home .hb-ribbon{margin-top:22px!important;padding:12px clamp(18px,4vw,42px)!important;border:1px solid #f8d778!important;box-shadow:0 5px 14px #0005}
+#home .hb-welcome p{font-size:clamp(15px,2vw,22px)!important;color:#fff8e7!important;font-weight:800!important}
+#home .hb-experiences{
+ max-width:1450px!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ gap:12px!important;margin:-25px auto 20px!important;padding:0 18px!important;
+ align-items:stretch;
+}
+#home .hb-experience{
+ min-height:0!important;border-radius:24px!important;padding:14px 10px 16px!important;
+ border:3px solid #f6ce55!important;box-shadow:0 12px 27px #3c1b0d55,inset 0 0 0 2px #fff4bf!important;
+}
+#home .hb-experience-icon{width:64px;height:64px;margin-top:-27px!important}
+#home .hb-experience h2{font-size:clamp(20px,2.8vw,38px)!important;line-height:1.05!important}
+#home .hb-experience .hb-label{font-size:clamp(9px,1.1vw,13px)!important;padding:7px 9px!important;letter-spacing:.5px!important;white-space:normal}
+#home .hb-experience p{font-size:clamp(11px,1.35vw,16px)!important;min-height:34px}
+#home .hb-experience img{width:calc(100% + 20px)!important;height:clamp(145px,23vw,300px)!important;object-fit:cover!important}
+#home .hb-card-button{font-size:clamp(10px,1.2vw,15px)!important;padding:11px 9px!important;min-height:42px!important;white-space:normal}
+#home .hb-experience>small{font-size:clamp(8px,.9vw,12px)!important}
+#home .hb-benefits{background:#32170d!important;border-top:3px solid #e1b84e!important;color:#ffedc7!important}
+#home .hb-bottom-slogan{background:linear-gradient(90deg,#2b130b,#6a2912,#2b130b)!important}
+@media(max-width:700px){
+ #home .hb-welcome{min-height:270px!important;padding:42px 8px 48px!important}
+ #home .hb-welcome-kicker{font-size:21px!important}
+ #home .hb-welcome h1{font-size:clamp(39px,11vw,58px)!important;letter-spacing:-2px!important}
+ #home .hb-ribbon{font-size:10px!important;padding:9px 14px!important;margin-top:16px!important;letter-spacing:.6px!important}
+ #home .hb-welcome p{font-size:13px!important;margin-top:12px!important}
+ #home .hb-experiences{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important;padding:0 8px!important;margin-top:-17px!important}
+ #home .hb-experience{padding:11px 5px 12px!important;border-width:2px!important;border-radius:15px!important}
+ #home .hb-experience-icon{width:42px!important;height:42px!important;font-size:20px!important;border-width:3px!important;margin-top:-23px!important}
+ #home .hb-experience h2{font-size:clamp(13px,3.8vw,19px)!important;line-height:1.02!important;margin:8px 0 6px!important}
+ #home .hb-experience .hb-label{font-size:7px!important;line-height:1.2;padding:6px 3px!important;letter-spacing:0!important;width:100%}
+ #home .hb-experience p{font-size:9px!important;line-height:1.2!important;min-height:31px;margin-bottom:7px!important}
+ #home .hb-experience img{height:clamp(92px,27vw,150px)!important;width:calc(100% + 10px)!important;border-width:2px!important}
+ #home .hb-card-button{font-size:8px!important;line-height:1.15!important;padding:8px 3px!important;min-height:34px!important;gap:3px!important;margin:9px 0 6px!important;border-width:1px!important}
+ #home .hb-card-button b{font-size:11px!important}
+ #home .hb-experience>small{font-size:7px!important;line-height:1.2!important}
+ #home .hb-benefits{gap:8px!important;padding:13px 5px!important;font-size:8px!important}
+ #home .hb-benefits b{font-size:14px!important}
+ #home .hb-bottom-slogan{font-size:15px!important;padding:14px 4px!important}
+}
+@media(max-width:360px){
+ #home .hb-experiences{gap:5px!important;padding:0 5px!important}
+ #home .hb-experience h2{font-size:12px!important}
+ #home .hb-experience img{height:94px!important}
+ #home .hb-card-button{font-size:7px!important}
+}
+
+</style>
+
+<!-- HAKKABAKKA DELIVERY LOCATION: GPS + structured OpenStreetMap reverse geocoding -->
+<script>
+(function(){
+  const addressEl=document.getElementById('address'),pinEl=document.getElementById('pincode');
+  const locateBtn=document.getElementById('hbUseLocation'),confirmBtn=document.getElementById('hbConfirmAddress');
+  const mapStatus=document.getElementById('hbMapLocationStatus'),confirmStatus=document.getElementById('hbAddressConfirmStatus');
+  if(!addressEl||!pinEl||!locateBtn||!confirmBtn)return;
+  window.hbDeliveryAddressConfirmed=false;
+  function showStatus(el,message,type){el.textContent=message;el.className='delivery-status show '+(type||'')}
+  function resetConfirmation(){window.hbDeliveryAddressConfirmed=false;if(confirmStatus){confirmStatus.className='delivery-status';confirmStatus.textContent=''}if(typeof updateBilling==='function')updateBilling()}
+  addressEl.addEventListener('input',function(){resetConfirmation();if(typeof saveCheckout==='function')saveCheckout()});
+  pinEl.addEventListener('input',function(){resetConfirmation()});
+  locateBtn.addEventListener('click',function(){
+    if(!navigator.geolocation){showStatus(mapStatus,'GPS is not supported. Please enter your address manually.','bad');return}
+    locateBtn.disabled=true;locateBtn.textContent='Finding your location…';showStatus(mapStatus,'Allow location access. Getting a precise GPS fix…','');
+    navigator.geolocation.getCurrentPosition(async function(position){
+      try{
+        const result=await window.hbReverseGeocode(position.coords.latitude,position.coords.longitude);
+        addressEl.value=result.address;
+        pinEl.value=result.postcode||'';
+        resetConfirmation();
+        const accuracy=Math.round(position.coords.accuracy||0);
+        const note=accuracy>100?' GPS accuracy is approximately '+accuracy+' metres; please verify the street and PIN carefully.':'';
+        showStatus(mapStatus,result.postcode?'Address lookup complete. Verify the street and PIN code before confirming.'+note:'Street/locality found, but no reliable PIN code was returned. Please enter and verify it manually.'+note,result.postcode?'ok':'bad');
+        if(typeof saveCheckout==='function')saveCheckout();
+      }catch(error){showStatus(mapStatus,error.message||'Could not verify this location. Please enter the address and PIN manually.','bad')}
+      finally{locateBtn.disabled=false;locateBtn.textContent='📍 Use My Current Location';if(typeof updateBilling==='function')updateBilling()}
+    },function(error){
+      let msg='Location permission was denied. Enter the address manually or allow location access.';
+      if(error&&error.code===error.TIMEOUT)msg='GPS timed out. Turn on device Location and try again.';
+      if(error&&error.code===error.POSITION_UNAVAILABLE)msg='GPS location is unavailable. Check device Location settings and retry.';
+      showStatus(mapStatus,msg,'bad');locateBtn.disabled=false;locateBtn.textContent='📍 Use My Current Location';
+    },{enableHighAccuracy:true,timeout:25000,maximumAge:0});
+  });
+  confirmBtn.addEventListener('click',function(){
+    const area=addressEl.value.trim(),house=document.getElementById('deliveryHouseNo')?.value.trim()||'',landmark=document.getElementById('deliveryLandmark')?.value.trim()||'',p=pinEl.value.trim();
+    if(area.length<4){showStatus(confirmStatus,'Please enter or locate your area / colony / city.','bad');return}
+    if(!house){showStatus(confirmStatus,'Please enter your house, flat or shop number.','bad');return}
+    if(!/^\d{6}$/.test(p)){showStatus(confirmStatus,'Enter and verify the correct 6-digit PIN code.','bad');return}
+    window.hbDeliveryAddressConfirmed=true;
+    window.hbConfirmedDeliveryAddress=[house,landmark,area].filter(Boolean).join(', ');
+    showStatus(confirmStatus,'✓ Address confirmed. House number and landmark included.','ok');
+    if(typeof saveCheckout==='function')saveCheckout();if(typeof updateBilling==='function')updateBilling();
+  });
+})();
+</script>
+
+<!-- Shared reverse geocoder: prefer structured Nominatim address; Photon fallback -->
+<script>
+(function(){
+  function clean(parts){return [...new Set(parts.filter(Boolean).map(x=>String(x).trim()).filter(x=>x&&!/^(office|building|yes|residential|house)$/i.test(x)))].join(', ')}
+  window.hbReverseGeocode=async function(lat,lon){
+    const endpoint='https://hakkabakka-platform-api.mail-marvelgroup.workers.dev/api/location/reverse?lat='+encodeURIComponent(lat)+'&lon='+encodeURIComponent(lon);
+    const response=await fetch(endpoint,{headers:{'Accept':'application/json'}});
+    const result=await response.json().catch(()=>({}));
+    if(!response.ok)throw new Error(result.error||'Address lookup service is unavailable.');
+    if(!result.success||!result.address||!/^\\d{6}$/.test(String(result.postcode||'')))throw new Error(result.error||'No reliable locality and PIN were found. Please enter your area and PIN manually.');
+    return {address:result.address,postcode:String(result.postcode)};
+  };
+})();
+</script>
+
+
+
+<!-- NEW SIGNUP LOCATION AUTOFILL: GPS + structured OpenStreetMap reverse geocoding -->
+<script>
+(function(){
+  const btn=document.getElementById('hbSignupUseLocation'),address=document.getElementById('signupAddress');
+  const postcode=document.getElementById('signupPincode'),status=document.getElementById('hbSignupLocationStatus');
+  if(!btn||!address||!postcode||!status)return;
+  postcode.addEventListener('input',function(){postcode.value=postcode.value.replace(/\D/g,'').slice(0,6)});
+  btn.addEventListener('click',function(){
+    if(!navigator.geolocation){status.textContent='GPS is not supported. Please enter your address manually.';status.className='delivery-status show bad';return}
+    btn.disabled=true;btn.textContent='Finding your location…';status.textContent='Allow location access. Getting a precise GPS fix…';status.className='delivery-status show';
+    navigator.geolocation.getCurrentPosition(async function(position){
+      try{
+        const accuracy=Math.round(position.coords.accuracy||0);
+        if(accuracy>50)throw new Error('Your phone GPS is only accurate to about '+accuracy+' metres. Turn on Precise Location and try again; no address or PIN was filled.');
+        const result=await window.hbReverseGeocode(position.coords.latitude,position.coords.longitude);
+        address.value=result.address;postcode.value='';
+        status.textContent='Area and city auto-filled. Please enter your house number and landmark, and verify the PIN code.';
+        status.className='delivery-status show ok';
+      }catch(error){status.textContent=error.message||'Could not verify this location. Please type your address and PIN manually.';status.className='delivery-status show bad'}
+      finally{btn.disabled=false;btn.textContent='📍 Use My Current Location'}
+    },function(error){
+      let msg='Location permission denied. Please allow GPS access or enter the address manually.';
+      if(error&&error.code===error.TIMEOUT)msg='GPS timed out. Turn on device Location and try again.';
+      if(error&&error.code===error.POSITION_UNAVAILABLE)msg='GPS location unavailable. Check device Location settings and retry.';
+      status.textContent=msg;status.className='delivery-status show bad';btn.disabled=false;btn.textContent='📍 Use My Current Location';
+    },{enableHighAccuracy:true,timeout:25000,maximumAge:0});
+  });
+})();
+</script>
 
 </body>
 </html>
