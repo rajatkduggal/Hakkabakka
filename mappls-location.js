@@ -1,6 +1,6 @@
 (() => {
   "use strict";
-  const API = "https://hb-orders-api.mail-marvelgroup.workers.dev";
+  const API = "https://hakkabakka-platform-api.mail-marvelgroup.workers.dev";
   const button = document.getElementById("useCurrentLocation");
   const status = document.getElementById("mapplsLocationStatus");
   if (!button || !status) return;
@@ -12,18 +12,16 @@
     setStatus("Please allow location access when your browser asks.", "info");
     navigator.geolocation.getCurrentPosition(async position => {
       try {
-        const url = new URL(API + "/location/reverse-geocode");
+        const url = new URL(API + "/api/location/reverse");
         url.searchParams.set("lat", position.coords.latitude);
-        url.searchParams.set("lng", position.coords.longitude);
+        url.searchParams.set("lon", position.coords.longitude);
         const response = await fetch(url.toString(), { method: "GET", cache: "no-store" });
         const data = await response.json().catch(() => null);
-        if (!response.ok || !data?.success || !data.address) throw new Error(data?.message || "Could not find your address.");
-        const a = data.address;
-        const parts = [a.houseNumber, a.houseName, a.poi, a.street, a.subLocality, a.locality, a.village, a.city, a.district, a.state].filter(Boolean);
+        if (!response.ok || !data?.success || !data.address) throw new Error(data?.error || "Could not find your address.");
         const addressField = document.getElementById("address");
         const pinField = document.getElementById("pincode");
-        addressField.value = String(a.formatted_address || "").trim() || [...new Set(parts)].join(", ");
-        const pin = digits(a.pincode);
+        addressField.value = String(data.address || "").trim();
+        const pin = digits(data.postcode);
         if (pin) { pinField.value = pin; pinField.dispatchEvent(new Event("input", { bubbles: true })); }
         addressField.dispatchEvent(new Event("input", { bubbles: true }));
         addressField.dispatchEvent(new Event("change", { bubbles: true }));
