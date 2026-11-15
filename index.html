@@ -2217,33 +2217,39 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
 (function(){
   function clean(parts){return [...new Set(parts.filter(Boolean).map(x=>String(x).trim()).filter(x=>x&&!/^(office|building|yes|residential|house)$/i.test(x)))].join(', ')}
   window.hbReverseGeocode=async function(lat,lon){
-    // BigDataCloud first: return locality/city only, never coordinates or Plus Codes in the form.
+    // BigDataCloud is accepted only when it supplies a real locality, never city-only.
     try{
       const u='https://api.bigdatacloud.net/data/reverse-geocode-client?latitude='+encodeURIComponent(lat)+'&longitude='+encodeURIComponent(lon)+'&localityLanguage=en';
       const r=await fetch(u,{headers:{'Accept':'application/json'}});
       if(r.ok){
         const d=await r.json();
-        const area=d.locality||d.city;
-        const city=d.city||d.locality;
-        const state=d.principalSubdivision;
+        const area=d.locality;
+        const city=d.city||'';
+        const state=d.principalSubdivision||'';
         const postcode=(d.postcode||'').replace(/\\D/g,'').slice(0,6);
-        const address=clean([area,city&&city!==area?city:null,state]);
-        if(address.length>=5)return {address,postcode};
+        if(area&&area.toLowerCase()!==city.toLowerCase()){
+          const address=clean([area,city,state]);
+          if(address.length>=5)return {address,postcode};
+        }
       }
     }catch(e){}
+    // Nominatim must provide a named neighbourhood/suburb before we accept the result.
     try{
-      const u='https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&zoom=16&lat='+encodeURIComponent(lat)+'&lon='+encodeURIComponent(lon);
+      const u='https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&zoom=18&lat='+encodeURIComponent(lat)+'&lon='+encodeURIComponent(lon);
       const r=await fetch(u,{headers:{'Accept':'application/json'}});
       if(r.ok){
         const d=await r.json(),a=d.address||{};
         const area=a.suburb||a.neighbourhood||a.city_district||a.residential;
-        const city=a.city||a.town||a.village||a.municipality;
-        const address=clean([area,city&&city!==area?city:null,a.state]);
+        const city=a.city||a.town||a.village||a.municipality||'';
+        const state=a.state||'';
         const postcode=(a.postcode||'').replace(/\\D/g,'').slice(0,6);
-        if(area&&address.length>=5)return {address,postcode};
+        if(area){
+          const address=clean([area,city&&city!==area?city:null,state]);
+          if(address.length>=5)return {address,postcode};
+        }
       }
     }catch(e){}
-    throw new Error('Your location was received, but the area address could not be matched. Please enter your area and PIN manually.');
+    throw new Error('Your GPS location was received, but the map service did not return a reliable area name. Please enter your area and PIN manually.');
   };
 })();
 </script>
