@@ -2217,39 +2217,12 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
 (function(){
   function clean(parts){return [...new Set(parts.filter(Boolean).map(x=>String(x).trim()).filter(x=>x&&!/^(office|building|yes|residential|house)$/i.test(x)))].join(', ')}
   window.hbReverseGeocode=async function(lat,lon){
-    // BigDataCloud is accepted only when it supplies a real locality, never city-only.
-    try{
-      const u='https://api.bigdatacloud.net/data/reverse-geocode-client?latitude='+encodeURIComponent(lat)+'&longitude='+encodeURIComponent(lon)+'&localityLanguage=en';
-      const r=await fetch(u,{headers:{'Accept':'application/json'}});
-      if(r.ok){
-        const d=await r.json();
-        const area=d.locality;
-        const city=d.city||'';
-        const state=d.principalSubdivision||'';
-        const postcode=(d.postcode||'').replace(/\\D/g,'').slice(0,6);
-        if(area&&area.toLowerCase()!==city.toLowerCase()){
-          const address=clean([area,city,state]);
-          if(address.length>=5)return {address,postcode};
-        }
-      }
-    }catch(e){}
-    // Nominatim must provide a named neighbourhood/suburb before we accept the result.
-    try{
-      const u='https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&zoom=18&lat='+encodeURIComponent(lat)+'&lon='+encodeURIComponent(lon);
-      const r=await fetch(u,{headers:{'Accept':'application/json'}});
-      if(r.ok){
-        const d=await r.json(),a=d.address||{};
-        const area=a.suburb||a.neighbourhood||a.city_district||a.residential;
-        const city=a.city||a.town||a.village||a.municipality||'';
-        const state=a.state||'';
-        const postcode=(a.postcode||'').replace(/\\D/g,'').slice(0,6);
-        if(area){
-          const address=clean([area,city&&city!==area?city:null,state]);
-          if(address.length>=5)return {address,postcode};
-        }
-      }
-    }catch(e){}
-    throw new Error('Your GPS location was received, but the map service did not return a reliable area name. Please enter your area and PIN manually.');
+    const endpoint='https://hakkabakka-platform-api.mail-marvelgroup.workers.dev/api/location/reverse?lat='+encodeURIComponent(lat)+'&lon='+encodeURIComponent(lon);
+    const response=await fetch(endpoint,{headers:{'Accept':'application/json'}});
+    const result=await response.json().catch(()=>({}));
+    if(!response.ok)throw new Error(result.error||'Address lookup service is unavailable.');
+    if(!result.success||!result.address||!/^\\d{6}$/.test(String(result.postcode||'')))throw new Error(result.error||'No reliable locality and PIN were found. Please enter your area and PIN manually.');
+    return {address:result.address,postcode:String(result.postcode)};
   };
 })();
 </script>
