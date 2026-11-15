@@ -641,7 +641,7 @@ async function verifyCustomerOtp(){
     currentUser={id:data.account_id||email,email:data.email||email,user_metadata:{full_name:savedProfile.full_name,phone:savedProfile.phone}};
     currentProfile={full_name:savedProfile.full_name,phone:savedProfile.phone};
     localStorage.setItem('hb_customer_profile',JSON.stringify(savedProfile));
-    if(profile&&pendingAuthPurpose==='checkout'){skipOrderOtpOnce=true;checkoutVerifiedEmail=email;}
+    if(pendingAuthPurpose==='checkout'){skipOrderOtpOnce=true;checkoutVerifiedEmail=email;}
     pendingSignup=null;updateAccountUI();closeAuth();
     if(pendingAuthPurpose==='checkout')await openBillingAfterCustomerAuth();
   }catch(error){authMsg(error.message||'OTP verification failed.','bad')}
