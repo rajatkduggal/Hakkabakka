@@ -2219,10 +2219,9 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
       const locality=a.suburb||a.neighbourhood||a.city_district;
       const city=a.city||a.town||a.village||a.municipality;
       // Reject city/state-only results: they can produce a misleading PIN for another locality.
-      if(street||locality){
+      if(street&&(locality||a.house_number)){
         const line=clean([a.house_number,street,locality,city&&city!==locality?city:null,a.state]);
-        const postcode=(a.postcode||'').replace(/\D/g,'').slice(0,6);
-        if(line.length>=5)return {address:line,postcode:postcode};
+        if(line.length>=5)return {address:line,postcode:''};
       }
       nominatimError=new Error('No street/locality-level address returned');
     }catch(e){nominatimError=e}
@@ -2233,10 +2232,9 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
       if(!p)throw new Error('No address result');
       const locality=p.suburb||p.neighbourhood||p.district;
       // Do not accept a city-only Photon result as a delivery address.
-      if(p.street||locality){
+      if(p.street&&(locality||p.housenumber)){
         const line=clean([p.housenumber&&p.street?p.housenumber+' '+p.street:p.street,locality,p.city&&p.city!==locality?p.city:null,p.state]);
-        const postcode=(p.postcode||'').replace(/\D/g,'').slice(0,6);
-        if(line.length>=5)return {address:line,postcode:postcode};
+        if(line.length>=5)return {address:line,postcode:''};
       }
     }catch(e){throw new Error('Address lookup failed. Please enter your street/area and PIN code manually.')}
     throw new Error('No reliable street address was found for these GPS coordinates. Please enter the correct address and PIN manually.');
@@ -2256,12 +2254,12 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
     btn.disabled=true;btn.textContent='Finding your location…';status.textContent='Allow location access. Getting a precise GPS fix…';status.className='delivery-status show';
     navigator.geolocation.getCurrentPosition(async function(position){
       try{
-        const result=await window.hbReverseGeocode(position.coords.latitude,position.coords.longitude);
-        address.value=result.address;postcode.value=result.postcode||'';
         const accuracy=Math.round(position.coords.accuracy||0);
-        const note=accuracy>100?' GPS accuracy is approximately '+accuracy+' metres; please verify the address and PIN carefully.':'';
-        status.textContent=result.postcode?'Address lookup complete. Please verify the street and PIN before signup.'+note:'Street/locality found, but no reliable PIN code was returned. Enter it manually.'+note;
-        status.className='delivery-status show '+(result.postcode?'ok':'bad');
+        if(accuracy>50)throw new Error('Your phone GPS is only accurate to about '+accuracy+' metres. Turn on Precise Location and try again; no address or PIN was filled.');
+        const result=await window.hbReverseGeocode(position.coords.latitude,position.coords.longitude);
+        address.value=result.address;postcode.value='';
+        status.textContent='Street/locality found. PIN code was left blank intentionally—enter your verified 6-digit PIN. Check the address before signup. GPS accuracy: '+accuracy+' metres.';
+        status.className='delivery-status show ok';
       }catch(error){status.textContent=error.message||'Could not verify this location. Please type your address and PIN manually.';status.className='delivery-status show bad'}
       finally{btn.disabled=false;btn.textContent='📍 Use My Current Location'}
     },function(error){
