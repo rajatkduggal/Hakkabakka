@@ -258,91 +258,60 @@ body{background:var(--hb-cream)}
 <script>document.documentElement.classList.add("hb-v34");</script>
 
 <!-- SINGLE PROFESSIONAL WELCOME PAGE -->
-<div id="home" class="home">
-  <section class="hero">
-    <div class="hero-slides" id="heroSlides">
-      <img class="active" src="images/paneer butter masala.jpg" alt="Paneer Butter Masala" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/paneer%20butter%20masala.jpg'">
-      <img src="images/dal makhani.jpg" alt="Dal Makhani" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/dal%20makhani.jpg'">
-      <img src="sweetlassi.png" alt="Sweet Lassi" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/sweetlassi.png'">
-      <img src="mojitoo.png" alt="Refreshing Mojito" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/mojitoo.png'">
-      <img src="images/chilli mushroom.jpg" alt="Chilli Mushroom" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chilli%20mushroom.jpg'">
-      <img src="guava-mojito.jpg" alt="Guava Mojito" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/guava-mojito.jpg'">
-      <img src="images/butter chicken.jpg" alt="Butter Chicken" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20chicken.jpg'">
-      <img src="sweetlassi.jpg" alt="Sweet Lassi" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/sweetlassi.jpg'">
-      <img src="images/honey chilli potato.jpg" alt="Honey Chilli Potato" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/honey%20chilli%20potato.jpg'">
-      <img src="chach.png" alt="Masala Chach" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/chach.png'">
-      <img src="images/tari wala mutton 2pc.jpg" alt="Tari Wala Mutton" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/tari%20wala%20mutton%202pc.jpg'">
-      <img src="images/butter naan.jpg" alt="Butter Naan" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20naan.jpg'">
-    </div>
-    <div class="hero-top">
-      <div class="brand"><img src="newlogo.jpg" alt="Hakka Bakka Logo" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/newlogo.jpg'"><span>Hakka Bakka<br>Punjabi Dhaba</span></div>
-      <button class="hero-order-mini" onclick="openOrderModal()">Order Now</button>
-    </div>
-    <div class="hero-copy">
-      <span class="eyebrow">🔥 Desi Swad • Modern Vibe</span>
-      <h1>Hakka Bakka</h1>
-      <p>Authentic Punjabi taste, tandoori favourites & hearty family meals.</p>
-      <div class="hero-actions"><button class="btn btn-primary" type="button" onclick="openOrderModal()">🛍️ Online Order</button></div>
-    </div>
-    <div class="hero-dots" id="heroDots"></div>
+<!-- HAKKABAKKA THREE-EXPERIENCE HOMEPAGE REDESIGN -->
+<div id="home" class="home hb-modern-home">
+  <header class="hb-sitebar">
+    <button class="hb-menu-icon" type="button" aria-label="Open menu" onclick="openOrderModal()">☰</button>
+    <a class="hb-logo" href="#home">Hakka<span>Bakka</span><small>Desi Swad, Modern Vibe</small></a>
+    <label class="hb-search"><span>⌕</span><input type="search" placeholder="Search food, groceries & more…" onkeydown="if(event.key==='Enter'){openOrderModal()}"></label>
+    <button class="hb-account" type="button" aria-label="Customer account" onclick="openAuth()">♙</button>
+    <button class="hb-bag" type="button" aria-label="Open bag" onclick="openCart()">🛒</button>
+  </header>
+  <section class="hb-welcome">
+    <div class="hb-leaf hb-leaf-left">✦</div><div class="hb-leaf hb-leaf-right">✦</div>
+    <div class="hb-welcome-kicker">WELCOME TO</div>
+    <h1>Hakka<span>Bakka</span></h1>
+    <div class="hb-chef">♨</div>
+    <div class="hb-ribbon">ONE BRAND <i>•</i> THREE EXPERIENCES</div>
+    <p>What would you like to explore today?</p>
   </section>
-
-
-  <div class="wrap">
-    <div class="quick" aria-label="Quick menu categories">
-      <button class="quick-card" type="button" onclick="goToMenuCategory('Indian Veg Main Course')"><img class="qphoto" src="images/paneer butter masala.jpg" alt=""><b>Punjabi Veg</b></button>
-      <button class="quick-card" type="button" onclick="goToMenuCategory('Tandoori Veg')"><img class="qphoto" src="images/paneer malai tikka.jpg" alt=""><b>Tandoori</b></button>
-      <button class="quick-card" type="button" onclick="goToMenuCategory('Indian Non-Veg Main Course')"><img class="qphoto" src="muttonrogan.jpg" alt="Mutton" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/tari%20wala%20mutton.jpg'"><b>Non-Veg</b></button>
-      <button class="quick-card" type="button" onclick="goToMenuCategory('Chinese Veg & Veg Snacks')"><img class="qphoto" src="images/chilli mushroom.jpg" alt=""><b>Chinese</b></button>
-      <button class="quick-card" type="button" onclick="goToMenuCategory('Chapati / Breads / Kulcha')"><img class="qphoto" src="images/butter naan.jpg" alt="Butter Naan" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/plain%20naan.jpg'"><b>Breads</b></button>
-      <button class="quick-card" type="button" onclick="goToMenuCategory('Drinks')"><img class="qphoto" src="guava-mojito.jpg" alt="Drinks" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/sweetlassi.png'"><b>Drinks</b></button>
-    </div>
-
-    <section class="section">
-      <div class="section-head"><span class="label">From our kitchen</span><h2>Hakka Bakka Favourites</h2><p>A visual taste of the dishes customers come for — rich Punjabi gravies, tandoori favourites, Indo-Chinese bites and refreshing sides.</p></div>
-      <div class="feature-grid">
-        <article class="feature"><div class="feature-media"><img src="images/butter chicken.jpg" alt="Butter Chicken" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20chicken.jpg'"><span class="feature-badge">NON-VEG • SIGNATURE</span></div><div class="feature-body"><h3>Butter Chicken</h3><p>Rich, buttery North Indian gravy with tender chicken.</p></div></article>
-        <article class="feature"><div class="feature-media"><img src="images/chicken kali mirch.jpg" alt="Chicken Kali Mirch" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chicken%20kali%20mirch.jpg'"><span class="feature-badge">NON-VEG • FAVOURITE</span></div><div class="feature-body"><h3>Chicken Kali Mirch</h3><p>Creamy black-pepper chicken with bold aroma.</p></div></article>
-        <article class="feature"><div class="feature-media"><img src="images/chilli mushroom.jpg" alt="Chilli Mushroom" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/chilli%20mushroom.jpg'"><span class="feature-badge">VEG • INDO-CHINESE</span></div><div class="feature-body"><h3>Chilli Mushroom</h3><p>Mushrooms, peppers and onion in a spicy glaze.</p></div></article>
-        <article class="feature"><div class="feature-media"><img src="images/honey chilli potato.jpg" alt="Honey Chilli Potato" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/honey%20chilli%20potato.jpg'"><span class="feature-badge">VEG • CRISPY</span></div><div class="feature-body"><h3>Honey Chilli Potato</h3><p>Crispy potato tossed in sweet-spicy honey chilli.</p></div></article>
-        <article class="feature"><div class="feature-media"><img src="images/dal makhani.jpg" alt="Dal Makhani" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/dal%20makhani.jpg'"><span class="feature-badge">VEG • PUNJABI</span></div><div class="feature-body"><h3>Dal Makhani</h3><p>Slow-cooked creamy black lentils with desi flavour.</p></div></article>
-        <article class="feature"><div class="feature-media"><img src="images/tari wala mutton 2pc.jpg" alt="Tari Wala Mutton" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/tari%20wala%20mutton%202pc.jpg'"><span class="feature-badge">NON-VEG • PUNJABI</span></div><div class="feature-body"><h3>Tari Wala Mutton</h3><p>Slow-cooked mutton in a rich Punjabi tari.</p></div></article>
-        <article class="feature"><div class="feature-media"><img src="images/butter naan.jpg" alt="Butter Naan" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20naan.jpg'"><span class="feature-badge">TANDOOR • BREAD</span></div><div class="feature-body"><h3>Butter Naan</h3><p>Soft tandoori naan finished with butter.</p></div></article>
-        <article class="feature"><div class="feature-media"><img src="fries.png" alt="Fries and Sides" onerror="this.src='https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/fries.png'"><span class="feature-badge">SNACKS • SIDES</span></div><div class="feature-body"><h3>Fries & Sides</h3><p>Crispy seasoned sides made for sharing.</p></div></article>
-      </div>
-    </section>
-
-    <section class="story-band">
-      <div><h2>Punjabi heart. Modern vibe.</h2><p>Hakka Bakka brings together familiar Punjabi flavours, tandoori cooking, North Indian gravies and Indo-Chinese favourites in one easy family dining experience.</p></div>
-      <div class="story-points"><div class="point"><b>👨‍👩‍👧‍👦 Family Friendly</b><span>Made to enjoy together</span></div><div class="point"><b>🔥 Tandoor Favourites</b><span>Smoky, hot & fresh</span></div><div class="point"><b>🥗 Veg + Non-Veg</b><span>Something for everyone</span></div><div class="point"><b>🥤 Refreshing Drinks</b><span>Mojitos & more</span></div></div>
-    </section>
-
-    
-<section class="instagram-updates">
-  <div class="wrap">
-    <div class="ig-wrap">
-      <div class="ig-head">
-        <div class="ig-title">
-          <div class="ig-logo">◎</div>
-          <div>
-            <h2>Latest from HakkaBakka</h2>
-            <p>Fresh updates from @hakka_bakka.in</p>
-          </div>
-        </div>
-        <a class="ig-follow" href="https://www.instagram.com/hakka_bakka.in/" target="_blank" rel="noopener noreferrer">Follow us on Instagram</a>
-      </div>
-
-      <div class="ig-grid" id="instagramUpdates" aria-live="polite" aria-busy="true"></div>
-
-      <p class="ig-status" id="instagramStatus">Loading the latest available content…</p>
-    </div>
-  </div>
-</section>
-
-  <div class="footer"><strong>Hakka Bakka Punjabi Dhaba</strong><div>Shop No. 1, Near Bhagat Singh Colony, Opp. Maqsudan Bypass, G.T. Road, Jalandhar, Punjab 144008</div><div>WhatsApp: 7796631555</div></div>
-  </div>
+  <section class="hb-experiences" aria-label="Three HakkaBakka experiences">
+    <article class="hb-experience hb-dhaba">
+      <div class="hb-experience-icon">♨</div><h2>Punjabi Dhaba</h2>
+      <div class="hb-label">ONLINE ORDERS</div><p>Delicious Food, Desi Taste</p>
+      <img src="https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/butter%20chicken.jpg" alt="Punjabi butter chicken and naan" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=900&q=85'">
+      <button class="hb-card-button" id="hbOnlineOrderButton" type="button" onclick="return window.hbForceOpenMenu ? window.hbForceOpenMenu(event) : openMenu()">Order Food Online <b>➜</b></button>
+      <small>Punjabi • Tandoori • Chinese • Drinks</small>
+    </article>
+    <article class="hb-experience hb-daily">
+      <div class="hb-experience-icon">🛒</div><h2>Dailyneeds <em>Store</em></h2>
+      <div class="hb-label">GROCERIES & MORE</div><p>Fresh Essentials, Every Day</p>
+      <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=900&q=85" alt="Fresh groceries and vegetables">
+      <button class="hb-card-button" type="button" onclick="showHbComingSoon('daily')">Shop Daily Essentials <b>➜</b></button>
+      <small>Grocery • Vegetables • Personal Care • Cleaning</small>
+    </article>
+    <article class="hb-experience hb-sweets">
+      <div class="hb-experience-icon">🍰</div><h2>Sweets & Snax</h2>
+      <div class="hb-label">MITHAI, BAKERY & SNACKS</div><p>Taaza te Swaad • Sweet Happiness</p>
+      <img src="https://images.unsplash.com/photo-1605197161470-5d8c1f2b7c6b?auto=format&fit=crop&w=900&q=85" alt="Indian sweets and desserts" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=85'">
+      <button class="hb-card-button" type="button" onclick="showHbComingSoon('sweets')">Shop Sweets & Snacks <b>➜</b></button>
+      <small>Mithai • Pakode • Eggless Bakery • Kulfi & Ice Cream</small>
+    </article>
+  </section>
+  <div class="hb-benefits"><span><b>🛵</b>Easy Ordering</span><span><b>🛡️</b>Secure Payments</span><span><b>🚚</b>Fast Delivery</span><span><b>🏷️</b>Daily Offers</span></div>
+  <div class="hb-bottom-slogan">Good Food <i>•</i> Fresh Essentials <i>•</i> Sweet Happiness</div>
+  <section class="hb-coming" id="hb-daily-coming" hidden></section>
+  <section class="hb-coming" id="hb-sweets-coming" hidden></section>
 </div>
-
+<script>
+function showHbComingSoon(kind){
+ var section=document.getElementById(kind==='daily'?'hb-daily-coming':'hb-sweets-coming');if(!section)return;
+ section.dataset.kind=kind;
+ section.innerHTML='<button class="hb-coming-back" type="button" onclick="hideHbComingSoon()">← Back to Home</button><div class="hb-coming-art" role="img" aria-label="'+(kind==='daily'?'Dailyneeds grocery store':'Sweets and snacks')+'"></div><div class="hb-coming-title">'+(kind==='daily'?'HakkaBakka Dailyneeds':'HakkaBakka Sweets & Snax')+'</div><div class="hb-coming-sub">'+(kind==='daily'?'Everything you need, every single day!':'Taaza te Swaad — Your Ultimate Treat Destination!')+'</div><div class="hb-coming-tag">COMING SOON</div><p class="hb-coming-note">'+(kind==='daily'?'Fresh quality • Best prices • Daily offers':'Mithai • Bakery • Ice Cream • Pakode & Snacks')+'</p>';
+ document.querySelectorAll('.hb-coming').forEach(function(el){el.classList.remove('hb-coming-active')});section.hidden=false;section.classList.add('hb-coming-active');document.body.style.overflow='hidden';
+}
+function hideHbComingSoon(){document.querySelectorAll('.hb-coming').forEach(function(el){el.classList.remove('hb-coming-active');el.hidden=true});document.body.style.overflow='';}
+</script>
 <!-- ORDER CHOOSER: ONLY ONE BUTTON ON HOME, THREE OPTIONS HERE -->
 <div class="modal" id="orderModal" onclick="if(event.target===this)closeOrderModal()">
   <div class="modal-card">
