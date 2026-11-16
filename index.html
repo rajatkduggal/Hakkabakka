@@ -2288,5 +2288,27 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
 })();
 </script>
 
+
+<style id="hb-home-layout-stack-update">
+/* Layout: active Punjabi Dhaba first; two Coming Soon experiences underneath */
+.hb-experiences{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-template-areas:"dhaba dhaba" "daily sweets"!important;
+  align-items:stretch;
+}
+.hb-dhaba{grid-area:dhaba!important;transform:none!important;width:100%;border-width:4px;box-shadow:0 18px 38px #5c0b16a6,inset 0 0 0 2px #fff8c9}
+.hb-daily{grid-area:daily!important}
+.hb-sweets{grid-area:sweets!important}
+.hb-dhaba img{height:clamp(190px,38vw,340px)!important}
+.hb-daily img,.hb-sweets img{height:clamp(145px,22vw,220px)!important}
+@media(max-width:700px){
+ .hb-experiences{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-areas:"dhaba dhaba" "daily sweets"!important;gap:10px!important}
+ .hb-dhaba{transform:none!important}
+ .hb-dhaba img{height:210px!important}
+ .hb-daily img,.hb-sweets img{height:145px!important}
+ .hb-experience{padding-left:7px;padding-right:7px}
+}
+</style>
+
 </body>
 </html>
