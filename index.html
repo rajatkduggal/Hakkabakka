@@ -1321,11 +1321,13 @@ function prepareCheckoutCustomer(){
     let savedProfile=null;try{savedProfile=JSON.parse(localStorage.getItem('hb_customer_profile')||'null')}catch(e){}
     if(name)name.value=currentProfile?.full_name||savedProfile?.full_name||currentUser.user_metadata?.full_name||currentUser.email.split('@')[0]||'Customer';
     if(phone)phone.value=currentProfile?.phone||savedProfile?.phone||currentUser.user_metadata?.phone||'';
-    if(skipOrderOtpOnce){checkoutVerifiedEmail=currentUser.email;skipOrderOtpOnce=false;document.getElementById('checkoutOtpPanel').style.display='none';checkoutOtpStatus('ok','Signup verified. Order confirmation OTP ki zaroorat nahi hai.');}
-    else{checkoutVerifiedEmail='';document.getElementById('checkoutOtpPanel').style.display='block';document.getElementById('checkoutOtpEntry').style.display='none';
-    document.getElementById('checkoutOtpCode').value='';
-    document.getElementById('checkoutSendOtp').textContent='Send Order Confirmation OTP';
-    checkoutOtpStatus('ok','Account login active hai. Order complete karne ke liye ek baar OTP verify karein.');}
+    // Existing authenticated customers have already verified their email at account login.
+    // Do not ask them for a second OTP at every checkout.
+    checkoutVerifiedEmail=currentUser.email;
+    skipOrderOtpOnce=false;
+    document.getElementById('checkoutOtpPanel').style.display='none';
+    document.getElementById('checkoutOtpEntry').style.display='none';
+    checkoutOtpStatus('ok','Verified customer account. Checkout ke liye dobara OTP ki zaroorat nahi hai.');
   }else{
     if(accountEmail)accountEmail.style.display='none';
     document.getElementById('checkoutSendOtp').textContent='Send Email OTP';
