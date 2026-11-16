@@ -293,6 +293,30 @@ body{background:var(--hb-cream)}
 .hb-store-address strong{font-size:clamp(19px,3vw,25px);color:#ffd75e;letter-spacing:.6px}
 .hb-store-address span{font-size:clamp(15px,2.5vw,19px);font-weight:700;line-height:1.5}
 .hb-store-address a{color:#ffe6a2;text-decoration:none}
+</style><style id="hb-floating-whatsapp-contact">
+.hb-whatsapp-float{
+ position:fixed!important;right:16px!important;bottom:calc(82px + env(safe-area-inset-bottom,0px))!important;
+ z-index:9999!important;display:flex!important;align-items:center!important;gap:10px!important;
+ padding:12px 18px 12px 13px!important;border:2px solid #b9f4c8!important;border-radius:999px!important;
+ background:linear-gradient(135deg,#20d66b,#07883d)!important;color:#fff!important;
+ font:900 15px/1.2 Arial,sans-serif!important;letter-spacing:.15px!important;text-decoration:none!important;
+ box-shadow:0 5px 18px #075b32a6,0 0 0 0 #20d66b66!important;
+ animation:hbWhatsAppPulse 1.8s ease-in-out infinite!important;
+}
+.hb-wa-icon{
+ width:31px!important;height:31px!important;flex:0 0 31px!important;border-radius:50%!important;
+ display:grid!important;place-items:center!important;background:#fff!important;color:#0b9b4b!important;
+ font-size:22px!important;line-height:1!important;
+ animation:hbWhatsAppRotate 3s linear infinite!important;
+}
+@keyframes hbWhatsAppRotate{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes hbWhatsAppPulse{0%,100%{box-shadow:0 5px 18px #075b32a6,0 0 0 0 #20d66b55}50%{box-shadow:0 7px 24px #075b32c9,0 0 0 9px #20d66b00}}
+.hb-whatsapp-float:active{transform:scale(.96)!important}
+@media(max-width:480px){
+ .hb-whatsapp-float{right:12px!important;bottom:calc(72px + env(safe-area-inset-bottom,0px))!important;padding:10px 14px 10px 10px!important;font-size:13px!important}
+ .hb-wa-icon{width:28px!important;height:28px!important;flex-basis:28px!important;font-size:20px!important}
+}
+@media(prefers-reduced-motion:reduce){.hb-whatsapp-float,.hb-wa-icon{animation:none!important}}
 </style></head>
 <body>
 <script>document.documentElement.classList.add("hb-v34");</script>
@@ -341,6 +365,11 @@ body{background:var(--hb-cream)}
   <div class="hb-benefits"><span><b>🛵</b>Easy Ordering</span><span><b>🛡️</b>Secure Payments</span><span><b>🚚</b>Fast Delivery</span><span><b>🏷️</b>Daily Offers</span></div>
   <div class="hb-bottom-slogan">Good Food <i>•</i> Fresh Essentials <i>•</i> Sweet Happiness</div>
   <div class="hb-store-address" id="hb-store-address"><strong>📍 Visit HakkaBakka</strong><span>Shop No. 1, Near Canal Road,<br>Opp. Maqsudan Bypass, G.T. Road, Jalandhar, Punjab</span></div>
+
+  <a class="hb-whatsapp-float" href="https://wa.me/917796631555" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp us on 7796631555">
+    <span class="hb-wa-icon" aria-hidden="true">☎</span>
+    <span>WhatsApp Us : 7796631555</span>
+  </a>
   <section class="hb-coming" id="hb-daily-coming" hidden></section>
   <section class="hb-coming" id="hb-sweets-coming" hidden></section>
 </div>
