@@ -2335,5 +2335,31 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
  #home .hb-experiences>.hb-daily img,#home .hb-experiences>.hb-sweets img{height:145px!important}
 }
 </style>
+<style id="hb-home-layout-force-v2">
+/* Force the experience section to span the complete mobile viewport */
+html body #home.hb-modern-home{width:100%!important;max-width:none!important;overflow-x:hidden!important}
+html body #home.hb-modern-home > .hb-experiences{
+ display:flex!important;flex-flow:row wrap!important;align-items:stretch!important;
+ position:relative!important;left:50%!important;transform:translateX(-50%)!important;
+ width:100vw!important;max-width:100vw!important;min-width:100vw!important;
+ margin:0!important;padding:0 14px 28px!important;gap:12px!important;
+ box-sizing:border-box!important;
+}
+html body #home.hb-modern-home > .hb-experiences > .hb-dhaba{
+ display:flex!important;flex:0 0 100%!important;width:100%!important;max-width:none!important;
+ min-width:0!important;transform:none!important;box-sizing:border-box!important;
+}
+html body #home.hb-modern-home > .hb-experiences > .hb-daily,
+html body #home.hb-modern-home > .hb-experiences > .hb-sweets{
+ display:flex!important;flex:1 1 calc(50% - 6px)!important;width:calc(50% - 6px)!important;
+ max-width:calc(50% - 6px)!important;min-width:0!important;box-sizing:border-box!important;
+}
+@media(max-width:700px){
+ html body #home.hb-modern-home > .hb-experiences{gap:10px!important;padding-left:14px!important;padding-right:14px!important}
+ html body #home.hb-modern-home > .hb-experiences > .hb-dhaba img{height:210px!important}
+ html body #home.hb-modern-home > .hb-experiences > .hb-daily img,
+ html body #home.hb-modern-home > .hb-experiences > .hb-sweets img{height:145px!important}
+}
+</style>
 </body>
 </html>
