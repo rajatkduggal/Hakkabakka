@@ -2310,5 +2310,30 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
 }
 </style>
 
+<style id="hb-home-layout-final-fix">
+/* Full-width centered stack on phones: Dhaba across top, Coming Soon cards below */
+#home .hb-experiences{
+  display:grid!important;
+  width:100%!important;
+  max-width:1320px!important;
+  margin:0 auto!important;
+  padding:0 14px 28px!important;
+  box-sizing:border-box!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-template-areas:"dhaba dhaba" "daily sweets"!important;
+  gap:12px!important;
+  justify-content:stretch!important;
+  align-items:stretch!important;
+}
+#home .hb-experiences>.hb-dhaba{grid-area:dhaba!important;grid-column:1/-1!important;width:100%!important;max-width:none!important;transform:none!important}
+#home .hb-experiences>.hb-daily{grid-area:daily!important;grid-column:1!important;width:100%!important;max-width:none!important}
+#home .hb-experiences>.hb-sweets{grid-area:sweets!important;grid-column:2!important;width:100%!important;max-width:none!important}
+#home .hb-experiences>.hb-experience{min-width:0!important}
+@media(max-width:700px){
+ #home .hb-experiences{width:100vw!important;max-width:100vw!important;margin-left:0!important;margin-right:0!important;padding-left:14px!important;padding-right:14px!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ #home .hb-experiences>.hb-dhaba img{height:210px!important}
+ #home .hb-experiences>.hb-daily img,#home .hb-experiences>.hb-sweets img{height:145px!important}
+}
+</style>
 </body>
 </html>
