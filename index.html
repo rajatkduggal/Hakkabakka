@@ -317,6 +317,33 @@ body{background:var(--hb-cream)}
  .hb-wa-icon{width:28px!important;height:28px!important;flex-basis:28px!important;font-size:20px!important}
 }
 @media(prefers-reduced-motion:reduce){.hb-whatsapp-float,.hb-wa-icon{animation:none!important}}
+</style><style id="hb-floating-whatsapp-icon-only">
+.hb-whatsapp-float{
+ position:fixed!important;right:12px!important;bottom:calc(14px + env(safe-area-inset-bottom,0px))!important;
+ z-index:99999!important;display:grid!important;place-items:center!important;
+ width:52px!important;height:52px!important;min-width:52px!important;min-height:52px!important;
+ padding:0!important;margin:0!important;box-sizing:border-box!important;
+ border:2px solid #d9ffe5!important;border-radius:50%!important;
+ background:#16b85a!important;color:#fff!important;text-decoration:none!important;
+ box-shadow:0 3px 12px #064d2e80,0 0 0 0 #20d66b55!important;
+ animation:hbWhatsAppPulseSmall 2s ease-in-out infinite!important;
+}
+.hb-whatsapp-float .hb-wa-icon{
+ display:block!important;width:29px!important;height:29px!important;
+ flex:none!important;background:transparent!important;color:#fff!important;
+ border-radius:0!important;font-size:29px!important;line-height:1!important;
+ animation:none!important;
+}
+@keyframes hbWhatsAppPulseSmall{
+ 0%,100%{box-shadow:0 3px 12px #064d2e80,0 0 0 0 #20d66b55}
+ 50%{box-shadow:0 4px 15px #064d2e99,0 0 0 6px #20d66b00}
+}
+.hb-whatsapp-float:active{transform:scale(.93)!important}
+@media(max-width:480px){
+ .hb-whatsapp-float{right:10px!important;bottom:calc(10px + env(safe-area-inset-bottom,0px))!important;width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important}
+ .hb-whatsapp-float .hb-wa-icon{width:27px!important;height:27px!important}
+}
+@media(prefers-reduced-motion:reduce){.hb-whatsapp-float{animation:none!important}}
 </style></head>
 <body>
 <script>document.documentElement.classList.add("hb-v34");</script>
@@ -366,9 +393,10 @@ body{background:var(--hb-cream)}
   <div class="hb-bottom-slogan">Good Food <i>•</i> Fresh Essentials <i>•</i> Sweet Happiness</div>
   <div class="hb-store-address" id="hb-store-address"><strong>📍 Visit HakkaBakka</strong><span>Shop No. 1, Near Bhagat Singh Colony,<br>Jalandhar–Amritsar Highway, Opposite Service Lane HakkaBakka Cut, Jalandhar, Punjab</span></div>
 
-  <a class="hb-whatsapp-float" href="https://wa.me/917796631555" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp us on 7796631555">
-    <span class="hb-wa-icon" aria-hidden="true">☎</span>
-    <span>WhatsApp Us : 7796631555</span>
+  <a class="hb-whatsapp-float" href="https://wa.me/917796631555" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp us on 7796631555" title="WhatsApp Us: 7796631555">
+    <svg class="hb-wa-icon" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+      <path fill="currentColor" d="M16.02 3.2A12.65 12.65 0 0 0 5.1 22.22L3.4 28.4l6.33-1.66A12.7 12.7 0 1 0 16.02 3.2Zm0 22.96c-1.94 0-3.83-.52-5.48-1.5l-.4-.24-3.76.99 1-3.66-.26-.42a10.25 10.25 0 1 1 8.9 4.83Zm5.63-7.68c-.31-.16-1.84-.91-2.12-1.01-.29-.1-.5-.16-.71.16-.21.31-.81 1.01-.99 1.22-.18.21-.36.23-.67.08-.31-.16-1.32-.49-2.51-1.55-.93-.83-1.56-1.85-1.74-2.16-.18-.31-.02-.48.14-.64.14-.14.31-.36.47-.54.16-.18.21-.31.31-.52.1-.21.05-.39-.03-.55-.08-.16-.71-1.71-.97-2.34-.25-.61-.51-.53-.71-.54h-.6c-.21 0-.55.08-.84.39-.29.31-1.1 1.07-1.1 2.62s1.13 3.04 1.29 3.25c.16.21 2.22 3.39 5.38 4.75.75.32 1.34.51 1.8.65.76.24 1.45.2 1.99.12.61-.09 1.84-.75 2.1-1.48.26-.73.26-1.35.18-1.48-.08-.13-.29-.21-.6-.36Z"/>
+    </svg>
   </a>
   <section class="hb-coming" id="hb-daily-coming" hidden></section>
   <section class="hb-coming" id="hb-sweets-coming" hidden></section>
