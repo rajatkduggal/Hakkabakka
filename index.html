@@ -270,7 +270,30 @@ body{background:var(--hb-cream)}
 }
 @media(prefers-reduced-motion:reduce){.hb-dhaba{transform:none}}
 </style>
-</head>
+<style id="hb-home-food-address-update">
+/* Bright pulsing order CTA */
+@keyframes hbOrderButtonFlash{
+  0%,100%{background:linear-gradient(135deg,#fff36a,#ffc400 52%,#ffed63);box-shadow:0 0 0 0 #ffdb00aa,0 5px 0 #8c4d00,0 0 14px #fff00099;filter:brightness(1)}
+  50%{background:linear-gradient(135deg,#fff,#ffeb3b 45%,#ff9f00);box-shadow:0 0 0 9px #ffdf0040,0 5px 0 #8c4d00,0 0 30px #fff000;filter:brightness(1.18)}
+}
+#home #hbOnlineOrderButton{
+ background:linear-gradient(135deg,#fff36a,#ffc400 52%,#ffed63)!important;
+ color:#341408!important;border:3px solid #fff4a8!important;
+ animation:hbOrderButtonFlash 1.15s ease-in-out infinite!important;
+ font-weight:1000!important;
+}
+#home #hbOnlineOrderButton:active{transform:scale(.96)}
+@media(prefers-reduced-motion:reduce){#home #hbOnlineOrderButton{animation:none!important}}
+.hb-store-address{
+ display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
+ padding:22px 16px 26px;text-align:center;background:linear-gradient(135deg,#35170d,#5b2412);
+ color:#fff2cf;border-top:4px solid #d9ad39;border-bottom:4px solid #d9ad39;
+ font-family:Georgia,'Times New Roman',serif
+}
+.hb-store-address strong{font-size:clamp(19px,3vw,25px);color:#ffd75e;letter-spacing:.6px}
+.hb-store-address span{font-size:clamp(15px,2.5vw,19px);font-weight:700;line-height:1.5}
+.hb-store-address a{color:#ffe6a2;text-decoration:none}
+</style></head>
 <body>
 <script>document.documentElement.classList.add("hb-v34");</script>
 
@@ -310,13 +333,14 @@ body{background:var(--hb-cream)}
     <article class="hb-experience hb-sweets" aria-disabled="true" tabindex="-1">
       <div class="hb-experience-icon">🍰</div><h2>Sweets & Snax</h2>
       <div class="hb-label">MITHAI, BAKERY & SNACKS</div><p>Taaza te Swaad • Sweet Happiness</p>
-      <img src="https://images.unsplash.com/photo-1605197161470-5d8c1f2b7c6b?auto=format&fit=crop&w=900&q=85" alt="Indian sweets and desserts" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=85'">
+      <img src="https://tb-static.uber.com/prod/image-proc/processed_images/b0f4ffc14db5713f46f37ac78280f526/30be7d11a3ed6f6183354d1933fbb6c7.jpeg" alt="Indian sweets and desserts" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=85'">
       <div class="hb-coming-soon-badge" aria-label="Coming soon">COMING SOON</div>
       <small>Mithai • Pakode • Eggless Bakery • Kulfi & Ice Cream</small>
     </article>
   </section>
   <div class="hb-benefits"><span><b>🛵</b>Easy Ordering</span><span><b>🛡️</b>Secure Payments</span><span><b>🚚</b>Fast Delivery</span><span><b>🏷️</b>Daily Offers</span></div>
   <div class="hb-bottom-slogan">Good Food <i>•</i> Fresh Essentials <i>•</i> Sweet Happiness</div>
+  <div class="hb-store-address" id="hb-store-address"><strong>📍 Visit HakkaBakka</strong><span>Shop No. 1, Near Canal Road,<br>Opp. Maqsudan Bypass, G.T. Road, Jalandhar, Punjab</span></div>
   <section class="hb-coming" id="hb-daily-coming" hidden></section>
   <section class="hb-coming" id="hb-sweets-coming" hidden></section>
 </div>
