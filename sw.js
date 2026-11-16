@@ -1,8 +1,10 @@
-const CACHE_NAME = "hakkabakka-v38";
+const CACHE_NAME = "hakkabakka-v39";
 
 const APP_SHELL = [
   "/",
   "/index.html",
+  "/app-icon.jpg",
+  "/manifest.json",
   "/app-icon.jpg",
   "/manifest.json"
 ];
