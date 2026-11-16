@@ -1,23 +1,17 @@
 {
-  "name": "Hakka Bakka Cafe",
+  "name": "HakkaBakka Punjabi Dhaba",
   "short_name": "HakkaBakka",
-  "description": "Premium Fast Food & Cafe Experience in Jalandhar",
-  "start_url": "./index.html",
+  "description": "HakkaBakka Punjabi Dhaba - Desi Swad, Modern Vibe",
+  "start_url": "/",
   "display": "standalone",
-  "background_color": "#0a0a0a",
-  "theme_color": "#D4AF37",
+  "background_color": "#fff6da",
+  "theme_color": "#7b1113",
   "orientation": "portrait-primary",
-  "scope": "./",
+  "scope": "/",
   "icons": [
     {
-      "src": "app-icon.jpg",
-      "sizes": "192x192",
-      "type": "image/jpeg",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "app-icon.jpg",
-      "sizes": "512x512",
+      "src": "/app-icon.jpg",
+      "sizes": "256x256",
       "type": "image/jpeg",
       "purpose": "any maskable"
     }
