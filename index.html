@@ -403,6 +403,59 @@ body{background:var(--hb-cream)}
 }
 </style>
 
+
+<style id="hb-v55-exact-reference-layout">
+/* Match the user's reference: Dhaba first, then two wide side-by-side cards. */
+#home .hb-sitebar,#home .hb-welcome{display:none!important}
+#home .hb-experiences{
+ display:grid!important;
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ width:100%!important;max-width:1450px!important;
+ box-sizing:border-box!important;
+ gap:14px!important;
+ margin:0 auto 20px!important;
+ padding:14px 18px 18px!important;
+}
+#home .hb-experience{
+ min-width:0!important;width:100%!important;box-sizing:border-box!important;
+ border-radius:22px!important;padding:14px 12px 16px!important;
+}
+#home .hb-experience:first-child{
+ grid-column:1 / -1!important;
+ border-radius:24px!important;padding:14px 14px 16px!important;
+}
+#home .hb-experience:first-child h2{font-size:clamp(29px,5vw,40px)!important}
+#home .hb-experience:first-child img{height:clamp(210px,42vw,330px)!important;width:calc(100% + 28px)!important}
+#home .hb-experience:nth-child(2),#home .hb-experience:nth-child(3){grid-column:auto!important}
+#home .hb-experience:nth-child(2) h2,#home .hb-experience:nth-child(3) h2{
+ font-size:clamp(20px,3.2vw,32px)!important;line-height:1.08!important;
+ min-height:2.15em!important;display:flex!important;align-items:center!important;justify-content:center!important;
+ overflow-wrap:anywhere!important;
+}
+#home .hb-experience:nth-child(2) img,#home .hb-experience:nth-child(3) img{
+ height:clamp(170px,28vw,270px)!important;width:calc(100% + 24px)!important;
+}
+#home .hb-experience:nth-child(2) .hb-label,#home .hb-experience:nth-child(3) .hb-label{
+ width:100%!important;box-sizing:border-box!important;min-height:34px!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
+}
+#home .hb-experience:nth-child(2) p,#home .hb-experience:nth-child(3) p{
+ font-size:clamp(13px,1.9vw,18px)!important;min-height:3em!important;
+}
+#home .hb-experience:nth-child(2) .hb-card-button,#home .hb-experience:nth-child(3) .hb-card-button{
+ width:100%!important;box-sizing:border-box!important;min-height:46px!important;
+ font-size:clamp(11px,1.7vw,15px)!important;padding:10px 7px!important;
+}
+#home .hb-experience:nth-child(2)>small,#home .hb-experience:nth-child(3)>small{
+ font-size:clamp(9px,1.35vw,12px)!important;
+}
+@media(max-width:380px){
+ #home .hb-experiences{gap:8px!important;padding:10px 8px 14px!important}
+ #home .hb-experience:nth-child(2),#home .hb-experience:nth-child(3){padding:10px 6px 12px!important}
+ #home .hb-experience:nth-child(2) h2,#home .hb-experience:nth-child(3) h2{font-size:18px!important}
+}
+</style>
+
 </head>
 <body>
 <script>document.documentElement.classList.add("hb-v34");</script>
@@ -450,10 +503,7 @@ body{background:var(--hb-cream)}
   </section>
   <div class="hb-benefits"><span><b>🛵</b>Easy Ordering</span><span><b>🛡️</b>Secure Payments</span><span><b>🚚</b>Fast Delivery</span><span><b>🏷️</b>Daily Offers</span></div>
   <div class="hb-bottom-slogan">Good Food <i>•</i> Fresh Essentials <i>•</i> Sweet Happiness</div>
-  <section class="hb-visit-address" aria-label="Visit HakkaBakka">
-    <h2>📍 Visit HakkaBakka</h2>
-    <p>Shop No.1, Nr. Bhagat Singh Colony, Jalandhar<br>Amritsar Highway, Opposite Service Lane<br>HakkaBakka Cut, Jalandhar, Punjab</p>
-  </section>
+  
   <section class="hb-coming" id="hb-daily-coming" hidden></section>
   <section class="hb-coming" id="hb-sweets-coming" hidden></section>
 </div>
@@ -1904,7 +1954,7 @@ renderMenu();renderCart();initCustomerAuth();
 
 
 
-\n
+
 <!-- WHATSAPP MENU BUTTON HARD FIX -->
 <script>
 (function () {
