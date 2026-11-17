@@ -1,4 +1,4 @@
-const CACHE_NAME = "hakkabakka-v52";
+const CACHE_NAME = "hakkabakka-v53";
 
 const APP_SHELL = [
   "/",
@@ -41,23 +41,18 @@ self.addEventListener("fetch", event => {
   event.respondWith(
     fetch(request)
       .then(response => {
-        // Do not let failed responses replace good cached assets.
         if (response.ok) {
           const copy = response.clone();
           caches.open(CACHE_NAME)
             .then(cache => cache.put(request, copy))
             .catch(() => {});
         }
-
         return response;
       })
       .catch(async () => {
         const cached = await caches.match(request);
         if (cached) return cached;
 
-        // Only navigations should fall back to the app shell.
-        // Returning index.html for an image or JSON/API request can
-        // make the browser treat HTML as the requested resource.
         if (isNavigation) {
           const appShell = await caches.match("/index.html");
           if (appShell) return appShell;
