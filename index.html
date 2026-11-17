@@ -2348,6 +2348,64 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
 }
 </style>
 
+
+<style id="hb-v44-mobile-floating-logo-address">
+/* Compact floating logo: stay below the status bar and outside the main title. */
+#hbInstallHomeBtn.hb-install-home{
+  position:fixed!important;
+  top:calc(48px + env(safe-area-inset-top,0px))!important;
+  bottom:auto!important;
+  left:8px!important;
+  right:auto!important;
+  width:58px!important;
+  height:58px!important;
+  z-index:999999!important;
+  padding:2px!important;
+  border:2px solid #f4d36e!important;
+  border-radius:50%!important;
+  background:#fff8e8!important;
+  box-shadow:0 3px 10px #0006!important;
+}
+#hbInstallHomeBtn.hb-install-home img{
+  display:block!important;width:100%!important;height:100%!important;
+  object-fit:contain!important;border-radius:50%!important;
+}
+/* Remove the oversized blank area added in the previous pass. */
+#home{padding-bottom:0!important;margin-bottom:0!important}
+#home .hb-store-address{
+  display:flex!important;
+  width:100%!important;
+  margin:14px 0 0!important;
+  padding:18px 18px calc(22px + env(safe-area-inset-bottom,0px))!important;
+  box-sizing:border-box!important;
+  overflow:visible!important;
+}
+#home .hb-store-address span{
+  display:block!important;
+  width:100%!important;
+  max-width:680px!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  overflow-wrap:anywhere!important;
+  word-break:normal!important;
+  text-overflow:clip!important;
+  line-height:1.55!important;
+}
+@media(max-width:480px){
+  #hbInstallHomeBtn.hb-install-home{
+    top:calc(48px + env(safe-area-inset-top,0px))!important;
+    left:7px!important;width:56px!important;height:56px!important;
+  }
+  #home{padding-bottom:0!important}
+  #home .hb-store-address{
+    padding:17px 18px calc(22px + env(safe-area-inset-bottom,0px))!important;
+  }
+  #home .hb-store-address span{
+    font-size:15px!important;line-height:1.6!important;
+  }
+}
+</style>
+
 <!-- HAKKABAKKA DELIVERY LOCATION: GPS + structured OpenStreetMap reverse geocoding -->
 <script>
 (function(){
