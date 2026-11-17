@@ -2827,5 +2827,84 @@ html body #home.hb-modern-home > .hb-experiences > .hb-sweets{
 }
 </style>
 
+
+<style id="hb-v48-compact-reference-match">
+/* Remove decorative grid children that were creating unwanted rows in the welcome header. */
+html body #home.hb-modern-home .hb-welcome{
+ display:grid!important;
+ grid-template-columns:96px minmax(0,1fr)!important;
+ grid-template-areas:
+  "brand kicker"
+  "brand title"
+  "ribbon ribbon"
+  "question question"!important;
+ grid-auto-flow:row!important;
+ grid-auto-rows:min-content!important;
+ align-items:center!important;
+ justify-items:stretch!important;
+ column-gap:10px!important;
+ row-gap:2px!important;
+ height:auto!important;
+ min-height:0!important;
+ padding:16px 12px 22px!important;
+ margin:0!important;
+ box-sizing:border-box!important;
+ overflow:hidden!important;
+}
+html body #home.hb-modern-home .hb-welcome>.hb-leaf,
+html body #home.hb-modern-home .hb-welcome>.hb-chef{
+ display:none!important;
+}
+html body #home.hb-modern-home #hbInstallHomeBtn.hb-install-home{
+ grid-area:brand!important;
+ position:relative!important;
+ inset:auto!important;
+ justify-self:center!important;
+ align-self:center!important;
+ width:92px!important;height:92px!important;min-width:92px!important;
+ display:grid!important;place-items:center!important;
+ padding:2px!important;margin:0!important;
+ border:2px solid #e8c45c!important;border-radius:50%!important;
+ background:#fff5db!important;box-shadow:0 3px 10px #0006!important;
+ overflow:hidden!important;
+}
+html body #home.hb-modern-home #hbInstallHomeBtn.hb-install-home img{
+ display:block!important;width:100%!important;height:100%!important;
+ object-fit:contain!important;border-radius:50%!important;
+}
+html body #home.hb-modern-home .hb-welcome-kicker{
+ grid-area:kicker!important;align-self:end!important;
+ margin:0!important;padding:0!important;
+ font-size:clamp(19px,5.2vw,27px)!important;line-height:1.05!important;
+ text-align:center!important;
+}
+html body #home.hb-modern-home .hb-welcome h1{
+ grid-area:title!important;align-self:start!important;
+ min-width:0!important;margin:0!important;padding:0!important;
+ font-size:clamp(34px,9.2vw,50px)!important;line-height:1!important;
+ letter-spacing:-1.7px!important;white-space:nowrap!important;text-align:center!important;
+}
+html body #home.hb-modern-home .hb-welcome .hb-ribbon{
+ grid-area:ribbon!important;justify-self:stretch!important;
+ width:auto!important;max-width:100%!important;
+ margin:13px 12px 0!important;padding:10px 12px!important;
+ box-sizing:border-box!important;font-size:clamp(10px,2.2vw,15px)!important;
+ letter-spacing:.5px!important;
+}
+html body #home.hb-modern-home .hb-welcome>p{
+ grid-area:question!important;margin:7px 0 0!important;
+ font-size:clamp(14px,2.7vw,18px)!important;line-height:1.2!important;
+ text-align:center!important;
+}
+html body #home.hb-modern-home>.hb-experiences{margin-top:0!important}
+@media(max-width:380px){
+ html body #home.hb-modern-home .hb-welcome{grid-template-columns:82px minmax(0,1fr)!important;padding:13px 8px 18px!important;column-gap:7px!important}
+ html body #home.hb-modern-home #hbInstallHomeBtn.hb-install-home{width:78px!important;height:78px!important;min-width:78px!important}
+ html body #home.hb-modern-home .hb-welcome h1{font-size:clamp(29px,8.4vw,36px)!important;letter-spacing:-1.3px!important}
+ html body #home.hb-modern-home .hb-welcome-kicker{font-size:18px!important}
+ html body #home.hb-modern-home .hb-welcome .hb-ribbon{margin:11px 3px 0!important;font-size:10px!important;padding:8px 6px!important}
+}
+</style>
+
 </body>
 </html>
