@@ -4,19 +4,19 @@
   "description": "Hakka Bakka - Desi Swad, Modern Vibe",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#fff6da",
-  "theme_color": "#7b1113",
+  "background_color": "#8b1118",
+  "theme_color": "#8b1118",
   "orientation": "portrait-primary",
   "scope": "/",
   "icons": [
     {
-      "src": "/newlogo.jpg",
+      "src": "/newlogo.jpg?v=56",
       "sizes": "192x192",
       "type": "image/jpeg",
       "purpose": "any"
     },
     {
-      "src": "/newlogo.jpg",
+      "src": "/newlogo.jpg?v=56",
       "sizes": "512x512",
       "type": "image/jpeg",
       "purpose": "any maskable"
