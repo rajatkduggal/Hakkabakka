@@ -2685,6 +2685,19 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
     font-size:clamp(12px,3vw,15px)!important;line-height:1.45!important;margin:8px auto 0!important;
   }
 }
+
+/* FINAL MOBILE STACK FIX: Dailyneeds first, Sweets & Snax full-width below it. */
+@media (max-width:700px){
+ #home .hb-experiences{display:grid!important;grid-template-columns:minmax(0,1fr)!important;width:100%!important;max-width:none!important;margin:0 auto 18px!important;padding:0 14px 20px!important;gap:16px!important;}
+ #home .hb-experience,#home .hb-experience:first-child,#home .hb-experience:nth-child(2),#home .hb-experience:nth-child(3){grid-column:1!important;width:100%!important;min-width:0!important;max-width:none!important;box-sizing:border-box!important;padding:18px 14px 20px!important;border-radius:24px!important;}
+ #home .hb-experience:first-child img{height:clamp(210px,58vw,320px)!important;width:100%!important;object-fit:cover!important;}
+ #home .hb-experience:nth-child(2) h2,#home .hb-experience:nth-child(3) h2{font-size:clamp(28px,7vw,38px)!important;line-height:1.12!important;min-height:0!important;white-space:normal!important;overflow-wrap:normal!important;display:block!important;text-align:center!important;margin:8px auto 14px!important;}
+ #home .hb-experience:nth-child(2) img,#home .hb-experience:nth-child(3) img{display:block!important;width:100%!important;height:clamp(240px,68vw,390px)!important;max-width:100%!important;object-fit:cover!important;object-position:center!important;margin:14px auto!important;}
+ #home .hb-experience:nth-child(2) .hb-label,#home .hb-experience:nth-child(3) .hb-label{font-size:clamp(11px,3vw,14px)!important;min-height:42px!important;display:flex!important;align-items:center!important;justify-content:center!important;}
+ #home .hb-experience:nth-child(2) p,#home .hb-experience:nth-child(3) p{font-size:clamp(17px,4.5vw,22px)!important;line-height:1.35!important;min-height:0!important;}
+ #home .hb-experience:nth-child(2) .hb-card-button,#home .hb-experience:nth-child(3) .hb-card-button{display:flex!important;width:min(100%,420px)!important;min-height:64px!important;margin:16px auto!important;align-items:center!important;justify-content:center!important;font-size:clamp(16px,4vw,20px)!important;letter-spacing:2px!important;}
+ #home .hb-experience:nth-child(2)>small,#home .hb-experience:nth-child(3)>small{display:block!important;font-size:clamp(13px,3.4vw,16px)!important;line-height:1.45!important;text-align:center!important;}
+}
 </style>
 
 </body>
