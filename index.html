@@ -411,7 +411,7 @@ body{background:var(--hb-cream)}
 
   
 <a href="#" id="hbInstallHomeBtn" class="hb-install-home" role="button" aria-label="Install HakkaBakka on home screen" title="Add HakkaBakka to Home Screen">
-  <img src="/newlogo.jpg" alt="" />
+  <img src="/newlogo.jpg" alt="HakkaBakka logo" /><span class="hb-install-brand-name">HakkaBakka</span>
 </a>
 <a class="hb-whatsapp-float" href="https://wa.me/917796631555" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp us on 7796631555" title="WhatsApp Us: 7796631555">
     <svg class="hb-wa-icon" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
@@ -2403,6 +2403,48 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
   #home .hb-store-address span{
     font-size:15px!important;line-height:1.6!important;
   }
+}
+</style>
+
+
+<style id="hb-v45-readable-floating-brand">
+#hbInstallHomeBtn.hb-install-home{
+ position:fixed!important;top:calc(48px + env(safe-area-inset-top,0px))!important;
+ bottom:auto!important;left:8px!important;right:auto!important;
+ width:auto!important;height:50px!important;min-width:0!important;
+ display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;
+ gap:7px!important;padding:3px 13px 3px 3px!important;
+ border:2px solid #f4d36e!important;border-radius:999px!important;
+ background:#fff8e8!important;box-shadow:0 3px 11px #0006!important;
+ z-index:999999!important;overflow:visible!important;
+}
+#hbInstallHomeBtn.hb-install-home img{
+ display:block!important;width:42px!important;height:42px!important;flex:0 0 42px!important;
+ object-fit:contain!important;border-radius:50%!important;
+}
+#hbInstallHomeBtn .hb-install-brand-name{
+ display:inline-block!important;color:#7b1113!important;
+ font:900 15px/1 Arial,sans-serif!important;white-space:nowrap!important;
+ letter-spacing:-.25px!important;
+}
+#home{padding-bottom:0!important;margin-bottom:0!important}
+#home .hb-store-address{
+ display:flex!important;width:100%!important;margin:14px 0 0!important;
+ padding:18px 18px calc(22px + env(safe-area-inset-bottom,0px))!important;
+ box-sizing:border-box!important;overflow:visible!important;
+}
+#home .hb-store-address span{
+ display:block!important;width:100%!important;max-width:680px!important;
+ white-space:normal!important;overflow:visible!important;overflow-wrap:anywhere!important;
+ word-break:normal!important;text-overflow:clip!important;line-height:1.55!important;
+}
+@media(max-width:480px){
+ #hbInstallHomeBtn.hb-install-home{top:calc(48px + env(safe-area-inset-top,0px))!important;left:7px!important;height:48px!important}
+ #hbInstallHomeBtn.hb-install-home img{width:40px!important;height:40px!important;flex-basis:40px!important}
+ #hbInstallHomeBtn .hb-install-brand-name{font-size:14px!important}
+ #home{padding-bottom:0!important}
+ #home .hb-store-address{padding:17px 18px calc(22px + env(safe-area-inset-bottom,0px))!important}
+ #home .hb-store-address span{font-size:15px!important;line-height:1.6!important}
 }
 </style>
 
