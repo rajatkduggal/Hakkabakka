@@ -2297,6 +2297,57 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
 
 </style>
 
+
+<style id="hb-v43-logo-top-address-fix">
+/* Keep the brand badge floating near the top, clear of the phone status bar. */
+#hbInstallHomeBtn.hb-install-home{
+  position:fixed!important;
+  top:calc(88px + env(safe-area-inset-top,0px))!important;
+  bottom:auto!important;
+  left:10px!important;
+  right:auto!important;
+  width:76px!important;
+  height:76px!important;
+  z-index:999999!important;
+  padding:3px!important;
+  background:#fff8e8!important;
+  border:2px solid #f4d36e!important;
+  box-shadow:0 4px 14px #0007!important;
+}
+#hbInstallHomeBtn.hb-install-home img{
+  width:100%!important;height:100%!important;
+  object-fit:contain!important;
+  image-rendering:auto!important;
+  border-radius:50%!important;
+}
+/* Reserve enough room at the end of the page so the full address is readable. */
+#home{padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))!important}
+#home .hb-store-address{
+  position:relative!important;
+  z-index:1!important;
+  padding:22px 18px calc(34px + env(safe-area-inset-bottom,0px))!important;
+  margin-bottom:0!important;
+  overflow:visible!important;
+}
+#home .hb-store-address span{
+  display:block!important;
+  max-width:680px!important;
+  width:100%!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  word-break:normal!important;
+  line-height:1.65!important;
+}
+@media(max-width:480px){
+  #hbInstallHomeBtn.hb-install-home{
+    top:calc(84px + env(safe-area-inset-top,0px))!important;
+    left:9px!important;width:72px!important;height:72px!important;
+  }
+  #home .hb-store-address{padding-left:20px!important;padding-right:20px!important;padding-bottom:calc(42px + env(safe-area-inset-bottom,0px))!important}
+  #home .hb-store-address span{font-size:15px!important;line-height:1.7!important}
+}
+</style>
+
 <!-- HAKKABAKKA DELIVERY LOCATION: GPS + structured OpenStreetMap reverse geocoding -->
 <script>
 (function(){
