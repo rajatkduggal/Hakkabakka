@@ -2739,5 +2739,93 @@ html body #home.hb-modern-home > .hb-experiences > .hb-sweets{
 }
 </style>
 
+
+<style id="hb-v47-reference-header-row">
+/* Approved reference: circular brand logo on the left, welcome text on the right. */
+#home .hb-welcome{
+ display:grid!important;
+ grid-template-columns:88px minmax(0,1fr)!important;
+ grid-template-areas:
+  "brand kicker"
+  "brand title"
+  "ribbon ribbon"
+  "question question"!important;
+ align-items:center!important;
+ justify-items:stretch!important;
+ column-gap:10px!important;
+ row-gap:5px!important;
+ min-height:0!important;
+ height:auto!important;
+ padding:22px 12px 38px!important;
+ text-align:center!important;
+ overflow:hidden!important;
+}
+#home #hbInstallHomeBtn.hb-install-home{
+ grid-area:brand!important;
+ position:relative!important;
+ inset:auto!important;
+ justify-self:start!important;
+ align-self:center!important;
+ display:grid!important;
+ width:84px!important;height:84px!important;min-width:84px!important;
+ padding:2px!important;
+ margin:0!important;
+ border:2px solid #e8c45c!important;
+ border-radius:50%!important;
+ background:#fff5db!important;
+ box-shadow:0 3px 10px #0006!important;
+ overflow:hidden!important;
+ z-index:2!important;
+}
+#home #hbInstallHomeBtn.hb-install-home img{
+ display:block!important;width:100%!important;height:100%!important;
+ object-fit:contain!important;border-radius:50%!important;
+}
+#home #hbInstallHomeBtn .hb-install-brand-name{display:none!important}
+#home .hb-welcome-kicker{
+ grid-area:kicker!important;
+ align-self:end!important;
+ margin:0!important;
+ padding:0!important;
+ font-size:clamp(18px,5.2vw,27px)!important;
+ line-height:1.1!important;
+ text-align:center!important;
+}
+#home .hb-welcome h1{
+ grid-area:title!important;
+ align-self:start!important;
+ min-width:0!important;
+ margin:0!important;
+ padding:0!important;
+ font-size:clamp(33px,9.4vw,49px)!important;
+ line-height:1!important;
+ letter-spacing:-1.8px!important;
+ white-space:nowrap!important;
+ text-align:center!important;
+}
+#home .hb-chef{display:none!important}
+#home .hb-ribbon{
+ grid-area:ribbon!important;
+ justify-self:stretch!important;
+ width:auto!important;
+ max-width:100%!important;
+ margin:15px 12px 0!important;
+ box-sizing:border-box!important;
+}
+#home .hb-welcome>p{
+ grid-area:question!important;
+ margin:8px 0 0!important;
+ text-align:center!important;
+}
+#home .hb-experiences{margin-top:-18px!important}
+@media(max-width:380px){
+ #home .hb-welcome{grid-template-columns:74px minmax(0,1fr)!important;column-gap:7px!important;padding:18px 9px 32px!important}
+ #home #hbInstallHomeBtn.hb-install-home{width:72px!important;height:72px!important;min-width:72px!important}
+ #home .hb-welcome-kicker{font-size:18px!important}
+ #home .hb-welcome h1{font-size:clamp(29px,8.6vw,36px)!important;letter-spacing:-1.3px!important}
+ #home .hb-ribbon{margin:12px 4px 0!important;font-size:10px!important;padding:9px 7px!important}
+}
+</style>
+
 </body>
 </html>
