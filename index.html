@@ -253,6 +253,72 @@ body{background:var(--hb-cream)}
 @media(prefers-reduced-motion:reduce){
  .feature,.feature-media img,.hero-slides img{transition:none!important}
 }
+
+/* V46 — mobile home layout aligned to the supplied reference image */
+@media(max-width:700px){
+  #home .hb-experiences{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:14px 10px!important;
+    max-width:500px!important;
+    padding:0 14px 18px!important;
+    margin-top:-17px!important;
+  }
+  #home .hb-experience:first-child{
+    grid-column:1 / -1!important;
+    padding:14px 10px 16px!important;
+    border-radius:22px!important;
+  }
+  #home .hb-experience:nth-child(2),
+  #home .hb-experience:nth-child(3){
+    grid-column:auto!important;
+    padding:12px 8px 14px!important;
+    border-radius:20px!important;
+  }
+  #home .hb-experience:first-child h2{font-size:clamp(27px,7vw,36px)!important}
+  #home .hb-experience:first-child img{
+    height:clamp(205px,58vw,270px)!important;
+    width:calc(100% + 20px)!important;
+  }
+  #home .hb-experience:nth-child(2) img,
+  #home .hb-experience:nth-child(3) img{
+    height:clamp(150px,42vw,230px)!important;
+    width:calc(100% + 16px)!important;
+  }
+  #home .hb-experience:nth-child(2) h2,
+  #home .hb-experience:nth-child(3) h2{
+    font-size:clamp(19px,5.2vw,27px)!important;
+    min-height:2.05em;
+    display:flex;align-items:center;justify-content:center;
+  }
+  #home .hb-experience:nth-child(2) .hb-label,
+  #home .hb-experience:nth-child(3) .hb-label{
+    font-size:clamp(7px,1.8vw,10px)!important;
+    min-height:32px;display:flex;align-items:center;justify-content:center;
+  }
+  #home .hb-experience:nth-child(2) p,
+  #home .hb-experience:nth-child(3) p{
+    font-size:clamp(11px,3vw,15px)!important;
+    min-height:3em;
+  }
+  #home .hb-experience:nth-child(2) .hb-card-button,
+  #home .hb-experience:nth-child(3) .hb-card-button{
+    width:100%;font-size:clamp(9px,2.5vw,13px)!important;
+    padding:10px 5px!important;min-height:42px!important;
+  }
+  #home .hb-experience:nth-child(2)>small,
+  #home .hb-experience:nth-child(3)>small{
+    font-size:clamp(8px,2vw,11px)!important;
+  }
+  #home .hb-benefits{
+    display:flex!important;justify-content:space-around!important;
+    flex-wrap:nowrap!important;gap:5px!important;
+    padding:13px 5px!important;font-size:clamp(7px,2vw,10px)!important;
+  }
+  #home .hb-benefits span{gap:4px!important;white-space:nowrap}
+  #home .hb-benefits b{font-size:16px!important}
+  #home .hb-bottom-slogan{font-size:clamp(13px,3.8vw,18px)!important;padding:14px 4px!important}
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
