@@ -322,6 +322,87 @@ body{background:var(--hb-cream)}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style id="hb-v54-homepage-reference-layout">
+/* Homepage reference layout: one full-width Punjabi Dhaba card, then two side-by-side experiences. */
+#home .hb-sitebar{display:none!important}
+#home .hb-welcome{
+ min-height:270px!important;
+ padding:42px 10px 48px!important;
+ background:
+  radial-gradient(ellipse at 50% 0%,#a65a2b55,transparent 52%),
+  linear-gradient(180deg,#25100a 0%,#51210f 56%,#d49b54 100%)!important;
+ border-top:5px solid #d8ad4e!important;
+ border-bottom:4px solid #e6bd62!important;
+}
+#home .hb-welcome:before,#home .hb-welcome:after{color:#729348!important;opacity:.9!important;top:38px!important}
+#home .hb-welcome-kicker{font:italic 21px Georgia,serif!important;color:#ffe7b4!important}
+#home .hb-welcome h1{font:italic 900 clamp(39px,11vw,58px)/.98 Georgia,serif!important;letter-spacing:-2px!important;color:#ffd56b!important;text-shadow:2px 4px 0 #55230d,0 7px 18px #0009!important}
+#home .hb-welcome h1 span{color:#ffdb75!important}
+#home .hb-chef{display:none!important}
+#home .hb-ribbon{margin-top:16px!important;padding:9px 14px!important;font-size:10px!important;letter-spacing:.6px!important;border:1px solid #f8d778!important;box-shadow:0 5px 14px #0005!important}
+#home .hb-welcome p{font-size:13px!important;margin-top:12px!important;color:#fff8e7!important;font-weight:800!important}
+#home .hb-experiences{
+ display:grid!important;
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ gap:14px 10px!important;
+ max-width:500px!important;
+ margin:-17px auto 18px!important;
+ padding:0 14px 18px!important;
+}
+#home .hb-experience{min-width:0!important;min-height:0!important;border-radius:22px!important;padding:12px 8px 14px!important}
+#home .hb-experience:first-child{
+ grid-column:1 / -1!important;
+ padding:14px 10px 16px!important;
+ border-radius:22px!important;
+}
+#home .hb-experience:first-child h2{font-size:clamp(27px,7vw,36px)!important;line-height:1.05!important}
+#home .hb-experience:first-child img{height:clamp(205px,58vw,270px)!important;width:calc(100% + 20px)!important}
+#home .hb-experience:first-child .hb-label{font-size:11px!important;min-height:32px!important}
+#home .hb-experience:first-child p{font-size:clamp(15px,4vw,20px)!important;min-height:0!important}
+#home .hb-experience:nth-child(2),#home .hb-experience:nth-child(3){grid-column:auto!important}
+#home .hb-experience:nth-child(2) img,#home .hb-experience:nth-child(3) img{height:clamp(150px,42vw,230px)!important;width:calc(100% + 16px)!important}
+#home .hb-experience:nth-child(2) h2,#home .hb-experience:nth-child(3) h2{
+ font-size:clamp(19px,5.2vw,27px)!important;min-height:2.05em!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
+}
+#home .hb-experience:nth-child(2) .hb-label,#home .hb-experience:nth-child(3) .hb-label{
+ font-size:clamp(7px,1.8vw,10px)!important;min-height:32px!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
+}
+#home .hb-experience:nth-child(2) p,#home .hb-experience:nth-child(3) p{
+ font-size:clamp(11px,3vw,15px)!important;min-height:3em!important;
+}
+#home .hb-experience:nth-child(2) .hb-card-button,#home .hb-experience:nth-child(3) .hb-card-button{
+ width:100%!important;font-size:clamp(9px,2.5vw,13px)!important;padding:10px 5px!important;min-height:42px!important;
+}
+#home .hb-experience:nth-child(2)>small,#home .hb-experience:nth-child(3)>small{font-size:clamp(8px,2vw,11px)!important}
+#home .hb-benefits{
+ display:flex!important;justify-content:space-around!important;flex-wrap:nowrap!important;
+ gap:5px!important;padding:13px 5px!important;font-size:clamp(7px,2vw,10px)!important;
+ background:#32170d!important;border-top:3px solid #e1b84e!important;color:#ffedc7!important;
+}
+#home .hb-benefits span{gap:4px!important;white-space:nowrap!important}
+#home .hb-benefits b{font-size:16px!important}
+#home .hb-bottom-slogan{font-size:clamp(13px,3.8vw,18px)!important;padding:14px 4px!important;background:linear-gradient(90deg,#2b130b,#6a2912,#2b130b)!important}
+#home .hb-visit-address{
+ text-align:center!important;padding:24px 16px 28px!important;
+ background:linear-gradient(180deg,#4b1d10,#2a1009)!important;
+ color:#fff1d0!important;border-top:5px solid #d8ad4e!important;border-bottom:5px solid #d8ad4e!important;
+}
+#home .hb-visit-address h2{font:700 clamp(22px,5vw,30px) Georgia,serif!important;color:#f6ce63!important;margin:0 0 12px!important}
+#home .hb-visit-address p{font:700 clamp(14px,3.7vw,19px)/1.65 Georgia,serif!important;margin:0!important}
+@media(max-width:360px){
+ #home .hb-experiences{gap:8px!important;padding-left:8px!important;padding-right:8px!important}
+ #home .hb-experience:nth-child(2) h2,#home .hb-experience:nth-child(3) h2{font-size:17px!important}
+}
+@media(min-width:701px){
+ #home .hb-experiences{grid-template-columns:repeat(3,minmax(0,1fr))!important;max-width:1320px!important}
+ #home .hb-experience:first-child{grid-column:auto!important}
+ #home .hb-visit-address p br{display:none}
+}
+</style>
+
 </head>
 <body>
 <script>document.documentElement.classList.add("hb-v34");</script>
@@ -369,6 +450,10 @@ body{background:var(--hb-cream)}
   </section>
   <div class="hb-benefits"><span><b>🛵</b>Easy Ordering</span><span><b>🛡️</b>Secure Payments</span><span><b>🚚</b>Fast Delivery</span><span><b>🏷️</b>Daily Offers</span></div>
   <div class="hb-bottom-slogan">Good Food <i>•</i> Fresh Essentials <i>•</i> Sweet Happiness</div>
+  <section class="hb-visit-address" aria-label="Visit HakkaBakka">
+    <h2>📍 Visit HakkaBakka</h2>
+    <p>Shop No.1, Nr. Bhagat Singh Colony, Jalandhar<br>Amritsar Highway, Opposite Service Lane<br>HakkaBakka Cut, Jalandhar, Punjab</p>
+  </section>
   <section class="hb-coming" id="hb-daily-coming" hidden></section>
   <section class="hb-coming" id="hb-sweets-coming" hidden></section>
 </div>
