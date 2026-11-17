@@ -456,6 +456,63 @@ body{background:var(--hb-cream)}
 }
 </style>
 
+
+<style id="hb-v56-install-prompt">
+/* Full-width, balanced mobile experience cards */
+@media(max-width:700px){
+ #home .hb-experiences{
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  width:100%!important;max-width:none!important;margin:0 auto 18px!important;
+  padding:12px 12px 18px!important;gap:12px!important;box-sizing:border-box!important;
+ }
+ #home .hb-experience{width:100%!important;min-width:0!important;box-sizing:border-box!important}
+ #home .hb-experience:first-child{grid-column:1 / -1!important}
+ #home .hb-experience:nth-child(2),#home .hb-experience:nth-child(3){grid-column:auto!important;padding:12px 8px 14px!important}
+ #home .hb-experience:nth-child(2) h2,#home .hb-experience:nth-child(3) h2{
+  width:100%!important;min-width:0!important;font-size:clamp(17px,4.8vw,23px)!important;
+  line-height:1.12!important;word-break:keep-all!important;overflow-wrap:normal!important;
+  white-space:normal!important;display:flex!important;flex-direction:column!important;
+  align-items:center!important;justify-content:center!important;min-height:2.2em!important;
+ }
+ #home .hb-experience:nth-child(2) h2 em{display:block!important;font-style:italic!important}
+ #home .hb-experience:nth-child(2) img,#home .hb-experience:nth-child(3) img{
+  width:100%!important;height:clamp(155px,43vw,220px)!important;object-fit:cover!important;
+ }
+ #home .hb-experience:nth-child(2) .hb-label,#home .hb-experience:nth-child(3) .hb-label{
+  width:100%!important;box-sizing:border-box!important;padding:8px 3px!important;
+  font-size:clamp(7px,2vw,10px)!important;letter-spacing:.3px!important;white-space:normal!important;
+ }
+ #home .hb-experience:nth-child(2) p,#home .hb-experience:nth-child(3) p{
+  width:100%!important;font-size:clamp(11px,3.1vw,14px)!important;line-height:1.35!important;
+  min-height:3em!important;
+ }
+ #home .hb-experience:nth-child(2) .hb-card-button,#home .hb-experience:nth-child(3) .hb-card-button{
+  width:100%!important;min-width:0!important;box-sizing:border-box!important;
+  font-size:clamp(10px,2.8vw,13px)!important;padding:10px 4px!important;gap:4px!important;
+ }
+ #home .hb-experience:nth-child(2)>small,#home .hb-experience:nth-child(3)>small{
+  font-size:clamp(8px,2.1vw,10px)!important;line-height:1.3!important;
+ }
+}
+@media(min-width:701px){
+ #home .hb-experiences{max-width:1320px!important;width:100%!important}
+}
+#hb-install-notice{
+ position:fixed;z-index:100000;top:max(12px,env(safe-area-inset-top));left:12px;right:12px;
+ display:none;align-items:center;gap:12px;padding:12px 14px;
+ border:1px solid #f1d58c;border-radius:18px;background:#fffaf0;color:#35170e;
+ box-shadow:0 10px 32px #0004;font-family:Arial,Helvetica,sans-serif;
+}
+#hb-install-notice.show{display:flex}
+#hb-install-notice img{width:48px;height:48px;flex:0 0 48px;border-radius:50%;object-fit:cover;border:2px solid #d8ad4e}
+#hb-install-notice .hb-install-copy{flex:1;min-width:0}
+#hb-install-notice strong{display:block;font-size:17px;line-height:1.2;font-weight:800}
+#hb-install-notice small{display:block;margin-top:4px;font-size:13px;font-weight:700;color:#7b1113}
+#hb-install-notice button{border:0;border-radius:22px;background:#7b1113;color:#fff3d1;font-weight:800;font-size:14px;padding:10px 14px;white-space:nowrap}
+#hb-install-notice .hb-install-close{background:transparent;color:#6b5548;padding:4px 6px;font-size:20px}
+@media(min-width:701px){#hb-install-notice{left:auto;right:22px;top:22px;width:370px}}
+</style>
+
 </head>
 <body>
 <script>document.documentElement.classList.add("hb-v34");</script>
@@ -2472,6 +2529,41 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
       status.textContent=msg;status.className='delivery-status show bad';btn.disabled=false;btn.textContent='📍 Use My Current Location';
     },{enableHighAccuracy:true,timeout:25000,maximumAge:0});
   });
+})();
+</script>
+
+
+<div id="hb-install-notice" role="dialog" aria-label="Install Hakka Bakka">
+ <img src="/newlogo.jpg" alt="Hakka Bakka logo">
+ <div class="hb-install-copy"><strong>Install Hakka Bakka</strong><small>To your DEVICE NOW.</small></div>
+ <button id="hb-install-action" type="button">Install</button>
+ <button class="hb-install-close" id="hb-install-dismiss" type="button" aria-label="Dismiss">×</button>
+</div>
+<script id="hb-v56-install-handler">
+(function(){
+ let installEvent=null;
+ const getBanner=()=>document.getElementById('hb-install-notice');
+ window.addEventListener('beforeinstallprompt',function(event){
+  event.preventDefault();
+  installEvent=event;
+  const banner=getBanner();
+  if(banner)banner.classList.add('show');
+ });
+ window.addEventListener('appinstalled',function(){
+  installEvent=null;
+  const banner=getBanner();if(banner)banner.classList.remove('show');
+ });
+ document.addEventListener('DOMContentLoaded',function(){
+  const banner=getBanner(),install=document.getElementById('hb-install-action'),close=document.getElementById('hb-install-dismiss');
+  if(!banner||!install||!close)return;
+  close.addEventListener('click',()=>banner.classList.remove('show'));
+  install.addEventListener('click',async function(){
+   if(!installEvent)return;
+   const promptEvent=installEvent;installEvent=null;
+   banner.classList.remove('show');
+   try{await promptEvent.prompt();await promptEvent.userChoice;}catch(e){console.warn('Install prompt unavailable',e);}
+  });
+ });
 })();
 </script>
 
