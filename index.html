@@ -2635,59 +2635,83 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
  <span>Install HakkaBakka</span>
 </button>
 <div id="hb-install-toast" role="status" aria-live="polite"></div>
-<script id="hb-v67-reliable-install-button">
+<script id="hb-v68-native-install-button">
 (function(){
- let deferredPrompt=null;
- const KEY='hb_install_button_dismissed_v2';
- const btn=()=>document.getElementById('hb-install-home');
- const standalone=()=>window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
- const hide=()=>{const b=btn();if(b)b.hidden=true;};
- const rememberAndHide=()=>{try{localStorage.setItem(KEY,'1')}catch(e){}hide();};
- try{if(localStorage.getItem(KEY)==='1'||standalone())hide();}catch(e){if(standalone())hide();}
- window.addEventListener('beforeinstallprompt',event=>{
-  event.preventDefault();
-  deferredPrompt=event;
-  const b=btn();
-  if(b&&!standalone()){try{if(localStorage.getItem(KEY)!=='1')b.hidden=false}catch(e){b.hidden=false}}
- });
- window.addEventListener('appinstalled',()=>{
-  deferredPrompt=null;
-  rememberAndHide();
- });
- document.addEventListener('DOMContentLoaded',()=>{
-  const b=btn();if(!b)return;
-  let dismissed=false;
-  try{dismissed=localStorage.getItem(KEY)==='1'}catch(e){}
-  if(standalone()||dismissed){hide();return;}
-  b.addEventListener('click',async()=>{
-   if(standalone()){rememberAndHide();return;}
-   // Do not mark the button as dismissed unless Chrome actually provides an install prompt.
-   if(!deferredPrompt){
-    const toast=document.getElementById('hb-install-toast');
-    if(toast){
-     toast.textContent='Install option abhi Chrome se available nahi hai. Page ko Chrome mein kholkar thodi der baad dobara try karein, ya Chrome menu → Install app use karein.';
-     toast.classList.add('show');
-     window.setTimeout(()=>toast.classList.remove('show'),5000);
+  let deferredPrompt=null;
+  const KEY='hb_install_button_dismissed_v3';
+  const supportsNative=typeof Navigator!=='undefined' && typeof Navigator.prototype.install==='function';
+  const button=()=>document.getElementById('hb-install-home');
+  const status=()=>document.getElementById('hb-install-toast');
+  const standalone=()=>window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
+  function showMessage(message){
+    const el=status();
+    if(!el)return;
+    el.textContent=message;
+    el.classList.add('show');
+    window.setTimeout(()=>el.classList.remove('show'),5000);
+  }
+  function hideButton(){
+    const b=button();
+    if(b)b.hidden=true;
+    try{localStorage.setItem(KEY,'1')}catch(e){}
+  }
+  function init(){
+    const b=button();
+    if(!b)return;
+    if(standalone()){hideButton();return;}
+    try{if(localStorage.getItem(KEY)==='1'){b.hidden=true;return;}}catch(e){}
+    // A visible button must have a supported native install route.
+    if(supportsNative || deferredPrompt)b.hidden=false;
+    b.addEventListener('click',async function(){
+      if(standalone()){hideButton();return;}
+      b.setAttribute('aria-busy','true');
+      try{
+        // Call native install synchronously from the click gesture when supported.
+        if(supportsNative){
+          await navigator.install();
+          hideButton();
+          return;
+        }
+        if(deferredPrompt){
+          const promptEvent=deferredPrompt;
+          deferredPrompt=null;
+          await promptEvent.prompt();
+          const choice=await promptEvent.userChoice;
+          if(choice && choice.outcome==='accepted')hideButton();
+          else showMessage('Install cancel ho gaya. Aap dobara try kar sakte hain.');
+          return;
+        }
+        showMessage('Chrome ne abhi install prompt enable nahi kiya. Agar HakkaBakka pehle se installed hai, Chrome ke Install menu mein Open app dikhega.');
+      }catch(error){
+        if(error && error.name==='AbortError'){
+          showMessage('Install cancel hua ya app pehle se installed hai. Chrome ke prompt mein Open app chunein.');
+        }else{
+          console.error('HakkaBakka install failed:',error);
+          showMessage('Install start nahi ho saka. Chrome mein website kholkar dobara try karein.');
+        }
+      }finally{
+        b.removeAttribute('aria-busy');
+      }
+    },{once:true});
+  }
+  window.addEventListener('beforeinstallprompt',function(event){
+    event.preventDefault();
+    deferredPrompt=event;
+    const b=button();
+    if(b && !standalone()){
+      try{if(localStorage.getItem(KEY)!=='1')b.hidden=false;}catch(e){b.hidden=false;}
     }
-    return;
-   }
-   const promptEvent=deferredPrompt;
-   deferredPrompt=null;
-   try{
-    await promptEvent.prompt();
-    const choice=await promptEvent.userChoice;
-    if(choice&&choice.outcome==='accepted')rememberAndHide();
-    else {
-     const toast=document.getElementById('hb-install-toast');
-     if(toast){toast.textContent='Install cancel ho gaya. Jab chahein dobara try karein.';toast.classList.add('show');window.setTimeout(()=>toast.classList.remove('show'),4000);}
-    }
-   }catch(error){
-    console.warn('Native install prompt failed',error);
-    const toast=document.getElementById('hb-install-toast');
-    if(toast){toast.textContent='Chrome install prompt nahi khol paya. Chrome menu → Install app try karein.';toast.classList.add('show');window.setTimeout(()=>toast.classList.remove('show'),5000);}
-   }
   });
- });
+  window.addEventListener('appinstalled',hideButton);
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});
+  else init();
+  // Newer Chromium install API can be used even if the legacy event is not emitted.
+  if(supportsNative){
+    const b=button();
+    if(b&&!standalone()){
+      try{if(localStorage.getItem(KEY)!=='1')b.hidden=false;}catch(e){b.hidden=false;}
+    }
+  }
 })();
 </script>
 
