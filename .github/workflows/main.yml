@@ -1,35 +1,14 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+name: GitHub Pages disabled - Cloudflare is the only deployment
 
 on:
-  push:
-    branches: ["main"]
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  disabled:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Explain deployment policy
+        run: echo "GitHub Pages deployment is disabled. Production deployments are handled only by Cloudflare Pages."
