@@ -10,16 +10,16 @@
   "scope": "/",
   "icons": [
     {
-      "src": "/newlogo.jpg?v=58",
-      "sizes": "192x192",
-      "type": "image/jpeg",
+      "src": "/hakkabakka-icon-red.svg?v=1",
+      "sizes": "any",
+      "type": "image/svg+xml",
       "purpose": "any"
     },
     {
-      "src": "/newlogo.jpg?v=58",
-      "sizes": "512x512",
-      "type": "image/jpeg",
-      "purpose": "any"
+      "src": "/hakkabakka-icon-red.svg?v=1",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
   ]
 }
