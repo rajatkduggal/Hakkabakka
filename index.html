@@ -2709,7 +2709,7 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
   btn.addEventListener('click',async()=>{
    if(busy)return;busy=true;
    try{
-    if(standalone()||navigator.serviceWorker.controller){await updateInstalledApp(btn);return;}
+    if(standalone()){await updateInstalledApp(btn);return;}
     if(installPrompt){
      const event=installPrompt;installPrompt=null;
      await event.prompt();const choice=await event.userChoice;
