@@ -2635,23 +2635,35 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
  <span>Install HakkaBakka</span>
 </button>
 <div id="hb-install-toast" role="status" aria-live="polite"></div>
-<script id="hb-v64-direct-install-button">
+<script id="hb-v65-direct-install-button">
 (function(){
  let deferredPrompt=null;
+ const KEY='hb_install_button_dismissed_v1';
  const btn=()=>document.getElementById('hb-install-home');
  const standalone=()=>window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
+ const hide=()=>{const b=btn();if(b)b.hidden=true;};
+ try{if(localStorage.getItem(KEY)==='1')hide();}catch(e){}
  window.addEventListener('beforeinstallprompt',event=>{
   event.preventDefault();deferredPrompt=event;
-  const b=btn();if(b)b.hidden=false;
+  try{if(localStorage.getItem(KEY)==='1')return;}catch(e){}
+  const b=btn();if(b&&!standalone())b.hidden=false;
  });
  window.addEventListener('appinstalled',()=>{
-  deferredPrompt=null;const b=btn();if(b)b.hidden=true;
+  deferredPrompt=null;
+  try{localStorage.setItem(KEY,'1');}catch(e){}
+  hide();
  });
  document.addEventListener('DOMContentLoaded',()=>{
   const b=btn();if(!b)return;
-  if(standalone())b.hidden=true;
+  let dismissed=false;
+  try{dismissed=localStorage.getItem(KEY)==='1';}catch(e){}
+  if(standalone()||dismissed){hide();return;}
   b.addEventListener('click',async()=>{
-   if(standalone()||!deferredPrompt)return;
+   // Hide immediately and remember the choice across refreshes.
+   try{localStorage.setItem(KEY,'1');}catch(e){}
+   hide();
+   // Trigger Chrome's native install sheet only when Chrome has offered it.
+   if(!deferredPrompt)return;
    const prompt=deferredPrompt;deferredPrompt=null;
    try{await prompt.prompt();await prompt.userChoice;}
    catch(error){console.warn('Native install prompt unavailable',error);}
