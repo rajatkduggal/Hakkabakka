@@ -11,21 +11,15 @@
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/hakkabakka-192.png",
+      "src": "/hakkabakka-icon-red.svg?v=2",
       "sizes": "192x192",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "purpose": "any"
     },
     {
-      "src": "/hakkabakka-512.png",
+      "src": "/hakkabakka-icon-red.svg?v=2",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/hakkabakka-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "purpose": "maskable"
     }
   ]
