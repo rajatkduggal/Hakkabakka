@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<link rel="icon" type="image/svg+xml" href="/hakkabakka-icon-red.svg?v=1">
+<link rel="icon" type="image/svg+xml" href="/hakkabakka-icon-red.svg?v=2">
 <link rel="apple-touch-icon" href="/newlogo.jpg?v=56">
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#8b1118">
@@ -2635,38 +2635,57 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
  <span>Install HakkaBakka</span>
 </button>
 <div id="hb-install-toast" role="status" aria-live="polite"></div>
-<script id="hb-v65-direct-install-button">
+<script id="hb-v67-reliable-install-button">
 (function(){
  let deferredPrompt=null;
- const KEY='hb_install_button_dismissed_v1';
+ const KEY='hb_install_button_dismissed_v2';
  const btn=()=>document.getElementById('hb-install-home');
  const standalone=()=>window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
  const hide=()=>{const b=btn();if(b)b.hidden=true;};
- try{if(localStorage.getItem(KEY)==='1')hide();}catch(e){}
+ const rememberAndHide=()=>{try{localStorage.setItem(KEY,'1')}catch(e){}hide();};
+ try{if(localStorage.getItem(KEY)==='1'||standalone())hide();}catch(e){if(standalone())hide();}
  window.addEventListener('beforeinstallprompt',event=>{
-  event.preventDefault();deferredPrompt=event;
-  try{if(localStorage.getItem(KEY)==='1')return;}catch(e){}
-  const b=btn();if(b&&!standalone())b.hidden=false;
+  event.preventDefault();
+  deferredPrompt=event;
+  const b=btn();
+  if(b&&!standalone()){try{if(localStorage.getItem(KEY)!=='1')b.hidden=false}catch(e){b.hidden=false}}
  });
  window.addEventListener('appinstalled',()=>{
   deferredPrompt=null;
-  try{localStorage.setItem(KEY,'1');}catch(e){}
-  hide();
+  rememberAndHide();
  });
  document.addEventListener('DOMContentLoaded',()=>{
   const b=btn();if(!b)return;
   let dismissed=false;
-  try{dismissed=localStorage.getItem(KEY)==='1';}catch(e){}
+  try{dismissed=localStorage.getItem(KEY)==='1'}catch(e){}
   if(standalone()||dismissed){hide();return;}
   b.addEventListener('click',async()=>{
-   // Hide immediately and remember the choice across refreshes.
-   try{localStorage.setItem(KEY,'1');}catch(e){}
-   hide();
-   // Trigger Chrome's native install sheet only when Chrome has offered it.
-   if(!deferredPrompt)return;
-   const prompt=deferredPrompt;deferredPrompt=null;
-   try{await prompt.prompt();await prompt.userChoice;}
-   catch(error){console.warn('Native install prompt unavailable',error);}
+   if(standalone()){rememberAndHide();return;}
+   // Do not mark the button as dismissed unless Chrome actually provides an install prompt.
+   if(!deferredPrompt){
+    const toast=document.getElementById('hb-install-toast');
+    if(toast){
+     toast.textContent='Install option abhi Chrome se available nahi hai. Page ko Chrome mein kholkar thodi der baad dobara try karein, ya Chrome menu → Install app use karein.';
+     toast.classList.add('show');
+     window.setTimeout(()=>toast.classList.remove('show'),5000);
+    }
+    return;
+   }
+   const promptEvent=deferredPrompt;
+   deferredPrompt=null;
+   try{
+    await promptEvent.prompt();
+    const choice=await promptEvent.userChoice;
+    if(choice&&choice.outcome==='accepted')rememberAndHide();
+    else {
+     const toast=document.getElementById('hb-install-toast');
+     if(toast){toast.textContent='Install cancel ho gaya. Jab chahein dobara try karein.';toast.classList.add('show');window.setTimeout(()=>toast.classList.remove('show'),4000);}
+    }
+   }catch(error){
+    console.warn('Native install prompt failed',error);
+    const toast=document.getElementById('hb-install-toast');
+    if(toast){toast.textContent='Chrome install prompt nahi khol paya. Chrome menu → Install app try karein.';toast.classList.add('show');window.setTimeout(()=>toast.classList.remove('show'),5000);}
+   }
   });
  });
 })();
