@@ -603,6 +603,34 @@ body{background:var(--hb-cream)}
 #hb-install-toast.show{display:block!important}
 @media(min-width:701px){#hb-install-home{left:24px!important;bottom:24px!important}}
 </style>
+
+<style id="hb-v69-install-whatsapp-fix">
+/* Keep the branded install action visible on the homepage. */
+#hb-install-home{
+ position:fixed!important;left:12px!important;bottom:calc(18px + env(safe-area-inset-bottom,0px))!important;
+ z-index:100010!important;display:flex!important;align-items:center!important;gap:8px!important;
+ min-height:50px!important;height:50px!important;padding:5px 13px 5px 6px!important;
+ border:2px solid #e6c46d!important;border-radius:999px!important;
+ background:linear-gradient(135deg,#a30f1d,#710b14)!important;color:#fff5d9!important;
+ box-shadow:0 4px 14px #0005!important;font:800 13px/1.1 Arial,Helvetica,sans-serif!important;
+}
+#hb-install-home[hidden]{display:none!important}
+#hb-install-home img{width:36px!important;height:36px!important;flex:0 0 36px!important;
+ border-radius:50%!important;object-fit:cover!important;background:#8b1118!important;
+ border:1px solid #f2d98e!important}
+.hb-whatsapp-float{
+ width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;
+ right:12px!important;bottom:calc(16px + env(safe-area-inset-bottom,0px))!important;
+ border-width:2px!important;z-index:100009!important;box-sizing:border-box!important;
+}
+.hb-whatsapp-float svg{width:25px!important;height:25px!important;max-width:25px!important;max-height:25px!important}
+@media(max-width:380px){
+ #hb-install-home{left:9px!important;min-height:46px!important;height:46px!important;padding-right:10px!important;font-size:12px!important}
+ #hb-install-home img{width:32px!important;height:32px!important;flex-basis:32px!important}
+ .hb-whatsapp-float{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;right:9px!important}
+ .hb-whatsapp-float svg{width:23px!important;height:23px!important;max-width:23px!important;max-height:23px!important}
+}
+</style>
 </head>
 <body>
 <script>document.documentElement.classList.add("hb-v34");</script>
@@ -2631,87 +2659,36 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
 
 
 <button id="hb-install-home" type="button" aria-label="Install HakkaBakka">
- <img src="/hakkabakka-icon-red.svg?v=1" alt="">
+ <img src="/hakkabakka-icon-red.svg?v=2" alt="">
  <span>Install HakkaBakka</span>
 </button>
 <div id="hb-install-toast" role="status" aria-live="polite"></div>
-<script id="hb-v68-native-install-button">
+<script id="hb-v69-install-button">
 (function(){
-  let deferredPrompt=null;
-  const KEY='hb_install_button_dismissed_v3';
-  const supportsNative=typeof Navigator!=='undefined' && typeof Navigator.prototype.install==='function';
-  const button=()=>document.getElementById('hb-install-home');
-  const status=()=>document.getElementById('hb-install-toast');
-  const standalone=()=>window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
-  function showMessage(message){
-    const el=status();
-    if(!el)return;
-    el.textContent=message;
-    el.classList.add('show');
-    window.setTimeout(()=>el.classList.remove('show'),5000);
-  }
-  function hideButton(){
-    const b=button();
-    if(b)b.hidden=true;
-    try{localStorage.setItem(KEY,'1')}catch(e){}
-  }
-  function init(){
-    const b=button();
-    if(!b)return;
-    if(standalone()){hideButton();return;}
-    try{if(localStorage.getItem(KEY)==='1'){b.hidden=true;return;}}catch(e){}
-    // A visible button must have a supported native install route.
-    if(supportsNative || deferredPrompt)b.hidden=false;
-    b.addEventListener('click',async function(){
-      if(standalone()){hideButton();return;}
-      b.setAttribute('aria-busy','true');
-      try{
-        // Call native install synchronously from the click gesture when supported.
-        if(supportsNative){
-          await navigator.install();
-          hideButton();
-          return;
-        }
-        if(deferredPrompt){
-          const promptEvent=deferredPrompt;
-          deferredPrompt=null;
-          await promptEvent.prompt();
-          const choice=await promptEvent.userChoice;
-          if(choice && choice.outcome==='accepted')hideButton();
-          else showMessage('Install cancel ho gaya. Aap dobara try kar sakte hain.');
-          return;
-        }
-        showMessage('Chrome ne abhi install prompt enable nahi kiya. Agar HakkaBakka pehle se installed hai, Chrome ke Install menu mein Open app dikhega.');
-      }catch(error){
-        if(error && error.name==='AbortError'){
-          showMessage('Install cancel hua ya app pehle se installed hai. Chrome ke prompt mein Open app chunein.');
-        }else{
-          console.error('HakkaBakka install failed:',error);
-          showMessage('Install start nahi ho saka. Chrome mein website kholkar dobara try karein.');
-        }
-      }finally{
-        b.removeAttribute('aria-busy');
-      }
-    });
-  }
-  window.addEventListener('beforeinstallprompt',function(event){
-    event.preventDefault();
-    deferredPrompt=event;
-    const b=button();
-    if(b && !standalone()){
-      try{if(localStorage.getItem(KEY)!=='1')b.hidden=false;}catch(e){b.hidden=false;}
-    }
+ let installPrompt=null;
+ const b=()=>document.getElementById('hb-install-home');
+ const toast=()=>document.getElementById('hb-install-toast');
+ const isStandalone=()=>window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
+ function message(s){const t=toast();if(!t)return;t.textContent=s;t.classList.add('show');clearTimeout(window.__hbInstallToastTimer);window.__hbInstallToastTimer=setTimeout(()=>t.classList.remove('show'),5000);}
+ function init(){
+  const btn=b();if(!btn)return;
+  // Keep the install CTA visible; never hide it just because Chrome has not fired its prompt event yet.
+  btn.hidden=false;
+  btn.addEventListener('click',async()=>{
+   if(isStandalone()){message('HakkaBakka app is already open in installed mode.');return;}
+   if(!installPrompt){message('Chrome ka install prompt abhi available nahi hai. Chrome menu (⋮) → Install app / Add to Home screen use karein.');return;}
+   const event=installPrompt;installPrompt=null;
+   try{
+    await event.prompt();
+    const choice=await event.userChoice;
+    if(choice&&choice.outcome==='accepted')message('HakkaBakka install ho raha hai. App list / Home Screen check karein.');
+    else message('Install cancel hua. Aap dobara button daba sakte hain.');
+   }catch(e){console.error('PWA install prompt error',e);message('Chrome install prompt nahi khol saka. Chrome menu → Install app try karein.');}
   });
-  window.addEventListener('appinstalled',hideButton);
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});
-  else init();
-  // Newer Chromium install API can be used even if the legacy event is not emitted.
-  if(supportsNative){
-    const b=button();
-    if(b&&!standalone()){
-      try{if(localStorage.getItem(KEY)!=='1')b.hidden=false;}catch(e){b.hidden=false;}
-    }
-  }
+ }
+ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;const btn=b();if(btn)btn.hidden=false;});
+ window.addEventListener('appinstalled',()=>message('HakkaBakka successfully installed.'));
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
 </script>
 
