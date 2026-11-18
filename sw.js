@@ -1,4 +1,4 @@
-const CACHE_NAME = "hakkabakka-home-v69";
+const CACHE_NAME = "hakkabakka-home-v70";
 
 const APP_SHELL = [
   "/",
@@ -7,7 +7,7 @@ const APP_SHELL = [
   "/hakkabakka-icon-red.svg?v=2"
 ];
 
-self.addEventListener("install", event => {
+self.addEventListener("message", event => {\n  if (event.data && event.data.type === "SKIP_WAITING") self.skipWaiting();\n});\n\nself.addEventListener("install", event => {
   self.skipWaiting();
 
   event.waitUntil(
