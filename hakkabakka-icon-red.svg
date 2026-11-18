@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="108" fill="#8b1118"/>
+<circle cx="256" cy="256" r="184" fill="#fff2c9" stroke="#d9a441" stroke-width="10"/>
+<circle cx="256" cy="256" r="166" fill="none" stroke="#8b1118" stroke-width="5" stroke-dasharray="7 8"/>
+<g fill="#8b1118" text-anchor="middle" font-family="Georgia,serif" font-weight="900">
+<text x="256" y="145" font-size="25" letter-spacing="2">PUNJABI DHABA</text>
+<text x="256" y="245" font-size="67">HAKKA</text>
+<text x="256" y="312" font-size="67" fill="#3d2419">BAKKA</text>
+</g>
+<path d="M138 337 Q256 365 374 337 L360 365 Q256 390 152 365Z" fill="#d9a441" stroke="#8b1118" stroke-width="3"/>
+<text x="256" y="357" text-anchor="middle" font-family="Georgia,serif" font-weight="bold" font-size="19" fill="#8b1118">DESI SWAD • MODERN VIBE</text>
+<g stroke="#d9a441" stroke-width="12" stroke-linecap="round" fill="none">
+<path d="M218 177l-35 -31M294 177l35 -31"/>
+</g>
+<path d="M256 156c-24 28-24 45 0 58 24-13 24-30 0-58z" fill="#8b1118"/>
+<text x="256" y="416" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="bold" fill="#6b3a22">PURE PUNJABI TASTE</text>
+</svg>
