@@ -1,8 +1,10 @@
-const CACHE_NAME = "hakkabakka-home-v61";;
+const CACHE_NAME = "hakkabakka-home-v62";
 
 const APP_SHELL = [
   "/",
-  "/index.html"
+  "/index.html",
+  "/manifest.json",
+  "/hakkabakka-icon-red.svg"
 ];
 
 self.addEventListener("install", event => {
