@@ -579,6 +579,30 @@ body{background:var(--hb-cream)}
  #home .hb-experience:nth-child(2) h2,#home .hb-experience:nth-child(3) h2{font-size:18px!important}
 }
 </style>
+
+<style id="hb-v63-direct-install-button-style">
+#hb-install-home{
+ position:fixed!important;left:14px!important;bottom:calc(88px + env(safe-area-inset-bottom,0px))!important;
+ z-index:100002!important;display:flex!important;align-items:center!important;gap:10px!important;
+ min-height:58px!important;padding:7px 18px 7px 8px!important;border:2px solid #e6c46d!important;
+ border-radius:999px!important;background:linear-gradient(135deg,#a30f1d,#710b14)!important;
+ color:#fff5d9!important;box-shadow:0 6px 22px #0006!important;
+ font:800 15px/1.15 Arial,Helvetica,sans-serif!important;letter-spacing:.2px!important;
+}
+#hb-install-home[hidden]{display:none!important}
+#hb-install-home img{display:block!important;width:42px!important;height:42px!important;
+ border-radius:50%!important;object-fit:cover!important;background:#8b1118!important;
+ border:1px solid #f2d98e!important}
+#hb-install-toast{
+ position:fixed!important;left:14px!important;right:14px!important;
+ bottom:calc(154px + env(safe-area-inset-bottom,0px))!important;z-index:100003!important;
+ display:none!important;max-width:520px!important;margin:0 auto!important;padding:13px 16px!important;
+ border-radius:14px!important;background:#32150f!important;color:#fff2d2!important;
+ box-shadow:0 5px 20px #0005!important;font:600 14px/1.4 Arial,sans-serif!important;text-align:center!important
+}
+#hb-install-toast.show{display:block!important}
+@media(min-width:701px){#hb-install-home{left:24px!important;bottom:24px!important}}
+</style>
 </head>
 <body>
 <script>document.documentElement.classList.add("hb-v34");</script>
@@ -2606,35 +2630,47 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
 </script>
 
 
-<div id="hb-install-notice" role="dialog" aria-label="Install Hakka Bakka">
- <img src="/newlogo.jpg" alt="Hakka Bakka logo">
- <div class="hb-install-copy"><strong>Install Hakka Bakka</strong><small>To your DEVICE NOW.</small></div>
- <button id="hb-install-action" type="button">Install</button>
- <button class="hb-install-close" id="hb-install-dismiss" type="button" aria-label="Dismiss">×</button>
-</div>
-<script id="hb-v56-install-handler">
+<button id="hb-install-home" type="button" aria-label="Install HakkaBakka">
+ <img src="/hakkabakka-icon-red.svg?v=1" alt="">
+ <span>Install HakkaBakka</span>
+</button>
+<div id="hb-install-toast" role="status" aria-live="polite"></div>
+<script id="hb-v63-direct-install-button">
 (function(){
- let installEvent=null;
- const getBanner=()=>document.getElementById('hb-install-notice');
- window.addEventListener('beforeinstallprompt',function(event){
-  event.preventDefault();
-  installEvent=event;
-  const banner=getBanner();
-  if(banner)banner.classList.add('show');
+ let deferredPrompt=null;
+ const btn=()=>document.getElementById('hb-install-home');
+ const toast=(message)=>{
+  const el=document.getElementById('hb-install-toast');
+  if(!el)return;
+  el.textContent=message;el.classList.add('show');
+  clearTimeout(window.__hbInstallToastTimer);
+  window.__hbInstallToastTimer=setTimeout(()=>el.classList.remove('show'),4200);
+ };
+ const standalone=()=>window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
+ window.addEventListener('beforeinstallprompt',event=>{
+  event.preventDefault();deferredPrompt=event;
+  const b=btn();if(b)b.hidden=false;
  });
- window.addEventListener('appinstalled',function(){
-  installEvent=null;
-  const banner=getBanner();if(banner)banner.classList.remove('show');
+ window.addEventListener('appinstalled',()=>{
+  deferredPrompt=null;const b=btn();if(b)b.hidden=true;
+  toast('HakkaBakka app installed successfully!');
  });
- document.addEventListener('DOMContentLoaded',function(){
-  const banner=getBanner(),install=document.getElementById('hb-install-action'),close=document.getElementById('hb-install-dismiss');
-  if(!banner||!install||!close)return;
-  close.addEventListener('click',()=>banner.classList.remove('show'));
-  install.addEventListener('click',async function(){
-   if(!installEvent)return;
-   const promptEvent=installEvent;installEvent=null;
-   banner.classList.remove('show');
-   try{await promptEvent.prompt();await promptEvent.userChoice;}catch(e){console.warn('Install prompt unavailable',e);}
+ document.addEventListener('DOMContentLoaded',()=>{
+  const b=btn();if(!b)return;
+  if(standalone())b.hidden=true;
+  b.addEventListener('click',async()=>{
+   if(standalone()){toast('HakkaBakka app is already open.');return;}
+   if(!deferredPrompt){
+    toast('Agar HakkaBakka pehle se installed hai, Home Screen par uska red icon open karein. Nahi hai to Chrome menu se Install App chunein.');
+    return;
+   }
+   const prompt=deferredPrompt;deferredPrompt=null;
+   try{
+    await prompt.prompt();
+    const choice=await prompt.userChoice;
+    if(choice&&choice.outcome==='accepted')toast('HakkaBakka install ho raha hai…');
+    else toast('Install cancel hua. Aap baad mein phir try kar sakte hain.');
+   }catch(error){console.warn('Install prompt unavailable',error);toast('Install option abhi available nahi hai.');}
   });
  });
 })();
