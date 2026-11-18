@@ -2635,17 +2635,10 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
  <span>Install HakkaBakka</span>
 </button>
 <div id="hb-install-toast" role="status" aria-live="polite"></div>
-<script id="hb-v63-direct-install-button">
+<script id="hb-v64-direct-install-button">
 (function(){
  let deferredPrompt=null;
  const btn=()=>document.getElementById('hb-install-home');
- const toast=(message)=>{
-  const el=document.getElementById('hb-install-toast');
-  if(!el)return;
-  el.textContent=message;el.classList.add('show');
-  clearTimeout(window.__hbInstallToastTimer);
-  window.__hbInstallToastTimer=setTimeout(()=>el.classList.remove('show'),4200);
- };
  const standalone=()=>window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
  window.addEventListener('beforeinstallprompt',event=>{
   event.preventDefault();deferredPrompt=event;
@@ -2653,24 +2646,15 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
  });
  window.addEventListener('appinstalled',()=>{
   deferredPrompt=null;const b=btn();if(b)b.hidden=true;
-  toast('HakkaBakka app installed successfully!');
  });
  document.addEventListener('DOMContentLoaded',()=>{
   const b=btn();if(!b)return;
   if(standalone())b.hidden=true;
   b.addEventListener('click',async()=>{
-   if(standalone()){toast('HakkaBakka app is already open.');return;}
-   if(!deferredPrompt){
-    toast('Agar HakkaBakka pehle se installed hai, Home Screen par uska red icon open karein. Nahi hai to Chrome menu se Install App chunein.');
-    return;
-   }
+   if(standalone()||!deferredPrompt)return;
    const prompt=deferredPrompt;deferredPrompt=null;
-   try{
-    await prompt.prompt();
-    const choice=await prompt.userChoice;
-    if(choice&&choice.outcome==='accepted')toast('HakkaBakka install ho raha hai…');
-    else toast('Install cancel hua. Aap baad mein phir try kar sakte hain.');
-   }catch(error){console.warn('Install prompt unavailable',error);toast('Install option abhi available nahi hai.');}
+   try{await prompt.prompt();await prompt.userChoice;}
+   catch(error){console.warn('Native install prompt unavailable',error);}
   });
  });
 })();
@@ -2736,5 +2720,15 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
 }
 </style>
 
+
+<script id="hb-v64-service-worker-registration">
+if('serviceWorker' in navigator){
+ window.addEventListener('load',function(){
+  navigator.serviceWorker.register('/sw.js',{scope:'/'})
+   .then(function(reg){console.log('HakkaBakka service worker ready',reg.scope);})
+   .catch(function(error){console.error('HakkaBakka service worker registration failed',error);});
+ });
+}
+</script>
 </body>
 </html>
