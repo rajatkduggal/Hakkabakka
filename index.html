@@ -2663,65 +2663,86 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
  <span>Install HakkaBakka</span>
 </button>
 <div id="hb-install-toast" role="status" aria-live="polite"></div>
-<script id="hb-v70-install-update">
+<script id="hb-v71-install-update">
 (function(){
- let installPrompt=null, busy=false, reloading=false;
+ let installPrompt=null,busy=false,reloading=false;
  const button=()=>document.getElementById('hb-install-home');
  const toast=()=>document.getElementById('hb-install-toast');
  const standalone=()=>window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
- function say(msg){const t=toast();if(!t)return;t.textContent=msg;t.classList.add('show');clearTimeout(window.__hbInstallToastTimer);window.__hbInstallToastTimer=setTimeout(()=>t.classList.remove('show'),4200);}
+ function say(msg){const t=toast();if(!t)return;t.textContent=msg;t.classList.add('show');clearTimeout(window.__hbInstallToastTimer);window.__hbInstallToastTimer=setTimeout(()=>t.classList.remove('show'),5000);}
+ function hideInstallButton(){const b=button();if(b){b.hidden=true;b.style.display='none';}}
+ function showInstallButton(label){const b=button();if(b){b.hidden=false;b.style.display='flex';const s=b.querySelector('span');if(s)s.textContent=label;}}
  function reloadOnce(){if(reloading)return;reloading=true;window.location.reload();}
+ async function getRegistration(){
+  if(!('serviceWorker' in navigator))throw new Error('Is browser mein app update support available nahi hai.');
+  let reg=await navigator.serviceWorker.getRegistration('/');
+  if(reg)return reg;
+  reg=await Promise.race([
+   navigator.serviceWorker.ready,
+   new Promise((_,reject)=>setTimeout(()=>reject(new Error('App update service abhi ready nahi hai. Page reload karke dobara try karein.')),12000))
+  ]);
+  return reg;
+ }
  async function updateInstalledApp(btn){
-  if(!('serviceWorker' in navigator)){say('Is browser mein app update support available nahi hai.');return;}
-  btn.disabled=true;btn.querySelector('span').textContent='Checking update…';
-  let changed=false, timer;
-  const onController=()=>{changed=true;clearTimeout(timer);say('HakkaBakka updated. App reopen ho raha hai…');setTimeout(reloadOnce,250);};
-  navigator.serviceWorker.addEventListener('controllerchange',onController,{once:true});
+  btn.disabled=true;
+  const label=btn.querySelector('span');if(label)label.textContent='Checking update…';
+  let changed=false,controllerTimer;
+  const onController=()=>{changed=true;clearTimeout(controllerTimer);say('HakkaBakka updated. App reopen ho raha hai…');setTimeout(reloadOnce,350);};
+  navigator.serviceWorker.addEventListener('controllerchange',onController);
   try{
-   const reg=await navigator.serviceWorker.getRegistration('/');
-   if(!reg){say('App update service ready nahi hai. Page refresh karke dobara try karein.');return;}
+   const reg=await getRegistration();
    await reg.update();
    if(reg.waiting)reg.waiting.postMessage({type:'SKIP_WAITING'});
    if(reg.installing){
+    const worker=reg.installing;
     await new Promise(resolve=>{
-     const worker=reg.installing;
-     const done=()=>{if(worker.state==='activated'||worker.state==='redundant')resolve();};
+     const done=()=>{if(worker.state==='installed'||worker.state==='activated'||worker.state==='redundant'){worker.removeEventListener('statechange',done);resolve();}};
      worker.addEventListener('statechange',done);done();
-     setTimeout(resolve,15000);
+     setTimeout(resolve,12000);
     });
    }
    if(reg.waiting)reg.waiting.postMessage({type:'SKIP_WAITING'});
    if(changed)return;
-   // Give the newly installed worker a moment to take control.
-   await new Promise(resolve=>{timer=setTimeout(resolve,2500);});
+   await new Promise(resolve=>{controllerTimer=setTimeout(resolve,1800);});
    if(changed)return;
    say('HakkaBakka ka latest version already active hai.');
-  }catch(err){console.error('HakkaBakka update check failed',err);say('Update check nahi ho saka. Internet connection check karke retry karein.');}
-  finally{
+  }catch(err){
+   console.error('HakkaBakka update check failed',err);
+   say(err&&err.message?err.message:'Update check nahi ho saka. Internet connection check karke retry karein.');
+  }finally{
    navigator.serviceWorker.removeEventListener('controllerchange',onController);
-   if(!reloading){btn.disabled=false;btn.querySelector('span').textContent='Update HakkaBakka';}
+   if(!reloading){btn.disabled=false;if(label)label.textContent='Update HakkaBakka';}
   }
  }
  function init(){
   const btn=button();if(!btn)return;
-  btn.hidden=false;
-  const label=btn.querySelector('span');if(label)label.textContent='Update HakkaBakka';
+  if(standalone()){showInstallButton('Update HakkaBakka');}
+  else{showInstallButton('Install HakkaBakka');}
   btn.addEventListener('click',async()=>{
    if(busy)return;busy=true;
    try{
-    if(standalone()){await updateInstalledApp(btn);return;}
-    if(installPrompt){
-     const event=installPrompt;installPrompt=null;
-     await event.prompt();const choice=await event.userChoice;
-     if(choice&&choice.outcome==='accepted')say('HakkaBakka install ho raha hai.');else say('Install cancel hua. Aap dobara try kar sakte hain.');
+    if(!standalone()&&installPrompt){
+     const promptEvent=installPrompt;installPrompt=null;
+     await promptEvent.prompt();
+     const choice=await promptEvent.userChoice;
+     if(choice&&choice.outcome==='accepted'){
+      say('HakkaBakka install ho raha hai.');
+      hideInstallButton();
+     }else{
+      say('Install cancel hua. Aap baad mein dobara try kar sakte hain.');
+     }
+     return;
+    }
+    if(!standalone()){
+     say('Install ke liye Chrome menu ⋮ kholen aur “Install app” ya “Add to Home screen” chunein.');
      return;
     }
     await updateInstalledApp(btn);
    }finally{busy=false;}
   });
  }
- window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;const btn=button();if(btn)btn.hidden=false;});
- window.addEventListener('appinstalled',()=>say('HakkaBakka successfully installed.'));
+ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;showInstallButton('Install HakkaBakka');});
+ window.addEventListener('appinstalled',()=>{hideInstallButton();say('HakkaBakka successfully installed.');});
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
 </script>
