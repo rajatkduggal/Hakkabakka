@@ -1,5 +1,5 @@
-const CACHE_NAME = "hakkabakka-home-v71";
-const APP_SHELL = ["/", "/index.html", "/manifest.json", "/hakkabakka-icon-red.svg?v=2"];
+const CACHE_NAME = "hakkabakka-home-v72";
+const APP_SHELL = ["/", "/index.html", "/manifest.json", "/hakkabakka-icon-red.svg?v=4"];
 
 self.addEventListener("message", event => {
   if (event.data && event.data.type === "SKIP_WAITING") self.skipWaiting();
