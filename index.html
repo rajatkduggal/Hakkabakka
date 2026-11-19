@@ -406,7 +406,7 @@ body{background:var(--hb-cream)}
 
 <style id="hb-v55-exact-reference-layout">
 /* Match the user's reference: Dhaba first, then two wide side-by-side cards. */
-#home .hb-sitebar,#home .hb-welcome{display:none!important}
+#home .hb-sitebar{display:none!important}
 #home .hb-experiences{
  display:grid!important;
  grid-template-columns:repeat(2,minmax(0,1fr))!important;
@@ -2808,5 +2808,31 @@ if('serviceWorker' in navigator){
  });
 }
 </script>
+
+<style id="hb-v73-restore-welcome-screen">
+/* Restore the welcome banner above the experience cards on the homepage. */
+#home .hb-welcome{
+ display:block!important;
+ position:relative!important;
+ min-height:270px!important;
+ padding:42px 12px 48px!important;
+ margin:0!important;
+ text-align:center!important;
+ background:radial-gradient(ellipse at 50% 0%,#a65a2b55,transparent 52%),linear-gradient(180deg,#25100a 0%,#51210f 56%,#d49b54 100%)!important;
+ border-top:5px solid #d8ad4e!important;
+ border-bottom:4px solid #e6bd62!important;
+}
+#home .hb-welcome-kicker{display:block!important;color:#ffe7b4!important;font:italic 21px Georgia,serif!important}
+#home .hb-welcome h1{display:block!important;color:#ffd56b!important;font:italic 900 clamp(39px,11vw,58px)/.98 Georgia,serif!important;letter-spacing:-2px!important;text-shadow:2px 4px 0 #55230d,0 7px 18px #0009!important;margin:8px 0!important}
+#home .hb-welcome h1 span{color:#ffdb75!important}
+#home .hb-welcome .hb-ribbon{display:inline-block!important;margin-top:16px!important;padding:9px 14px!important;border:1px solid #f8d778!important}
+#home .hb-welcome p{display:block!important;color:#fff8e7!important;font-size:13px!important;margin:12px 0 0!important;font-weight:800!important}
+#home .hb-experiences{margin-top:0!important}
+@media(max-width:700px){
+ #home .hb-welcome{min-height:245px!important;padding:35px 10px 42px!important}
+ #home .hb-welcome h1{font-size:clamp(42px,12vw,58px)!important}
+ #home .hb-welcome-kicker{font-size:21px!important}
+}
+</style>
 </body>
 </html>
