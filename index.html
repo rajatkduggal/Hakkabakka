@@ -2663,77 +2663,63 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif;letter-spacing:.05px}
  <span>Install HakkaBakka</span>
 </button>
 <div id="hb-install-toast" role="status" aria-live="polite"></div>
-<script id="hb-v72-install-update">
+<script id="hb-v74-install-button-visibility">
 (function(){
- let deferredPrompt=null,busy=false,reloading=false;
+ let deferredPrompt=null;
  const btn=()=>document.getElementById('hb-install-home');
- const toast=()=>document.getElementById('hb-install-toast');
+ const home=()=>document.getElementById('home');
+ const menu=()=>document.getElementById('menuScreen');
  const standalone=()=>window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
- const nativeInstall=()=>typeof Navigator!=='undefined'&&typeof Navigator.prototype.install==='function';
- function message(s){const t=toast();if(!t)return;t.textContent=s;t.classList.add('show');clearTimeout(window.__hbInstallToastTimer);window.__hbInstallToastTimer=setTimeout(()=>t.classList.remove('show'),5000);}
- function show(label){const b=btn();if(!b)return;b.hidden=false;b.style.display='flex';const s=b.querySelector('span');if(s)s.textContent=label;}
- function hide(){const b=btn();if(!b)return;b.hidden=true;b.style.display='none';}
- function reload(){if(reloading)return;reloading=true;location.reload();}
- async function updateApp(b){
-  b.disabled=true;const label=b.querySelector('span');if(label)label.textContent='Checking update…';
-  let controllerChanged=false,timer;
-  const onChange=()=>{controllerChanged=true;clearTimeout(timer);message('HakkaBakka updated. Reloading…');setTimeout(reload,300);};
-  navigator.serviceWorker.addEventListener('controllerchange',onChange);
-  try{
-   const reg=await navigator.serviceWorker.getRegistration('/');
-   if(!reg)throw new Error('App update service is not registered. Close and reopen the installed app.');
-   await reg.update();
-   if(reg.waiting)reg.waiting.postMessage({type:'SKIP_WAITING'});
-   if(reg.installing){
-    const worker=reg.installing;
-    await new Promise(resolve=>{
-     const done=()=>{if(['installed','activated','redundant'].includes(worker.state)){worker.removeEventListener('statechange',done);resolve();}};
-     worker.addEventListener('statechange',done);done();setTimeout(resolve,12000);
-    });
-   }
-   if(reg.waiting)reg.waiting.postMessage({type:'SKIP_WAITING'});
-   if(!controllerChanged)await new Promise(resolve=>{timer=setTimeout(resolve,1800);});
-   if(!controllerChanged)message('HakkaBakka is already up to date.');
-  }catch(e){console.error('HakkaBakka update failed',e);message(e&&e.message?e.message:'Update could not be checked. Please retry with internet.');}
-  finally{navigator.serviceWorker.removeEventListener('controllerchange',onChange);if(!reloading){b.disabled=false;show('Update HakkaBakka');}}
+ function installed(){try{return localStorage.getItem('hb_app_installed')==='1'}catch(e){return false}}
+ function menuIsOpen(){
+  const m=menu(),h=home();
+  return !!(document.body.classList.contains('hb-menu-open')||(m&&m.classList.contains('menu-visible'))||(h&&getComputedStyle(h).display==='none'));
  }
- async function installApp(){
-  const b=btn();if(busy||!b)return;busy=true;b.disabled=true;
+ function hide(){const b=btn();if(b){b.hidden=true;b.style.setProperty('display','none','important');}}
+ function show(){const b=btn();if(!b)return;b.hidden=false;b.style.setProperty('display','flex','important');const s=b.querySelector('span');if(s)s.textContent='Install HakkaBakka';}
+ function refresh(){if(standalone()||installed()||menuIsOpen()||!deferredPrompt){hide();return;}show();}
+ function toast(msg){const t=document.getElementById('hb-install-toast');if(!t)return;t.textContent=msg;t.classList.add('show');clearTimeout(window.__hbInstallToastTimer);window.__hbInstallToastTimer=setTimeout(()=>t.classList.remove('show'),4500);}
+ async function install(){
+  const b=btn();if(!b||b.disabled||!deferredPrompt)return;
+  b.disabled=true;
   try{
-   if(standalone()){await updateApp(b);return;}
-   if(nativeInstall()){
-    await navigator.install();
-    hide();message('HakkaBakka installation started.');
-    return;
-   }
-   if(deferredPrompt){
-    const p=deferredPrompt;deferredPrompt=null;
-    const result=await p.prompt();
-    const choice=result||await p.userChoice;
+   const p=deferredPrompt;deferredPrompt=null;
+   await p.prompt();
+   const choice=await p.userChoice;
+   if(choice&&choice.outcome==='accepted'){
+    try{localStorage.setItem('hb_app_installed','1')}catch(e){}
     hide();
-    message(choice&&choice.outcome==='accepted'?'HakkaBakka installation started.':'Install prompt closed. Open Chrome menu to install later.');
-    return;
+    toast('HakkaBakka installation started.');
+   }else{
+    toast('Install prompt closed. You can install later from Chrome menu.');
+    refresh();
    }
-   hide();
-   message('Chrome has not made the direct install prompt available yet. Use Chrome ⋮ → Install app / Add to Home screen.');
   }catch(e){
-   console.error('HakkaBakka install failed',e);
-   hide();
-   message('Install could not start. Please use Chrome ⋮ → Install app.');
-  }finally{busy=false;if(b)b.disabled=false;}
+   console.error('HakkaBakka install prompt failed',e);
+   toast('Install prompt could not open. Please try Chrome menu → Install app.');
+   refresh();
+  }finally{b.disabled=false;}
  }
  function init(){
   const b=btn();if(!b)return;
   hide();
-  if(standalone())show('Update HakkaBakka');
-  else if(nativeInstall())show('Install HakkaBakka');
-  b.addEventListener('click',installApp);
+  b.addEventListener('click',install);
+  refresh();
+  const observer=new MutationObserver(refresh);
+  const h=home(),m=menu();
+  if(h)observer.observe(h,{attributes:true,attributeFilter:['class','style']});
+  if(m)observer.observe(m,{attributes:true,attributeFilter:['class','style']});
+  observer.observe(document.body,{attributes:true,attributeFilter:['class']});
+  window.addEventListener('pageshow',refresh);
+  window.addEventListener('focus',refresh);
  }
  window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault();deferredPrompt=e;
-  if(!standalone())show('Install HakkaBakka');
+  e.preventDefault();deferredPrompt=e;refresh();
  });
- window.addEventListener('appinstalled',()=>{hide();message('HakkaBakka successfully installed.');});
+ window.addEventListener('appinstalled',()=>{
+  try{localStorage.setItem('hb_app_installed','1')}catch(e){}
+  deferredPrompt=null;hide();
+ });
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
 </script>
