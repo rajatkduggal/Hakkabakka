@@ -367,7 +367,23 @@ body{background:var(--hb-cream)}
 <!-- SINGLE PROFESSIONAL WELCOME PAGE -->
 <!-- HAKKABAKKA THREE-EXPERIENCE HOMEPAGE REDESIGN -->
 <div id="home" class="home hb-modern-home">
-  <header class="hb-sitebar">
+  <div id="hb-live-home-banner" hidden style="margin:0 auto;max-width:1200px;padding:10px 14px;background:#fff7df;color:#4b201d;border-bottom:1px solid #e5c76a"><a id="hb-live-banner-link" href="#home" style="display:flex;align-items:center;gap:12px;color:inherit;text-decoration:none"><img id="hb-live-banner-image" alt="" style="width:88px;height:68px;object-fit:cover;border-radius:10px;display:none"><span style="display:block;min-width:0"><strong id="hb-live-banner-title" style="display:block;font-size:17px"></strong><small id="hb-live-banner-caption" style="display:block;margin-top:3px"></small></span></a></div>
+<script>
+(async function(){
+ try{
+  const r=await fetch('https://hakkabakka-admin-api.mail-marvelgroup.workers.dev/api/public/banner?ts='+Date.now(),{cache:'no-store'});
+  if(!r.ok)return;
+  const d=await r.json(),b=d.banner;if(!b||b.published!==true||!b.title)return;
+  const box=document.getElementById('hb-live-home-banner');
+  document.getElementById('hb-live-banner-title').textContent=b.title;
+  document.getElementById('hb-live-banner-caption').textContent=b.caption||'';
+  const img=document.getElementById('hb-live-banner-image');
+  if(typeof b.image==='string'&&/^https:\/\//i.test(b.image)){img.src=b.image;img.style.display='block';}
+  box.hidden=false;
+ }catch(e){}
+})();
+</script>
+<header class="hb-sitebar">
     <button class="hb-menu-icon" type="button" aria-label="Open menu" onclick="openOrderModal()">☰</button>
     <a class="hb-logo" href="#home">Hakka<span>Bakka</span><small>Desi Swad, Modern Vibe</small></a>
     <label class="hb-search"><span>⌕</span><input type="search" placeholder="Search food, groceries & more…" onkeydown="if(event.key==='Enter'){openOrderModal()}"></label>
