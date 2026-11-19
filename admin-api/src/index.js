@@ -41,6 +41,22 @@ async function handle(req,env){
  if(!validOrigin(req))return json(req,{error:"Origin not allowed"},403);
  const url=new URL(req.url), p=url.pathname;
  if(p==="/api/health"&&req.method==="GET")return json(req,{ok:true,app:"HakkaBakka Admin API",mode:"protected"});
+ if(p==="/api/public/banner"&&req.method==="GET"){
+   const row=await env.DB.prepare("SELECT value,updated_at FROM app_content WHERE key='homepage'").first();
+   let content={};try{content=row?JSON.parse(row.value):{}}catch{}
+   const banner=content&&content.banner&&content.banner.published===true?content.banner:null;
+   return json(req,{banner,updatedAt:row?.updated_at||null});
+ }
+ if(p==="/api/banner"&&req.method==="PUT"){
+   const b=await req.json().catch(()=>null);
+   if(!b||typeof b.title!=="string"||!b.title.trim()||b.title.length>160||typeof b.image!=="string"||!/^https:\/\//i.test(b.image)||b.image.length>2000||typeof b.caption!=="string"||b.caption.length>500||typeof b.published!=="boolean")return json(req,{error:"Enter a headline, HTTPS image URL, caption and publish status."},400);
+   const old=await env.DB.prepare("SELECT value FROM app_content WHERE key='homepage'").first();
+   let content={};try{content=old?JSON.parse(old.value):{}}catch{}
+   content.banner={title:b.title.trim(),image:b.image.trim(),caption:b.caption.trim(),published:b.published,updatedAt:Date.now()};
+   const now=Date.now();
+   await env.DB.prepare("INSERT INTO app_content(key,value,updated_at) VALUES('homepage',?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value,updated_at=excluded.updated_at").bind(JSON.stringify(content),now).run();
+   return json(req,{ok:true,published:b.published,updatedAt:now});
+ }
  if(p==="/api/public/menu"&&req.method==="GET"){
    const {results=[]}=await env.DB.prepare("SELECT name,category,price,image_url FROM menu_items WHERE is_published=1 AND available=1 ORDER BY sort_order,category,name").all();
    return json(req,{items:results,source:"admin-published-menu"});
