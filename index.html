@@ -631,6 +631,27 @@ body{background:var(--hb-cream)}
  .hb-whatsapp-float svg{width:23px!important;height:23px!important;max-width:23px!important;max-height:23px!important}
 }
 </style>
+<style id="hb-newsletter-style">
+.hb-newsletter{max-width:1120px;margin:28px auto;padding:clamp(20px,4vw,34px);border-radius:24px;background:linear-gradient(135deg,#7b1113,#3d0709);color:#fff;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;box-shadow:0 12px 30px #4b080a25}
+.hb-newsletter-copy h2,.hb-newsletter-footer h2{font-size:clamp(23px,3vw,34px);line-height:1.12;margin:8px 0;color:#fff}
+.hb-newsletter p{color:#fffde0b8;line-height:1.5;margin:7px 0 0}
+.hb-newsletter-kicker{font-size:11px;letter-spacing:1.7px;font-weight:900;color:#f4d36e}
+.hb-newsletter-form{display:grid;gap:10px}
+.hb-newsletter-field{display:grid;gap:6px;font-size:12px;font-weight:800;color:#fff}
+.hb-newsletter-field input{width:100%;min-height:45px;border:1px solid #ffffff55;border-radius:11px;padding:11px 13px;background:#fff;color:#211;font:inherit;font-size:15px}
+.hb-newsletter-consent{display:flex;gap:9px;align-items:flex-start;font-size:12px;line-height:1.45;color:#fffde0}
+.hb-newsletter-consent input{width:17px;height:17px;flex:0 0 17px;margin:1px 0 0;accent-color:#e8b84e}
+.hb-newsletter-form button{border:0;border-radius:11px;background:#f4d36e;color:#4b080a;padding:13px 16px;font-weight:900;font-size:15px}
+.hb-newsletter-status{min-height:18px;font-size:13px!important;margin:0!important}
+.hb-newsletter-footer{margin-top:12px;margin-bottom:34px;background:#fff;border:1px solid #eadfd4;color:#241b17;box-shadow:0 8px 22px #0000000b}
+.hb-newsletter-footer h2{color:#7b1113}.hb-newsletter-footer p{color:#6d6862}
+.hb-newsletter-footer .hb-newsletter-field{color:#4b080a}
+.hb-newsletter-footer .hb-newsletter-field input{border-color:#d9cfc4;background:#fff}
+.hb-newsletter-footer .hb-newsletter-consent{color:#514942}
+.hb-newsletter-footer .hb-newsletter-form button{background:#7b1113;color:#fff}
+@media(max-width:650px){.hb-newsletter{grid-template-columns:1fr;margin:22px 12px;padding:20px;border-radius:19px;gap:15px}.hb-newsletter-footer{margin-top:8px}}
+body.hb-menu-open .hb-newsletter{display:none!important}
+</style>
 </head>
 <body>
 <script>document.documentElement.classList.add("hb-v34");</script>
@@ -652,6 +673,15 @@ body{background:var(--hb-cream)}
     <div class="hb-chef">♨</div>
     <div class="hb-ribbon">ONE BRAND <i>•</i> THREE EXPERIENCES</div>
     <p>What would you like to explore today?</p>
+  </section>
+  <section class="hb-newsletter hb-newsletter-home" aria-labelledby="hbNewsletterHomeTitle">
+    <div class="hb-newsletter-copy"><span class="hb-newsletter-kicker">THE HAKKABAKKA CLUB</span><h2 id="hbNewsletterHomeTitle">Good Food. Great Offers. Straight to Your Inbox.</h2><p>Join our list for special offers, new menu updates and festive greetings.</p></div>
+    <form class="hb-newsletter-form" data-hb-newsletter data-source="homepage">
+      <label class="hb-newsletter-field">Your name <input name="name" type="text" maxlength="100" autocomplete="name" placeholder="Your name (optional)"></label>
+      <label class="hb-newsletter-field">Email address <input name="email" type="email" maxlength="254" autocomplete="email" required placeholder="you@example.com"></label>
+      <label class="hb-newsletter-consent"><input type="checkbox" name="consent" required> I agree to receive HakkaBakka offers, updates and greetings by email. I can unsubscribe anytime.</label>
+      <button type="submit">Subscribe for Updates →</button><p class="hb-newsletter-status" aria-live="polite"></p>
+    </form>
   </section>
   <section class="hb-experiences" aria-label="Three HakkaBakka experiences">
     <article class="hb-experience hb-dhaba">
@@ -804,6 +834,15 @@ function hideHbComingSoon(){document.querySelectorAll('.hb-coming').forEach(func
   document.addEventListener('keydown',function(event){if(event.key==='Escape'&&overlay.style.display!=='none')closeOffer();});
 })();
 </script>
+
+<section class="hb-newsletter hb-newsletter-footer" aria-labelledby="hbNewsletterFooterTitle">
+  <div><span class="hb-newsletter-kicker">STAY CONNECTED</span><h2 id="hbNewsletterFooterTitle">Get HakkaBakka Updates</h2><p>Offers, food updates and festive wishes — only if you choose to receive them.</p></div>
+  <form class="hb-newsletter-form hb-newsletter-inline" data-hb-newsletter data-source="footer">
+    <label class="hb-newsletter-field">Email address <input name="email" type="email" maxlength="254" autocomplete="email" required placeholder="Enter your email"></label>
+    <label class="hb-newsletter-consent"><input type="checkbox" name="consent" required> I agree to receive promotional emails from HakkaBakka.</label>
+    <button type="submit">Join the List</button><p class="hb-newsletter-status" aria-live="polite"></p>
+  </form>
+</section>
 
 <!-- SEPARATE ONLINE MENU SCREEN -->
 <div id="menuScreen">
@@ -2820,5 +2859,26 @@ if('serviceWorker' in navigator){
  #home .hb-welcome-kicker{font-size:21px!important}
 }
 </style>
+<script id="hb-newsletter-script">
+(function(){
+ const endpoint="https://hakkabakka-newsletter-api.mail-marvelgroup.workers.dev/subscribe";
+ document.querySelectorAll("[data-hb-newsletter]").forEach(form=>{
+  form.addEventListener("submit",async event=>{
+   event.preventDefault();
+   const button=form.querySelector('button[type="submit"]'),status=form.querySelector(".hb-newsletter-status");
+   const data=new FormData(form),email=String(data.get("email")||"").trim(),name=String(data.get("name")||"").trim(),consent=form.querySelector('[name="consent"]').checked;
+   if(!consent){status.textContent="Please tick the consent box to continue.";return;}
+   button.disabled=true;button.textContent="Please wait…";status.textContent="";
+   try{
+    const response=await fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,name,consent,source:form.dataset.source||"homepage"})});
+    const result=await response.json();
+    if(!response.ok||!result.success)throw new Error(result.message||"Subscription failed.");
+    status.textContent=result.message;form.reset();
+   }catch(error){status.textContent=error.message||"Could not subscribe. Please try again.";}
+   finally{button.disabled=false;button.textContent=form.dataset.source==="footer"?"Join the List":"Subscribe for Updates →";}
+  });
+ });
+})();
+</script>
 </body>
 </html>
