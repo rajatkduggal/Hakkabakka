@@ -679,7 +679,9 @@ body.hb-menu-open .hb-newsletter{display:none!important}
     <form class="hb-newsletter-form" data-hb-newsletter data-source="homepage">
       <label class="hb-newsletter-field">Your name <input name="name" type="text" maxlength="100" autocomplete="name" placeholder="Your name (optional)"></label>
       <label class="hb-newsletter-field">Email address <input name="email" type="email" maxlength="254" autocomplete="email" required placeholder="you@example.com"></label>
-      <label class="hb-newsletter-consent"><input type="checkbox" name="consent" required> I agree to receive HakkaBakka offers, updates and greetings by email. To unsubscribe, email care.hakkabakka@gmail.com.</label>
+      <label class="hb-newsletter-field">WhatsApp number (optional) <input name="whatsapp" type="tel" inputmode="tel" maxlength="16" autocomplete="tel" placeholder="+91 98765 43210"></label>
+      <label class="hb-newsletter-consent"><input type="checkbox" name="consent" required> I agree to receive HakkaBakka offers and updates by email. To unsubscribe, email care.hakkabakka@gmail.com.</label>
+      <label class="hb-newsletter-consent"><input type="checkbox" name="whatsappConsent"> I agree to receive HakkaBakka offers and updates on WhatsApp at the number provided.</label>
       <button type="submit">Subscribe for Updates →</button><p class="hb-newsletter-status" aria-live="polite"></p>
     </form>
   </section>
@@ -2896,11 +2898,13 @@ if('serviceWorker' in navigator){
   form.addEventListener("submit",async event=>{
    event.preventDefault();
    const button=form.querySelector('button[type="submit"]'),status=form.querySelector(".hb-newsletter-status");
-   const data=new FormData(form),email=String(data.get("email")||"").trim(),name=String(data.get("name")||"").trim(),consent=form.querySelector('[name="consent"]').checked;
-   if(!consent){status.textContent="Please tick the consent box to continue.";return;}
+   const data=new FormData(form),email=String(data.get("email")||"").trim(),name=String(data.get("name")||"").trim(),whatsapp=String(data.get("whatsapp")||"").trim(),consent=form.querySelector('[name="consent"]').checked,whatsappConsent=form.querySelector('[name="whatsappConsent"]')?.checked===true;
+   if(!consent){status.textContent="Please tick the email consent box to continue.";return;}
+   if(whatsapp&&!/^\\+?[0-9\\s()-]{10,16}$/.test(whatsapp)){status.textContent="Please enter a valid WhatsApp number.";return;}
+   if(whatsapp&&!whatsappConsent){status.textContent="Please agree to WhatsApp updates or remove the WhatsApp number.";return;}
    button.disabled=true;button.textContent="Please wait…";status.textContent="";
    try{
-    const response=await fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,name,consent,source:form.dataset.source||"homepage"})});
+    const response=await fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,name,whatsapp,consent,whatsappConsent,source:form.dataset.source||"homepage"})});
     const result=await response.json();
     if(!response.ok||!result.success)throw new Error(result.message||"Subscription failed.");
     status.textContent=result.message;form.reset();
