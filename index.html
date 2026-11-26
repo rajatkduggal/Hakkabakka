@@ -875,6 +875,7 @@ function hideHbComingSoon(){document.querySelectorAll('.hb-coming').forEach(func
 
       <div class="billing-section">
         <div class="billing-section-title"><span>👤</span> Customer details</div>
+        <div id="checkoutCustomerNameDisplay" style="display:none;margin:0 0 8px;padding:14px 16px;border-radius:14px;background:#f8f3e9;color:#74151d;font-size:17px;font-weight:800"></div>
         <div id="checkoutManualCustomerFields">
           <input class="field billing-field" id="customerName" placeholder="Customer Name" autocomplete="name" required>
           <input class="field billing-field" id="customerEmail" placeholder="Email Address" type="email" inputmode="email" autocomplete="email" required>
@@ -1619,18 +1620,20 @@ function prepareCheckoutCustomer(){
   const manual=document.getElementById('checkoutManualCustomerFields');
   const accountEmail=document.getElementById('checkoutOtpAccountEmail');
   const emailInput=document.getElementById('customerEmail');
+  const nameDisplay=document.getElementById('checkoutCustomerNameDisplay');
   const logged=isCustomerLoggedIn();
-  if(manual)manual.style.display=logged?'none':'block';
-  if(accountEmail){accountEmail.style.display=logged?'block':'none';accountEmail.textContent=logged?'Logged in: '+currentUser.email:''}
+  if(accountEmail){accountEmail.style.display='none';accountEmail.textContent=''}
   if(logged){
     if(emailInput)emailInput.value=currentUser.email;
     const name=document.getElementById('customerName');
     const phone=document.getElementById('customerPhone');
     let savedProfile=null;try{savedProfile=JSON.parse(localStorage.getItem('hb_customer_profile')||'null')}catch(e){}
-    if(name)name.value=currentProfile?.full_name||savedProfile?.full_name||currentUser.user_metadata?.full_name||currentUser.email.split('@')[0]||'Customer';
+    const customerName=String(currentProfile?.full_name||savedProfile?.full_name||currentUser.user_metadata?.full_name||currentUser.email.split('@')[0]||'Customer').trim();
+    if(name)name.value=customerName;
     if(phone)phone.value=currentProfile?.phone||savedProfile?.phone||currentUser.user_metadata?.phone||'';
-    // A valid customer login session already proves control of this email.
-    // Do not request a second checkout OTP from an authenticated account.
+    if(manual)manual.style.display='none';
+    if(nameDisplay){nameDisplay.textContent=customerName;nameDisplay.style.display='block'}
+    // Authenticated account already verifies the email; never show email on payment screen.
     checkoutVerifiedEmail=currentUser.email.trim().toLowerCase();
     skipOrderOtpOnce=false;
     document.getElementById('checkoutOtpPanel').style.display='none';
@@ -1638,7 +1641,9 @@ function prepareCheckoutCustomer(){
     document.getElementById('checkoutOtpCode').value='';
     checkoutOtpStatus('ok','Email account already verified. Aap checkout continue kar sakte hain.');
   }else{
-    if(accountEmail)accountEmail.style.display='none';
+    if(manual)manual.style.display='block';
+    if(nameDisplay){nameDisplay.style.display='none';nameDisplay.textContent=''}
+    document.getElementById('checkoutOtpPanel').style.display='block';
     document.getElementById('checkoutSendOtp').textContent='Send Email OTP';
   }
 }
