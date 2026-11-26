@@ -1648,17 +1648,19 @@ async function sendCheckoutOtp(){
   if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)){checkoutOtpStatus('bad','Please enter a valid email address first.');document.getElementById('customerEmail').focus();return}
   const btn=document.getElementById('checkoutSendOtp'),verifyBtn=document.getElementById('checkoutVerifyOtp');
   checkoutVerifiedEmail='';
-  if(verifyBtn){verifyBtn.disabled=false;verifyBtn.textContent='Verify Email OTP'}
-  const codeInput=document.getElementById('checkoutOtpCode');if(codeInput)codeInput.value='';
+  const codeInput=document.getElementById('checkoutOtpCode');
+  if(codeInput){codeInput.value='';codeInput.disabled=false;codeInput.readOnly=false}
+  if(verifyBtn){verifyBtn.disabled=false;verifyBtn.removeAttribute('disabled');verifyBtn.textContent='Verify Email OTP';verifyBtn.style.opacity='1';verifyBtn.style.pointerEvents='auto'}
   btn.disabled=true;btn.textContent='Sending OTP…';
   try{
     const res=await fetch(CUSTOMER_AUTH_API+'/api/auth/request-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email}),cache:'no-store'});
     const data=await res.json().catch(()=>({}));
     if(!res.ok||!data.success)throw new Error(data.error||data.message||'OTP email could not be sent. Please try again.');
     document.getElementById('checkoutOtpEntry').style.display='block';
-    checkoutOtpStatus('ok','OTP sent to '+email+'. Check Inbox and Spam. Code expires in 5 minutes.');
+    if(verifyBtn){verifyBtn.disabled=false;verifyBtn.removeAttribute('disabled');verifyBtn.textContent='Verify Email OTP'}
+    checkoutOtpStatus('ok','A new OTP has been sent to '+email+'. Enter the latest code and tap Verify Email OTP. It expires in 5 minutes.');
   }catch(error){checkoutOtpStatus('bad',error.message||'OTP sending failed.')}
-  finally{btn.disabled=false;btn.textContent='Resend Email OTP'}
+  finally{btn.disabled=false;btn.removeAttribute('disabled');btn.textContent='Resend Email OTP'}
 }
 async function verifyCheckoutOtp(){
   const email=(isCustomerLoggedIn()?currentUser.email:document.getElementById('customerEmail').value).trim().toLowerCase();
