@@ -1645,8 +1645,12 @@ function checkoutOtpStatus(kind,message){
 }
 async function sendCheckoutOtp(){
   const email=(isCustomerLoggedIn()?currentUser.email:document.getElementById('customerEmail').value).trim().toLowerCase();
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){checkoutOtpStatus('bad','Please enter a valid email address first.');document.getElementById('customerEmail').focus();return}
-  const btn=document.getElementById('checkoutSendOtp');btn.disabled=true;btn.textContent='Sending OTP…';
+  if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)){checkoutOtpStatus('bad','Please enter a valid email address first.');document.getElementById('customerEmail').focus();return}
+  const btn=document.getElementById('checkoutSendOtp'),verifyBtn=document.getElementById('checkoutVerifyOtp');
+  checkoutVerifiedEmail='';
+  if(verifyBtn){verifyBtn.disabled=false;verifyBtn.textContent='Verify Email OTP'}
+  const codeInput=document.getElementById('checkoutOtpCode');if(codeInput)codeInput.value='';
+  btn.disabled=true;btn.textContent='Sending OTP…';
   try{
     const res=await fetch(CUSTOMER_AUTH_API+'/api/auth/request-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email}),cache:'no-store'});
     const data=await res.json().catch(()=>({}));
@@ -2050,7 +2054,10 @@ document.getElementById('waSend').onclick=async()=>{
   const name=document.getElementById('customerName').value.trim(),email=document.getElementById('customerEmail').value.trim().toLowerCase(),phone=document.getElementById('customerPhone').value.trim(),type=document.getElementById('orderType').value;
   if(!name)return showOrderError('Customer name likhein. / Please enter your name.',document.getElementById('customerName'));
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return showOrderError('Valid email address enter karein. / Please enter a valid email address.',document.getElementById('customerEmail'));
-  if(checkoutVerifiedEmail!==email)return showOrderError('Please verify your email with the 6-digit OTP before placing the order.',document.getElementById('checkoutSendOtp'));
+  let checkoutSession=null;try{checkoutSession=JSON.parse(localStorage.getItem('hb_customer_session')||'null')}catch(e){}
+  const validSavedSession=!!(checkoutSession&&checkoutSession.email===email&&checkoutSession.token&&(!checkoutSession.expires_at||Date.parse(checkoutSession.expires_at)>Date.now()));
+  if(checkoutVerifiedEmail!==email&&!validSavedSession&&!(isCustomerLoggedIn()&&currentUser.email===email))return showOrderError('Please verify your email with the 6-digit OTP before placing the order.',document.getElementById('checkoutSendOtp'));
+  if(checkoutVerifiedEmail!==email)checkoutVerifiedEmail=email;
   if(!isCustomerLoggedIn()&&!/^\d{10}$/.test(phone))return showOrderError('10-digit mobile number zaroori hai. / Please enter a valid 10-digit mobile number.',document.getElementById('customerPhone'));
   if(!updateVerificationUI()){setPaymentCheck('bad','Payment verification required hai','Payment screenshot verify hona zaroori hai.');return showOrderError('Verified payment screenshot required hai. / Please complete payment verification first.',paymentScreenshot);}
   let extra='';if(type==='Home Delivery'&&!paymentTestMode){const p=pin(),a=document.getElementById('address').value.trim();if(!a)return showOrderError('Delivery address likhein. / Please enter the delivery address.',document.getElementById('address'));const deliveryStatus=deliveryPinStatus();if(!deliveryStatus.valid)return showOrderError(deliveryStatus.message,document.getElementById('pincode'));extra='\nPincode: '+p+'\nAddress: '+a}
