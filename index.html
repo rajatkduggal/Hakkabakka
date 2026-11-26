@@ -884,7 +884,7 @@ function hideHbComingSoon(){document.querySelectorAll('.hb-coming').forEach(func
           <div id="checkoutOtpAccountEmail" style="display:none;margin:0 0 10px;padding:12px;border-radius:12px;background:#f8f3e9;color:#74151d;font-weight:800"></div>
           <button type="button" class="drawer-action" id="checkoutSendOtp" onclick="sendCheckoutOtp()" style="width:100%;margin-top:0">Send Email OTP</button>
           <div id="checkoutOtpEntry" style="display:none;margin-top:8px">
-            <input class="field billing-field" id="checkoutOtpCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="Enter 6-digit email OTP">
+            <input class="field billing-field" id="checkoutOtpCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="Enter 6-digit email OTP" oninput="resetCheckoutOtpVerifyButton()">
             <button type="button" class="drawer-action" id="checkoutVerifyOtp" onclick="verifyCheckoutOtp()" style="width:100%">Verify Email OTP</button>
           </div>
           <div id="checkoutOtpStatus" class="delivery-status" role="status" aria-live="polite"></div>
@@ -1639,6 +1639,10 @@ function prepareCheckoutCustomer(){
     document.getElementById('checkoutSendOtp').textContent='Send Email OTP';
   }
 }
+function resetCheckoutOtpVerifyButton(){
+  const btn=document.getElementById('checkoutVerifyOtp');
+  if(btn){btn.disabled=false;btn.removeAttribute('disabled');btn.textContent='Verify Email OTP';btn.style.opacity='1';btn.style.pointerEvents='auto'}
+}
 function checkoutOtpStatus(kind,message){
   const el=document.getElementById('checkoutOtpStatus');if(!el)return;
   el.className='delivery-status show '+(kind==='ok'?'ok':'bad');el.textContent=message;
@@ -1647,7 +1651,7 @@ async function sendCheckoutOtp(){
   const email=(isCustomerLoggedIn()?currentUser.email:document.getElementById('customerEmail').value).trim().toLowerCase();
   if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)){checkoutOtpStatus('bad','Please enter a valid email address first.');document.getElementById('customerEmail').focus();return}
   const btn=document.getElementById('checkoutSendOtp'),verifyBtn=document.getElementById('checkoutVerifyOtp');
-  checkoutVerifiedEmail='';
+  checkoutVerifiedEmail='';resetCheckoutOtpVerifyButton();
   const codeInput=document.getElementById('checkoutOtpCode');
   if(codeInput){codeInput.value='';codeInput.disabled=false;codeInput.readOnly=false}
   if(verifyBtn){verifyBtn.disabled=false;verifyBtn.removeAttribute('disabled');verifyBtn.textContent='Verify Email OTP';verifyBtn.style.opacity='1';verifyBtn.style.pointerEvents='auto'}
