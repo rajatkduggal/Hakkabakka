@@ -1649,6 +1649,14 @@ function checkoutOtpStatus(kind,message){
 }
 async function sendCheckoutOtp(){
   const email=(isCustomerLoggedIn()?currentUser.email:document.getElementById('customerEmail').value).trim().toLowerCase();
+  // An authenticated account email is already verified. Resending checkout OTP must not revoke that state.
+  if(currentUser?.email&&currentUser.email.trim().toLowerCase()===email&&isCustomerLoggedIn()){
+    checkoutVerifiedEmail=email;
+    document.getElementById('checkoutOtpPanel').style.display='none';
+    document.getElementById('checkoutOtpEntry').style.display='none';
+    checkoutOtpStatus('ok','Verified customer account. Checkout ke liye dobara OTP ki zaroorat nahi hai.');
+    return;
+  }
   if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)){checkoutOtpStatus('bad','Please enter a valid email address first.');document.getElementById('customerEmail').focus();return}
   const btn=document.getElementById('checkoutSendOtp'),verifyBtn=document.getElementById('checkoutVerifyOtp');
   checkoutVerifiedEmail='';resetCheckoutOtpVerifyButton();
@@ -2062,7 +2070,8 @@ document.getElementById('waSend').onclick=async()=>{
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return showOrderError('Valid email address enter karein. / Please enter a valid email address.',document.getElementById('customerEmail'));
   let checkoutSession=null;try{checkoutSession=JSON.parse(localStorage.getItem('hb_customer_session')||'null')}catch(e){}
   const validSavedSession=!!(checkoutSession&&checkoutSession.email===email&&checkoutSession.token&&(!checkoutSession.expires_at||Date.parse(checkoutSession.expires_at)>Date.now()));
-  if(checkoutVerifiedEmail!==email&&!validSavedSession&&!(isCustomerLoggedIn()&&currentUser.email===email))return showOrderError('Please verify your email with the 6-digit OTP before placing the order.',document.getElementById('checkoutSendOtp'));
+  const authenticatedAccountEmail=!!(currentUser?.email&&currentUser.email.trim().toLowerCase()===email);
+  if(checkoutVerifiedEmail!==email&&!validSavedSession&&!authenticatedAccountEmail)return showOrderError('Please verify your email with the 6-digit OTP before placing the order.',document.getElementById('checkoutSendOtp'));
   if(checkoutVerifiedEmail!==email)checkoutVerifiedEmail=email;
   if(!isCustomerLoggedIn()&&!/^\d{10}$/.test(phone))return showOrderError('10-digit mobile number zaroori hai. / Please enter a valid 10-digit mobile number.',document.getElementById('customerPhone'));
   if(!updateVerificationUI()){setPaymentCheck('bad','Payment verification required hai','Payment screenshot verify hona zaroori hai.');return showOrderError('Verified payment screenshot required hai. / Please complete payment verification first.',paymentScreenshot);}
