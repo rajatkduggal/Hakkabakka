@@ -3252,5 +3252,38 @@ html body > a#hbInstallHomeBtn.hb-install-home .hb-install-brand-name{display:no
 })();
 </script>
 
+
+<script id="hb-v55-independent-install-fab">
+(function(){
+ function addInstallFab(){
+  if(!document.body)return;
+  var old=document.getElementById('hbInstallQuickButton');
+  if(old)return;
+  var fab=document.createElement('button');
+  fab.id='hbInstallQuickButton';
+  fab.type='button';
+  fab.setAttribute('aria-label','Install HakkaBakka app');
+  fab.title='Install HakkaBakka App';
+  fab.innerHTML='<img src="/newlogo.jpg" alt="HakkaBakka" />';
+  fab.style.cssText='position:fixed!important;display:flex!important;align-items:center!important;justify-content:center!important;left:14px!important;right:auto!important;top:auto!important;bottom:calc(82px + env(safe-area-inset-bottom,0px))!important;width:58px!important;height:58px!important;min-width:58px!important;min-height:58px!important;padding:2px!important;margin:0!important;border:2px solid #f4d36e!important;border-radius:50%!important;background:#fff5db!important;box-shadow:0 4px 14px #0007!important;overflow:hidden!important;z-index:2147483647!important;cursor:pointer!important;-webkit-tap-highlight-color:transparent!important;';
+  var img=fab.querySelector('img');
+  img.style.cssText='display:block!important;width:100%!important;height:100%!important;object-fit:contain!important;border-radius:50%!important;';
+  fab.addEventListener('click',function(){
+   var original=document.getElementById('hbInstallHomeBtn');
+   if(original){original.click();return;}
+   var ua=navigator.userAgent||'';
+   var msg=/Android/i.test(ua)?'Chrome menu ⋮ kholein aur Install app / Add to Home screen chunein.':'Browser Share/Menu se Add to Home Screen chunein.';
+   var note=document.getElementById('hbInstallQuickHelp');
+   if(!note){note=document.createElement('div');note.id='hbInstallQuickHelp';note.style.cssText='position:fixed;left:78px;right:14px;bottom:calc(82px + env(safe-area-inset-bottom,0px));z-index:2147483647;background:#35170d;color:#fff2cf;border:1px solid #d9a441;border-radius:12px;padding:12px;font:700 13px/1.4 Arial,sans-serif;box-shadow:0 4px 18px #0005';document.body.appendChild(note);}
+   note.textContent=msg;
+   setTimeout(function(){note.remove();},7000);
+  });
+  document.body.appendChild(fab);
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',addInstallFab,{once:true});else addInstallFab();
+ window.addEventListener('pageshow',addInstallFab);
+})();
+</script>
+
 </body>
 </html>
