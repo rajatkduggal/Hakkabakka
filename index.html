@@ -591,9 +591,12 @@ function hideHbComingSoon(){document.querySelectorAll('.hb-coming').forEach(func
 <section class="hb-newsletter hb-newsletter-footer" aria-labelledby="hbNewsletterFooterTitle">
   <div><span class="hb-newsletter-kicker">STAY CONNECTED</span><h2 id="hbNewsletterFooterTitle">Get HakkaBakka Updates</h2><p>Offers, food updates and festive wishes — only if you choose to receive them.</p></div>
   <form class="hb-newsletter-form hb-newsletter-inline" data-hb-newsletter data-source="footer">
+    <label class="hb-newsletter-field">Your name <input name="name" type="text" maxlength="100" autocomplete="name" placeholder="Your name"></label>
     <label class="hb-newsletter-field">Email address <input name="email" type="email" maxlength="254" autocomplete="email" required placeholder="Enter your email"></label>
-    <label class="hb-newsletter-consent"><input type="checkbox" name="consent" required> I agree to receive promotional emails from HakkaBakka.</label>
-    <button type="submit">Join the List</button><p class="hb-newsletter-status" aria-live="polite"></p>
+    <label class="hb-newsletter-field">WhatsApp number <input name="whatsappNumber" type="tel" inputmode="tel" maxlength="18" autocomplete="tel" required placeholder="+91 98765 43210"></label>
+    <label class="hb-newsletter-consent"><input type="checkbox" name="consent" required> I agree to receive promotional emails from HakkaBakka. I can unsubscribe anytime.</label>
+    <label class="hb-newsletter-consent"><input type="checkbox" name="whatsappConsent" required> I agree to receive HakkaBakka offers and updates on WhatsApp at the number provided. I can opt out anytime.</label>
+    <button type="submit">Join the HakkaBakka Club</button><p class="hb-newsletter-status" aria-live="polite"></p>
   </form>
 </section>
 
@@ -3150,20 +3153,19 @@ html body > a#hbInstallHomeBtn.hb-install-home:active{transform:scale(.94)!impor
    event.preventDefault();
    const button=form.querySelector('button[type="submit"]'),status=form.querySelector(".hb-newsletter-status");
    const data=new FormData(form),email=String(data.get("email")||"").trim(),name=String(data.get("name")||"").trim();
-   const isHomepage=form.dataset.source!=="footer";
-   const whatsappNumber=isHomepage?normalizeWhatsApp(data.get("whatsappNumber")):"";
+   const whatsappNumber=normalizeWhatsApp(data.get("whatsappNumber"));
    const consent=!!form.querySelector('[name="consent"]')?.checked;
-   const whatsappConsent=isHomepage?!!form.querySelector('[name="whatsappConsent"]')?.checked:false;
+   const whatsappConsent=!!form.querySelector('[name="whatsappConsent"]')?.checked;
    if(!consent){status.textContent="Please agree to receive email updates.";return;}
-   if(isHomepage&&!whatsappNumber){status.textContent="Please enter a valid 10-digit Indian WhatsApp number.";return;}
-   if(isHomepage&&!whatsappConsent){status.textContent="Please agree to receive WhatsApp updates.";return;}
+   if(!whatsappNumber){status.textContent="Please enter a valid 10-digit Indian WhatsApp number.";return;}
+   if(!whatsappConsent){status.textContent="Please agree to receive WhatsApp updates.";return;}
    button.disabled=true;button.textContent="Please wait…";status.textContent="";
    try{
     const response=await fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,name,consent,whatsappNumber,whatsappConsent,source:form.dataset.source||"homepage"})});
     const result=await response.json();
     if(!response.ok||!result.success)throw new Error(result.message||"Subscription failed.");
     const section=form.closest(".hb-newsletter");
-    if(section&&isHomepage){
+    if(section){
      section.innerHTML='<div class="hb-newsletter-success" role="status" aria-live="polite" style="text-align:center;padding:28px 16px;color:inherit"><h2 style="margin:0 0 8px">Thank you for subscribing!</h2><p style="margin:0">You are now part of The HakkaBakka Club.</p></div>';
      window.setTimeout(()=>{section.style.display="none";},1800);
     }else{
@@ -3171,7 +3173,7 @@ html body > a#hbInstallHomeBtn.hb-install-home:active{transform:scale(.94)!impor
      form.reset();
     }
    }catch(error){status.textContent=error.message||"Could not subscribe. Please try again.";}
-   finally{if(button.isConnected){button.disabled=false;button.textContent=form.dataset.source==="footer"?"Join the List":"Subscribe for Updates →";}}
+   finally{if(button.isConnected){button.disabled=false;button.textContent=form.dataset.source==="footer"?"Join the HakkaBakka Club":"Subscribe for Updates →";}}
   });
  });
 })();
