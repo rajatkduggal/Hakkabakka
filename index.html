@@ -3223,5 +3223,34 @@ html body > a#hbInstallHomeBtn.hb-install-home .hb-install-brand-name{display:no
 }
 </style>
 
+
+<script id="hb-v54-force-install-shortcut-visible">
+(function(){
+ function restoreInstallShortcut(){
+  var b=document.getElementById('hbInstallHomeBtn');
+  if(!b||!document.body)return;
+  if(b.parentNode!==document.body)document.body.appendChild(b);
+  b.hidden=false;b.removeAttribute('hidden');
+  [
+   ['position','fixed'],['display','grid'],['visibility','visible'],['opacity','1'],
+   ['pointer-events','auto'],['place-items','center'],['left','14px'],['right','auto'],
+   ['top','auto'],['bottom','calc(82px + env(safe-area-inset-bottom, 0px))'],
+   ['width','58px'],['height','58px'],['min-width','58px'],['min-height','58px'],
+   ['max-width','58px'],['max-height','58px'],['padding','3px'],
+   ['border','2px solid #f4d36e'],['border-radius','50%'],['background','#fff5db'],
+   ['box-shadow','0 3px 12px #0006'],['overflow','hidden'],['z-index','2147483000'],
+   ['transform','none'],['animation','none']
+  ].forEach(function(p){b.style.setProperty(p[0],p[1],'important');});
+  var img=b.querySelector('img');
+  if(img){img.style.setProperty('display','block','important');img.style.setProperty('width','100%','important');img.style.setProperty('height','100%','important');img.style.setProperty('object-fit','contain','important');}
+  var name=b.querySelector('.hb-install-brand-name');
+  if(name)name.style.setProperty('display','none','important');
+ }
+ restoreInstallShortcut();
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',restoreInstallShortcut,{once:true});
+ window.addEventListener('pageshow',restoreInstallShortcut);
+})();
+</script>
+
 </body>
 </html>
