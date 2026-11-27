@@ -2904,6 +2904,7 @@ if('serviceWorker' in navigator){
    // Consent is disclosed directly below the subscribe button; submitting the form records the customer's opt-in.
    const consent=true;
    const whatsappConsent=true;
+   const isHomepage=form.dataset.source==="homepage";
    if(!consent){status.textContent="Please agree to receive email updates.";return;}
    if(isHomepage&&!whatsappNumber){status.textContent="Please enter a valid 10-digit Indian WhatsApp number (with or without +91).";return;}
    if(isHomepage&&!whatsappConsent){status.textContent="Please agree to receive WhatsApp updates.";return;}
