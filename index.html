@@ -2921,8 +2921,12 @@ if('serviceWorker' in navigator){
     if(!response.ok||!result.success)throw new Error(result.message||"Subscription failed.");
     const section=form.closest(".hb-newsletter");
     if(section){
-     section.innerHTML='<div class="hb-newsletter-success" role="status" aria-live="polite" style="text-align:center;padding:28px 16px;color:inherit"><h2 style="margin:0 0 8px">Thank you for subscribing!</h2><p style="margin:0">You are now part of The HakkaBakka Club.</p></div>';
-     window.setTimeout(()=>{section.style.display="none";},1800);
+     const waNote=result.whatsapp?.sent
+      ?"A WhatsApp welcome message has been sent to your number."
+      :result.whatsapp?.status==="TEMPLATE_PENDING"
+       ?"Your subscription is saved. WhatsApp welcome messages will start once the approved HakkaBakka template is connected."
+       :"Your subscription is saved. WhatsApp welcome message status: "+String(result.whatsapp?.status||"PENDING")+".";
+     section.innerHTML='<div class="hb-newsletter-success" role="status" aria-live="polite" style="text-align:center;padding:28px 16px;color:inherit"><h2 style="margin:0 0 8px">Thank you for subscribing!</h2><p style="margin:0">You are now part of The HakkaBakka Club.</p><p style="margin:10px 0 0;font-size:13px">'+waNote+'</p></div>';
     }else{
      status.textContent=result.message||"Thank you for subscribing!";
      form.reset();
