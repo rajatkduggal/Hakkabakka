@@ -643,6 +643,8 @@ body{background:var(--hb-cream)}
 .hb-newsletter-consent input{width:17px;height:17px;flex:0 0 17px;margin:1px 0 0;accent-color:#e8b84e}
 .hb-newsletter-form button{border:0;border-radius:11px;background:#f4d36e;color:#4b080a;padding:13px 16px;font-weight:900;font-size:15px}
 .hb-newsletter-status{min-height:18px;font-size:13px!important;margin:0!important}
+.hb-newsletter-legal-note{font-size:11px!important;line-height:1.45!important;opacity:.82;margin:0!important;font-weight:400!important}
+.hb-newsletter-legal-note input{display:none!important}
 .hb-newsletter-footer{margin-top:12px;margin-bottom:34px;background:#fff;border:1px solid #eadfd4;color:#241b17;box-shadow:0 8px 22px #0000000b}
 .hb-newsletter-footer h2{color:#7b1113}.hb-newsletter-footer p{color:#6d6862}
 .hb-newsletter-footer .hb-newsletter-field{color:#4b080a}
@@ -680,9 +682,9 @@ body.hb-menu-open .hb-newsletter{display:none!important}
       <label class="hb-newsletter-field">Your name <input name="name" type="text" maxlength="100" autocomplete="name" placeholder="Your name"></label>
       <label class="hb-newsletter-field">Email address <input name="email" type="email" maxlength="254" autocomplete="email" required placeholder="you@example.com"></label>
       <label class="hb-newsletter-field">WhatsApp number <input name="whatsappNumber" type="tel" inputmode="tel" maxlength="18" autocomplete="tel" required placeholder="+91 98765 43210"></label>
-      <label class="hb-newsletter-consent"><input type="checkbox" name="consent" required> I agree to receive HakkaBakka offers, updates and greetings by email. I can unsubscribe anytime.</label>
-      <label class="hb-newsletter-consent"><input type="checkbox" name="whatsappConsent" required> I agree to receive HakkaBakka offers and updates on WhatsApp at the number provided.</label>
-      <button type="submit">Subscribe for Updates →</button><p class="hb-newsletter-status" aria-live="polite"></p>
+      <button type="submit">Subscribe for Updates →</button>
+      <p class="hb-newsletter-consent hb-newsletter-legal-note">By subscribing, you give consent to receive HakkaBakka newsletters, offers and updates by email and WhatsApp. You can opt out anytime.</p>
+      <p class="hb-newsletter-status" aria-live="polite"></p>
     </form>
   </section>
   <section class="hb-experiences" aria-label="Three HakkaBakka experiences">
@@ -843,9 +845,9 @@ function hideHbComingSoon(){document.querySelectorAll('.hb-coming').forEach(func
     <label class="hb-newsletter-field">Your name <input name="name" type="text" maxlength="100" autocomplete="name" placeholder="Your name"></label>
     <label class="hb-newsletter-field">Email address <input name="email" type="email" maxlength="254" autocomplete="email" required placeholder="Enter your email"></label>
     <label class="hb-newsletter-field">WhatsApp number <input name="whatsappNumber" type="tel" inputmode="tel" maxlength="18" autocomplete="tel" required placeholder="+91 98765 43210"></label>
-    <label class="hb-newsletter-consent"><input type="checkbox" name="consent" required> I agree to receive promotional emails from HakkaBakka. I can unsubscribe anytime.</label>
-    <label class="hb-newsletter-consent"><input type="checkbox" name="whatsappConsent" required> I agree to receive HakkaBakka offers and updates on WhatsApp at the number provided. I can opt out anytime.</label>
-    <button type="submit">Join the HakkaBakka Club</button><p class="hb-newsletter-status" aria-live="polite"></p>
+    <button type="submit">Join the HakkaBakka Club</button>
+    <p class="hb-newsletter-consent hb-newsletter-legal-note">By subscribing, you give consent to receive HakkaBakka newsletters, offers and updates by email and WhatsApp. You can opt out anytime.</p>
+    <p class="hb-newsletter-status" aria-live="polite"></p>
   </form>
 </section>
 
@@ -2909,8 +2911,9 @@ if('serviceWorker' in navigator){
    const button=form.querySelector('button[type="submit"]'),status=form.querySelector(".hb-newsletter-status");
    const data=new FormData(form),email=String(data.get("email")||"").trim(),name=String(data.get("name")||"").trim();
    const whatsappNumber=normalizeWhatsApp(data.get("whatsappNumber"));
-   const consent=!!form.querySelector('[name="consent"]')?.checked;
-   const whatsappConsent=!!form.querySelector('[name="whatsappConsent"]')?.checked;
+   // Consent is disclosed directly below the subscribe button; submitting the form records the customer's opt-in.
+   const consent=true;
+   const whatsappConsent=true;
    if(!consent){status.textContent="Please agree to receive email updates.";return;}
    if(isHomepage&&!whatsappNumber){status.textContent="Please enter a valid 10-digit Indian WhatsApp number (with or without +91).";return;}
    if(isHomepage&&!whatsappConsent){status.textContent="Please agree to receive WhatsApp updates.";return;}
