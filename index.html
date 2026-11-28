@@ -932,7 +932,7 @@ function hideHbComingSoon(){document.querySelectorAll('.hb-coming').forEach(func
         <small id="paymentStatus"></small>
         <div id="paymentTimer" style="display:none;margin:8px 0 0;padding:9px 12px;border-radius:10px;background:#fff7e6;color:#8a5a00;font-weight:800;text-align:center">⏱️ Payment window: <span id="paymentCountdown">02:00</span></div>
         
-        <button type="button" class="drawer-action" id="chooseScreenshot" style="display:none;background:#333">📎 Choose Payment Screenshot</button><input class="field billing-field" id="paymentScreenshot" type="file" accept="image/*,.jpg,.jpeg,.png,.heic,.heif" aria-describedby="paymentCheck" style="position:fixed;left:-10000px;top:0;width:1px;height:1px;opacity:0.01" disabled>
+        <label class="drawer-action" id="chooseScreenshot" for="paymentScreenshot" style="display:none;background:#333;position:relative;cursor:pointer;text-align:center">📎 Choose Payment Screenshot<input class="field billing-field" id="paymentScreenshot" type="file" accept="image/*,.jpg,.jpeg,.png,.heic,.heif" aria-describedby="paymentCheck" style="position:absolute;inset:0;width:100%;height:100%;opacity:0.001;cursor:pointer" disabled></label>
         <div id="paymentCheck" class="payment-check" aria-live="polite" hidden></div>
       </div>
 
@@ -2026,8 +2026,8 @@ async function verifyPaymentReference(reference){
       setPaymentCheck('bad','Screenshot details match nahi hue',problems.join(' '));
     }
 }
-document.getElementById('chooseScreenshot').addEventListener('click',()=>{if(!paymentScreenshot.disabled)paymentScreenshot.click()});
-paymentScreenshot.addEventListener('change',()=>{const f=paymentScreenshot.files&&paymentScreenshot.files[0];if(f)verifyPaymentScreenshot(f);else{paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot required hai','WhatsApp order bhejne se pehle verified payment screenshot upload karein.');updateVerificationUI()}});
+// Use a native label-for-file-input interaction. iOS Safari can fail when a hidden file input is opened via scripted click.
+paymentScreenshot.addEventListener('change',()=>{const f=paymentScreenshot.files&&paymentScreenshot.files[0];if(f){if(!/^image\//i.test(f.type)&&!(/\.(jpe?g|png|heic|heif|webp)$/i.test(f.name))){setPaymentCheck('bad','Unsupported screenshot format','Please choose a JPG, PNG or HEIC image from Photos or Files.');return;}setPaymentCheck('', 'Screenshot selected', 'File loaded: '+f.name+' ('+Math.max(1,Math.round(f.size/1024))+' KB). Checking payment details…');verifyPaymentScreenshot(f);}else{paymentVerification={file:false,amount:false,date:false,time:false,order:false,ocr:false};setPaymentCheck('bad','Payment screenshot required hai','WhatsApp order bhejne se pehle verified payment screenshot upload karein.');updateVerificationUI()}});
 const CLOUDFLARE_ORDERS_API='https://hb-orders-api.mail-marvelgroup.workers.dev';
 async function runPOSIntegrationTest(){
   try{
