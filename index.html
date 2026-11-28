@@ -932,7 +932,7 @@ function hideHbComingSoon(){document.querySelectorAll('.hb-coming').forEach(func
         <small id="paymentStatus"></small>
         <div id="paymentTimer" style="display:none;margin:8px 0 0;padding:9px 12px;border-radius:10px;background:#fff7e6;color:#8a5a00;font-weight:800;text-align:center">⏱️ Payment window: <span id="paymentCountdown">02:00</span></div>
         
-        <button type="button" class="drawer-action" id="chooseScreenshot" style="display:none;background:#333">📎 Choose Payment Screenshot</button><input class="field billing-field" id="paymentScreenshot" type="file" accept="image/*" aria-describedby="paymentCheck" style="display:none" disabled>
+        <button type="button" class="drawer-action" id="chooseScreenshot" style="display:none;background:#333">📎 Choose Payment Screenshot</button><input class="field billing-field" id="paymentScreenshot" type="file" accept="image/*,.jpg,.jpeg,.png,.heic,.heif" aria-describedby="paymentCheck" style="position:fixed;left:-10000px;top:0;width:1px;height:1px;opacity:0.01" disabled>
         <div id="paymentCheck" class="payment-check" aria-live="polite" hidden></div>
       </div>
 
@@ -2088,20 +2088,28 @@ document.getElementById('waSend').onclick=async()=>{
   else{setPaymentCheck('bad','Order saved — confirmation email pending',savedOrderResult?.email_message||'Please contact HakkaBakka if the email does not arrive.');}
   if(paymentTestMode){
     const msg='*HAKKA BAKKA ₹2 PAYMENT TEST*\n*TEST ORDER: '+currentOrderNo+'*\n\n₹2 payment screenshot verified.\nPOS test endpoint validated and rolled back.\n\nName: '+name+'\nMobile: '+phone+'\n\nPlease confirm receipt of this ₹2 test.';
-    clearCart();
-    closeCart();
-    window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
+    showWhatsAppOrderLink(msg,'Payment test order saved. Tap below to open WhatsApp.');
     return;
   }
   const grouped=[];cart.forEach(x=>{const g=grouped.find(y=>y.name===x.name&&y.price===x.price);if(g)g.qty++;else grouped.push({name:x.name,price:x.price,qty:1})});const lines=grouped.map(x=>'• '+x.name+' × '+x.qty+' - ₹'+(x.price*x.qty)).join('\n'),total=expectedTotal();
   const ref=extractPaymentReference(window.hbLastPaymentOcrText||'');
   const msg='*HAKKA BAKKA ONLINE ORDER*\n*ORDER NO: '+currentOrderNo+'*'+(ref?'\n*PAYMENT REF NO: '+ref+'*':'\n*PAYMENT REF NO: Please check attached receipt*')+'\n\n'+lines+'\n\nFood Total: ₹'+foodTotal()+(orderDiscount()>0?'\nPickup Discount ('+Math.round(pickupDiscountRate()*100)+'%): -₹'+orderDiscount():'')+'\nDelivery Charges: ₹'+deliveryCharge()+'\n*TOTAL: ₹'+total+'*\n\nName: '+name+'\nMobile: '+phone+'\nType: '+type+extra+'\n\nPlease confirm my order.';
-  // WhatsApp click-to-chat opens directly, avoiding the Android share-sheet app chooser.
-  // Browsers cannot attach a local screenshot file to a wa.me draft; customer must attach it manually.
-  clearCart();
-  closeCart();
-  window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
+  // iPhone Safari may block a WhatsApp redirect after the asynchronous order-save request.
+  // Keep checkout visible and provide a real user-tap link so iOS can open WhatsApp reliably.
+  showWhatsAppOrderLink(msg,'Order saved successfully. Tap below to open WhatsApp and send your order.');
 };
+function showWhatsAppOrderLink(message,statusText){
+  waSend.disabled=true;
+  setPaymentCheck('ok','✅ Order saved',statusText);
+  const link=document.createElement('a');
+  link.href='https://api.whatsapp.com/send?phone='+WA+'&text='+encodeURIComponent(message);
+  link.target='_blank';
+  link.rel='noopener noreferrer';
+  link.textContent='Open WhatsApp & Send Order';
+  link.style.cssText='display:block;text-align:center;text-decoration:none;background:#159447;color:#fff;font-weight:900;padding:15px 18px;border-radius:14px;margin-top:12px;font-size:17px';
+  link.addEventListener('click',()=>{clearCart();closeCart();},{once:true});
+  paymentCheck.appendChild(link);
+}
 window.addEventListener('storage',e=>{if(e.key===CART_STORAGE_KEY){cart=loadStoredCart();renderCart()}});
 // HERO FOOD SLIDESHOW — start rotation immediately; don't wait for GitHub API lookups.
 (function(){
