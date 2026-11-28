@@ -3117,10 +3117,13 @@ if('serviceWorker' in navigator){
   var root=document.getElementById('menu'),cards=root&&root.querySelectorAll('.menu-card').length||0;
   if(cards>0){done=true;return;}
   try{
-   if(typeof data==='undefined'||!Array.isArray(data)||!data.some(function(row){return Array.isArray(row)&&Array.isArray(row[1])&&row[1].length;})){
-    if(typeof BUILT_IN_MENU_FALLBACK!=='undefined'&&Array.isArray(BUILT_IN_MENU_FALLBACK)&&BUILT_IN_MENU_FALLBACK.length)data=BUILT_IN_MENU_FALLBACK.map(function(row){return [row[0],row[1].map(function(item){return item.slice();})];});
-   }
    if(typeof renderMenu==='function')renderMenu();
+   cards=root&&root.querySelectorAll('.menu-card').length||0;
+   // If the live menu API or an old cached payload rendered zero dishes, force the bundled menu.
+   if(cards===0&&typeof BUILT_IN_MENU_FALLBACK!=='undefined'&&Array.isArray(BUILT_IN_MENU_FALLBACK)&&BUILT_IN_MENU_FALLBACK.length){
+    data=BUILT_IN_MENU_FALLBACK.map(function(row){return [row[0],row[1].map(function(item){return item.slice();})];});
+    if(typeof renderMenu==='function')renderMenu();
+   }
    if(typeof renderCart==='function')renderCart();
    if(typeof renderCartInlineCategories==='function')renderCartInlineCategories();
    if(typeof applyMenuFilters==='function'){if(typeof activeDietFilter!=='undefined')activeDietFilter='all';applyMenuFilters();}
@@ -3140,5 +3143,16 @@ if('serviceWorker' in navigator){
 })();
 </script>
 
-</body>
+<style id="hb-zomato-menu-final-layout">
+#menuScreen #menu{display:block!important;visibility:visible!important;opacity:1!important;min-height:120px!important;height:auto!important;overflow:visible!important}
+#menuScreen #menu .menu-section{display:block!important;visibility:visible!important;opacity:1!important}
+#menuScreen #menu .menu-grid{display:block!important;visibility:visible!important}
+#menuScreen #menu .menu-card{display:grid!important;grid-template-columns:minmax(0,1fr) 104px!important;grid-template-rows:auto!important;visibility:visible!important;opacity:1!important;min-height:120px!important;background:#fff!important;border:0!important;border-bottom:1px solid #eee!important;border-radius:0!important;box-shadow:none!important;padding:12px 4px!important}
+#menuScreen #menu .menu-card>img{grid-column:2!important;grid-row:1!important;width:104px!important;height:96px!important;max-height:96px!important;object-fit:cover!important;border-radius:12px!important}
+#menuScreen #menu .menu-card .menu-body{grid-column:1!important;grid-row:1!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;min-width:0!important;padding:2px 6px 2px 0!important}
+#menuScreen #menu .menu-card .menu-body .add{width:auto!important;min-width:112px!important;background:#fff!important;color:#16834b!important;border:1px solid #b5d8c4!important;border-radius:9px!important;padding:9px 14px!important}
+#menuScreen #menu .menu-card .menu-body .add.selected{background:#16834b!important;color:#fff!important}
+#menuScreen #menu .menu-card .menu-body .variant{display:flex!important;flex-wrap:wrap!important;width:100%!important}
+#menuScreen #menu .menu-card .menu-body .variant .add{flex:1!important;min-width:90px!important;font-size:12px!important;padding:8px 5px!important}
+</style></body>
 </html>
