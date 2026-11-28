@@ -1550,7 +1550,7 @@ async function loadPublishedAdminMenu(){
 function renderMenu(){
   try {
     if(!menuEl){console.error('HakkaBakka menu container #menu missing');return;}
-    if(!Array.isArray(data)||!data.length){menuEl.innerHTML='<p style="padding:20px;text-align:center">Menu is temporarily unavailable. Please refresh the page.</p>';return;}
+    if(!Array.isArray(data)||!data.length){data=Array.isArray(BUILT_IN_MENU_FALLBACK)&&BUILT_IN_MENU_FALLBACK.length?BUILT_IN_MENU_FALLBACK:[];} if(!data.length){menuEl.innerHTML='<p style="padding:20px;text-align:center">Menu is temporarily unavailable. Please refresh the page.</p>';return;}
     let sections=data.filter(row=>Array.isArray(row)&&row.length>=2&&Array.isArray(row[1])&&row[1].length>0);
     let html=sections.map(([section,list])=>{
       const cards=list.filter(x=>Array.isArray(x)&&x.length>=2).map(x=>{
@@ -1677,7 +1677,8 @@ function hbAddRecommended(name,price){cart.push({name,price:Number(price)});save
 async function hbLoadMenuRecommendations(){
  const box=document.getElementById('hb-recommend-list');if(!box)return;
  const session=currentUser;
- if(!session||!supabaseClient){hbRenderRecommendations([],false);return;}
+ hbRenderRecommendations([],false);
+ if(!session||!supabaseClient)return;
  try{
   const {data:orders,error}=await supabaseClient.from('customer_orders').select('items,created_at').eq('user_id',session.id).order('created_at',{ascending:false}).limit(12);
   if(error)throw error;
@@ -1685,7 +1686,7 @@ async function hbLoadMenuRecommendations(){
   hbRenderRecommendations(names,names.length>0);
  }catch(error){console.warn('Personalized menu recommendations unavailable:',error);hbRenderRecommendations([],false);}
 }
-function setMenuState(){const home=document.getElementById('home'),menuScreen=document.getElementById('menuScreen');if(!home||!menuScreen)return;document.body.classList.add('hb-menu-open');home.classList.add('menu-hidden');menuScreen.classList.add('menu-visible');home.style.setProperty('display','none','important');home.style.setProperty('visibility','hidden','important');menuScreen.style.setProperty('display','block','important');menuScreen.style.setProperty('visibility','visible','important');window.scrollTo({top:0,left:0,behavior:'instant'});const fab=document.getElementById('cartFab');if(fab)fab.style.display='block';renderMenu();renderCart();hbLoadMenuRecommendations();loadPublishedAdminMenu().then(changed=>{if(changed){renderMenu();renderCart();hbLoadMenuRecommendations();}})}
+function setMenuState(){const home=document.getElementById('home'),menuScreen=document.getElementById('menuScreen');if(!home||!menuScreen)return;document.body.classList.add('hb-menu-open');home.classList.add('menu-hidden');menuScreen.classList.add('menu-visible');home.style.setProperty('display','none','important');home.style.setProperty('visibility','hidden','important');menuScreen.style.setProperty('display','block','important');menuScreen.style.setProperty('visibility','visible','important');window.scrollTo({top:0,left:0,behavior:'instant'});const fab=document.getElementById('cartFab');if(fab)fab.style.display='block';renderMenu();renderCart();renderCartInlineCategories();hbLoadMenuRecommendations();loadPublishedAdminMenu().then(changed=>{renderMenu();renderCart();renderCartInlineCategories();applyMenuFilters();});}
 function openMenu(){closeOrderModal();setMenuState()}
 function closeMenu(){closeCart();setHomeState();window.scrollTo({top:0,left:0,behavior:'instant'})}
 
