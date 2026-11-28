@@ -3293,5 +3293,33 @@ html body > a#hbInstallHomeBtn.hb-install-home .hb-install-brand-name{display:no
 })();
 </script>
 
+
+<!-- V56 — reliable menu entry and category navigation recovery -->
+<script id="hb-v56-menu-entry-recovery">
+(function(){
+  function showOnlineMenu(event){
+    if(event){event.preventDefault();event.stopPropagation();if(event.stopImmediatePropagation)event.stopImmediatePropagation();}
+    var home=document.getElementById('home'),screen=document.getElementById('menuScreen'),menu=document.getElementById('menu'),modal=document.getElementById('orderModal');
+    if(modal)modal.classList.remove('show');
+    if(!screen||!menu){console.error('HakkaBakka menu screen/container missing');return false;}
+    document.body.classList.add('hb-menu-open');
+    if(home){home.classList.add('menu-hidden');home.style.setProperty('display','none','important');home.style.setProperty('visibility','hidden','important');}
+    screen.hidden=false;screen.classList.add('menu-visible');
+    screen.style.setProperty('display','block','important');screen.style.setProperty('visibility','visible','important');screen.style.setProperty('width','100%','important');screen.style.setProperty('height','auto','important');
+    var fab=document.getElementById('cartFab');if(fab)fab.style.display='block';
+    try{if(typeof renderMenu==='function')renderMenu();}catch(err){console.error('Menu render failed',err);}
+    try{if(typeof renderCart==='function')renderCart();}catch(err){console.error('Cart render failed',err);}
+    if(typeof loadPublishedAdminMenu==='function')loadPublishedAdminMenu().then(function(changed){if(changed){if(typeof renderMenu==='function')renderMenu();if(typeof renderCart==='function')renderCart();}}).catch(function(err){console.warn('Live menu refresh failed',err);});
+    window.scrollTo({top:0,left:0,behavior:'instant'});return false;
+  }
+  window.hbForceOpenMenu=showOnlineMenu;window.openMenu=showOnlineMenu;
+  document.addEventListener('click',function(event){
+    var target=event.target&&event.target.closest?event.target.closest('button,a,[role="button"]'):null;if(!target)return;
+    var label=(target.innerText||target.textContent||'').replace(/\s+/g,' ').trim(),id=target.id||'';
+    if(id==='hbOnlineOrderButton'||id==='whatsappOrderChoice'||/^(☰\s*)?Menu$/i.test(label)||/Browse Menu Categories/i.test(label))showOnlineMenu(event);
+  },true);
+})();
+</script>
+
 </body>
 </html>
