@@ -687,6 +687,49 @@ body.hb-menu-open .hb-newsletter{display:none!important}
 #cartFab.menu-fab{right:18px;bottom:22px;min-width:118px;text-align:center;background:#292929;color:#fff;border:1px solid #555;border-radius:14px;padding:13px 18px;font-size:17px;font-weight:800;box-shadow:0 6px 18px #0003;z-index:10050}
 #cartFab.menu-fab:active{transform:scale(.97)}
 </style>
+<style id="hb-zomato-menu-v1">
+/* HakkaBakka Zomato-inspired restaurant menu */
+#menuScreen .menu-category-browser{display:none!important}
+#menuScreen .hb-zomato-discovery{display:block!important;max-width:1180px;margin:14px auto 10px;padding:0 14px}
+#menuScreen .hb-discovery-heading{display:flex;justify-content:space-between;align-items:end;gap:10px;margin:12px 0 14px}
+#menuScreen .hb-discovery-heading h2{margin:3px 0 0;color:#7b1113;font-size:24px}
+#menuScreen .hb-offer-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+#menuScreen .hb-offer-card{min-height:170px;border-radius:17px;padding:13px;display:flex;flex-direction:column;align-items:flex-start;box-shadow:0 4px 12px #00000010}
+#menuScreen .hb-offer-card h3{font-size:18px;margin:9px 0 5px}
+#menuScreen .hb-offer-card p{font-size:12px;line-height:1.35;margin:0 0 10px}
+#menuScreen .hb-offer-card button{margin-top:auto}
+#menuScreen .hb-recommend-section{margin-top:16px}
+#menuScreen .diet-filter{margin-top:14px;padding:0 14px}
+#menuScreen .searchbox{padding:0 14px;margin-top:10px}
+#menuScreen .menu-content{padding:14px 12px 105px}
+#menuScreen .menu-section{margin:0 0 22px;padding-bottom:8px;border-bottom:1px solid #eee5dc}
+#menuScreen .menu-section h2{font-size:21px;margin:0 0 8px;padding:0 5px}
+#menuScreen .menu-grid{display:block}
+#menuScreen .menu-card{display:grid;grid-template-columns:minmax(0,1fr) 116px;grid-template-rows:auto;align-items:center;gap:8px;background:#fff;border:0;border-bottom:1px solid #eee;padding:12px 4px;border-radius:0;box-shadow:none;min-height:132px}
+#menuScreen .menu-card>img{grid-column:2;grid-row:1;width:116px!important;height:104px!important;max-height:104px;object-fit:cover;border-radius:12px!important;align-self:center}
+#menuScreen .menu-body{grid-column:1;grid-row:1;padding:2px 4px 2px 0;min-width:0;display:flex;flex-direction:column;align-items:flex-start}
+#menuScreen .menu-body h3{font-size:16px;line-height:1.25;margin:0 0 7px;color:#282828}
+#menuScreen .menu-body .price{font-size:16px;margin:0 0 8px}
+#menuScreen .menu-body .add{width:auto;min-width:112px;max-width:100%;padding:9px 14px;border:1px solid #b5d8c4;background:#fff;color:#16834b;border-radius:9px;font-size:14px;font-weight:900}
+#menuScreen .menu-body .add.selected{background:#16834b!important;color:#fff!important;border-color:#16834b}
+#menuScreen .menu-body .variant{width:100%;display:flex;flex-wrap:wrap}
+#menuScreen .menu-body .variant .add{flex:1;min-width:90px;font-size:12px;padding:8px 5px}
+#menuScreen .menu-fab{position:fixed!important;right:16px!important;bottom:18px!important;left:auto!important;z-index:10050!important;background:#292929!important;color:#fff!important;border-radius:14px!important;padding:15px 22px!important;min-width:128px;box-shadow:0 6px 22px #0004}
+#menuScreenCategoryModal{z-index:10060!important}
+#menuScreenCategoryModal #menuScreenCategoryList button{font-size:16px!important;padding:15px 5px!important}
+@media(max-width:520px){
+ #menuScreen .hb-discovery-heading h2{font-size:21px}
+ #menuScreen .hb-offer-strip{gap:7px}
+ #menuScreen .hb-offer-card{min-height:165px;padding:10px 8px}
+ #menuScreen .hb-offer-card h3{font-size:16px}
+ #menuScreen .hb-offer-card p{font-size:10px}
+ #menuScreen .hb-offer-card button{font-size:10px;padding:7px 8px}
+ #menuScreen .hb-recommend-section{margin-top:12px}
+ #menuScreen .menu-card{grid-template-columns:minmax(0,1fr) 104px;min-height:120px}
+ #menuScreen .menu-card>img{width:104px!important;height:96px!important;max-height:96px}
+}
+@media(min-width:800px){#menuScreen .menu-content{max-width:900px}#menuScreen .menu-card{grid-template-columns:minmax(0,1fr) 150px}#menuScreen .menu-card>img{width:150px!important;height:120px!important;max-height:120px}}
+</style>
 </head>
 <body>
 <script>document.documentElement.classList.add("hb-v34");</script>
