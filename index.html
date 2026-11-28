@@ -3058,5 +3058,44 @@ if('serviceWorker' in navigator){
 })();
 </script>
 
+
+<!-- V57 — hard recovery for blank menu list and cart synchronization -->
+<style id="hb-v57-menu-visible-fix">
+#menuScreen #menu{display:block!important;visibility:visible!important;opacity:1!important;min-height:120px!important;height:auto!important;overflow:visible!important}
+#menuScreen #menu .menu-section{display:block!important;visibility:visible!important;opacity:1!important}
+#menuScreen #menu .menu-grid{display:grid!important;visibility:visible!important}
+#menuScreen #menu .menu-card{display:block!important;visibility:visible!important;opacity:1!important}
+</style>
+<script id="hb-v57-menu-data-recovery">
+(function(){
+ var attempts=0,done=false;
+ function recover(){
+  if(done||!document.body||!document.body.classList.contains('hb-menu-open'))return;
+  var root=document.getElementById('menu'),cards=root&&root.querySelectorAll('.menu-card').length||0;
+  if(cards>0){done=true;return;}
+  try{
+   if(typeof data==='undefined'||!Array.isArray(data)||!data.some(function(row){return Array.isArray(row)&&Array.isArray(row[1])&&row[1].length;})){
+    if(typeof BUILT_IN_MENU_FALLBACK!=='undefined'&&Array.isArray(BUILT_IN_MENU_FALLBACK)&&BUILT_IN_MENU_FALLBACK.length)data=BUILT_IN_MENU_FALLBACK.map(function(row){return [row[0],row[1].map(function(item){return item.slice();})];});
+   }
+   if(typeof renderMenu==='function')renderMenu();
+   if(typeof renderCart==='function')renderCart();
+   if(typeof renderCartInlineCategories==='function')renderCartInlineCategories();
+   if(typeof applyMenuFilters==='function'){if(typeof activeDietFilter!=='undefined')activeDietFilter='all';applyMenuFilters();}
+   cards=root&&root.querySelectorAll('.menu-card').length||0;
+   if(cards>0){done=true;return;}
+  }catch(e){console.error('HakkaBakka menu recovery error',e);}
+  attempts++;
+  if(attempts<12)window.setTimeout(recover,500);
+ }
+ window.hbRecoverMenu=recover;
+ document.addEventListener('DOMContentLoaded',function(){window.setTimeout(recover,150);});
+ window.addEventListener('pageshow',function(){done=false;window.setTimeout(recover,150);});
+ document.addEventListener('click',function(e){
+  var t=e.target&&e.target.closest?e.target.closest('#hbOnlineOrderButton,#whatsappOrderChoice,#cartFab,.menu-fab'):null;
+  if(t){done=false;window.setTimeout(recover,100);}
+ },true);
+})();
+</script>
+
 </body>
 </html>
