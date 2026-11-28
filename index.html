@@ -319,7 +319,35 @@ body{background:var(--hb-cream)}
   #home .hb-bottom-slogan{font-size:clamp(13px,3.8vw,18px)!important;padding:14px 4px!important}
 }
 
-<style id="hb-menu-category-browser-style">.menu-category-browser{display:flex;justify-content:flex-end;padding:8px 20px 0}.menu-category-browser-btn{border:0;border-radius:999px;background:#333;color:#fff;padding:11px 17px;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px #0002}.menu-category-browser-btn:active{transform:scale(.98)}@media(max-width:600px){.menu-category-browser{padding:7px 14px 0}.menu-category-browser-btn{width:100%;font-size:14px;padding:12px}}</style>
+<style id="hb-menu-category-browser-style">.menu-category-browser{display:flex;justify-content:flex-end;padding:8px 20px 0}.menu-category-browser-btn{border:0;border-radius:999px;background:#333;color:#fff;padding:11px 17px;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px #0002}.menu-category-browser-btn:active{transform:scale(.98)}@media(max-width:600px){.menu-category-browser{padding:7px 14px 0}.menu-category-browser-btn{width:100%;font-size:14px;padding:12px}}<style id="hb-zomato-menu-discovery">
+.hb-zomato-discovery{margin:12px 0 18px;padding:0 0 4px;color:#292323}
+.hb-discovery-heading,.hb-recommend-title{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:8px 2px 12px}
+.hb-discovery-heading h2,.hb-recommend-title h2{margin:3px 0 0;color:#76151d;font-size:clamp(21px,5vw,27px);line-height:1.1}
+.hb-discovery-kicker{font-size:10px;font-weight:900;letter-spacing:1.4px;color:#a36c24}
+.hb-discovery-sub,.hb-recommend-title>span{font-size:11px;color:#777;text-align:right}
+.hb-offer-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.hb-offer-card{min-width:0;min-height:156px;padding:13px 12px;border-radius:16px;box-shadow:0 4px 14px #3c1b1010;display:flex;flex-direction:column;align-items:flex-start}
+.hb-offer-card.hb-hot{background:linear-gradient(145deg,#7b1118,#a82a27);color:#fff}
+.hb-offer-card.hb-special{background:linear-gradient(145deg,#fff4d8,#f1d28c);color:#552a17}
+.hb-offer-card.hb-discount{background:linear-gradient(145deg,#e9f8ee,#c4e8d0);color:#145d35}
+.hb-offer-tag{font-size:9px;font-weight:900;letter-spacing:.7px;opacity:.85}
+.hb-offer-card h3{font-size:clamp(15px,3.5vw,20px);line-height:1.1;margin:10px 0 5px}
+.hb-offer-card p{font-size:11px;line-height:1.35;margin:0 0 10px;flex:1}
+.hb-offer-card button{border:0;border-radius:999px;background:#ffffffdf;color:#64131a;padding:8px 10px;font-size:10px;font-weight:900}
+.hb-discount-terms{margin:10px 0;padding:12px;border:1px solid #d8eadc;border-radius:12px;background:#f4fbf5;color:#245b37;font-size:12px;line-height:1.5}
+.hb-recommend-section{margin:18px 0 20px;padding:14px 12px;border:1px solid #eee2d3;border-radius:18px;background:linear-gradient(135deg,#fffdf8,#fff7eb)}
+.hb-recommend-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.hb-recommend-card{overflow:hidden;border:1px solid #eadfce;border-radius:13px;background:#fff}
+.hb-recommend-card img{display:block;width:100%;height:112px;object-fit:cover}
+.hb-recommend-body{padding:9px}
+.hb-recommend-body strong{display:block;font-size:13px;line-height:1.25;color:#382b27}
+.hb-recommend-price{margin:6px 0;color:#82151e;font-weight:900;font-size:14px}
+.hb-recommend-add{width:100%;border:0;border-radius:9px;background:#18884c;color:#fff;padding:9px 7px;font-weight:900}
+.hb-recommend-loading{grid-column:1/-1;padding:15px;color:#777;font-size:12px}
+@media(max-width:520px){.hb-offer-strip{gap:7px}.hb-offer-card{min-height:164px;padding:10px 8px;border-radius:13px}.hb-offer-card p{font-size:10px}.hb-offer-card button{font-size:9px;padding:7px 8px}.hb-discovery-sub{display:none}.hb-recommend-section{padding:12px 9px}}
+@media(min-width:700px){.hb-offer-card{min-height:145px;padding:16px}.hb-recommend-card img{height:145px}}
+</style>
+</style>
 </style>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -846,6 +874,16 @@ function hideHbComingSoon(){document.querySelectorAll('.hb-coming').forEach(func
 <div id="menuScreen">
   <div class="menu-header"><div class="menu-bar"><button class="back" onclick="closeMenu()">← Back</button><div class="menu-title"><b>Hakka Bakka Online Menu</b><span>Punjabi Dhaba • Desi Swad • Modern Vibe</span></div><button class="account-btn" id="accountBtn" type="button" onclick="openAuth()">👤 Login</button></div><div id="pickupDiscountBadge" class="pickup-discount-badge" aria-live="polite">🎉 Pickup orders par special discount paayein!</div>
   <div class="menu-category-browser"><button type="button" class="menu-category-browser-btn" onclick="openMenuScreenCategories()">☰ Browse Menu Categories</button></div>
+  <section id="hb-zomato-discovery" class="hb-zomato-discovery" aria-label="Special offers and recommendations">
+    <div class="hb-discovery-heading"><div><span class="hb-discovery-kicker">MADE FRESH FOR YOU</span><h2>Discover HakkaBakka</h2></div><span class="hb-discovery-sub">Desi Swad • Modern Vibe</span></div>
+    <div class="hb-offer-strip">
+      <article class="hb-offer-card hb-hot"><span class="hb-offer-tag">🔥 TODAY'S PICKS</span><h3>Hot Deal!</h3><p>Popular dishes and delicious combos for today.</p><button type="button" onclick="hbJumpToPopular()">Explore Deals →</button></article>
+      <article class="hb-offer-card hb-special"><span class="hb-offer-tag">✨ HANDPICKED</span><h3>Special 4 U!</h3><p>Chef's picks and customer favourites, all in one place.</p><button type="button" onclick="hbJumpToPopular()">See Specials →</button></article>
+      <article class="hb-offer-card hb-discount"><span class="hb-offer-tag">🎁 PICKUP SAVINGS</span><h3>Claim up to 20%</h3><p>Unlock eligible Pickup discounts as your order value grows.</p><button type="button" onclick="hbShowDiscountTerms()">View Offer →</button></article>
+    </div>
+    <div id="hb-discount-terms" class="hb-discount-terms" hidden>Pickup discount: 5% above ₹500, 7% above ₹700, 9% above ₹900, 10% above ₹1,100, 15% above ₹1,500, 17% above ₹2,000 and 20% above ₹2,500. Home Delivery is excluded. Discount is calculated automatically at checkout.</div>
+    <section class="hb-recommend-section" id="hb-recommend-section"><div class="hb-recommend-title"><div><span class="hb-discovery-kicker">A LITTLE SOMETHING FOR YOU</span><h2 id="hb-recommend-heading">Recommended for You</h2></div><span id="hb-recommend-note">Popular with our guests</span></div><div id="hb-recommend-list" class="hb-recommend-list"><div class="hb-recommend-loading">Loading today's favourites…</div></div></section>
+  </section>
   <div class="diet-filter" role="group" aria-label="Filter menu by food preference">
     <button type="button" class="diet-filter-btn active" data-diet-filter="all" aria-pressed="true">🍽️ All Menu</button>
     <button type="button" class="diet-filter-btn" data-diet-filter="veg" aria-pressed="false">🟢 Veg Only</button>
@@ -1620,7 +1658,34 @@ function updateBilling(){
 }
 function makeUPI(){const q=document.getElementById('qr'),amt=expectedTotal();q.innerHTML='';if(!amt||amt<=0)return;const ref=currentOrderNo||'ORDER';const upi='upi://pay?pa='+encodeURIComponent(UPI_ID)+'&pn='+encodeURIComponent('Hakka Bakka Punjabi Dhaba')+'&am='+encodeURIComponent(amt.toFixed(2))+'&cu=INR&tn='+encodeURIComponent('HAKKA BAKKA '+ref);const wrap=document.createElement('div');wrap.style.cssText='width:230px;margin:12px auto;text-align:center';const img=document.createElement('img');img.alt='UPI QR Code';img.width=220;img.height=220;img.style.cssText='display:block;width:220px;height:220px;margin:auto;border-radius:8px;background:#fff';img.src='https://quickchart.io/qr?text='+encodeURIComponent(upi)+'&size=220&margin=2';img.onerror=()=>{wrap.innerHTML='<div style="padding:24px;border:1px solid #ddd;border-radius:12px;background:#fafafa"><b>QR could not load</b><br><small>Amount: ₹'+amt.toFixed(2)+'</small></div>'};wrap.appendChild(img);const cap=document.createElement('div');cap.style.cssText='font-size:24px;color:#16803c;margin-top:12px;font-weight:900';cap.innerHTML='Order Amount <b style="color:#16803c;font-size:30px;font-weight:900">₹'+amt.toFixed(2)+'</b>';wrap.appendChild(cap);const refBox=document.createElement('div');refBox.style.cssText='font-size:12px;color:#777;margin-top:5px';refBox.textContent='Order reference: '+ref;wrap.appendChild(refBox);q.appendChild(wrap)}
 function setHomeState(){const home=document.getElementById('home'),menuScreen=document.getElementById('menuScreen');if(!home||!menuScreen)return;document.body.classList.remove('hb-menu-open');home.classList.remove('menu-hidden');menuScreen.classList.remove('menu-visible');home.style.setProperty('display','block','important');home.style.setProperty('visibility','visible','important');menuScreen.style.setProperty('display','none','important');menuScreen.style.setProperty('visibility','hidden','important');const fab=document.getElementById('cartFab');if(fab)fab.style.display='none';}
-function setMenuState(){const home=document.getElementById('home'),menuScreen=document.getElementById('menuScreen');if(!home||!menuScreen)return;document.body.classList.add('hb-menu-open');home.classList.add('menu-hidden');menuScreen.classList.add('menu-visible');home.style.setProperty('display','none','important');home.style.setProperty('visibility','hidden','important');menuScreen.style.setProperty('display','block','important');menuScreen.style.setProperty('visibility','visible','important');window.scrollTo({top:0,left:0,behavior:'instant'});const fab=document.getElementById('cartFab');if(fab)fab.style.display='block';renderMenu();renderCart();loadPublishedAdminMenu().then(changed=>{if(changed){renderMenu();renderCart();}})}
+function hbJumpToPopular(){const target=document.getElementById('menu');if(target)target.scrollIntoView({behavior:'smooth',block:'start'});}
+function hbShowDiscountTerms(){const el=document.getElementById('hb-discount-terms');if(el){el.hidden=!el.hidden;if(!el.hidden)el.scrollIntoView({behavior:'smooth',block:'nearest'});}}
+function hbMenuPrice(item){const p=item&&item[1];return Array.isArray(p)?Number(p[1]||p[0]):Number(p||0);}
+function hbRenderRecommendations(names,personalized){
+ const box=document.getElementById('hb-recommend-list'),heading=document.getElementById('hb-recommend-heading'),note=document.getElementById('hb-recommend-note');
+ if(!box)return;
+ const flat=(Array.isArray(data)?data:[]).flatMap(row=>(row[1]||[]).map(item=>({name:String(item[0]||''),price:hbMenuPrice(item),image:item[2]||'',category:row[0]}))).filter(x=>x.name&&x.price>0);
+ let picks=[];
+ if(personalized&&names&&names.length){const used=new Set();for(const n of names){const q=String(n||'').toLowerCase();const hit=flat.find(x=>!used.has(x.name)&&x.name.toLowerCase()===q);if(hit){picks.push(hit);used.add(hit.name);}}}
+ const popular=['Dal Makhani','Paneer Butter Masala','Kadai Paneer','Paneer Tikka','Amritsari Kulcha with Chana','Chana Masala'];
+ if(picks.length<4){for(const n of popular){const hit=flat.find(x=>x.name.toLowerCase()===n.toLowerCase()&&!picks.some(y=>y.name===x.name));if(hit)picks.push(hit);if(picks.length>=4)break;}}
+ if(heading)heading.textContent=personalized&&names&&names.length?'Recommended for You':'Popular at HakkaBakka';
+ if(note)note.textContent=personalized&&names&&names.length?'Based on your past orders':'Guest favourites';
+ box.innerHTML=picks.slice(0,4).map(x=>'<article class="hb-recommend-card">'+imageTag(x.image,x.name)+'<div class="hb-recommend-body"><strong>'+esc(x.name)+'</strong><div class="hb-recommend-price">₹'+x.price+'</div><button class="hb-recommend-add" type="button" onclick="hbAddRecommended(\''+esc(x.name).replace(/'/g,"\\'")+'\','+x.price+')">＋ Add</button></div></article>').join('')||'<div class="hb-recommend-loading">Explore our full menu below.</div>';
+}
+function hbAddRecommended(name,price){cart.push({name,price:Number(price)});saveCart();renderCart();const fab=document.getElementById('cartFab');if(fab)fab.style.display='block';}
+async function hbLoadMenuRecommendations(){
+ const box=document.getElementById('hb-recommend-list');if(!box)return;
+ const session=currentUser;
+ if(!session||!supabaseClient){hbRenderRecommendations([],false);return;}
+ try{
+  const {data:orders,error}=await supabaseClient.from('customer_orders').select('items,created_at').eq('user_id',session.id).order('created_at',{ascending:false}).limit(12);
+  if(error)throw error;
+  const names=[];for(const order of (orders||[])){for(const item of (Array.isArray(order.items)?order.items:[])){const n=String(item.name||'').replace(/\\s+-\\s+(Half|Full)$/i,'').trim();if(n&&!names.includes(n))names.push(n);}}
+  hbRenderRecommendations(names,names.length>0);
+ }catch(error){console.warn('Personalized menu recommendations unavailable:',error);hbRenderRecommendations([],false);}
+}
+function setMenuState(){const home=document.getElementById('home'),menuScreen=document.getElementById('menuScreen');if(!home||!menuScreen)return;document.body.classList.add('hb-menu-open');home.classList.add('menu-hidden');menuScreen.classList.add('menu-visible');home.style.setProperty('display','none','important');home.style.setProperty('visibility','hidden','important');menuScreen.style.setProperty('display','block','important');menuScreen.style.setProperty('visibility','visible','important');window.scrollTo({top:0,left:0,behavior:'instant'});const fab=document.getElementById('cartFab');if(fab)fab.style.display='block';renderMenu();renderCart();hbLoadMenuRecommendations();loadPublishedAdminMenu().then(changed=>{if(changed){renderMenu();renderCart();hbLoadMenuRecommendations();}})}
 function openMenu(){closeOrderModal();setMenuState()}
 function closeMenu(){closeCart();setHomeState();window.scrollTo({top:0,left:0,behavior:'instant'})}
 
