@@ -319,6 +319,7 @@ body{background:var(--hb-cream)}
   #home .hb-bottom-slogan{font-size:clamp(13px,3.8vw,18px)!important;padding:14px 4px!important}
 }
 
+<style id="hb-menu-category-browser-style">.menu-category-browser{display:flex;justify-content:flex-end;padding:8px 20px 0}.menu-category-browser-btn{border:0;border-radius:999px;background:#333;color:#fff;padding:11px 17px;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px #0002}.menu-category-browser-btn:active{transform:scale(.98)}@media(max-width:600px){.menu-category-browser{padding:7px 14px 0}.menu-category-browser-btn{width:100%;font-size:14px;padding:12px}}</style>
 </style>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -844,6 +845,7 @@ function hideHbComingSoon(){document.querySelectorAll('.hb-coming').forEach(func
 <!-- SEPARATE ONLINE MENU SCREEN -->
 <div id="menuScreen">
   <div class="menu-header"><div class="menu-bar"><button class="back" onclick="closeMenu()">← Back</button><div class="menu-title"><b>Hakka Bakka Online Menu</b><span>Punjabi Dhaba • Desi Swad • Modern Vibe</span></div><button class="account-btn" id="accountBtn" type="button" onclick="openAuth()">👤 Login</button></div><div id="pickupDiscountBadge" class="pickup-discount-badge" aria-live="polite">🎉 Pickup orders par special discount paayein!</div>
+  <div class="menu-category-browser"><button type="button" class="menu-category-browser-btn" onclick="openMenuScreenCategories()">☰ Browse Menu Categories</button></div>
   <div class="diet-filter" role="group" aria-label="Filter menu by food preference">
     <button type="button" class="diet-filter-btn active" data-diet-filter="all" aria-pressed="true">🍽️ All Menu</button>
     <button type="button" class="diet-filter-btn" data-diet-filter="veg" aria-pressed="false">🟢 Veg Only</button>
@@ -852,6 +854,7 @@ function hideHbComingSoon(){document.querySelectorAll('.hb-coming').forEach(func
   <div class="searchbox"><input id="search" type="search" placeholder="Search menu…" autocomplete="off"><div class="cart-summary" id="cartSummary" role="button" tabindex="0" aria-label="Open cart" onclick="openCart()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCart()}"><div class="cart-summary-head">🛒 <span id="cartSummaryText">Cart is empty</span></div><div id="cartSummaryList" class="cart-summary-list"></div><div class="cart-summary-total"><span>Total</span><b>₹<span id="cartSummaryTotal">0</span></b><button type="button" class="cart-pay" id="cartPay" onclick="event.stopPropagation();openCart()" disabled>💳 Pay / Checkout →</button></div></div></div></div>
   <main class="menu-content" id="menu"></main>
 </div>
+<div id="menuScreenCategoryModal" style="display:none;position:fixed;inset:0;z-index:10060;background:#0009;align-items:center;justify-content:center;padding:18px" onclick="if(event.target===this)closeMenuScreenCategories()"><div style="background:#fff;border-radius:22px;width:min(100%,520px);max-height:78vh;overflow:auto;padding:22px 18px;box-shadow:0 18px 60px #0005"><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px"><strong style="font-size:21px;color:#8e1720">Browse Menu Categories</strong><button type="button" onclick="closeMenuScreenCategories()" aria-label="Close menu categories" style="border:0;border-radius:50%;width:38px;height:38px;background:#f3eeee;font-size:20px">×</button></div><div id="menuScreenCategoryList" style="display:grid;gap:2px"></div></div></div>
 <button class="cart-fab" id="cartFab" onclick="openCart()" style="display:none">🛒 Cart <span class="count" id="fabCount">0</span></button>
 
 <div class="drawer" id="drawer" onclick="if(event.target===this)closeCart()"><div class="drawer-card" id="drawerCard">
@@ -1419,6 +1422,15 @@ let data=[
 ];
 // Keep a local fallback so the customer menu never renders blank if the live Admin API returns an empty or malformed payload.
 const BUILT_IN_MENU_FALLBACK = data.map(([category,items])=>[category,items.map(item=>[...item])]);
+function closeMenuScreenCategories(){const modal=document.getElementById("menuScreenCategoryModal");if(modal)modal.style.display="none"}
+function openMenuScreenCategories(){
+ const modal=document.getElementById("menuScreenCategoryModal"),list=document.getElementById("menuScreenCategoryList");
+ if(!modal||!list)return;
+ const rows=Array.isArray(data)?data:[];
+ list.innerHTML=rows.filter(row=>Array.isArray(row)&&row.length>1&&Array.isArray(row[1])&&row[1].length).map(function(row){const category=String(row[0]),count=row[1].length;return '<button type="button" onclick="selectMenuScreenCategory(\''+category.replace(/\\/g,"\\\\").replace(/\'/g,"\\\'").replace(/</g,"&lt;")+'\')" style="display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:15px 4px;border:0;border-bottom:1px solid #eee;background:#fff;color:#4e5663;font-size:17px;font-weight:650"><span>'+esc(category)+'</span><span style="color:#8a9099">'+count+'</span></button>'}).join("")||'<p style="padding:12px;color:#666">Menu categories are loading. Please try again.</p>';
+ modal.style.display="flex";
+}
+function selectMenuScreenCategory(category){closeMenuScreenCategories();goToMenuCategory(category)}
 function closeCartMenuCategories(){const modal=document.getElementById('cartMenuCategoryModal');if(modal)modal.style.display='none'}
 function openCartMenuCategories(){
  const modal=document.getElementById('cartMenuCategoryModal'),list=document.getElementById('cartMenuCategoryList');
