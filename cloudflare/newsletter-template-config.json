@@ -1,0 +1,18 @@
+{
+  "service": "HakkaBakka Newsletter WhatsApp",
+  "provider": "BHASH",
+  "template_name": "hakkabakka_newsletter_welcome_text",
+  "template_code": "TEMPLATE35500",
+  "category": "MARKETING",
+  "language": "English (US)",
+  "header": "NONE",
+  "body_variables": ["name"],
+  "footer": "Reply STOP to unsubscribe",
+  "cta": {
+    "label": "Follow on Instagram",
+    "type": "URL",
+    "url": "https://www.instagram.com/hakka_bakka.in/"
+  },
+  "runtime_worker": "hb-orders-api",
+  "runtime_secret_binding": "BHASH_NEWSLETTER_TEMPLATE_CODE"
+}
