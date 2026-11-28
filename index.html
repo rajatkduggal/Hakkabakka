@@ -3183,5 +3183,35 @@ body.hb-menu-open #menuScreen #menu .menu-grid{display:grid!important;visibility
 body.hb-menu-open #menuScreen #menu .menu-card{display:block!important;visibility:visible!important;opacity:1!important;min-height:180px!important;background:#fff!important}
 body.hb-menu-open #menuScreen #menu .menu-card img{display:block!important;visibility:visible!important;opacity:1!important;width:100%!important;height:135px!important;object-fit:cover!important}
 body.hb-menu-open #menuScreen #menu .menu-body{display:block!important;visibility:visible!important;opacity:1!important}
-</style></body>
+</style><script id="hb-menu-direct-render-final">
+(function(){
+ function directRender(){
+  var root=document.getElementById('menu');
+  if(!root||root.querySelector('.menu-card'))return;
+  try{
+   var source=(typeof BUILT_IN_MENU_FALLBACK!=='undefined'&&Array.isArray(BUILT_IN_MENU_FALLBACK))?BUILT_IN_MENU_FALLBACK:(typeof data!=='undefined'&&Array.isArray(data)?data:[]);
+   var escText=function(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+   var html=source.filter(function(row){return Array.isArray(row)&&Array.isArray(row[1])&&row[1].length}).map(function(row){
+    var title=row[0],items=row[1];
+    var cards=items.filter(function(x){return Array.isArray(x)&&x.length>=2}).map(function(x){
+     var name=String(x[0]),price=x[1],img=String(x[2]||''),safe=escText(name);
+     var image=img?( /^https?:\/\//i.test(img)||/^data:image\//i.test(img)?img:'https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/'+img.split('/').map(encodeURIComponent).join('/') ):'';
+     var picture=image?'<img src="'+escText(image)+'" alt="'+safe+'" loading="lazy" onerror="this.style.display=\'none\'">':'';
+     var buttons=Array.isArray(price)?'<div class="variant"><button class="add" data-name="'+safe+' - Half" data-price="'+Number(price[0])+'">Half ₹'+Number(price[0])+'</button><button class="add" data-name="'+safe+' - Full" data-price="'+Number(price[1])+'">Full ₹'+Number(price[1])+'</button></div>':'<button class="add" data-name="'+safe+'" data-price="'+Number(price)+'">Add to Order</button>';
+     return '<article class="menu-card" data-diet="'+( /\b(chicken|mutton|fish|egg|keema|prawn)\b/i.test(name)?'nonveg':'veg')+'">'+picture+'<div class="menu-body"><h3>'+safe+'</h3><div class="price">'+(Array.isArray(price)?'₹'+price[0]+' / ₹'+price[1]:'₹'+Number(price))+'</div>'+buttons+'</div></article>';
+    }).join('');
+    return cards?'<section class="menu-section"><h2>'+escText(title)+'</h2><div class="menu-grid">'+cards+'</div></section>':'';
+   }).join('');
+   if(html){root.innerHTML=html;root.style.setProperty('display','block','important');root.style.setProperty('visibility','visible','important');if(typeof refreshButtons==='function')refreshButtons();if(typeof applyMenuFilters==='function')applyMenuFilters();if(typeof renderCartInlineCategories==='function')renderCartInlineCategories();console.info('HakkaBakka direct menu render:',root.querySelectorAll('.menu-card').length,'items');return true;}
+  }catch(err){console.error('HakkaBakka direct menu render failed',err)}
+  return false;
+ }
+ window.hbDirectMenuRender=directRender;
+ function schedule(){[0,150,500,1200].forEach(function(ms){setTimeout(function(){if(document.body.classList.contains('hb-menu-open')||document.getElementById('menuScreen')?.classList.contains('menu-visible'))directRender()},ms)})}
+ document.addEventListener('click',function(e){var t=e.target&&e.target.closest?e.target.closest('#hbOnlineOrderButton,#whatsappOrderChoice,.menu-fab,[onclick*="openMenu"],[onclick*="showOnlineMenu"]'):null;if(t)schedule()},true);
+ window.addEventListener('pageshow',schedule);
+ document.addEventListener('DOMContentLoaded',schedule);
+})();
+</script>
+</body>
 </html>
