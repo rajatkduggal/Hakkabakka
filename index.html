@@ -859,7 +859,7 @@ function hideHbComingSoon(){document.querySelectorAll('.hb-coming').forEach(func
 
 <div class="drawer" id="drawer" onclick="if(event.target===this)closeCart()"><div class="drawer-card" id="drawerCard">
   <div class="drawer-head"><h2 id="cartHeading">Your Order</h2><button class="drawer-close" onclick="closeCart()">✕</button></div>
-  <div id="cartView"><div id="cartPickupDiscountBadge" class="cart-pickup-discount" aria-live="polite"></div><div id="items"></div><div class="cart-footer"><div class="bill"><div>Food Total <b>₹<span id="cartSubtotal">0</span></b></div></div><div class="cart-footer-actions"><button class="drawer-action" id="drawerCheckout" onclick="proceedBilling()" disabled>Proceed to Billing</button><button class="drawer-action secondary" onclick="continueShopping()">＋ Add More Items</button><button class="drawer-action secondary" type="button" onclick="openCartMenuCategories()">☰ Browse Menu Categories</button></div><div id="cartMenuCategoryModal" style="display:none;position:fixed;inset:0;z-index:10050;background:#0009;align-items:center;justify-content:center;padding:18px" onclick="if(event.target===this)closeCartMenuCategories()"><div style="background:#fff;border-radius:22px;width:min(100%,520px);max-height:78vh;overflow:auto;padding:22px 18px;box-shadow:0 18px 60px #0005"><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px"><strong style="font-size:21px;color:#8e1720">Browse Menu</strong><button type="button" onclick="closeCartMenuCategories()" aria-label="Close menu categories" style="border:0;border-radius:50%;width:38px;height:38px;background:#f3eeee;font-size:20px">×</button></div><div id="cartMenuCategoryList" style="display:grid;gap:2px"></div></div></div></div></div>
+  <div id="cartView"><div id="cartPickupDiscountBadge" class="cart-pickup-discount" aria-live="polite"></div><div id="items"></div><section id="cartInlineCategories" style="margin:14px 0 8px;padding:14px;border:1px solid #eee4d4;border-radius:16px;background:#fffdf8"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px"><strong style="color:#7b1113;font-size:16px">☰ Browse Menu Categories</strong><span style="font-size:12px;color:#777">Select to add more</span></div><div id="cartInlineCategoryList" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px"></div></section><div class="cart-footer"><div class="bill"><div>Food Total <b>₹<span id="cartSubtotal">0</span></b></div></div><div class="cart-footer-actions"><button class="drawer-action" id="drawerCheckout" onclick="proceedBilling()" disabled>Proceed to Billing</button><button class="drawer-action secondary" onclick="continueShopping()">＋ Add More Items</button></div></div></div></div></div>
   <div id="billingView" style="display:none">
     <div class="billing-shell">
       <div class="billing-intro">
@@ -1431,16 +1431,16 @@ function openMenuScreenCategories(){
  modal.style.display="flex";
 }
 function selectMenuScreenCategory(category){closeMenuScreenCategories();goToMenuCategory(category)}
-function closeCartMenuCategories(){const modal=document.getElementById('cartMenuCategoryModal');if(modal)modal.style.display='none'}
-function openCartMenuCategories(){
- const modal=document.getElementById('cartMenuCategoryModal'),list=document.getElementById('cartMenuCategoryList');
- if(!modal||!list)return;
+function renderCartInlineCategories(){
+ const list=document.getElementById('cartInlineCategoryList');if(!list)return;
  const rows=Array.isArray(data)?data:[];
- list.innerHTML=rows.filter(row=>Array.isArray(row)&&row.length>1&&Array.isArray(row[1])&&row[1].length).map(([category,items])=>`<button type="button" onclick="selectCartMenuCategory(${JSON.stringify(String(category)).replace(/</g,'\\u003c')})" style="display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:15px 4px;border:0;border-bottom:1px solid #eee;background:#fff;color:#4e5663;font-size:17px;font-weight:650"><span>${esc(category)}</span><span style="color:#8a9099">${items.length}</span></button>`).join('')||'<p style="padding:12px;color:#666">Menu categories are loading. Please try again.</p>';
- modal.style.display='flex';
+ list.innerHTML=rows.filter(row=>Array.isArray(row)&&row.length>1&&Array.isArray(row[1])&&row[1].length).map(function(row){
+  const category=String(row[0]),count=row[1].length;
+  const safe=category.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  return '<button type="button" onclick="selectCartInlineCategory(\\''+safe+'\\')" style="display:flex;align-items:center;justify-content:space-between;gap:6px;width:100%;padding:10px 9px;border:1px solid #eee3d5;border-radius:11px;background:#fff;color:#4e5663;font-size:13px;font-weight:700;text-align:left"><span>'+esc(category)+'</span><span style="color:#8a9099;flex-shrink:0">'+count+'</span></button>';
+ }).join('')||'<p style="padding:8px;color:#666">Menu categories are loading.</p>';
 }
-function selectCartMenuCategory(category){closeCartMenuCategories();closeCart();setTimeout(()=>goToMenuCategory(category),120)}
-function goToMenuCategory(category){const sections=[...document.querySelectorAll('#menu .menu-section')];const target=sections.find(section=>{const h=section.querySelector('h2');return h&&h.textContent.trim()===category});if(target){target.scrollIntoView({behavior:'smooth',block:'start'});target.classList.add('quick-highlight');setTimeout(()=>target.classList.remove('quick-highlight'),1300)}else{const menu=document.getElementById('menu');if(menu)menu.scrollIntoView({behavior:'smooth',block:'start'});}}
+function selectCartInlineCategory(category){closeCart();setTimeout(()=>goToMenuCategory(category),120)}
 const menuEl=document.getElementById('menu');
 const esc=s=>String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
 function imageTag(img,name){img=String(img||'');name=String(name||'');if(/^data:image\//i.test(img))return `<img src="${img}" alt="${esc(name)}" loading="lazy" style="width:100%;height:190px;object-fit:cover;border-radius:12px">`;const candidates=[];const add=u=>{if(u&&!candidates.includes(u))candidates.push(u)};if(img)add(img);if(img&&!img.startsWith('images/'))add('images/'+img);if(img)add('https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/'+img);if(img&&!img.startsWith('images/'))add('https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/images/'+img);if(!candidates.length)candidates.push('https://raw.githubusercontent.com/rajatkduggal/Hakkabakka/main/food-placeholder.jpg');const enc=u=>encodeURI(u).replace(/'/g,'%27');const list=JSON.stringify(candidates.map(enc)).replace(/'/g,'&#39;');return `<img src="${enc(candidates[0])}" alt="${esc(name)}" loading="lazy" data-candidates='${list}' data-try="0" onerror="const a=JSON.parse(this.dataset.candidates),i=+this.dataset.try+1;this.dataset.try=i;if(i<a.length)this.src=a[i];else this.style.visibility='hidden';">`}
@@ -1628,7 +1628,7 @@ function closeMenu(){closeCart();setHomeState();window.scrollTo({top:0,left:0,be
 (function(){setHomeState();window.addEventListener('pageshow',function(){if(!document.body.classList.contains('hb-menu-open'))setHomeState()});})();
 function openOrderModal(){document.getElementById('orderModal').classList.add('show')}
 function closeOrderModal(){document.getElementById('orderModal').classList.remove('show')}
-function openCart(){checkoutVerifiedEmail='';skipOrderOtpOnce=false;document.body.classList.remove('hb-billing-open');document.getElementById('drawer').classList.add('show');document.getElementById('cartView').style.display='block';document.getElementById('billingView').style.display='none';renderCart()}
+function openCart(){checkoutVerifiedEmail='';skipOrderOtpOnce=false;document.body.classList.remove('hb-billing-open');document.getElementById('drawer').classList.add('show');document.getElementById('cartView').style.display='block';document.getElementById('billingView').style.display='none';renderCart();renderCartInlineCategories()}
 function closeCart(){document.body.classList.remove('hb-billing-open');document.getElementById('drawer').classList.remove('show')}
 function continueShopping(){closeCart();const search=document.getElementById('search');if(search)search.blur();const menu=document.getElementById('menuScreen');if(menu)window.scrollTo({top:menu.offsetTop||0,behavior:'smooth'});}
 let checkoutVerifiedEmail='';
