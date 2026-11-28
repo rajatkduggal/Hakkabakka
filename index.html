@@ -1733,7 +1733,29 @@ async function hbLoadMenuRecommendations(){
   hbRenderRecommendations(names,names.length>0);
  }catch(error){console.warn('Personalized menu recommendations unavailable:',error);hbRenderRecommendations([],false);}
 }
-function setMenuState(){const home=document.getElementById('home'),menuScreen=document.getElementById('menuScreen');if(!home||!menuScreen)return;document.body.classList.add('hb-menu-open');home.classList.add('menu-hidden');menuScreen.classList.add('menu-visible');home.style.setProperty('display','none','important');home.style.setProperty('visibility','hidden','important');menuScreen.style.setProperty('display','block','important');menuScreen.style.setProperty('visibility','visible','important');window.scrollTo({top:0,left:0,behavior:'instant'});const fab=document.getElementById('cartFab');if(fab)fab.style.display='block';renderMenu();renderCart();renderCartInlineCategories();hbLoadMenuRecommendations();loadPublishedAdminMenu().then(changed=>{renderMenu();renderCart();renderCartInlineCategories();applyMenuFilters();});}
+function hbEnsureMenuItems(){
+ const root=document.getElementById('menu');
+ if(!root)return false;
+ let count=root.querySelectorAll('.menu-card').length;
+ if(!count){
+  try{
+   if(Array.isArray(BUILT_IN_MENU_FALLBACK)&&BUILT_IN_MENU_FALLBACK.length){
+    data=BUILT_IN_MENU_FALLBACK.map(row=>[row[0],row[1].map(item=>item.slice())]);
+    if(typeof activeDietFilter!=='undefined')activeDietFilter='all';
+    renderMenu();
+   }
+  }catch(e){console.error('Bundled menu restore failed',e)}
+ }
+ count=root.querySelectorAll('.menu-card').length;
+ if(count){
+  root.querySelectorAll('.menu-section').forEach(section=>{section.style.setProperty('display','block','important');});
+  root.querySelectorAll('.menu-card').forEach(card=>{card.style.removeProperty('display');card.style.setProperty('visibility','visible','important');});
+  root.style.setProperty('display','block','important');
+  root.style.setProperty('visibility','visible','important');
+ }
+ return count>0;
+}
+function setMenuState(){const home=document.getElementById('home'),menuScreen=document.getElementById('menuScreen');if(!home||!menuScreen)return;document.body.classList.add('hb-menu-open');home.classList.add('menu-hidden');menuScreen.classList.add('menu-visible');home.style.setProperty('display','none','important');home.style.setProperty('visibility','hidden','important');menuScreen.style.setProperty('display','block','important');menuScreen.style.setProperty('visibility','visible','important');window.scrollTo({top:0,left:0,behavior:'instant'});const fab=document.getElementById('cartFab');if(fab)fab.style.display='block';if(typeof activeDietFilter!=='undefined')activeDietFilter='all';renderMenu();hbEnsureMenuItems();[120,450,1000].forEach(ms=>window.setTimeout(hbEnsureMenuItems,ms));renderCart();renderCartInlineCategories();hbLoadMenuRecommendations();loadPublishedAdminMenu().then(changed=>{if(!hbEnsureMenuItems())renderMenu();hbEnsureMenuItems();renderCart();renderCartInlineCategories();applyMenuFilters();hbEnsureMenuItems();}).catch(()=>{hbEnsureMenuItems()});}
 function openMenu(){closeOrderModal();setMenuState()}
 function closeMenu(){closeCart();setHomeState();window.scrollTo({top:0,left:0,behavior:'instant'})}
 
@@ -3154,5 +3176,12 @@ if('serviceWorker' in navigator){
 #menuScreen #menu .menu-card .menu-body .add.selected{background:#16834b!important;color:#fff!important}
 #menuScreen #menu .menu-card .menu-body .variant{display:flex!important;flex-wrap:wrap!important;width:100%!important}
 #menuScreen #menu .menu-card .menu-body .variant .add{flex:1!important;min-width:90px!important;font-size:12px!important;padding:8px 5px!important}
+</style><style id="hb-menu-visible-hotfix-20261128">
+body.hb-menu-open #menuScreen #menu{display:block!important;visibility:visible!important;opacity:1!important;min-height:200px!important;height:auto!important;overflow:visible!important}
+body.hb-menu-open #menuScreen #menu .menu-section{display:block!important;visibility:visible!important;opacity:1!important;height:auto!important;min-height:100px!important}
+body.hb-menu-open #menuScreen #menu .menu-grid{display:grid!important;visibility:visible!important;opacity:1!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+body.hb-menu-open #menuScreen #menu .menu-card{display:block!important;visibility:visible!important;opacity:1!important;min-height:180px!important;background:#fff!important}
+body.hb-menu-open #menuScreen #menu .menu-card img{display:block!important;visibility:visible!important;opacity:1!important;width:100%!important;height:135px!important;object-fit:cover!important}
+body.hb-menu-open #menuScreen #menu .menu-body{display:block!important;visibility:visible!important;opacity:1!important}
 </style></body>
 </html>
